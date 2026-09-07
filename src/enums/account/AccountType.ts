@@ -1,0 +1,6 @@
+export const AccountType = {
+  CUSTOMER_WALLET: "CUSTOMER_WALLET",
+  AGENCY_WALLET: "AGENCY_WALLET",
+  SYSTEM_WALLET: "SYSTEM_WALLET"
+} as const;
+export type AccountType = (typeof AccountType)[keyof typeof AccountType];
