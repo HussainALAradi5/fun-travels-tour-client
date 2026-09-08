@@ -5,7 +5,7 @@ import { UnifiedFilterBar, type FilterGroup } from "@/components/ui/Custom/Unifi
 import { UserRequestList } from "./UserRequestList";
 import { UserRequestCreateDialog } from "./UserRequestCreateDialog";
 import { ShieldCheck, Plus } from "lucide-react";
-import type { UserRequest } from "@/interface/UserRequestInterface";
+import type { UserRequest } from "@/interface";
 import { userRequestService } from "@/Api/UserRequest";
 import { UserRequestType } from "@/enums/UserRequest/UserRequestType";
 import { UserRequestStatus } from "@/enums/UserRequest/UserRequestStatus";
@@ -27,7 +27,7 @@ export const UserRequestManager = () => {
       type: filters.type as UserRequestType,
       status: filters.status as UserRequestStatus
     });
-    if (res.success && res.data) setData(res.data);
+    if (res) setData(res);
     setLoading(false);
   };
 
@@ -120,7 +120,7 @@ export const UserRequestManager = () => {
         currentUserId={user?.id || 0}
         loading={loading}
         onSubmit={async (val) => {
-          await userRequestService.create(val);
+          await userRequestService.create(val as never);
           setIsCreateOpen(false);
           fetchRequests();
         }}

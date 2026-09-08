@@ -4,7 +4,7 @@ import { GenericTable } from "@/components/ui/Custom/GenericTable";
 import { CapacityProgress } from "@/components/ui/Custom/CapacityProgress";
 import { StatusColors } from "@/constants/roles/Colors";
 import { formatTourRange } from "@/utilities/DateUtils";
-import type { Tour, TourTableProps } from "@/interface/tourmanagement/TourInterface";
+import type { Tour, TourTableProps } from "@/interface";
 
 export const TourInventoryTable = ({ data, isLoading, onViewDetails }: TourTableProps) => {
   return (

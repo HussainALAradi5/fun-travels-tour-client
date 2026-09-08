@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { Center, Spinner } from "@chakra-ui/react";
 
-// Assuming your tracking service is exported here
-
-// Import your GenericAuditLog component
 import { GenericAuditLog, type AuditEventItem } from "@/components/ui/Custom/GenericAuditLog";
 import { genericTrackingService } from "@/Api/genericTracking";
 
@@ -20,24 +17,21 @@ export const TourEventLogDetailView = ({ tourId }: TourEventLogDetailViewProps) 
     
     setIsLoading(true);
     
-    // Pass "TOUR" as the ReferenceType. Cast to 'any' to avoid strict enum typing errors if needed
-    genericTrackingService.getTimeline("TOUR" as any, tourId)
+    genericTrackingService.getTimeline("TOUR" as never, tourId)
       .then((res) => {
-        // Extract the events array from your ApiResponse structure
-        const rawEvents = res.data?.events || [];
+        const rawEvents = res?.events || [];
         
-        // Map backend GenericEventLog to frontend AuditEventItem
-        const mappedEvents: AuditEventItem[] = rawEvents.map((log: any) => ({
-          id: log.id,
+        const mappedEvents: AuditEventItem[] = rawEvents.map((log) => ({
+          id: log.id || 0,
           actorName: log.actor?.name || "System",
-          action: log.action, // e.g., "CREATED", "STATUS_CHANGED"
-          description: log.description,
-          createdAt: log.createdAt,
+          action: log.action || "UPDATE",
+          description: log.description ?? undefined,
+          createdAt: log.createdAt || new Date().toISOString(),
         }));
         
         setEvents(mappedEvents);
       })
-      .catch((err) => console.error("Failed to load tour events:", err))
+      .catch(console.error)
       .finally(() => setIsLoading(false));
   }, [tourId]);
 

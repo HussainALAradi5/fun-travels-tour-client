@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Box, HStack, Text, Badge, IconButton, VStack } from "@chakra-ui/react";
 import { Plus, MapPin, Globe, Building2 } from "lucide-react";
 import { GenericTable } from "@/components/ui/Custom/GenericTable";
-import type { Agency } from "@/interface/Agency/AgencyInterface";
+import type { Agency } from "@/interface";
 
 interface Props {
   data: Agency[];
@@ -111,3 +111,4 @@ export function AgencyTable({
     </Box>
   );
 }
+

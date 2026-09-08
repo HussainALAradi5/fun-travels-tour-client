@@ -2,7 +2,7 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { Flag, CheckCircle, Clock, Navigation, MapPin } from "lucide-react";
 import { GenericTracking, type TrackingItem } from "@/components/ui/Custom/GenericTracking";
-import type { Ticket } from "@/interface/tourmanagement/TicketInterface";
+import type { Ticket } from "@/interface";
 
 export const TicketJourneyTracker = ({ ticket }: { ticket: Ticket }) => {
   const trackingItems: TrackingItem[] = [

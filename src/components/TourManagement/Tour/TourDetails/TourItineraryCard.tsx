@@ -3,7 +3,7 @@ import { Navigation, ArrowRight, Bus, LayoutDashboard } from "lucide-react";
 import { GenericCard } from "@/components/ui/Custom/GenericCard";
 import { GenericTracking, type TrackingItem } from "@/components/ui/Custom/GenericTracking";
 import { glowPulse } from "@/utilities/Animations";
-import type { Tour } from "@/interface/tourmanagement/TourInterface";
+import type { Tour } from "@/interface";
 
 interface TourItineraryCardProps {
   tour: Tour;

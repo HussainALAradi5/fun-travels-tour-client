@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Box, Heading, Text, HStack, Button } from "@chakra-ui/react";
 import { Download } from "lucide-react";
 import { BranchTable } from "./BranchTable";
-import type { AgencyBranch } from "@/interface/Agency/AgencyBranchInterface";
+import type { AgencyBranch } from "@/interface";
 import { GenericExportDialog } from "../ui/Custom/Dialogs/GenericExportDialog";
 
 interface BranchTabProps {
@@ -56,3 +56,4 @@ export function BranchTab({ branches, agencyName, loading }: BranchTabProps) {
     </Box>
   );
 }
+

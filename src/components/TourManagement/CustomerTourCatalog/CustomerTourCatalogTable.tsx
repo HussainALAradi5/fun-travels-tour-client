@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { PlaneTakeoff, PlaneLanding, MapPin, Calendar } from "lucide-react";
 import { GenericTable, type Column } from "@/components/ui/Custom/GenericTable";
-import type { Tour } from "@/interface/tourmanagement/TourInterface";
+import type { Tour } from "@/interface";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
@@ -235,3 +235,4 @@ export const CustomerTourCatalogTable = ({
     />
   );
 };
+

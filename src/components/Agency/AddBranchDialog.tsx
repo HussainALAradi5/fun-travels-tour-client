@@ -4,13 +4,19 @@ import { countryService } from "@/Api/Country";
 import { cityService } from "@/Api/City";
 import { userService } from "@/Api/User";
 import {
-  DEFAULT_BRANCH,
   type AgencyBranch,
-} from "@/interface/Agency/AgencyBranchInterface";
+} from "@/interface";
+
+const DEFAULT_BRANCH: Partial<AgencyBranch> = {
+  branchName: "",
+  branchAddress: "",
+  contactNumber: "",
+  active: true,
+};
 import type { FieldConfig } from "@/utilities/FormTypes";
-import type { Country } from "@/interface/CountryInterface";
-import type { City } from "@/interface/CityInterface";
-import type { User } from "@/interface/UserInterface";
+import type { Country } from "@/interface";
+import type { City } from "@/interface";
+import type { User } from "@/interface";
 import { GenericFormDialog } from "../ui/Custom/Dialogs/GenericFormDialog";
 
 interface Props {
@@ -42,8 +48,7 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
           countryService.getAllCountries(),
         ]);
 
-        // Use the same robust check as AddAgencyDialog
-        const userData = Array.isArray(uRes) ? uRes : uRes?.data;
+        const userData = uRes || [];
         if (userData) {
           setUsers(
             userData.map((u: User) => ({
@@ -53,7 +58,7 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
           );
         }
 
-        const countryData = Array.isArray(cRes) ? cRes : cRes?.data;
+        const countryData = cRes || [];
         if (countryData) {
           setCountries(
             countryData.map((c: Country) => ({
@@ -84,7 +89,7 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
         const res = await cityService.getCitiesByCountry(
           Number(selectedCountryId),
         );
-        const cityData = Array.isArray(res) ? res : res?.data;
+        const cityData = res || [];
         if (cityData) {
           setCities(
             cityData.map((city: City) => ({
@@ -189,3 +194,7 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
     />
   );
 }
+
+
+
+

@@ -4,7 +4,7 @@ import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
 import { GenericForm } from "@/components/ui/Custom/GenericForm";
 import { SeatManager } from "../Seat/SeatManagement/SeatManager";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
-import type { Transportation } from "@/interface/tourmanagement/TransportationInterface";
+import type { Transportation } from "@/interface";
 
 interface Props {
   open: boolean;
@@ -140,3 +140,4 @@ export const TransportationEditDialog = ({
     </GenericDialog>
   );
 };
+

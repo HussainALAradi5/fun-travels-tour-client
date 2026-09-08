@@ -1,5 +1,5 @@
 import { GenericFormDialog } from "@/components/ui/Custom/Dialogs/GenericFormDialog";
-import type { User } from "@/interface/UserInterface";
+import type { User } from "@/interface";
 import type { FieldConfig } from "@/utilities/FormTypes";
 import { UserCircle, Lock, Phone, Image as ImageIcon, Link, Trash2 } from "lucide-react";
 

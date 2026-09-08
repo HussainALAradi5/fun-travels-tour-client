@@ -3,7 +3,7 @@ import { Badge, IconButton, Icon, HStack, Text, VStack } from "@chakra-ui/react"
 import { Eye, ReceiptText, Calendar, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { GenericTable, type Column } from "@/components/ui/Custom/GenericTable";
 import { useTransaction } from "@/hooks/useTransaction";
-import type { Transaction } from "@/interface/TransactionInterface";
+import type { Transaction } from "@/interface";
 import { TransactionTypeColors } from "@/constants/roles/Colors";
 import { useNavigate } from "react-router-dom";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";

@@ -13,7 +13,6 @@ import MultiAttachmentUpload from "../ui/Custom/MultiAttachmentUpload";
 import { userService } from "@/Api/User";
 import { CollapsibleContainer } from "../ui/Custom/CollapsibleContainer";
 import { GenericExportDialog } from "../ui/Custom/Dialogs/GenericExportDialog";
-import { mapUsersToExportFormat } from "@/interface/UserInterface";
 
 interface AddEmployeesActionProps {
   agencyId: number;
@@ -28,8 +27,17 @@ export const AddEmployeesAction = ({
   const { open, onToggle } = useDisclosure();
   const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
 
-  // MEMOIZE TEMPLATE: Generates headers dynamically from the interface mapper
-  const templateData = useMemo(() => mapUsersToExportFormat([]), []);
+  // MEMOIZE TEMPLATE: Generates headers dynamically
+  const templateData = useMemo(() => [{
+    Name: "",
+    Username: "",
+    Email: "",
+    Password: "",
+    Age: "",
+    Mobile: "",
+    Role: "",
+    Branch: "",
+  }], []);
 
   // DYNAMIC INSTRUCTIONS: Extracted from headers to avoid redundancy
   const columnInstructions = useMemo(
@@ -116,3 +124,4 @@ export const AddEmployeesAction = ({
     </Box>
   );
 };
+

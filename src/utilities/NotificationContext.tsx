@@ -20,7 +20,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     if (isAuthenticated && user?.id) {
       try {
         const counts = await notificationService.getCounts(user.id);
-        setUnreadCount(counts.unread);
+        setUnreadCount(counts.unreadCount);
       } catch (error) {
         console.error("Failed to fetch notification counts", error);
       }

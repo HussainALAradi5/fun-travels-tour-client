@@ -1,7 +1,7 @@
 import { SimpleGrid, Heading } from "@chakra-ui/react";
 import { DollarSign, Users, Calendar, Ticket as TicketIcon } from "lucide-react";
 import { MetricBox } from "@/components/ui/Custom/GlowComponents";
-import type { Tour } from "@/interface/tourmanagement/TourInterface";
+import type { Tour } from "@/interface";
 
 interface TourMetricsProps {
   tour: Tour;

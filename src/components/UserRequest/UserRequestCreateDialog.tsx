@@ -1,4 +1,4 @@
-import { DEFAULT_USER_REQUEST, type UserRequest } from "@/interface/UserRequestInterface";
+import { DEFAULT_USER_REQUEST, type UserRequest } from "@/interface";
 import { Plus } from "lucide-react";
 import { GenericFormDialog } from "../ui/Custom/Dialogs/GenericFormDialog";
 import { UserRequestType } from "@/enums/UserRequest/UserRequestType";

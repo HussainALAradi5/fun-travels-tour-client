@@ -33,7 +33,7 @@ import {
 import { StatusLegend } from "@/components/ui/Custom/StatusLegend";
 import { transportationService } from "@/Api/tourmanagement/Transportation";
 import { toaster } from "@/components/ui/toaster";
-import type { Transportation } from "@/interface/tourmanagement/TransportationInterface";
+import type { Transportation } from "@/interface";
 import type { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
 import { TransportationStatusSidebar } from "./TransportationStatusSidebar";
 
@@ -259,3 +259,4 @@ export const TransportationDetails = () => {
     </Box>
   );
 };
+

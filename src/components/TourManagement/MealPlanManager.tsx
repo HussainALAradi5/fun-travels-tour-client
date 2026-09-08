@@ -4,12 +4,12 @@ import { Heading, Stack, Badge, Box, Text, Group, Button, useDisclosure } from "
 import { GenericCard } from "../ui/Custom/GenericCard";
 import { GenericTable } from "../ui/Custom/GenericTable";
 import { Utensils, Plus } from "lucide-react";
-import type { MealPlan } from "@/interface/tourmanagement/MealPlanInterface";
+import type { MealPlan } from "@/interface";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import { GenericFormDialog } from "../ui/Custom/Dialogs/GenericFormDialog";
 
 export const MealPlanManager = () => {
-  const { data, loading, refresh } = useTourManagement<MealPlan[]>(mealPlanService.getAll);
+  const { data, loading, refresh } = useTourManagement(mealPlanService.getAll);
   const { open, onOpen, onClose } = useDisclosure();
   const [submitting, setSubmitting] = useState(false);
 
@@ -50,7 +50,7 @@ export const MealPlanManager = () => {
         }
       >
         <GenericTable<MealPlan> 
-          data={Array.isArray(data) ? data.flat() : []} 
+          data={Array.isArray(data) ? (data as unknown as MealPlan[]).flat() : []} 
           loading={loading}
           columns={[
             { header: "Meal Name", key: "mealName" },

@@ -13,7 +13,7 @@ import {
   Portal
 } from "@chakra-ui/react";
 import { Mail, Smartphone, Search } from "lucide-react";
-import type { Country } from "@/interface/CountryInterface";
+import type { Country } from "@/interface";
 import { countryService } from "@/Api/Country";
 
 interface CustomFieldProps {

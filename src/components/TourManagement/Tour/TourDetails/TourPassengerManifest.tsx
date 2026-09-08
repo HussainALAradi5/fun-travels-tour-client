@@ -1,7 +1,7 @@
 import { Box, HStack, Heading, Badge, Text, Circle, Icon, VStack } from "@chakra-ui/react";
-import { User as UserIcon, Ticket as TicketIcon } from "lucide-react";
+import { User as UserIcon } from "lucide-react";
 import { GenericTable } from "@/components/ui/Custom/GenericTable";
-import type { Ticket } from "@/interface/tourmanagement/TicketInterface";
+import type { Ticket } from "@/interface";
 
 export const TourPassengerManifest = ({ tickets }: { tickets: Ticket[] }) => {
   return (
@@ -29,7 +29,7 @@ export const TourPassengerManifest = ({ tickets }: { tickets: Ticket[] }) => {
             header: "Customer", 
             key: "customer", 
             render: (row: Ticket) => {
-              const displayName = row.customer?.userName || row.customer?.name || "Guest";      
+              const displayName = row.customer?.name || "Guest";      
               
               return (
                 <HStack gap={3}>
@@ -45,11 +45,6 @@ export const TourPassengerManifest = ({ tickets }: { tickets: Ticket[] }) => {
                     <Text fontSize="sm" fontWeight="bold" color="fg.emphasized">
                       {displayName}
                     </Text>
-                    {row.customer?.email && (
-                      <Text fontSize="2xs" color="fg.muted">
-                        {row.customer.email}
-                      </Text>
-                    )}
                   </VStack>
                 </HStack>
               );

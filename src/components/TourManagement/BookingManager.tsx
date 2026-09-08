@@ -18,8 +18,8 @@ import { BookingTourOverview } from "./Booking/BookingTourOverview";
 import { GuestConfigList } from "./Booking/GuestConfigList";
 import { BookingCheckoutCard } from "./Booking/BookingCheckoutCard";
 
-import type { Seat } from "@/interface/tourmanagement/SeatInterface";
-import type { MealPlan } from "@/interface/tourmanagement/MealPlanInterface";
+import type { Seat } from "@/interface";
+import type { MealPlan } from "@/interface";
 import type { GuestConfig } from "./Booking/GuestConfigCard";
 import { SeatStatus } from "@/enums/tourmanagement/SeatStatus"; 
 

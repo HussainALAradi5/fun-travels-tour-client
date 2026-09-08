@@ -4,7 +4,7 @@ import { XCircle, Edit3, ShieldCheck, Play, CheckCircle, FileText, RefreshCw, Al
 import { GenericCard } from "@/components/ui/Custom/GenericCard";
 import { GenericStatusWorkflow, type StatusConfig } from "@/components/ui/Custom/GenericStatusWorkflow";
 import { GenericStatus } from "@/enums/GenericStatus";
-import type { Tour } from "@/interface/tourmanagement/TourInterface";
+import type { Tour } from "@/interface";
 
 interface TourWorkflowSidebarProps {
   tour: Tour;

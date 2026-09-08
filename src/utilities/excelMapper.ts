@@ -1,10 +1,16 @@
-import { DEFAULT_USER, type User } from "@/interface/UserInterface";
+import type { User } from "@/interface";
 import * as XLSX from "xlsx";
 
-/**
- * Maps Excel rows to User objects based on header names.
- * This makes the order of columns in Excel irrelevant.
- */
+const DEFAULT_USER: Partial<User> = {
+  name: "",
+  userName: "",
+  email: "",
+  mobileNumber: "",
+  age: 0,
+  userType: "EMPLOYEE" as never,
+  active: true,
+};
+
 export const mapExcelToUsers = (file: File): Promise<User[]> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -16,23 +22,20 @@ export const mapExcelToUsers = (file: File): Promise<User[]> => {
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
 
-        // Convert to JSON using headers
-        // This produces objects like { "Email": "test@test.com", "Name": "John" }
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-        const mappedUsers: User[] = jsonData.map((row: any) => {
+        const mappedUsers: User[] = jsonData.map((row) => {
+          const r = row as Record<string, string | number>;
           return {
             ...DEFAULT_USER,
-            // Flexible mapping: Looks for keys regardless of case or spaces
-            name: row["Name"] || row["name"] || "",
-            userName: row["Username"] || row["userName"] || row["User Name"] || "",
-            email: row["Email"] || row["email"] || "",
-            mobileNumber: row["Mobile"] || row["mobileNumber"] || row["Phone"] || "",
-            age: Number(row["Age"] || row["age"]) || 0,
-            password: row["Password"] || row["password"] || "",
-            // We pass the string; backend handles the Enum conversion
-            userType: row["Role"] || row["userType"] || "EMPLOYEE", 
-          };
+            name: String(r["Name"] || r["name"] || ""),
+            userName: String(r["Username"] || r["userName"] || r["User Name"] || ""),
+            email: String(r["Email"] || r["email"] || ""),
+            mobileNumber: String(r["Mobile"] || r["mobileNumber"] || r["Phone"] || ""),
+            age: Number(r["Age"] || r["age"]) || 0,
+            password: String(r["Password"] || r["password"] || ""),
+            userType: (r["Role"] || r["userType"] || "EMPLOYEE") as never,
+          } as User;
         });
 
         resolve(mappedUsers);

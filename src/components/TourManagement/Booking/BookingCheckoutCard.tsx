@@ -1,7 +1,7 @@
 import { Box, VStack, HStack, Text, Heading, Button, Separator, Circle, Icon, Spinner } from "@chakra-ui/react";
 import { ShoppingBag, CheckCircle2, Armchair, Utensils, Users } from "lucide-react";
 import { glowPulse, floatIn } from "@/utilities/Animations";
-import type { Tour } from "@/interface/tourmanagement/TourInterface";
+import type { Tour } from "@/interface";
 import type { GuestConfig } from "./GuestConfigCard";
 
 interface BookingCheckoutCardProps {

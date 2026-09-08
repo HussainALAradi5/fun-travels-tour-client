@@ -3,12 +3,12 @@ import { Box, Heading, Text, VStack, Button, Center, Spinner } from "@chakra-ui/
 import { useNavigate } from "react-router-dom";
 import { GenericForm } from "@/components/ui/Custom/GenericForm";
 
-import { DEFAULT_TOUR, type Tour } from "@/interface/tourmanagement/TourInterface";
+import { DEFAULT_TOUR, type Tour } from "@/interface";
 import type { FieldConfig } from "@/utilities/FormTypes";
-import type { Country } from "@/interface/CountryInterface";
-import type { City } from "@/interface/CityInterface";
-import type { Transportation } from "@/interface/tourmanagement/TransportationInterface";
-import type { MealPlan } from "@/interface/tourmanagement/MealPlanInterface";
+import type { Country } from "@/interface";
+import type { City } from "@/interface";
+import type { Transportation } from "@/interface";
+import type { MealPlan } from "@/interface";
 
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import { useCountries } from "@/hooks/countriesAndCities/useCountries";
@@ -151,3 +151,5 @@ export const TourCreate = () => {
     </VStack>
   );
 };
+
+

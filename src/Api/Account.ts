@@ -1,23 +1,21 @@
 import apiClient from "@/config/BaseApi";
-import type { Account } from "@/interface/AccountInterface";
-import type { Transaction } from "@/interface/TransactionInterface";
+import type { ApiResponse } from "@/interface/common/ApiResponse";
+import type { Account } from "@/interface/payment/Account";
+import type { Transaction } from "@/interface/payment/Transaction";
+import type { TransactionResponse } from "@/interface/payment/TransactionResponse";
 
 export const accountService = {
-  /**
-   * Fetch the current wallet balance for a specific user.
-   * Path: GET /api/accounts/user/{userId}/balance
-   */
-  getBalance: async (userId: number) => {
-    const response = await apiClient.get<Account>(
+  getBalance: async (userId: number): Promise<Account> => {
+    const response = await apiClient.get<ApiResponse<Account>>(
       `/accounts/user/${userId}/balance`,
     );
-    return response.data;
+    return response.data.data;
   },
 
-  getHistory: async (userId: number) => {
-    const response = await apiClient.get<Transaction[]>(
+  getHistory: async (userId: number): Promise<Transaction[]> => {
+    const response = await apiClient.get<ApiResponse<TransactionResponse[]>>(
       `/accounts/user/${userId}/history`,
     );
-    return response.data;
+    return response.data.data as unknown as Transaction[];
   },
 };

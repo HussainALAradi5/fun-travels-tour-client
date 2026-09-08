@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { Text, Link as ChakraLink, Alert, Flex, HStack } from "@chakra-ui/react";
-import { userService, type LoginRequest } from "@/Api/User";
+import { userService } from "@/Api/User";
+import type { LoginRequest } from "@/interface";
 import { GenericForm } from "@/components/ui/Custom/GenericForm";
 import { useAuth } from "@/utilities/AuthContext";
 

@@ -14,8 +14,8 @@ import {
 import { genericTrackingService } from "@/Api/genericTracking";
 import { userRequestService } from "@/Api/UserRequest";
 import { useUser } from "@/hooks/User/useUser";
-import type { GenericComment, GenericEventLog } from "@/interface/GenericTrackingInterface";
-import type { UserRequest } from "@/interface/UserRequestInterface";
+import type { GenericComment, GenericEventLog } from "@/interface";
+import type { UserRequest } from "@/interface";
 import { GenericAuditLog, type AuditEventItem } from "../ui/Custom/GenericAuditLog";
 import { GenericCommentSection, type CommentItem } from "../ui/Custom/GenericCommentSection";
 import { notify } from "../ui/Custom/GenericNotification";
@@ -41,12 +41,12 @@ export const UserRequestDetails = () => {
     try {
       if (showGlobalLoader) setLoading(true);
       const reqRes = await userRequestService.getById(Number(id));
-      if (reqRes.success && reqRes.data) setRequest(reqRes.data);
+      if (reqRes) setRequest(reqRes);
 
       const trackRes = await genericTrackingService.getTimeline("USER_REQUEST", Number(id));
-      if (trackRes.success && trackRes.data) {
-        setEvents((trackRes.data.events || []).sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()));
-        setComments((trackRes.data.comments || []).sort((a, b) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime()));
+      if (trackRes) {
+        setEvents((trackRes.events || []).sort((a: { createdAt?: string }, b: { createdAt?: string }) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()) as never);
+        setComments((trackRes.comments || []).sort((a: { createdAt?: string }, b: { createdAt?: string }) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime()) as never);
       }
     } catch (error) {
       notify({ title: "Error", description: "Failed to load request data", type: "error" });
@@ -83,8 +83,8 @@ export const UserRequestDetails = () => {
       if (action === 'solve') res = await userRequestService.solveRequest(request.id, user.id);
       if (action === 'reject') res = await userRequestService.rejectRequest(request.id, user.id);
 
-      if (res?.success) {
-        notify({ title: "Success", description: res.message, type: "success" });
+      if (res) {
+        notify({ title: "Success", description: "Action completed", type: "success" });
         await fetchData(false);
       }
     } finally {

@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { transactionService } from "@/Api/Transaction";
 import { toaster } from "@/components/ui/toaster";
-import type { Transaction } from "@/interface/TransactionInterface";
+import type { Transaction } from "@/interface";
 
 export function useTransaction(param?: string | number) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -36,7 +36,8 @@ export function useTransaction(param?: string | number) {
   useEffect(() => {
     if (param) {
       setIsLoading(true);
-      transactionService.getById(Number(param))
+      transactionService
+        .getById(Number(param))
         .then(setTransaction)
         .finally(() => setIsLoading(false));
     } else {

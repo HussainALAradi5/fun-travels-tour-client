@@ -2,10 +2,19 @@ import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { Text, Link as ChakraLink } from "@chakra-ui/react";
 import { userService } from "@/Api/User";
 import { GenericForm } from "@/components/ui/Custom/GenericForm";
-import { type User, DEFAULT_USER } from "@/interface/UserInterface";
+import type { RegisterRequest } from "@/interface";
 import type { FieldConfig } from "@/utilities/FormTypes";
 
-const registerFields: FieldConfig<User>[] = [
+const DEFAULT_REGISTER: RegisterRequest = {
+  userName: "",
+  name: "",
+  email: "",
+  password: "",
+  mobileNumber: "",
+  age: 0,
+};
+
+const registerFields: FieldConfig<RegisterRequest>[] = [
   {
     name: "name",
     label: "Full Name",
@@ -22,7 +31,7 @@ const registerFields: FieldConfig<User>[] = [
   },
   {
     name: "email",
-    label: "Email Address",
+    label: "Email",
     type: "email",
     isRequired: true,
     gridSpan: 2,
@@ -37,7 +46,7 @@ const registerFields: FieldConfig<User>[] = [
   {
     name: "mobileNumber",
     label: "Mobile Number",
-    type: "mobile",
+    type: "text",
     isRequired: true,
     gridSpan: 2,
   },
@@ -47,7 +56,7 @@ const registerFields: FieldConfig<User>[] = [
 export const RegisterForm = () => {
   const navigate = useNavigate();
 
-  const handleRegister = async (values: User) => {
+  const handleRegister = async (values: RegisterRequest) => {
     const result = await userService.register(values);
     if (result.success) {
       navigate("/login");
@@ -56,9 +65,9 @@ export const RegisterForm = () => {
 
   return (
     <>
-      <GenericForm<User>
+      <GenericForm<RegisterRequest>
         fields={registerFields}
-        initialValues={DEFAULT_USER}
+        initialValues={DEFAULT_REGISTER}
         onSubmit={handleRegister}
         submitLabel="Create Account"
         columns={2}

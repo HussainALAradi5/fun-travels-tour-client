@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { paymentService } from "@/Api/Payment";
-import type { Payment } from "@/interface/PaymentInterface";
+import type { Payment } from "@/interface";
 
 export function usePayment(param?: string | number) {
   const [payments, setPayments] = useState<Payment[]>([]);
@@ -20,13 +20,14 @@ export function usePayment(param?: string | number) {
   useEffect(() => {
     if (param) {
       setIsLoading(true);
-      paymentService.getById(Number(param))
+      paymentService
+        .getById(Number(param))
         .then(setPayment)
         .finally(() => setIsLoading(false));
     } else {
       fetchPayments();
     }
-  }, [param, fetchPayments]); // <-- FIXED HERE
+  }, [param, fetchPayments]);
 
   return { payments, payment, isLoading, fetchPayments };
 }

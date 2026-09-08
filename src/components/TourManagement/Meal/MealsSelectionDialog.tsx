@@ -2,7 +2,7 @@ import { VStack, Button } from "@chakra-ui/react";
 import { Utensils } from "lucide-react";
 import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
 import { MealSelectionList } from "./MealSelectionList";
-import type { MealPlan } from "@/interface/tourmanagement/MealPlanInterface";
+import type { MealPlan } from "@/interface";
 
 interface MealsSelectionDialogProps {
   open: boolean;

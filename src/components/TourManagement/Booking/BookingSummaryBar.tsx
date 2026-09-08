@@ -1,7 +1,7 @@
 import { Box, HStack, VStack, Text, Heading, Button, Icon } from "@chakra-ui/react";
 import { CheckCircle2 } from "lucide-react";
-import type { Seat } from "@/interface/tourmanagement/SeatInterface";
-import type { MealPlan } from "@/interface/tourmanagement/MealPlanInterface";
+import type { Seat } from "@/interface";
+import type { MealPlan } from "@/interface";
 import { floatIn } from "@/utilities/Animations";
 
 interface BookingSummaryBarProps {

@@ -6,7 +6,7 @@ import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
 import { ChairType } from "@/enums/tourmanagement/ChirType";
 import { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
 import { ChairTypeColors } from "@/constants/roles/Colors";
-import type { Seat } from "@/interface/tourmanagement/SeatInterface";
+import type { Seat } from "@/interface";
 
 interface Props {
   open: boolean;

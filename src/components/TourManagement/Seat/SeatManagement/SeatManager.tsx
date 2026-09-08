@@ -14,7 +14,7 @@ import { Armchair, LayoutGrid } from "lucide-react";
 
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import { ChairTypeColors } from "@/constants/roles/Colors";
-import type { Seat } from "@/interface/tourmanagement/SeatInterface";
+import type { Seat } from "@/interface";
 
 import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
 import { SeatEditDialog } from "./SeatEditDialog";
@@ -208,3 +208,4 @@ export const SeatManager = ({ transportId }: { transportId: number }) => {
     </>
   );
 };
+

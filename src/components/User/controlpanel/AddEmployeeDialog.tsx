@@ -1,6 +1,6 @@
 import { UserPlus } from "lucide-react";
-import type { User } from "@/interface/UserInterface";
-import { DEFAULT_USER } from "@/interface/UserInterface";
+import type { User } from "@/interface";
+import { DEFAULT_USER } from "@/interface";
 import { UserType } from "@/enums/UserType";
 import type { FieldConfig } from "@/utilities/FormTypes";
 import { GenericFormDialog } from "@/components/ui/Custom/Dialogs/GenericFormDialog";

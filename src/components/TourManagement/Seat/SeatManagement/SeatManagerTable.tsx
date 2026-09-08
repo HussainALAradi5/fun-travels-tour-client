@@ -2,7 +2,7 @@
 import React from "react";
 import { Box, HStack, Text, Badge, Button, Circle } from "@chakra-ui/react";
 import { Armchair, Settings2 } from "lucide-react";
-import type { Seat } from "@/interface/tourmanagement/SeatInterface";
+import type { Seat } from "@/interface";
 import type { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
 import { SeatStatusColors, ChairTypeColors } from "@/constants/roles/Colors";
 import { GenericTable } from "@/components/ui/Custom/GenericTable";

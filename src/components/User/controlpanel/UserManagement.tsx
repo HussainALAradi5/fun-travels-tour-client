@@ -3,7 +3,7 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import { Box, Badge, Text, HStack, VStack, Image, Circle } from "@chakra-ui/react";
 import { GenericTable } from "@/components/ui/Custom/GenericTable";
 import { Users, ShieldCheck } from "lucide-react";
-import type { User } from "@/interface/UserInterface";
+import type { User } from "@/interface";
 import { userService } from "@/Api/User";
 import { RoleColors } from "@/constants/roles/Colors";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
@@ -25,7 +25,7 @@ export default function UserManagement() {
         ? await userService.getAllUsers() 
         : await userService.getUsersByRole(role);
       
-      setUsers(res.data || []);
+      setUsers(res || []);
     } catch (error) {
       console.error("Failed to fetch users", error);
     } finally {

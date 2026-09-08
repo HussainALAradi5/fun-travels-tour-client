@@ -2,8 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { agencyService } from "@/Api/Agency/Agency";
 import { branchService } from "@/Api/Agency/AgencyBranch";
 import { toaster } from "@/components/ui/toaster";
-import type { Agency } from "@/interface/Agency/AgencyInterface";
-import type { AgencyBranch } from "@/interface/Agency/AgencyBranchInterface";
+import type { Agency, AgencyBranch } from "@/interface";
 
 export function useAgencies() {
   const [agencies, setAgencies] = useState<Agency[]>([]);
@@ -19,7 +18,7 @@ export function useAgencies() {
     setLoading(true);
     try {
       const res = await agencyService.getAllAgencies();
-      setAgencies(res.data || []);
+      setAgencies(res || []);
     } catch (error) {
       toaster.create({ title: "Failed to load agencies", type: "error" });
     } finally {

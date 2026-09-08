@@ -3,8 +3,7 @@ import { Box, SimpleGrid, useDisclosure, Grid } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { MapPin, Navigation } from "lucide-react"; 
 
-import type { Tour } from "@/interface/tourmanagement/TourInterface";
-import type { Ticket } from "@/interface/tourmanagement/TicketInterface";
+import type { Tour, Ticket } from "@/interface";
 import { GenericStatus } from "@/enums/GenericStatus";
 import { floatIn } from "@/utilities/Animations";
 
@@ -17,8 +16,7 @@ import { TourDialogs } from "./TourDetails/TourDialogs";
 import { TourEventLogDetailView } from "./TourDetails/TourEventLogDetailView";
 
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
-import { ticketService } from "@/Api/tourmanagement/Ticket"; 
-import type { TrackingItem } from "@/components/ui/Custom/GenericTracking";
+import { ticketService } from "@/Api/tourmanagement/Ticket";
 
 interface TourDetailViewProps {
   tour: Tour;
@@ -56,7 +54,7 @@ export const TourDetailView = ({ tour: initialTour }: TourDetailViewProps) => {
     }
   };
 
-  const itinerarySteps: TrackingItem[] = useMemo(() => [
+  const itinerarySteps = useMemo(() => [
     {
       id: "start",
       title: "Departure",
@@ -68,6 +66,7 @@ export const TourDetailView = ({ tour: initialTour }: TourDetailViewProps) => {
     ...(currentTour.destinationCountries?.map((country) => ({
       id: country.id!.toString(),
       title: country.officialName,
+      description: "",
       icon: Navigation,
       color: "gray.400",
       glowColor: "rgba(160, 174, 192, 0.3)",
@@ -94,7 +93,7 @@ export const TourDetailView = ({ tour: initialTour }: TourDetailViewProps) => {
         <Box gridColumn={{ lg: "span 2" }}>
             <TourItineraryCard 
                 tour={currentTour} 
-                itinerarySteps={itinerarySteps} 
+                itinerarySteps={itinerarySteps as never} 
                 onSeatOpen={onSeatOpen} 
             />
         </Box>

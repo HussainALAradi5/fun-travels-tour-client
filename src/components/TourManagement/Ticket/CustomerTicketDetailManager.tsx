@@ -7,7 +7,7 @@ import { Printer, AlertCircle } from "lucide-react";
 
 import { ticketService } from "@/Api/tourmanagement/Ticket";
 import { BoardingPassCard } from "./CustomerTicketDetails/BoardingPassCard";
-import type { Ticket } from "@/interface/tourmanagement/TicketInterface";
+import type { Ticket } from "@/interface";
 import { TicketVerification } from "./CustomerTicketDetails/TicketVerification";
 import { TicketJourneyTracker } from "./CustomerTicketDetails/TicketJourneyTracker";
 

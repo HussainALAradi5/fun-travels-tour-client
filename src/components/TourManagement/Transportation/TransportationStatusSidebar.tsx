@@ -3,7 +3,7 @@ import { Wrench, CheckCircle2, AlertTriangle, Gauge, Info } from "lucide-react";
 import { GenericCard } from "@/components/ui/Custom/GenericCard";
 import { GenericStatusWorkflow, type StatusConfig } from "@/components/ui/Custom/GenericStatusWorkflow";
 import { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
-import type { Transportation } from "@/interface/tourmanagement/TransportationInterface";
+import type { Transportation } from "@/interface";
 
 interface Props {
   transport: Transportation;

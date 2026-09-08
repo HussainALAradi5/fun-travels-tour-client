@@ -2,7 +2,7 @@ import {
   Box, Heading, Text, Button, Image, Stack, Badge, Flex, HStack, Card 
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import type { Tour } from "@/interface/tourmanagement/TourInterface";
+import type { Tour } from "@/interface";
 
 interface Props {
   tour: Tour;

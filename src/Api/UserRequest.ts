@@ -1,30 +1,25 @@
 import apiClient from "@/config/BaseApi";
-import type { ApiResponse } from "@/utilities/ApiUtility";
-import type { UserRequest } from "@/interface/UserRequestInterface";
+import type { ApiResponse } from "@/interface/common/ApiResponse";
+import type { UserRequestResponse } from "@/interface/support/UserRequestResponse";
+import type { UserRequest } from "@/interface/support/UserRequest";
 import { UserRequestStatus } from "@/enums/UserRequest/UserRequestStatus";
 import { UserRequestType } from "@/enums/UserRequest/UserRequestType";
 
 export const userRequestService = {
-  /**
-   * Create a new Request (Support or Suggestion)
-   */
-  create: async (request: UserRequest) => {
-    const response = await apiClient.post<ApiResponse<UserRequest>>(
+  create: async (request: Partial<UserRequestResponse>): Promise<UserRequest> => {
+    const response = await apiClient.post<ApiResponse<UserRequestResponse>>(
       "/user-requests",
       request,
     );
-    return response.data; // Standardized: { success: boolean, message: string, data: T }
+    return response.data.data as unknown as UserRequest;
   },
 
-  /**
-   * Get Requests with Dynamic Filtering
-   */
   getRequests: async (params: {
     currentUserId: number;
     status?: UserRequestStatus;
     type?: UserRequestType;
     userIdFilter?: number;
-  }) => {
+  }): Promise<UserRequest[]> => {
     const queryParams = new URLSearchParams();
     queryParams.append("currentUserId", params.currentUserId.toString());
 
@@ -33,68 +28,52 @@ export const userRequestService = {
     if (params.userIdFilter)
       queryParams.append("userIdFilter", params.userIdFilter.toString());
 
-    const response = await apiClient.get<UserRequest[]>(
+    const response = await apiClient.get<ApiResponse<UserRequestResponse[]>>(
       `/user-requests?${queryParams.toString()}`,
     );
-    return { data: response.data, success: true };
+    return response.data.data as unknown as UserRequest[];
   },
 
-  /**
-   * Get a single request by ID
-   */
-  getById: async (id: number) => {
-    const response = await apiClient.get<ApiResponse<UserRequest>>(`/user-requests/${id}`);
-    return response.data;
+  getById: async (id: number): Promise<UserRequest> => {
+    const response = await apiClient.get<ApiResponse<UserRequestResponse>>(`/user-requests/${id}`);
+    return response.data.data as unknown as UserRequest;
   },
 
-  /**
-   * Assign a request to a Support Agent
-   */
-  assignToAgent: async (requestId: number, agentId: number) => {
-    const response = await apiClient.patch<ApiResponse<UserRequest>>(
+  assignToAgent: async (requestId: number, agentId: number): Promise<UserRequest> => {
+    const response = await apiClient.patch<ApiResponse<UserRequestResponse>>(
       `/user-requests/${requestId}/assign/${agentId}`,
     );
-    return response.data;
+    return response.data.data as unknown as UserRequest;
   },
 
-  /**
-   * Mark a request as Solved/Completed
-   */
-  solveRequest: async (requestId: number, solverId: number) => {
-    const response = await apiClient.patch<ApiResponse<UserRequest>>(
+  solveRequest: async (requestId: number, solverId: number): Promise<UserRequest> => {
+    const response = await apiClient.patch<ApiResponse<UserRequestResponse>>(
       `/user-requests/${requestId}/solve/${solverId}`,
     );
-    return response.data;
+    return response.data.data as unknown as UserRequest;
   },
 
-  /**
-   * Reject a request
-   */
-  rejectRequest: async (requestId: number, rejectedById: number) => {
-    const response = await apiClient.patch<ApiResponse<UserRequest>>(
+  rejectRequest: async (requestId: number, rejectedById: number): Promise<UserRequest> => {
+    const response = await apiClient.patch<ApiResponse<UserRequestResponse>>(
       `/user-requests/${requestId}/reject/${rejectedById}`,
     );
-    return response.data;
+    return response.data.data as unknown as UserRequest;
   },
 
-  /**
-   * Delete a request
-   */
-  delete: async (id: number) => {
+  delete: async (id: number): Promise<null> => {
     const response = await apiClient.delete<ApiResponse<null>>(
       `/user-requests/${id}`,
     );
-    return response.data;
+    return response.data.data;
   },
 
-  /** Helpers */
-  getMySuggestions: (userId: number) =>
+  getMySuggestions: (userId: number): Promise<UserRequest[]> =>
     userRequestService.getRequests({
       currentUserId: userId,
       type: UserRequestType.SUGGESTION,
     }),
 
-  getPendingSupport: (adminId: number) =>
+  getPendingSupport: (adminId: number): Promise<UserRequest[]> =>
     userRequestService.getRequests({
       currentUserId: adminId,
       status: UserRequestStatus.PENDING,

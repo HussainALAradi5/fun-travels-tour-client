@@ -1,34 +1,37 @@
 import apiClient from "@/config/BaseApi";
-import type { AgencyBranch } from "@/interface/Agency/AgencyBranchInterface";
-import type { User } from "@/interface/UserInterface";
-import type { ApiResponse } from "@/utilities/ApiUtility";
+import type { ApiResponse } from "@/interface/common/ApiResponse";
+import type { AgencyBranch } from "@/interface/agency/AgencyBranch";
+import type { AgencyBranchResponse } from "@/interface/agency/AgencyBranchResponse";
+import type { AgencyBranchCreateRequest } from "@/interface/agency/AgencyBranchCreateRequest";
+import type { User } from "@/interface/user/User";
+import type { UserResponse } from "@/interface/user/UserResponse";
 
 export const branchService = {
-  createBranch: async (agencyId: number, branch: AgencyBranch) => {
-    const response = await apiClient.post<ApiResponse<AgencyBranch>>(
+  createBranch: async (agencyId: number, branch: AgencyBranchCreateRequest): Promise<AgencyBranch> => {
+    const response = await apiClient.post<ApiResponse<AgencyBranchResponse>>(
       `/branches/agency/${agencyId}`,
       branch,
     );
-    return response.data;
+    return response.data.data as unknown as AgencyBranch;
   },
 
-  getBranchesByAgency: async (agencyId: number) => {
-    const response = await apiClient.get<ApiResponse<AgencyBranch[]>>(
+  getBranchesByAgency: async (agencyId: number): Promise<AgencyBranch[]> => {
+    const response = await apiClient.get<ApiResponse<AgencyBranchResponse[]>>(
       `/branches/agency/${agencyId}`,
     );
-    return response.data;
+    return response.data.data as unknown as AgencyBranch[];
   },
 
-  getEmployeesByBranch: async (agencyId: number, branchId: number) => {
-    const response = await apiClient.get<ApiResponse<User[]>>(
+  getEmployeesByBranch: async (agencyId: number, branchId: number): Promise<User[]> => {
+    const response = await apiClient.get<ApiResponse<UserResponse[]>>(
       `/branches/agency/${agencyId}/branch/${branchId}/employees`,
     );
-    return response.data;
+    return response.data.data as unknown as User[];
   },
 
-  getAllBranches: async () => {
-    const response =
-      await apiClient.get<ApiResponse<AgencyBranch[]>>("/api/branches");
-    return response.data;
+  getAllBranches: async (): Promise<AgencyBranch[]> => {
+    const response = await apiClient.get<ApiResponse<AgencyBranchResponse[]>>("/api/branches");
+    return response.data.data as unknown as AgencyBranch[];
   },
 };
+

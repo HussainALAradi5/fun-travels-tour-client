@@ -7,7 +7,7 @@ import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import { 
   DEFAULT_TRANSPORTATION, 
   type Transportation 
-} from "@/interface/tourmanagement/TransportationInterface";
+} from "@/interface";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
 
 export const TransportationCreate = () => {

@@ -21,7 +21,7 @@ import {
 import { GenericTable } from "../../ui/Custom/GenericTable";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
 import { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
-import type { Transportation } from "@/interface/tourmanagement/TransportationInterface";
+import type { Transportation } from "@/interface";
 import { TransportationColors } from "@/constants/roles/Colors";
 
 /**

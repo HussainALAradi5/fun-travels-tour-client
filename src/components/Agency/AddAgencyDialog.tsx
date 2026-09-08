@@ -5,12 +5,19 @@ import { cityService } from "@/Api/City";
 import { userService } from "@/Api/User";
 import { UserType } from "@/enums/UserType";
 import {
-  DEFAULT_AGENCY,
   type Agency,
-} from "@/interface/Agency/AgencyInterface";
-import type { User } from "@/interface/UserInterface";
-import type { Country } from "@/interface/CountryInterface";
-import type { City } from "@/interface/CityInterface";
+} from "@/interface";
+import type { User } from "@/interface";
+import type { Country } from "@/interface";
+import type { City } from "@/interface";
+
+const DEFAULT_AGENCY: Partial<Agency> = {
+  agencyName: "",
+  address: "",
+  contactNumber: "",
+  ownerMobileNumber: "",
+  active: true,
+};
 import type { FieldConfig } from "@/utilities/FormTypes";
 import { GenericFormDialog } from "../ui/Custom/Dialogs/GenericFormDialog";
 
@@ -43,9 +50,7 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
           userService.getAllUsers(),
         ]);
 
-        const countryData = Array.isArray(countriesRes)
-          ? countriesRes
-          : countriesRes?.data;
+        const countryData = countriesRes || [];
         if (countryData) {
           setCountries(
             countryData.map((c: Country) => ({
@@ -55,7 +60,7 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
           );
         }
 
-        const userData = Array.isArray(usersRes) ? usersRes : usersRes?.data;
+        const userData = usersRes || [];
         if (userData) {
           setUsers(
             userData.map((u: User) => ({
@@ -86,7 +91,7 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
         const res = await cityService.getCitiesByCountry(
           Number(selectedCountryId),
         );
-        const cityData = Array.isArray(res) ? res : res?.data;
+        const cityData = res || [];
         if (cityData) {
           setCities(
             cityData.map((c: City) => ({
@@ -183,7 +188,7 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
       description="Create a new headquarters and assign an owner to manage the network."
       icon={Building2}
       fields={formFields}
-      initialValues={DEFAULT_AGENCY}
+      initialValues={DEFAULT_AGENCY as Agency}
       onFieldChange={(name, value) => {
         if (name === "countryId") {
           setSelectedCountryId(value ? String(value) : null);
@@ -192,3 +197,7 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
     />
   );
 }
+
+
+
+

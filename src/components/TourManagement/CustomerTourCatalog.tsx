@@ -10,7 +10,7 @@ import apiClient from "@/config/BaseApi";
 
 import { Hero } from "@/components/ui/Custom/Hero";
 import { UnifiedFilterBar, type FilterGroup } from "@/components/ui/Custom/UnifiedFilterBar";
-import type { Country } from "@/interface/CountryInterface";
+import type { Country } from "@/interface";
 import { CustomerTourCatalogCard } from "./CustomerTourCatalog/CustomerTourCatalogCard";
 import { CustomerTourCatalogTable } from "./CustomerTourCatalog/CustomerTourCatalogTable";
 
@@ -67,7 +67,7 @@ export const CustomerTourCatalog = () => {
       endCountryId: filters.endCountryId ? Number(filters.endCountryId) : undefined,
       startDate: filters.startDate || undefined,
       endDate: filters.endDate || undefined,
-    });
+    } as Record<string, string | number | boolean>);
   }, [filters.startCountryId, filters.endCountryId, filters.startDate, filters.endDate, fetchCatalog]);
 
   // 3. Client-side search for the tour title/expedition name

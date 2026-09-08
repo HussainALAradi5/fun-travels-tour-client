@@ -4,7 +4,7 @@ import { ShieldAlert, XCircle, AlertTriangle, Ban, FileText, ShieldCheck, CheckC
 
 import { GenericCard } from "@/components/ui/Custom/GenericCard";
 import { GenericStatusWorkflow, type StatusConfig } from "@/components/ui/Custom/GenericStatusWorkflow";
-import type { Ticket } from "@/interface/tourmanagement/TicketInterface";
+import type { Ticket } from "@/interface";
 import { ConfirmDialog } from "@/components/ui/Custom/Dialogs/ConfirmDialog";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import type { GenericStatus } from "@/enums/GenericStatus";

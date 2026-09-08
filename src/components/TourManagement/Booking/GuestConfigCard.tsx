@@ -1,8 +1,8 @@
 import { Box, HStack, Stack, Text, Circle, Button, IconButton } from "@chakra-ui/react";
 import { Armchair, CheckCircle2, Trash2, Utensils } from "lucide-react";
 import { glowPulse } from "@/utilities/Animations";
-import type { Seat } from "@/interface/tourmanagement/SeatInterface";
-import type { MealPlan } from "@/interface/tourmanagement/MealPlanInterface";
+import type { Seat } from "@/interface";
+import type { MealPlan } from "@/interface";
 
 export interface GuestConfig {
   id: string;

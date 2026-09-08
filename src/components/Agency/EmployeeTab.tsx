@@ -8,7 +8,7 @@ import { Download, UserPlus, Mail, Phone, Briefcase } from "lucide-react";
 // Components & Services
 import { userService } from "@/Api/User";
 import { UserType } from "@/enums/UserType";
-import { mapUsersToExportFormat, type User } from "@/interface/UserInterface";
+import { type User } from "@/interface";
 import { authUtils } from "@/utilities/AuthUtils";
 import { toaster } from "../ui/toaster";
 import { AddEmployeesAction } from "./AddEmployeesAction";
@@ -102,13 +102,16 @@ export function EmployeeTab({
 
   const handleAddSubmit = async (formData: User) => {
     setIsSubmitting(true);
-    const res = await userService.addEmployee(formData, currentUser?.userType || "OWNER", agencyId);
-    if (res.success) {
+    try {
+      await userService.addEmployee(formData, currentUser?.userType || "OWNER", agencyId);
       toaster.create({ title: "Added successfully", type: "success" });
       onClose();
-      onRefresh(); 
+      onRefresh();
+    } catch (error) {
+      toaster.create({ title: "Failed to add employee", type: "error" });
+    } finally {
+      setIsSubmitting(false);
     }
-    setIsSubmitting(false);
   };
 
   const handleReset = () => {
@@ -181,7 +184,14 @@ export function EmployeeTab({
       <GenericExportDialog 
         open={isExportOpen} 
         onClose={() => setIsExportOpen(false)} 
-        data={mapUsersToExportFormat(displayData)} 
+        data={displayData.map(u => ({
+          Name: u.name,
+          Username: u.userName,
+          Email: u.email,
+          Mobile: u.mobileNumber,
+          Role: u.userType,
+          Status: u.active ? "Active" : "Inactive",
+        }))} 
         fileName={`${agencyName}_Staff`} 
       />
     </Box>

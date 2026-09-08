@@ -6,7 +6,7 @@ import { TransportationHeader } from "./Transportation/TransportationHeader";
 import { TransportationTable } from "./Transportation/TransportationTable";
 import { TransportationEditDialog } from "./Transportation/TransportationEditDialog";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
-import type { Transportation } from "@/interface/tourmanagement/TransportationInterface";
+import type { Transportation } from "@/interface";
 
 export const TransportationManager = () => {
   const navigate = useNavigate();
@@ -33,11 +33,10 @@ export const TransportationManager = () => {
 
   const loadData = useCallback(() => {
     fetchTransportation({
-      type: filters.type === "ALL" ? undefined : filters.type,
-      unitStatus: filters.status === "ALL" ? undefined : filters.status,
-      // Pass the global search to the backend 'keyword' param
-      keyword: filters.globalSearch || undefined, 
-    });
+      type: filters.type === "ALL" ? undefined : filters.type as string,
+      unitStatus: filters.status === "ALL" ? undefined : filters.status as string,
+      keyword: filters.globalSearch || undefined,
+    } as Record<string, string | number | boolean>);
   }, [filters, fetchTransportation]);
 
   useEffect(() => { loadData(); }, [loadData]);

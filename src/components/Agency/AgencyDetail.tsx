@@ -23,9 +23,9 @@ import {
 
 import { agencyService } from "@/Api/Agency/Agency";
 import { branchService } from "@/Api/Agency/AgencyBranch";
-import type { Agency } from "@/interface/Agency/AgencyInterface";
-import type { User } from "@/interface/UserInterface";
-import type { AgencyBranch } from "@/interface/Agency/AgencyBranchInterface";
+import type { Agency } from "@/interface";
+import type { User } from "@/interface";
+import type { AgencyBranch } from "@/interface";
 
 import { AddBranchDialog } from "@/components/Agency/AddBranchDialog";
 import { BranchTab } from "@/components/Agency/BranchTab";
@@ -53,8 +53,8 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
         agencyService.getAgencyById(id),
         agencyService.getEmployeesByAgency(Number(id)),
       ]);
-      setAgency(agencyRes.data);
-      setEmployees(employeeRes.data || []);
+      setAgency(agencyRes);
+      setEmployees(employeeRes || []);
     } catch (error) {
       console.error("Failed to load data", error);
     } finally {
@@ -222,3 +222,4 @@ function LoadingSkeleton() {
     </VStack>
   );
 }
+

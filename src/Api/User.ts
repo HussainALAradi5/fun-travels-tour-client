@@ -1,71 +1,54 @@
 import apiClient from "@/config/BaseApi";
-import type { User } from "@/interface/UserInterface";
-import type { ApiResponse } from "@/utilities/ApiUtility";
+import type { ApiResponse } from "@/interface/common/ApiResponse";
+import type { User } from "@/interface/user/User";
+import type { UserResponse } from "@/interface/user/UserResponse";
+import type { LoginRequest, AuthResponse, RegisterRequest } from "@/interface/auth/LoginRequest";
 import { authUtils } from "@/utilities/AuthUtils";
 
-export interface LoginRequest {
-  identifier: string;
-  password: string;
-}
-
-export interface AuthResponse {
-  token: string;
-  user: User;
-  success: boolean;
-  message?: string;
-}
-
 export const userService = {
-  login: async (credentials: LoginRequest): Promise<AuthResponse> => {
-    try {
-      const response = await apiClient.post<AuthResponse>(
-        "/auth/login",
-        credentials,
-      );
-      if (response.data && response.data.token) {
-        authUtils.saveSession(response.data.token, response.data.user);
-      }
-      return response.data;
-    } catch (error: any) {
-      return {
-        success: false,
-        message: error.response?.data?.message || "Login failed",
-        token: "",
-        user: {} as User,
-      };
+  login: async (credentials: LoginRequest): Promise<ApiResponse<AuthResponse>> => {
+    const response = await apiClient.post<ApiResponse<AuthResponse>>(
+      "/auth/login",
+      credentials,
+    );
+    if (response.data.success && response.data.data.token) {
+      authUtils.saveSession(response.data.data.token, response.data.data.user);
     }
+    return response.data;
   },
-  register: async (user: User) => {
-    const response = await apiClient.post<ApiResponse<User>>(
+
+  register: async (user: RegisterRequest): Promise<ApiResponse<UserResponse>> => {
+    const response = await apiClient.post<ApiResponse<UserResponse>>(
       "/auth/register",
       user,
     );
     return response.data;
   },
 
-  getAllUsers: async () => {
-    const response = await apiClient.get<User[]>("/users");
-    return { data: response.data, success: true };
+  getAllUsers: async (): Promise<User[]> => {
+    const response = await apiClient.get<ApiResponse<UserResponse[]>>("/users");
+    return response.data.data as unknown as User[];
   },
-  getAgencyEmployees: async (agencyId: number, role?: string) => {
+
+  getAgencyEmployees: async (agencyId: number, role?: string): Promise<User[]> => {
     const roleParam = role && role !== "ALL" ? `?role=${role}` : "";
-    const response = await apiClient.get<User[]>(
+    const response = await apiClient.get<ApiResponse<UserResponse[]>>(
       `/users/agency/${agencyId}${roleParam}`,
     );
-    return { data: response.data, success: true };
+    return response.data.data as unknown as User[];
   },
 
-  getProfile: async (id: number) => {
-    const response = await apiClient.get<ApiResponse<User>>(`/users/${id}`);
-    return response.data;
+  getProfile: async (id: number): Promise<User> => {
+    const response = await apiClient.get<ApiResponse<UserResponse>>(`/users/${id}`);
+    return response.data.data as unknown as User;
   },
 
-  updateUser: async (id: number, userDetails: User) => {
-    const response = await apiClient.put<ApiResponse<User>>(
+  updateUser: async (id: number, userDetails: User): Promise<User> => {
+    const response = await apiClient.put<ApiResponse<UserResponse>>(
       `/users/${id}`,
       userDetails,
     );
-    return response.data;
+    return response.data.data as unknown as User;
   },
 
   addEmployee: async (
@@ -73,60 +56,60 @@ export const userService = {
     requesterType: string,
     agencyId?: number,
     branchId?: number,
-  ) => {
+  ): Promise<User> => {
     const params = new URLSearchParams();
     params.append("requesterType", requesterType);
     if (agencyId) params.append("agencyId", agencyId.toString());
     if (branchId) params.append("branchId", branchId.toString());
 
-    const response = await apiClient.post<ApiResponse<User>>(
+    const response = await apiClient.post<ApiResponse<UserResponse>>(
       `/users/add-employee?${params.toString()}`,
       user,
     );
-    return response.data;
+    return response.data.data as unknown as User;
   },
 
   updateUserPermissions: async (
     id: number,
     type: string,
     branchId?: number,
-  ) => {
+  ): Promise<User> => {
     const params = new URLSearchParams({ type });
     if (branchId) params.append("branchId", branchId.toString());
 
-    const response = await apiClient.put<ApiResponse<User>>(
+    const response = await apiClient.put<ApiResponse<UserResponse>>(
       `/users/permissions/${id}?${params.toString()}`,
     );
-    return response.data;
+    return response.data.data as unknown as User;
   },
 
-  deleteUser: async (id: number) => {
+  deleteUser: async (id: number): Promise<null> => {
     const response = await apiClient.delete<ApiResponse<null>>(`/users/${id}`);
-    return response.data;
+    return response.data.data;
   },
 
-  getUsersByRole: async (type: string) => {
-    const response = await apiClient.get<User[]>(`/users/role/${type}`);
-    return { data: response.data, success: true };
+  getUsersByRole: async (type: string): Promise<User[]> => {
+    const response = await apiClient.get<ApiResponse<UserResponse[]>>(`/users/role/${type}`);
+    return response.data.data as unknown as User[];
   },
 
-  getOwners: () => userService.getUsersByRole("OWNER"),
-  getEmployees: () => userService.getUsersByRole("EMPLOYEE"),
-  getManagers: () => userService.getUsersByRole("MANAGER"),
-  getCustomers: () => userService.getUsersByRole("CUSTOMER"),
+  getOwners: (): Promise<User[]> => userService.getUsersByRole("OWNER"),
+  getEmployees: (): Promise<User[]> => userService.getUsersByRole("EMPLOYEE"),
+  getManagers: (): Promise<User[]> => userService.getUsersByRole("MANAGER"),
+  getCustomers: (): Promise<User[]> => userService.getUsersByRole("CUSTOMER"),
 
-  bulkImport: async (agencyId: number, file: File) => {
+  bulkImport: async (agencyId: number, file: File): Promise<{ imported: number; failed: number; errors: string[] }> => {
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await apiClient.post<ApiResponse<any>>(
+    const response = await apiClient.post<ApiResponse<{ imported: number; failed: number; errors: string[] }>>(
       `/users/bulk-import?agencyId=${agencyId}`,
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },
       },
     );
-    return response.data;
+    return response.data.data;
   },
 
   getProfileImageUrl: (imagePath: string | null): string => {
@@ -136,19 +119,12 @@ export const userService = {
     return `${backendBase}${imagePath}`;
   },
 
-  requestPasswordReset: async (identifier: string, baseNumber: string) => {
-    try {
-      const params = new URLSearchParams({ identifier, baseNumber });
-      const response = await apiClient.post<ApiResponse<string>>(
-        `/users/request-password-reset?${params.toString()}`,
-      );
-      return response.data;
-    } catch (error: any) {
-      return {
-        success: false,
-        message: error.message || "Failed to send code",
-      };
-    }
+  requestPasswordReset: async (identifier: string, baseNumber: string): Promise<string> => {
+    const params = new URLSearchParams({ identifier, baseNumber });
+    const response = await apiClient.post<ApiResponse<string>>(
+      `/users/request-password-reset?${params.toString()}`,
+    );
+    return response.data.data;
   },
 
   confirmPasswordReset: async (
@@ -156,23 +132,16 @@ export const userService = {
     baseNumber: string,
     token: string,
     newPassword: string,
-  ) => {
-    try {
-      const params = new URLSearchParams({
-        identifier,
-        baseNumber,
-        token,
-        newPassword,
-      });
-      const response = await apiClient.post<ApiResponse<User>>(
-        `/users/confirm-password-reset?${params.toString()}`,
-      );
-      return response.data;
-    } catch (error: any) {
-      return {
-        success: false,
-        message: error.message || "Failed to reset password",
-      };
-    }
+  ): Promise<User> => {
+    const params = new URLSearchParams({
+      identifier,
+      baseNumber,
+      token,
+      newPassword,
+    });
+    const response = await apiClient.post<ApiResponse<UserResponse>>(
+      `/users/confirm-password-reset?${params.toString()}`,
+    );
+    return response.data.data as unknown as User;
   },
 };

@@ -49,8 +49,8 @@ export const ProfileView = () => {
 
       const response = await userService.updateUser(user.id, payload);
       
-      if (response.success) {
-        authUtils.saveSession(authUtils.getToken() || "", response.data);
+      if (response) {
+        authUtils.saveSession(authUtils.getToken() || "", response);
         await refreshUser();
         setIsEditOpen(false);
         toaster.create({ title: "Profile updated successfully", type: "success" });

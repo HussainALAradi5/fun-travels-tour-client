@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Box } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { ticketService } from "@/Api/tourmanagement/Ticket";
-import type { Ticket } from "@/interface/tourmanagement/TicketInterface";
+import type { Ticket } from "@/interface";
 import { useUser } from "@/hooks/User/useUser";
 import { TicketTable } from "./TicketTable"; // Your GenericTable implementation
 import { notify } from "@/components/ui/Custom/GenericNotification";

@@ -4,8 +4,7 @@ import { Box, VStack, Separator, HStack, Text, Input, Center, Spinner } from "@c
 
 import { useUser } from "@/hooks/User/useUser";
 import { useNotification } from "@/hooks/useNotification";
-import type { Notification as AppNotification } from "@/interface/NotificationInterface";
-import { getNotificationLink } from "@/interface/NotificationInterface";
+import type { Notification as AppNotification } from "@/interface";
 
 import { UnifiedFilterBar, type FilterGroup } from "@/components/ui/Custom/UnifiedFilterBar";
 import { NotificationHeader } from "./NotificationHeader";
@@ -35,7 +34,7 @@ export const CustomerNotificationsManager = () => {
     refType: filters.refType || undefined,
     startDate: filters.startDate || undefined,
     endDate: filters.endDate || undefined,
-  });
+  } as Record<string, string | number | boolean>);
 
   useEffect(() => {
     fetchNotifications();
@@ -53,8 +52,25 @@ export const CustomerNotificationsManager = () => {
 
   const handleNavigation = (notif: AppNotification) => {
     if (!notif.isRead) markAsRead(notif.id);
-    const link = getNotificationLink(notif);
-    if (link) navigate(link);
+    // Navigate based on notification type
+    if (notif.referenceId) {
+      switch (notif.referenceType) {
+        case "TOUR":
+          navigate(`/admin/tours/${notif.referenceId}`);
+          break;
+        case "RESERVATION":
+          navigate(`/my-bookings/${notif.referenceId}`);
+          break;
+        case "TICKET":
+          navigate(`/my-bookings/${notif.referenceId}`);
+          break;
+        case "USER_REQUEST":
+          navigate(`/my-requests/${notif.referenceId}`);
+          break;
+        default:
+          break;
+      }
+    }
   };
 
   const unreadCount = notifications.filter(n => !n.isRead).length;

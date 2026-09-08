@@ -2,37 +2,26 @@ import { useState, useEffect, useCallback } from "react";
 import { countryService } from "@/Api/Country";
 import { useAuth } from "@/utilities/AuthContext";
 import { toaster } from "@/components/ui/toaster";
-import type { Country } from "@/interface/CountryInterface";
+import type { Country } from "@/interface";
 
 export function useCountries() {
   const { isAdmin } = useAuth();
 
-  // State management - initialized to empty array
   const [countries, setCountries] = useState<Country[]>([]);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(false);
   const [countryToDelete, setCountryToDelete] = useState<Country | null>(null);
 
-  // Fetch all countries from local database
   const fetchCountries = useCallback(async () => {
     if (!isAdmin) return;
     
     setLoading(true);
     try {
       const response = await countryService.getAllCountries();
-      
-      // Robust check: determine if response is the array or contains the array
-      if (response && Array.isArray(response.data)) {
-        setCountries(response.data);
-      } else if (Array.isArray(response)) {
-        setCountries(response);
-      } else {
-        console.error("API Response structure mismatch. Expected array but got:", response);
-        setCountries([]); 
-      }
+      setCountries(response || []);
     } catch (error) {
       console.error("Failed to fetch countries:", error);
-      setCountries([]); // Ensure state is never undefined
+      setCountries([]);
       toaster.create({ title: "Failed to load countries", type: "error" });
     } finally {
       setLoading(false);

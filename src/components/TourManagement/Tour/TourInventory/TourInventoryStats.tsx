@@ -1,6 +1,6 @@
 import { MetricBox } from "@/components/ui/Custom/GlowComponents";
 import { GenericStatus } from "@/enums/GenericStatus";
-import type { TourStatsProps } from "@/interface/tourmanagement/TourInterface";
+import type { TourStatsProps } from "@/interface";
 import { SimpleGrid, Text } from "@chakra-ui/react";
 import { LayoutDashboard, CheckCircle, AlertTriangle } from "lucide-react";
 

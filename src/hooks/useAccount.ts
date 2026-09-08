@@ -12,7 +12,7 @@ export function useAccount(userId?: number) {
       const res = await accountService.getBalance(userId);
       setBalance(res.balance);
     } catch (error) {
-      setBalance(0); // Default to 0 if no account is found
+      setBalance(0);
     } finally {
       setIsLoading(false);
     }

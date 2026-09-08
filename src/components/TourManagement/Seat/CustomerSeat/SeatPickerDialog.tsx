@@ -1,7 +1,7 @@
 import { Box, Button, Center, Grid, HStack, Icon, Text, VStack } from "@chakra-ui/react";
 import { Armchair, Star, Accessibility, Baby } from "lucide-react";
 import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
-import type { Seat } from "@/interface/tourmanagement/SeatInterface";
+import type { Seat } from "@/interface";
 import type { JSX } from "react";
 import { ChairTypeColors, SeatStatusColors } from "@/constants/roles/Colors";
 

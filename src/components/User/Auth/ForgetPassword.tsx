@@ -8,9 +8,8 @@ import { GenericForm } from "@/components/ui/Custom/GenericForm";
 // --- Sub-component 1: The Request Form ---
 const EmailRequestForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const handleEmailRequest = async (values: { email: string }) => {
-    // We send an empty string for the baseNumber parameter since it's an email
     const res = await userService.requestPasswordReset(values.email, "");
-    if (res.success) {
+    if (res) {
       onSuccess();
     }
     return res;

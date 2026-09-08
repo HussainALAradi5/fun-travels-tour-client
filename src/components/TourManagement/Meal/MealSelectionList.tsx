@@ -1,7 +1,7 @@
 import { Box, Heading, HStack, Stack, Text, Badge, Icon, Checkbox as ChakraCheckbox } from "@chakra-ui/react";
 import { Utensils, Info } from "lucide-react";
 import { CollapsibleContainer } from "@/components/ui/Custom/CollapsibleContainer";
-import type { MealPlan } from "@/interface/tourmanagement/MealPlanInterface";
+import type { MealPlan } from "@/interface";
 
 interface MealSelectionListProps {
   availableMeals: MealPlan[];

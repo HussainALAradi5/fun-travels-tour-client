@@ -12,12 +12,12 @@ import { countryService } from "@/Api/Country";
 import { cityService } from "@/Api/City";
 import { transportationService } from "@/Api/tourmanagement/Transportation";
 
-import { type Tour } from "@/interface/tourmanagement/TourInterface";
+import { type Tour } from "@/interface";
 import { GenericStatus } from "@/enums/GenericStatus";
 import type { FieldConfig } from "@/utilities/FormTypes";
-import type { Country } from "@/interface/CountryInterface";
-import type { City } from "@/interface/CityInterface";
-import type { Transportation } from "@/interface/tourmanagement/TransportationInterface";
+import type { Country } from "@/interface";
+import type { City } from "@/interface";
+import type { Transportation } from "@/interface";
 
 type TourFormValues = Omit<Tour, 'startCountry' | 'endCountry' | 'startCity' | 'endCity' | 'destinationCountries' | 'transportation'> & {
   startCountry: string;
@@ -198,3 +198,5 @@ export const EditTour = () => {
     </VStack>
   );
 };
+
+

@@ -1,6 +1,6 @@
 import { Box, HStack, VStack, Text, Icon, Badge, IconButton } from "@chakra-ui/react";
 import { Check, CheckCheck, Mail, MailOpen, ArrowUpRight } from "lucide-react";
-import type { Notification as AppNotification } from "@/interface/NotificationInterface";
+import type { Notification as AppNotification } from "@/interface";
 import { NotificationTypeColors, ReferenceTypeColors } from "@/constants/roles/Colors";
 
 interface Props {
