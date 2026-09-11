@@ -1,5 +1,3 @@
-import type { LucideIcon } from 'lucide-react';
-import React from "react";
 import { VStack, HStack, Text, Box } from "@chakra-ui/react";
 import { Info } from "lucide-react";
 import { GenericDialog } from "./GenericDialog";

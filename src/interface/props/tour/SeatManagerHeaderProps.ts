@@ -1,7 +1,4 @@
 export interface SeatManagerHeaderProps {
-  transportId: number;
-  totalCapacity: number;
-  onRefresh: () => void;
   count: number;
   searchValue: string;
   onSearch: (val: string) => void;

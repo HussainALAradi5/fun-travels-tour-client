@@ -5,4 +5,5 @@ export type TransportationFormValues = Transportation & {
   transportationCapacity: number;
   transportationType: string;
   transportationDescription: string;
+  [key: string]: unknown;
 };

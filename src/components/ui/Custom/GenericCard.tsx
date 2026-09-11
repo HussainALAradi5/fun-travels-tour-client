@@ -5,18 +5,26 @@ export const GenericCard = ({
   header,
   footer,
   children,
-  ...props
+  w,
+  border,
+  borderColor,
+  bg,
+  p,
+  onClick,
 }: GenericCardProps) => {
   return (
     <Box
       borderWidth="1px"
       borderRadius="2xl"
       overflow="hidden"
-      bg="bg.panel"
+      bg={bg ?? "bg.panel"}
       shadow="sm"
       transition="all 0.2s"
-      _hover={{ shadow: "md" }}
-      {...props}
+      w={w}
+      border={border}
+      borderColor={borderColor}
+      p={p}
+      onClick={onClick}
     >
       <Box p={6}>
         {header && (

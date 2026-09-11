@@ -1,7 +1,7 @@
 import { Box, Flex, HStack, VStack, Heading, Text, Icon, Separator, Circle, Button } from "@chakra-ui/react";
 import { Navigation, ArrowRight, Bus, LayoutDashboard } from "lucide-react";
 import { GenericCard } from "@/components/ui/Custom/GenericCard";
-import { GenericTracking, type TrackingItem } from "@/components/ui/Custom/GenericTracking";
+import { GenericTracking } from "@/components/ui/Custom/GenericTracking";
 import { glowPulse } from "@/utilities/Animations";
 import type { TourItineraryCardProps } from "@/interface/props/tour/TourItineraryCardProps";
 

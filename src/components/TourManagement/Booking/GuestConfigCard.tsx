@@ -1,17 +1,22 @@
 import { Box, HStack, Stack, Text, Circle, Button, IconButton } from "@chakra-ui/react";
 import { Armchair, CheckCircle2, Trash2, Utensils } from "lucide-react";
 import { glowPulse } from "@/utilities/Animations";
-import type { GuestConfigCardProps, GuestConfig } from "@/interface/props/booking/GuestConfigCardProps";
+import type { GuestConfigCardProps } from "@/interface/props/booking/GuestConfigCardProps";
+import type { Seat } from "@/interface/tour/Seat";
 
 export const GuestConfigCard = ({ guest, onOpenSeatPicker, onOpenMealPicker, onRemove }: GuestConfigCardProps) => {
+  const seatLabel = guest.assignedSeat && typeof guest.assignedSeat === 'object' && 'seatCode' in guest.assignedSeat
+    ? (guest.assignedSeat as Seat).seatCode
+    : typeof guest.assignedSeat === 'string' ? guest.assignedSeat : null;
+
   return (
     <Box p={6} borderRadius="2xl" borderWidth="1.5px" borderColor={guest.assignedSeat ? "blue.500" : "border.subtle"} bg="bg.panel" shadow="sm" transition="all 0.2s">
       <HStack justify="space-between" mb={6}>
         <HStack gap={4}>
           <Circle size="10" bg="blue.100" _dark={{ bg: "blue.900" }} color="blue.600">
-            <Text fontWeight="bold" fontSize="sm">{guest.label.split(" ")[1]}</Text>
+            <Text fontWeight="bold" fontSize="sm">{guest.label?.split(" ")[1] ?? ""}</Text>
           </Circle>
-          <Text fontWeight="bold" fontSize="lg">{guest.label}</Text>
+          <Text fontWeight="bold" fontSize="lg">{guest.label ?? ""}</Text>
         </HStack>
         {onRemove && (
           <IconButton variant="ghost" colorPalette="red" size="sm" onClick={() => onRemove(guest.id)} aria-label="Remove guest">
@@ -30,7 +35,7 @@ export const GuestConfigCard = ({ guest, onOpenSeatPicker, onOpenMealPicker, onR
             <Stack gap={0}>
               <Text fontWeight="bold" fontSize="sm">Cabin Seating</Text>
               <Text fontSize="xs" color="fg.muted">
-                {guest.assignedSeat ? `Assigned to Seat ${guest.assignedSeat.seatCode}` : "No seat selected yet"}
+                {seatLabel ? `Assigned to Seat ${seatLabel}` : "No seat selected yet"}
               </Text>
             </Stack>
           </HStack>
@@ -49,13 +54,13 @@ export const GuestConfigCard = ({ guest, onOpenSeatPicker, onOpenMealPicker, onR
         {/* Meal Row */}
         <HStack justify="space-between" p={4} bg="bg.muted" borderRadius="xl">
           <HStack gap={4}>
-            <Circle size="10" bg={guest.selectedMeals.length > 0 ? "green.500" : "bg.panel"} color={guest.selectedMeals.length > 0 ? "white" : "fg.muted"}>
+            <Circle size="10" bg={(guest.selectedMeals?.length ?? 0) > 0 ? "green.500" : "bg.panel"} color={(guest.selectedMeals?.length ?? 0) > 0 ? "white" : "fg.muted"}>
               <Utensils size={18} />
             </Circle>
             <Stack gap={0}>
               <Text fontWeight="bold" fontSize="sm">Meal Add-ons</Text>
               <Text fontSize="xs" color="fg.muted">
-                {guest.selectedMeals.length > 0 ? `${guest.selectedMeals.length} meal(s) selected` : "No meals added"}
+                {(guest.selectedMeals?.length ?? 0) > 0 ? `${guest.selectedMeals?.length} meal(s) selected` : "No meals added"}
               </Text>
             </Stack>
           </HStack>
@@ -65,7 +70,7 @@ export const GuestConfigCard = ({ guest, onOpenSeatPicker, onOpenMealPicker, onR
             size="sm"
             onClick={() => onOpenMealPicker(guest.id)}
           >
-            {guest.selectedMeals.length > 0 ? "Edit Meals" : "Add Meals"}
+            {(guest.selectedMeals?.length ?? 0) > 0 ? "Edit Meals" : "Add Meals"}
           </Button>
         </HStack>
 

@@ -1,8 +1,11 @@
+import type { ReactNode } from 'react';
+
 export interface Column<T> {
   key: string;
   header: string;
-  type?: "email" | "mobile" | "boolean" | "date";
+  label?: string;
   sortable?: boolean;
-  render?: (item: T) => React.ReactNode;
+  render?: (item: T) => ReactNode;
   width?: string;
+  type?: string;
 }

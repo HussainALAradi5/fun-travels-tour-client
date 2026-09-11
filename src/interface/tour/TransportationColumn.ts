@@ -1,10 +1,4 @@
-export interface TransportationColumn {
-  id: number;
-  transportationName: string;
-  transportationType: string;
-  transportationCapacity: number;
-  transportationDescription: string;
-  transportationStatus: string;
-  agencyId: number;
-  agencyName?: string;
-}
+import type { Column } from "@/interface/common/Column";
+import type { Transportation } from "@/interface/tour/Transportation";
+
+export type TransportationColumn = Column<Transportation>;

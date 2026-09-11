@@ -1,5 +1,5 @@
-import type { Tour } from "../../tour/Tour";
+import type { Tour } from "@/interface/tour/Tour";
 
 export interface BookingTourOverviewProps {
-  tour: Tour;
+  tour: Tour | null;
 }

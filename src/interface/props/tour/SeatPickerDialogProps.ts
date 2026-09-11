@@ -1,8 +1,20 @@
-import type { Seat } from "../../tour/Seat";
+import type { Seat } from "@/interface/tour/Seat";
 
 export interface SeatPickerDialogProps {
-  isOpen: boolean;
+  open: boolean;
   onClose: () => void;
-  transportId: number;
+  seats: Seat[];
+  selectedId: number | null;
   onSelect: (seat: Seat) => void;
+  loading?: boolean;
+}
+
+export interface LegendItemProps {
+  colorPalette?: string;
+  bg?: string;
+  color?: string;
+  label: string;
+  icon?: typeof import("lucide-react").Armchair;
+  fill?: boolean;
+  opacity?: number;
 }

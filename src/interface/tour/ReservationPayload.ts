@@ -1,5 +1,3 @@
-import type { Tour } from "@/interface/tour/Tour";
-
 export interface ReservationTicket {
   ticketId: number;
   ticketCode: string;
@@ -11,6 +9,7 @@ export interface ReservationTicket {
 }
 
 export interface ReservationPayload {
+  user?: { id: number };
   tour: { id: number };
   guests: Array<{
     firstName: string;
@@ -25,5 +24,10 @@ export interface ReservationPayload {
     seatId?: number;
     specialRequests?: string;
   }>;
+  tickets?: Array<{
+    assignedSeat?: { id: number } | null;
+    selectedMeals?: Array<{ id: number }>;
+  }>;
+  requestedSlots?: number;
   specialRequests?: string;
 }

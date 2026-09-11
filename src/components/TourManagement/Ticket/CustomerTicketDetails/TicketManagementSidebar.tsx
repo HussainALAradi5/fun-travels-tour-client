@@ -4,10 +4,10 @@ import { ShieldAlert, XCircle, AlertTriangle, Ban, FileText, ShieldCheck, CheckC
 
 import { GenericCard } from "@/components/ui/Custom/GenericCard";
 import { GenericStatusWorkflow, type StatusConfig } from "@/components/ui/Custom/GenericStatusWorkflow";
-import type { Ticket } from "@/interface/tour/Ticket";
 import { ConfirmDialog } from "@/components/ui/Custom/Dialogs/ConfirmDialog";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import type { GenericStatus } from "@/enums/GenericStatus";
+import type { TicketManagementSidebarProps } from "@/interface/props/tour/TicketManagementSidebarProps";
 
 const TICKET_STATUS_MAP: Partial<Record<string, StatusConfig>> = {
   "PENDING": { label: "Pending", colorPalette: "gray", icon: FileText },
@@ -19,14 +19,7 @@ const TICKET_STATUS_MAP: Partial<Record<string, StatusConfig>> = {
 
 const STEPS = ["PENDING", "APPROVED", "CONFIRMED", "COMPLETED"] as const;
 
-interface Props {
-  ticket: Ticket;
-  isCancelled: boolean;
-  isCompleted: boolean;
-  onRefresh: () => void;
-}
-
-export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRefresh }: Props) => {
+export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRefresh }: TicketManagementSidebarProps) => {
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const { handleCancelTicket, handleUpdateTicketStatus, isMutating } = useTourManagement();
 

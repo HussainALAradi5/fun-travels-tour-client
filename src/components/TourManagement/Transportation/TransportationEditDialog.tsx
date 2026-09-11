@@ -4,18 +4,10 @@ import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
 import { GenericForm } from "@/components/ui/Custom/GenericForm";
 import { SeatManager } from "../Seat/SeatManagement/SeatManager";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
-import type { Transportation } from "@/interface/tour/Transportation";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
-
-interface Props {
-  open: boolean;
-  onClose: () => void;
-  transport: Transportation | null;
-  onUpdate: (values: Transportation) => Promise<void>;
-  loading: boolean;
-}
-
 import type { TransportationFormValues } from "@/types/tour/TransportationFormValues";
+import type { Transportation } from "@/interface/tour/Transportation";
+import type { TransportationEditDialogProps } from "@/interface/props/tour/TransportationEditDialogProps";
 
 export const TransportationEditDialog = ({
   open,
@@ -23,7 +15,7 @@ export const TransportationEditDialog = ({
   transport,
   onUpdate,
   loading,
-}: Props) => {
+}: TransportationEditDialogProps) => {
   if (!transport) return null;
 
   const editFields: FieldConfig<TransportationFormValues>[] = [
@@ -124,7 +116,7 @@ export const TransportationEditDialog = ({
                 disableToast={true}
                 fields={editFields}
                 initialValues={transport as TransportationFormValues}
-                onSubmit={async (values) => { await onUpdate(values as Transportation); }}
+                onSubmit={async (values) => { await onUpdate(values as unknown as Transportation); }}
                 onCancel={onClose}
                 isLoading={loading}
                 submitLabel="Update Unit & Sync Seats"

@@ -1,7 +1,7 @@
 import { Tabs, Text, Icon, Badge, Box, Circle, Float } from "@chakra-ui/react";
 import {
   Globe, Building2, Users, Map, Ticket, Bus, UtensilsCrossed, BellRing, Bell,
-  MessageSquare, ReceiptText, Wallet, type LucideIcon
+  MessageSquare, ReceiptText, Wallet
 } from "lucide-react";
 import { useLocation } from "react-router-dom"; 
 import { useAuth } from "@/utilities/AuthContext";

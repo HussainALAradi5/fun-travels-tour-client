@@ -13,7 +13,7 @@ export function FormCombobox({ field, value, onChange, multiple }: FormComboboxP
    * Object Handling for "No DTO"
    * Extracts a unique string ID to track selection internally.
    */
-  const getInternalValue = (val: string | number | boolean | Record<string, unknown> | null | undefined) => {
+  const getInternalValue = (val: string | number | Record<string, unknown> | null | undefined) => {
     if (!val) return "";
     return typeof val === "object" ? String((val as Record<string, unknown>).id || JSON.stringify(val)) : String(val);
   };
@@ -21,7 +21,7 @@ export function FormCombobox({ field, value, onChange, multiple }: FormComboboxP
   const selectedValues = useMemo(() => {
     if (!value) return [];
     const vals = Array.isArray(value) ? value : [value];
-    return vals.map(getInternalValue);
+    return vals.map((v) => getInternalValue(v as string | number | Record<string, unknown>));
   }, [value]);
 
   const filteredItems = useMemo(() => {
@@ -37,15 +37,15 @@ export function FormCombobox({ field, value, onChange, multiple }: FormComboboxP
   interface CollectionItem {
     label: string;
     value: string;
-    original: string | number | boolean | Record<string, unknown>;
+    original: string | number | Record<string, unknown>;
   }
 
   const collection = useMemo(() => {
     return createListCollection({
       items: filteredItems.map((item: { label: string; value: string | number | boolean }) => ({
         label: String(item.label),
-        value: getInternalValue(item.value),
-        original: item.value, // Store full object here
+        value: getInternalValue(typeof item.value === 'boolean' ? String(item.value) : item.value as string | number | Record<string, unknown>),
+        original: item.value as string | number | Record<string, unknown>,
       })),
     });
   }, [filteredItems]);
@@ -67,7 +67,7 @@ export function FormCombobox({ field, value, onChange, multiple }: FormComboboxP
 
   const handleRemoveTag = (valToRemove: string) => {
     if (Array.isArray(value)) {
-      const updatedValues = value.filter((v: string | number | boolean | Record<string, unknown>) => getInternalValue(v) !== valToRemove);
+      const updatedValues = value.filter((v: string | number | boolean | Record<string, unknown>) => getInternalValue(v as string | number | Record<string, unknown>) !== valToRemove);
       onChange(field.name as string, updatedValues as string[]);
     }
   };
@@ -77,7 +77,7 @@ export function FormCombobox({ field, value, onChange, multiple }: FormComboboxP
       {multiple && (
         <SelectedTags 
           values={selectedValues} 
-          options={rawOptions} 
+          options={rawOptions.map(o => ({...o, value: String(o.value)}))} 
           onRemove={handleRemoveTag} 
         />
       )}

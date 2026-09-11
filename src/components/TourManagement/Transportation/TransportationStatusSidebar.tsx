@@ -3,12 +3,7 @@ import { Wrench, CheckCircle2, AlertTriangle, Gauge, Info } from "lucide-react";
 import { GenericCard } from "@/components/ui/Custom/GenericCard";
 import { GenericStatusWorkflow, type StatusConfig } from "@/components/ui/Custom/GenericStatusWorkflow";
 import { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
-import type { Transportation } from "@/interface/tour/Transportation";
-
-interface Props {
-  transport: Transportation;
-  onStatusChange: (status: TransportationStatus) => Promise<void>;
-}
+import type { TransportationStatusSidebarProps } from "@/interface/props/tour/TransportationStatusSidebarProps";
 
 const STATUS_MAP: Partial<Record<TransportationStatus, StatusConfig>> = {
   [TransportationStatus.AVAILABLE]: { 
@@ -32,7 +27,7 @@ const STEPS = [
   TransportationStatus.MAINTENANCE
 ];
 
-export const TransportationStatusSidebar = ({ transport, onStatusChange }: Props) => {
+export const TransportationStatusSidebar = ({ transport, onStatusChange }: TransportationStatusSidebarProps) => {
   
   const isAutoManaged = 
     transport.unitStatus === TransportationStatus.PARTIAL || 
@@ -92,4 +87,3 @@ export const TransportationStatusSidebar = ({ transport, onStatusChange }: Props
     </VStack>
   );
 };
-

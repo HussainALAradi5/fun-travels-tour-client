@@ -3,7 +3,7 @@ import {
   VStack, HStack, Text, Box, Button, Input, 
   SimpleGrid, Icon, Separator, Center, Spinner
 } from "@chakra-ui/react";
-import { CreditCard, Wallet, Landmark, ShieldCheck, AlertCircle, type LucideIcon } from "lucide-react";
+import { CreditCard, Wallet, Landmark, ShieldCheck, AlertCircle } from "lucide-react";
 import { loadStripe, type Stripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 

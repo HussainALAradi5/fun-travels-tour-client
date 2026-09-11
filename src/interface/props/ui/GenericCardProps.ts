@@ -7,5 +7,8 @@ export interface GenericCardProps {
   w?: string;
   border?: string;
   borderColor?: string;
-  bg?: Record<string, string>;
+  bg?: string | Record<string, string>;
+  p?: string;
+  onClick?: () => void;
+  _hover?: Record<string, string>;
 }

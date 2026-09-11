@@ -6,7 +6,7 @@ import {
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { barGlow } from "@/utilities/Animations";
 import { TrackingStep } from "./GlowComponents";
-import type { GenericTrackingProps, TrackingItem } from "@/interface/props/ui/GenericTrackingProps";
+import type { GenericTrackingProps } from "@/interface/props/ui/GenericTrackingProps";
 
 export type { TrackingItem } from "@/interface/props/ui/GenericTrackingProps";
 
@@ -37,11 +37,11 @@ export const GenericTracking = ({ items, initialVisibleMiddle = 1, animate = tru
   return (
     <VStack align="start" gap="0" w="full">
       <TrackingStep 
-        icon={firstItem.icon} 
+        icon={firstItem.icon!} 
         bg={firstItem.color} 
         title={firstItem.title} 
         location={firstItem.description} 
-        glowColor={firstItem.glowColor} 
+        glowColor={firstItem.glowColor!} 
         animate={animate}
       />
       
@@ -49,14 +49,14 @@ export const GenericTracking = ({ items, initialVisibleMiddle = 1, animate = tru
 
       {visibleMiddle.map((item) => (
         <Box key={item.id} w="full">
-          <TrackingStep 
-            icon={item.icon} 
-            bg={item.color} 
-            title={item.title} 
-            location={item.description} 
-            glowColor={item.glowColor} 
-            animate={animate}
-          />
+            <TrackingStep 
+              icon={item.icon!} 
+              bg={item.color} 
+              title={item.title} 
+              location={item.description} 
+              glowColor={item.glowColor!} 
+              animate={animate}
+            />
           <Connector color={item.color} />
         </Box>
       ))}
@@ -85,11 +85,11 @@ export const GenericTracking = ({ items, initialVisibleMiddle = 1, animate = tru
                 {hiddenMiddle.map((item) => (
                   <Box key={item.id} w="full">
                     <TrackingStep 
-                      icon={item.icon} 
+                      icon={item.icon!} 
                       bg={item.color} 
                       title={item.title} 
                       location={item.description} 
-                      glowColor={item.glowColor} 
+                      glowColor={item.glowColor!} 
                       animate={animate}
                     />
                     <Connector color={item.color} />
@@ -106,11 +106,11 @@ export const GenericTracking = ({ items, initialVisibleMiddle = 1, animate = tru
 
       {lastItem && (
         <TrackingStep 
-          icon={lastItem.icon} 
+          icon={lastItem.icon!} 
           bg={lastItem.color} 
           title={lastItem.title} 
           location={lastItem.description} 
-          glowColor={lastItem.glowColor} 
+          glowColor={lastItem.glowColor!} 
           animate={animate}
         />
       )}

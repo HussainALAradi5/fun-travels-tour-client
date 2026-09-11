@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Box, Stack, Table, Checkbox, VStack, Text } from "@chakra-ui/react";
 import { useColorModeValue } from "../color-mode";
 import { useTableLogic } from "@/hooks/useTableLogic";
@@ -8,7 +8,6 @@ import { TablePagination } from "./GenericTableComponents/TablePagination";
 import { TableRow as CustomTableRow } from "./GenericTableComponents/TableRow";
 import { Search } from "lucide-react";
 import { TableToolbar } from "./GenericTableComponents/TableHeader";
-import type { Column } from "@/interface/common/Column";
 import type { GenericTableProps } from "@/interface/props/ui/GenericTableProps";
 
 export type { Column } from "@/interface/common/Column";

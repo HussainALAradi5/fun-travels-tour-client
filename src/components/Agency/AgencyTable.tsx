@@ -3,20 +3,14 @@ import { Box, HStack, Text, Badge, IconButton, VStack } from "@chakra-ui/react";
 import { Plus, MapPin, Globe, Building2 } from "lucide-react";
 import { GenericTable } from "@/components/ui/Custom/GenericTable";
 import type { Agency } from "@/interface/agency/Agency";
-
-interface Props {
-  data: Agency[];
-  loading: boolean;
-  onAddBranch: (id: number) => void;
-  onViewDetail: (id: number) => void;
-}
+import type { AgencyTableProps } from "@/interface/props/agency/AgencyTableProps";
 
 export function AgencyTable({
   data,
   loading,
   onAddBranch,
   onViewDetail,
-}: Props) {
+}: AgencyTableProps) {
   const columns = useMemo(
     () => [
       {

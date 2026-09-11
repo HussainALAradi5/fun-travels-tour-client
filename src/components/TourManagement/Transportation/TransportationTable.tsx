@@ -1,5 +1,4 @@
 // src/components/TourManagement/Transportation/TransportationTable.tsx
-import React from "react";
 import { Box, HStack, Text, Badge, Button, Icon, VStack, Float } from "@chakra-ui/react";
 import { 
   Bus, 
@@ -25,13 +24,7 @@ import type { Transportation } from "@/interface/tour/Transportation";
 import { TransportationColors } from "@/constants/roles/Colors";
 
 import type { TransportationColumn } from "@/interface/tour/TransportationColumn";
-
-interface Props {
-  data: Transportation[];
-  loading: boolean;
-  onEdit: (item: Transportation) => void;
-  onView: (id: string) => void;
-}
+import type { TransportationTableProps } from "@/interface/props/tour/TransportationTableProps";
 
 const STATUS_CONFIG: Record<TransportationStatus, { color: string; icon: typeof CheckCircle2; label: string }> = {
   [TransportationStatus.AVAILABLE]: { color: "green", icon: CheckCircle2, label: "Available" },
@@ -51,7 +44,7 @@ const VehicleIcon = ({ type, size = 16 }: { type: TransportationType; size?: num
   }
 };
 
-export const TransportationTable = ({ data, loading, onEdit, onView }: Props) => {
+export const TransportationTable = ({ data, loading, onEdit, onView }: TransportationTableProps) => {
   const columns: TransportationColumn[] = [
     {
       header: "Internal Code",

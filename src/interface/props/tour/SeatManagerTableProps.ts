@@ -1,8 +1,7 @@
-import type { Seat } from "../../tour/Seat";
+import type { Seat } from "@/interface/tour/Seat";
 
 export interface SeatManagerTableProps {
   data: Seat[];
-  isLoading: boolean;
-  transportId: number;
-  onRefresh: () => void;
+  loading: boolean;
+  onEdit: (item: Seat) => void;
 }

@@ -1,5 +1,4 @@
 import { useEffect, useState, useMemo } from "react";
-import { Building2 } from "lucide-react";
 import { countryService } from "@/Api/Country";
 import { cityService } from "@/Api/City";
 import { userService } from "@/Api/User";
@@ -8,28 +7,13 @@ import type { Agency } from "@/interface/agency/Agency";
 import type { User } from "@/interface/user/User";
 import type { Country } from "@/interface/geography/Country";
 import type { City } from "@/interface/geography/City";
-
-const DEFAULT_AGENCY: Partial<Agency> = {
-  agencyName: "",
-  address: "",
-  contactNumber: "",
-  ownerMobileNumber: "",
-  active: true,
-};
 import type { FieldConfig } from "@/interface/common/FieldConfig";
 import { GenericFormDialog } from "../ui/Custom/Dialogs/GenericFormDialog";
 
-import type { AgencyPayload } from "@/interface/agency/AgencyPayload";
 import type { SelectOption } from "@/interface/common/SelectOption";
+import type { AddAgencyDialogProps } from "@/interface/props/agency/AddAgencyDialogProps";
 
-interface Props {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: (data: Agency) => Promise<void>;
-  loading: boolean;
-}
-
-export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
+export function AddAgencyDialog({ open, onClose, onSubmit, loading }: AddAgencyDialogProps) {
   const [users, setUsers] = useState<SelectOption[]>([]);
   const [countries, setCountries] = useState<SelectOption[]>([]);
   const [cities, setCities] = useState<SelectOption[]>([]);
@@ -104,7 +88,7 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
     fetchCities();
   }, [selectedCountryId]);
 
-  const formFields = useMemo<FieldConfig<Agency>[]>(
+  const formFields = useMemo<FieldConfig<Record<string, unknown>>[]>(
     () => [
       {
         name: "agencyName",
@@ -158,36 +142,30 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
     [countries, cities, users, selectedCountryId],
   );
 
-  const handleLocalSubmit = async (formData: Agency) => {
-    // Transform IDs to proper number types before sending to backend
-    const payload: AgencyPayload = {
-      agencyName: formData.agencyName,
-      address: formData.address,
-      contactNumber: formData.contactNumber,
-      ownerMobileNumber: formData.ownerMobileNumber,
-      active: true,
-      userType: UserType.OWNER,
-      countryId: formData.countryId ? Number(formData.countryId) : undefined,
-      cityId: formData.cityId ? Number(formData.cityId) : undefined,
-      agencyOwnerId: formData.agencyOwnerId
-        ? Number(formData.agencyOwnerId)
-        : undefined,
-    };
-
-    await onSubmit(payload as Agency);
-  };
-
   return (
-    <GenericFormDialog<Agency>
+    <GenericFormDialog<Record<string, unknown>>
       open={open}
       onClose={onClose}
-      onSubmit={handleLocalSubmit}
+      onSubmit={async (formData) => {
+        const payload = {
+          agencyName: formData.agencyName as string,
+          address: formData.address as string,
+          contactNumber: formData.contactNumber as string,
+          ownerMobileNumber: formData.ownerMobileNumber as string,
+          active: true,
+          userType: UserType.OWNER,
+          countryId: Number(formData.countryId) || null,
+          cityId: Number(formData.cityId) || null,
+          agencyOwnerId: Number(formData.agencyOwnerId) || null,
+        };
+
+        await onSubmit(payload as unknown as Agency);
+      }}
       loading={loading}
       title="Register New Agency"
       description="Create a new headquarters and assign an owner to manage the network."
-      icon={Building2}
       fields={formFields}
-      initialValues={DEFAULT_AGENCY as Agency}
+      initialValues={{ agencyName: "", address: "", contactNumber: "", ownerMobileNumber: "", active: true } as Record<string, unknown>}
       onFieldChange={(name, value) => {
         if (name === "countryId") {
           setSelectedCountryId(value ? String(value) : null);

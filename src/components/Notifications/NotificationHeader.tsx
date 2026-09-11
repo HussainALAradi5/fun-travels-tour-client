@@ -1,11 +1,8 @@
 import { Flex, HStack, VStack, Text, Icon, Badge, Box } from "@chakra-ui/react";
 import { Bell, BellRing } from "lucide-react";
+import type { NotificationHeaderProps } from "@/interface/props/notification/NotificationHeaderProps";
 
-interface Props {
-  unreadCount: number;
-}
-
-export const NotificationHeader = ({ unreadCount }: Props) => (
+export const NotificationHeader = ({ unreadCount }: NotificationHeaderProps) => (
   <Flex justify="space-between" align="center" px={1} mb={2}>
     <HStack gap={4}>
       <Box 

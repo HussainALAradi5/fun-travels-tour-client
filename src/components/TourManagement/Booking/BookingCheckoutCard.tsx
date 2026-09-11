@@ -1,22 +1,27 @@
 import { Box, VStack, HStack, Text, Heading, Button, Separator, Circle, Icon, Spinner } from "@chakra-ui/react";
 import { ShoppingBag, CheckCircle2, Armchair, Utensils, Users } from "lucide-react";
 import { glowPulse, floatIn } from "@/utilities/Animations";
-import type { Tour } from "@/interface/tour/Tour";
-import type { GuestConfig } from "./GuestConfigCard";
 import type { BookingCheckoutCardProps } from "@/interface/props/booking/BookingCheckoutCardProps";
+import type { Seat } from "@/interface/tour/Seat";
 
 export const BookingCheckoutCard = ({ tour, guests, onConfirm, loading }: BookingCheckoutCardProps) => {
   // --- Group Calculations ---
   const guestCount = guests.length;
   const baseTotal = (tour?.basePrice || 0) * guestCount;
   
-  const seatModifierTotal = guests.reduce((acc, g) => acc + (g.assignedSeat?.seatPriceModifier || 0), 0);
+  const seatModifierTotal = guests.reduce((acc, g) => {
+    const seat = g.assignedSeat;
+    if (seat && typeof seat === 'object' && 'seatPriceModifier' in seat) {
+      return acc + ((seat as Seat).seatPriceModifier || 0);
+    }
+    return acc;
+  }, 0);
   const seatsAssignedCount = guests.filter(g => g.assignedSeat !== null).length;
   const isSeatMissing = (tour?.hasTransportation ?? true) && seatsAssignedCount < guestCount;
   
-  const totalMealsCount = guests.reduce((acc, g) => acc + g.selectedMeals.length, 0);
+  const totalMealsCount = guests.reduce((acc, g) => acc + (g.selectedMeals?.length ?? 0), 0);
   const mealsTotal = guests.reduce((acc, g) => 
-    acc + g.selectedMeals.reduce((mAcc, m) => mAcc + (m.mealPrice || 0), 0), 0
+    acc + (g.selectedMeals ?? []).reduce((mAcc, m) => mAcc + (m.mealPrice || 0), 0), 0
   );
 
   const grandTotal = baseTotal + seatModifierTotal + mealsTotal;
@@ -105,7 +110,3 @@ export const BookingCheckoutCard = ({ tour, guests, onConfirm, loading }: Bookin
     </Box>
   );
 };
-
-
-
-

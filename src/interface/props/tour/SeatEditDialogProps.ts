@@ -1,8 +1,9 @@
-import type { Seat } from "../../tour/Seat";
+import type { Seat } from "@/interface/tour/Seat";
 
 export interface SeatEditDialogProps {
-  isOpen: boolean;
+  open: boolean;
   onClose: () => void;
-  seat: Seat;
-  transportId: number;
+  seat: Seat | null;
+  onSave: (seat: Seat) => Promise<void>;
+  loading: boolean;
 }

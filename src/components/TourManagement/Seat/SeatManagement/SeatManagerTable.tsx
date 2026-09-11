@@ -1,5 +1,4 @@
 // src/components/TourManagement/Seat/SeatManagerTable.tsx
-import React from "react";
 import { Box, HStack, Text, Badge, Button, Circle } from "@chakra-ui/react";
 import { Armchair, Settings2 } from "lucide-react";
 import type { Seat } from "@/interface/tour/Seat";
@@ -8,14 +7,9 @@ import { SeatStatusColors, ChairTypeColors } from "@/constants/roles/Colors";
 import { GenericTable } from "@/components/ui/Custom/GenericTable";
 
 import type { SeatColumn } from "@/interface/tour/SeatColumn";
+import type { SeatManagerTableProps } from "@/interface/props/tour/SeatManagerTableProps";
 
-interface Props {
-  data: Seat[];
-  loading: boolean;
-  onEdit: (item: Seat) => void;
-}
-
-export const SeatManagerTable = ({ data, loading, onEdit }: Props) => {
+export const SeatManagerTable = ({ data, loading, onEdit }: SeatManagerTableProps) => {
   // Helper to map complex SeatStatusColors to Chakra colorPalettes for the Badge
   const getStatusPalette = (status: string) => {
     switch (status) {

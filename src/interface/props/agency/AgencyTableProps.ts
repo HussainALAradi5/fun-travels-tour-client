@@ -1,7 +1,8 @@
-import type { Agency } from "../../agency/Agency";
+import type { Agency } from "@/interface/agency/Agency";
 
 export interface AgencyTableProps {
   data: Agency[];
-  isLoading: boolean;
-  onViewDetails: (id: number) => void;
+  loading: boolean;
+  onAddBranch: (id: number) => void;
+  onViewDetail: (id: number) => void;
 }

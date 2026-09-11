@@ -38,10 +38,10 @@ export const EditTour = () => {
   const returnToDetail = useCallback(() => navigate(`/admin/tours/${id}`), [id, navigate]);
 
   // --- BULLETPROOF MAPPING UTILITY ---
-  const mapToOptions = useCallback((payload: Country[] | City[] | { data: Country[] | City[] } | unknown, labelKey: keyof Country | keyof City = 'name') => {
+  const mapToOptions = useCallback((payload: Country[] | City[] | { data: Country[] | City[] } | unknown, labelKey: string = 'name') => {
     const items = Array.isArray(payload) ? payload : ((payload as { data: Country[] | City[] })?.data || []);
     return items.map((item: Country | City) => ({ 
-      label: String((item as Record<string, unknown>)[labelKey] || (item as Country).officialName || (item as Country).commonName || `Unknown (ID: ${item.id})`), 
+      label: String((item as unknown as Record<string, unknown>)[labelKey as string] || (item as Country).officialName || (item as Country).famousName || `Unknown (ID: ${item.id})`), 
       value: String(item.id) 
     }));
   }, []);

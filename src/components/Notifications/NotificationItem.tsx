@@ -1,15 +1,9 @@
 import { Box, HStack, VStack, Text, Icon, Badge, IconButton } from "@chakra-ui/react";
 import { Check, CheckCheck, Mail, MailOpen, ArrowUpRight } from "lucide-react";
-import type { Notification as AppNotification } from "@/interface/notification/Notification";
 import { NotificationTypeColors, ReferenceTypeColors } from "@/constants/roles/Colors";
+import type { NotificationItemProps } from "@/interface/props/notification/NotificationItemProps";
 
-interface Props {
-  notif: AppNotification;
-  onMarkAsRead: (id: number) => void;
-  onNavigate: (notif: AppNotification) => void;
-}
-
-export const NotificationItem = ({ notif, onMarkAsRead, onNavigate }: Props) => {
+export const NotificationItem = ({ notif, onMarkAsRead, onNavigate }: NotificationItemProps) => {
   const isRead = notif.isRead;
 
   // Dynamically map backend Enums to your defined Chakra color palettes

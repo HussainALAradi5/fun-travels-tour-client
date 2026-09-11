@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Box, Heading, Text, HStack, Button } from "@chakra-ui/react";
 import { Download } from "lucide-react";
 import { BranchTable } from "./BranchTable";
-import type { AgencyBranch } from "@/interface/agency/AgencyBranch";
 import { GenericExportDialog } from "../ui/Custom/Dialogs/GenericExportDialog";
 import type { BranchTabProps } from "@/interface/props/agency/BranchTabProps";
 

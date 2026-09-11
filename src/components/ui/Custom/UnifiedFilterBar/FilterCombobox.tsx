@@ -17,23 +17,24 @@ export const FilterCombobox = ({ f }: { f: FilterGroup }) => {
     item.searchText || (typeof item.label === "string" ? item.label : "") || item.value;
 
   const filteredItems = useMemo(() => {
-    if (!searchTerm || !isCombobox) return f.options;
-    return f.options.filter((opt) =>
+    const opts = f.options || [];
+    if (!searchTerm || !isCombobox) return opts;
+    return opts.filter((opt) =>
       getStringValue(opt).toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [f.options, searchTerm, isCombobox]);
 
   const collection = useMemo(() => createListCollection({
-    items: filteredItems,
+    items: filteredItems.map((item) => ({ ...item, value: String(item.value) })),
     itemToString: (item) => getStringValue(item),
-    itemToValue: (item) => item.value,
+    itemToValue: (item) => String(item.value),
   }), [filteredItems]);
 
   const commonProps = {
     collection,
     value: f.value ? [f.value] : [],
     onValueChange: (details: any) => {
-      f.onChange(details.value[0] || "");
+      f.onChange?.(details.value[0] || "");
       setSearchTerm("");
     },
     size: "sm" as const,

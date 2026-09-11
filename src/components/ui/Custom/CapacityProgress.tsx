@@ -15,7 +15,7 @@ export const CapacityProgress = ({
   showStatusText = false,
   colorOverride,
   align = "start",
-  gap = 1,
+  gap = "1",
   ...props 
 }: CapacityProgressProps) => {
   const percentage = useMemo(() => {

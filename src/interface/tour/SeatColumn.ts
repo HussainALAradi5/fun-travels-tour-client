@@ -1,12 +1,4 @@
-export interface SeatColumn {
-  id: number;
-  seatNumber: string;
-  seatType: string;
-  seatStatus: string;
-  deckLevel: string;
-  rowPosition: number;
-  columnPosition: number;
-  transportationId: number;
-  passengerName?: string;
-  passengerEmail?: string;
-}
+import type { Column } from "@/interface/common/Column";
+import type { Seat } from "@/interface/tour/Seat";
+
+export type SeatColumn = Column<Seat>;

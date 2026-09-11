@@ -4,17 +4,9 @@ import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
 import type { Seat } from "@/interface/tour/Seat";
 import type { JSX } from "react";
 import { ChairTypeColors, SeatStatusColors } from "@/constants/roles/Colors";
+import type { SeatPickerDialogProps } from "@/interface/props/tour/SeatPickerDialogProps";
 
-interface Props {
-  open: boolean;
-  onClose: () => void;
-  seats: Seat[];
-  selectedId: number | null;
-  onSelect: (seat: Seat) => void;
-  loading?: boolean;
-}
-
-export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, loading }: Props) => {
+export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, loading }: SeatPickerDialogProps) => {
   
   // 1. Fully dynamic style resolver using your interfaces
   const resolveSeatStyles = (seat: Seat) => {
@@ -162,15 +154,7 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
 };
 
 // Clean Legend Item Component
-interface LegendItemProps {
-  colorPalette?: string;
-  bg?: string;
-  color?: string;
-  label: string;
-  icon?: typeof Armchair;
-  fill?: boolean;
-  opacity?: number;
-}
+import type { LegendItemProps } from "@/interface/props/tour/SeatPickerDialogProps";
 
 const LegendItem = ({ colorPalette, bg, color, label, icon: IconCmp, fill, opacity = 1 }: LegendItemProps) => {
   const isOutline = !!colorPalette;

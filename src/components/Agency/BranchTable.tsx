@@ -89,7 +89,7 @@ export function BranchTable({
 
   return (
     <Box mt={2}>
-      <GenericTable data={branches} columns={columns} loading={loading} />
+      <GenericTable data={branches ?? []} columns={columns} loading={loading} />
     </Box>
   );
 }

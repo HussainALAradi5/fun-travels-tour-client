@@ -12,6 +12,7 @@ import { FormSelect } from "./FormSelect";
 import { FormFile } from "./FormFile";
 import { EmailField, MobileField } from "./ContactFields";
 import type { FormFieldWrapperProps } from "@/interface/props/ui/FormFieldProps";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
 
 export function FormFieldWrapper({ field, formData, onChange }: FormFieldWrapperProps) {
   const [isFocused, setIsFocused] = useState(false);

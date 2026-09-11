@@ -1,7 +1,7 @@
 import { Stack, HStack, Text, Button, Icon } from "@chakra-ui/react";
 import { Users, Plus } from "lucide-react";
 import { GuestConfigCard } from "./GuestConfigCard";
-import type { GuestConfigListProps, GuestConfig } from "@/interface/props/booking/GuestConfigListProps";
+import type { GuestConfigListProps } from "@/interface/props/booking/GuestConfigListProps";
 
 export const GuestConfigList = ({ guests, maxCapacity, onAddGuest, onRemoveGuest, onOpenSeatPicker, onOpenMealPicker }: GuestConfigListProps) => {
   return (

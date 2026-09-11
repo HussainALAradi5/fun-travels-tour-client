@@ -1,8 +1,8 @@
-import type { AgencyBranch } from "../../agency/AgencyBranch";
+import type { AgencyBranch } from "@/interface/agency/AgencyBranch";
 
 export interface AddBranchDialogProps {
   open: boolean;
   onClose: () => void;
-  agencyId: number;
   onSubmit: (data: AgencyBranch) => Promise<void>;
+  loading: boolean;
 }

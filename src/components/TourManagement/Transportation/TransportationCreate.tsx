@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Star, Accessibility, Baby, ChevronLeft, Rocket, Info } from "lucide-react";
 import { GenericForm } from "@/components/ui/Custom/GenericForm";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
-import { DEFAULT_TRANSPORTATION } from "@/interface/tour/Transportation";
 import type { Transportation } from "@/interface/tour/Transportation";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
@@ -104,7 +103,7 @@ export const TransportationCreate = () => {
         <GenericForm<TransportationFormValues>
           disableToast={true}
           fields={fields}
-          initialValues={DEFAULT_TRANSPORTATION as TransportationFormValues}
+          initialValues={{ code: "", transportationNumber: "", providerName: "", type: "" as TransportationFormValues["type"], totalCapacity: 0, seats: [] } as unknown as TransportationFormValues}
           onSubmit={handleSubmit}
           onCancel={() => navigate("/admin/transports")}
           isLoading={isMutating}

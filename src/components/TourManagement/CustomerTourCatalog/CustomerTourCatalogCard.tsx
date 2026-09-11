@@ -2,14 +2,9 @@ import {
   Box, Heading, Text, Button, Image, Stack, Badge, Flex, HStack, Card 
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import type { Tour } from "@/interface/tour/Tour";
+import type { CustomerTourCatalogCardProps } from "@/interface/props/tour/CustomerTourCatalogCardProps";
 
-interface Props {
-  tour: Tour;
-  isAuthenticated: boolean;
-}
-
-export const CustomerTourCatalogCard = ({ tour, isAuthenticated }: Props) => {
+export const CustomerTourCatalogCard = ({ tour, isAuthenticated }: CustomerTourCatalogCardProps) => {
   const navigate = useNavigate();
   const hasSlots = (tour.availableSlots ?? 0) > 0;
   const canBook = hasSlots && tour.status === "ACTIVE";

@@ -12,18 +12,13 @@ import { PlaneTakeoff, PlaneLanding, MapPin, Calendar } from "lucide-react";
 import { GenericTable, type Column } from "@/components/ui/Custom/GenericTable";
 import type { Tour } from "@/interface/tour/Tour";
 import { useNavigate } from "react-router-dom";
-
-interface Props {
-  tours: Tour[];
-  isAuthenticated: boolean;
-  loading?: boolean;
-}
+import type { CustomerTourCatalogTableProps } from "@/interface/props/tour/CustomerTourCatalogTableProps";
 
 export const CustomerTourCatalogTable = ({
   tours,
   isAuthenticated,
   loading,
-}: Props) => {
+}: CustomerTourCatalogTableProps) => {
   const navigate = useNavigate();
 
   const formatDate = (dateStr?: string) =>

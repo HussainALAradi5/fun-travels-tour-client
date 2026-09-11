@@ -61,7 +61,7 @@ export function GenericDialog({
             >
               <HStack gap={3} align="center">
                 <Box p={2} bg="white/20" borderRadius="lg" backdropFilter="blur(8px)">
-                  <Icon as={DialogIcon} size={20} color="white" />
+                  <Icon as={DialogIcon} size="xl" color="white" />
                 </Box>
                 <VStack align="start" gap={0}>
                   <DialogTitle fontSize="lg" fontWeight="bold" color="white">

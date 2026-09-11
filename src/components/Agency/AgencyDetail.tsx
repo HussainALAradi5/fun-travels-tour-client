@@ -19,7 +19,6 @@ import {
   Phone,
   User as UserIcon,
   Users,
-  type LucideIcon,
 } from "lucide-react";
 
 import { agencyService } from "@/Api/Agency/Agency";
@@ -194,12 +193,7 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
 }
 
 // Sub-components
-interface InfoCardProps {
-  icon: LucideIcon;
-  label: string;
-  value: string;
-  subValue?: string;
-}
+import type { InfoCardProps } from "@/interface/props/agency/InfoCardProps";
 
 function InfoCard({ icon: Icon, label, value, subValue }: InfoCardProps) {
   return (

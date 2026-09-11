@@ -1,7 +1,8 @@
-import type { Transportation } from "../../tour/Transportation";
+import type { Transportation } from "@/interface/tour/Transportation";
 
 export interface TransportationTableProps {
   data: Transportation[];
-  isLoading: boolean;
-  onViewDetails: (id: string) => void;
+  loading: boolean;
+  onEdit: (item: Transportation) => void;
+  onView: (id: string) => void;
 }

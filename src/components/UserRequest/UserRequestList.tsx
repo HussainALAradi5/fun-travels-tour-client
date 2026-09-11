@@ -3,14 +3,9 @@ import { GenericTable, type Column } from "@/components/ui/Custom/GenericTable";
 import type { UserRequest } from "@/interface/support/UserRequest";
 import { RequestStatusColors, RequestTypeColors } from "@/constants/roles/Colors";
 import { User, Eye } from "lucide-react";
+import type { UserRequestListProps } from "@/interface/props/user/UserRequestListProps";
 
-interface Props {
-  data: UserRequest[];
-  loading: boolean;
-  onView: (req: UserRequest) => void;
-}
-
-export const UserRequestList = ({ data, loading, onView }: Props) => {
+export const UserRequestList = ({ data, loading, onView }: UserRequestListProps) => {
   const columns: Column<UserRequest>[] = [
     {
       header: "Type",

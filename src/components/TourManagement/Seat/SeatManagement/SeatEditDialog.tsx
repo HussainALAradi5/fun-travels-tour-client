@@ -7,14 +7,7 @@ import { ChairType } from "@/enums/tourmanagement/ChirType";
 import { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
 import { ChairTypeColors } from "@/constants/roles/Colors";
 import type { Seat } from "@/interface/tour/Seat";
-
-interface Props {
-  open: boolean;
-  onClose: () => void;
-  seat: Seat | null;
-  onSave: (seat: Seat) => Promise<void>;
-  loading: boolean;
-}
+import type { SeatEditDialogProps } from "@/interface/props/tour/SeatEditDialogProps";
 
 // Helper to map status to Chakra color palettes for buttons
 const getStatusPalette = (status: string) => {
@@ -27,7 +20,7 @@ const getStatusPalette = (status: string) => {
   }
 };
 
-export const SeatEditDialog = ({ open, onClose, seat, onSave, loading }: Props) => {
+export const SeatEditDialog = ({ open, onClose, seat, onSave, loading }: SeatEditDialogProps) => {
   const [localSeat, setLocalSeat] = useState<Seat | null>(null);
 
   useEffect(() => {

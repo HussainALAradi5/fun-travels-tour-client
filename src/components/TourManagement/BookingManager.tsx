@@ -35,7 +35,7 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
   
   // --- Group State ---
   const [guests, setGuests] = useState<GuestConfig[]>([
-    { id: crypto.randomUUID(), label: "Guest 1 (You)", assignedSeat: null, selectedMeals: [] }
+    { id: crypto.randomUUID(), label: "Guest 1 (You)", firstName: "", lastName: "", email: "", phone: "", nationality: "", passportNumber: "", dateOfBirth: "", gender: "", assignedSeat: null, selectedMeals: [] }
   ]);
   
   // --- Dialog Active States ---
@@ -66,7 +66,7 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
     }
     setGuests(prev => [
       ...prev, 
-      { id: crypto.randomUUID(), label: `Guest ${prev.length + 1}`, assignedSeat: null, selectedMeals: [] }
+      { id: crypto.randomUUID(), label: `Guest ${prev.length + 1}`, firstName: "", lastName: "", email: "", phone: "", nationality: "", passportNumber: "", dateOfBirth: "", gender: "", assignedSeat: null, selectedMeals: [] }
     ]);
   };
 
@@ -82,10 +82,10 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
     
     setGuests(prev => prev.map(g => {
       if (g.id !== activeMealPickerGuestId) return g;
-      const hasMeal = g.selectedMeals.find((m: MealPlan) => m.id === meal.id);
+      const hasMeal = g.selectedMeals?.find((m: MealPlan) => m.id === meal.id);
       return { 
         ...g, 
-        selectedMeals: hasMeal ? g.selectedMeals.filter((m: MealPlan) => m.id !== meal.id) : [...g.selectedMeals, meal] 
+        selectedMeals: hasMeal ? g.selectedMeals?.filter((m: MealPlan) => m.id !== meal.id) ?? [] : [...(g.selectedMeals ?? []), meal] 
       };
     }));
   };
@@ -106,14 +106,27 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
       const reservationPayload: ReservationPayload = {
         tour: { id: Number(tourId) }, 
         user: { id: currentUser.id },
+        guests: guests.map(g => ({
+          firstName: g.firstName ?? "",
+          lastName: g.lastName ?? "",
+          email: g.email ?? "",
+          phone: g.phone ?? "",
+          nationality: g.nationality ?? "",
+          passportNumber: g.passportNumber ?? "",
+          dateOfBirth: g.dateOfBirth ?? "",
+          gender: g.gender ?? "",
+          mealPlanId: g.mealPlanId,
+          seatId: typeof g.assignedSeat === 'object' && g.assignedSeat ? g.assignedSeat.id ?? undefined : undefined,
+          specialRequests: g.specialRequests,
+        })),
         requestedSlots: guests.length,
         tickets: guests.map(g => ({
-          assignedSeat: g.assignedSeat ? { id: g.assignedSeat.id! } : null,
-          selectedMeals: g.selectedMeals.map(m => ({ id: m.id! }))
+          assignedSeat: g.assignedSeat && typeof g.assignedSeat === 'object' ? { id: g.assignedSeat.id! } : null,
+          selectedMeals: (g.selectedMeals ?? []).map(m => ({ id: typeof m === 'number' ? m : (m as any).id ?? 0 }))
         }))
       };
       
-      await handleCreateReservation(reservationPayload);
+      await handleCreateReservation(reservationPayload as unknown as Record<string, unknown>);
       
       toaster.create({ title: "Booking Secured!", description: "Your group reservation is complete.", type: "success" });
       setTimeout(() => navigate("/my-bookings"), 1500);
@@ -126,7 +139,7 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
 
   if (tourLoading) return <Center h="60vh"><Spinner color="blue.500" /></Center>;
 
-  const currentlySelectedSeats = guests.map(g => g.assignedSeat?.id).filter(Boolean) as number[];
+  const currentlySelectedSeats = guests.map(g => typeof g.assignedSeat === 'object' && g.assignedSeat ? g.assignedSeat.id : null).filter(Boolean) as number[];
   const activeMealGuest = guests.find(g => g.id === activeMealPickerGuestId);
 
   return (
@@ -138,7 +151,7 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
       <SimpleGrid columns={{ base: 1, lg: 12 }} gap={8} animation={`${floatIn} 0.5s ease-out`}>
         
         <GridItem colSpan={{ lg: 3 }}>
-          <BookingTourOverview tour={tour} />
+          <BookingTourOverview tour={tour!} />
         </GridItem>
 
         <GridItem colSpan={{ lg: 5 }}>
@@ -155,7 +168,7 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
         <GridItem colSpan={{ lg: 4 }}>
           <Box position="sticky" top="100px">
             <BookingCheckoutCard 
-              tour={tour} 
+              tour={tour!} 
               guests={guests} 
               onConfirm={handleCheckoutClick} 
               loading={isBooking}
@@ -176,7 +189,7 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
             status: (isSeatFree && !isLocallySelected) ? SeatStatus.AVAILABLE : SeatStatus.BOOKED
           };
         })}
-        selectedId={guests.find(g => g.id === activeSeatPickerGuestId)?.assignedSeat?.id || null}
+        selectedId={(() => { const g = guests.find(g => g.id === activeSeatPickerGuestId); return g?.assignedSeat && typeof g.assignedSeat === 'object' ? (g.assignedSeat as Seat).id ?? null : null; })()}
         onSelect={handleSeatSelected}
         loading={seatsLoading}
       />
@@ -186,7 +199,7 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
         open={!!activeMealPickerGuestId}
         onClose={() => setActiveMealPickerGuestId(null)}
         availableMeals={availableMeals}
-        selectedMeals={activeMealGuest?.selectedMeals || []}
+        selectedMeals={activeMealGuest?.selectedMeals ?? []}
         onToggleMeal={handleToggleMeal}
       />
 

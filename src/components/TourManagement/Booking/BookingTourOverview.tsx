@@ -1,10 +1,6 @@
 import { Box, VStack, Text, Heading, Icon, Circle, Separator, HStack } from "@chakra-ui/react";
 import { MapPin, Navigation, Clock } from "lucide-react";
-import type { Tour } from "@/interface/tour/Tour";
-
-interface BookingTourOverviewProps {
-  tour: Tour | null;
-}
+import type { BookingTourOverviewProps } from "@/interface/props/booking/BookingTourOverviewProps";
 
 export const BookingTourOverview = ({ tour }: BookingTourOverviewProps) => (
   <Box p={6} borderRadius="3xl" bg="blue.600" color="white" h="full">

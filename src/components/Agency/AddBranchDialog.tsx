@@ -1,33 +1,18 @@
 import { useEffect, useState, useMemo } from "react";
-import { MapPinHouse } from "lucide-react";
 import { countryService } from "@/Api/Country";
 import { cityService } from "@/Api/City";
 import { userService } from "@/Api/User";
 import type { AgencyBranch } from "@/interface/agency/AgencyBranch";
-
-const DEFAULT_BRANCH: Partial<AgencyBranch> = {
-  branchName: "",
-  branchAddress: "",
-  contactNumber: "",
-  active: true,
-};
 import type { FieldConfig } from "@/interface/common/FieldConfig";
 import type { Country } from "@/interface/geography/Country";
 import type { City } from "@/interface/geography/City";
 import type { User } from "@/interface/user/User";
 import { GenericFormDialog } from "../ui/Custom/Dialogs/GenericFormDialog";
 
-import type { BranchFormData } from "@/interface/agency/BranchFormData";
 import type { SelectOption } from "@/interface/common/SelectOption";
+import type { AddBranchDialogProps } from "@/interface/props/agency/AddBranchDialogProps";
 
-interface Props {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: (data: AgencyBranch) => Promise<void>;
-  loading: boolean;
-}
-
-export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
+export function AddBranchDialog({ open, onClose, onSubmit, loading }: AddBranchDialogProps) {
   const [users, setUsers] = useState<SelectOption[]>([]);
   const [countries, setCountries] = useState<SelectOption[]>([]);
   const [cities, setCities] = useState<SelectOption[]>([]);
@@ -102,25 +87,7 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
     fetchCities();
   }, [selectedCountryId]);
 
-  const handleInterceptSubmit = async (data: BranchFormData) => {
-    // Reconstructing the object to match AgencyBranch interface (nesting the IDs)
-    const formattedData: AgencyBranch = {
-      branchName: data.branchName,
-      branchAddress: data.branchAddress,
-      contactNumber: data.contactNumber,
-      ownerMobileNumber: data.ownerMobileNumber,
-      active: true,
-      country: data.country ? { id: Number(data.country) } : undefined,
-      city: data.city ? { id: Number(data.city) } : undefined,
-      branchManager: data.branchManager
-        ? { id: Number(data.branchManager) }
-        : undefined,
-    };
-
-    await onSubmit(formattedData);
-  };
-
-  const formFields = useMemo<FieldConfig<AgencyBranch>[]>(
+  const formFields = useMemo<FieldConfig<Record<string, unknown>>[]>(
     () => [
       {
         name: "branchName",
@@ -140,17 +107,17 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
         gridSpan: 1,
       },
       {
-        name: "country" as keyof AgencyBranch,
+        name: "country",
         label: "Country",
-        type: "search-select", // Changed to search-select
+        type: "search-select",
         options: countries,
         isRequired: true,
         gridSpan: 1,
       },
       {
-        name: "city" as keyof AgencyBranch,
+        name: "city",
         label: "City",
-        type: "search-select", // Changed to search-select
+        type: "search-select",
         options: cities,
         isRequired: true,
         disabled: !selectedCountryId || cities.length === 0,
@@ -160,9 +127,9 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
         gridSpan: 1,
       },
       {
-        name: "branchManager" as keyof AgencyBranch,
+        name: "branchManager",
         label: "Manager",
-        type: "search-select", // Changed to search-select
+        type: "search-select",
         options: users,
         placeholder: "Select a manager",
         gridSpan: 1,
@@ -172,18 +139,29 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
   );
 
   return (
-    <GenericFormDialog<AgencyBranch>
+    <GenericFormDialog<Record<string, unknown>>
       open={open}
       onClose={onClose}
-      onSubmit={handleInterceptSubmit}
+      onSubmit={async (data) => {
+        const formattedData: AgencyBranch = {
+          branchName: data.branchName as string,
+          branchAddress: data.branchAddress as string,
+          contactNumber: data.contactNumber as string,
+          ownerMobileNumber: data.ownerMobileNumber as string,
+          active: true,
+          country: data.country as AgencyBranch["country"],
+          city: data.city as AgencyBranch["city"],
+          branchManager: data.branchManager as AgencyBranch["branchManager"],
+        };
+
+        await onSubmit(formattedData);
+      }}
       loading={loading}
       title="Add New Branch"
       description="Register a physical location and assign management."
-      icon={MapPinHouse}
       fields={formFields}
-      initialValues={DEFAULT_BRANCH as AgencyBranch}
+      initialValues={{ branchName: "", branchAddress: "", contactNumber: "", active: true } as Record<string, unknown>}
       onFieldChange={(name, value) => {
-        // Match the field name 'country' used in formFields
         if (name === "country") {
           setSelectedCountryId(value ? String(value) : null);
         }

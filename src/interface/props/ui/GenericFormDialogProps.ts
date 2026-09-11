@@ -9,7 +9,7 @@ export interface GenericFormDialogProps<T> {
   description?: string;
   icon?: LucideIcon;
   fields: FieldConfig<T>[];
-  initialValues: Partial<T>;
+  initialValues: T;
   onSubmit: (values: T) => void | Promise<void>;
   loading: boolean;
   onFieldChange?: (name: keyof T, value: unknown) => void;

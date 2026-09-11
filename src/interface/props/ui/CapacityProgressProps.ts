@@ -1,6 +1,6 @@
-import type { VStackProps } from '@chakra-ui/react';
+import type { StackProps } from '@chakra-ui/react';
 
-export interface CapacityProgressProps extends VStackProps {
+export interface CapacityProgressProps extends StackProps {
   value: number;
   total: number;
   unit?: string;

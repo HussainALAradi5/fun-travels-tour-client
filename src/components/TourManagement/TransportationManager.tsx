@@ -17,7 +17,7 @@ export const TransportationManager = () => {
     isLoading, 
     isMutating, 
     fetchTransportation, 
-    handleUpdateTransportStatus 
+    handleUpdateTransportation 
   } = useTourManagement();
 
   const [selectedItem, setSelectedItem] = useState<Transportation | null>(null);
@@ -41,9 +41,9 @@ export const TransportationManager = () => {
 
   useEffect(() => { loadData(); }, [loadData]);
 
-  const handleUpdate = async (values: Transportation) => {
+  const handleUpdate = async (values: Transportation | Record<string, unknown>) => {
     if (selectedItem?.id) {
-      await handleUpdateTransportStatus(selectedItem.id, values);
+      await handleUpdateTransportation(selectedItem.id, values as Transportation);
       loadData();
       onClose();
     }

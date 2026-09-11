@@ -4,14 +4,9 @@ import { MapPin, Trash2 } from "lucide-react";
 import { GenericTable } from "@/components/ui/Custom/GenericTable";
 import type { Country } from "@/interface/geography/Country";
 import CityManagerRow from "../City/CityManagerRow";
+import type { CountryTableProps } from "@/interface/props/geography/CountryTableProps";
 
-interface Props {
-  data: Country[];
-  loading: boolean;
-  onDelete: (country: Country) => void;
-}
-
-export function CountryTable({ data, loading, onDelete }: Props) {
+export function CountryTable({ data, loading, onDelete }: CountryTableProps) {
   const columns = useMemo(
     () => [
       {

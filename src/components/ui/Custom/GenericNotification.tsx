@@ -1,6 +1,5 @@
 import { toaster } from "@/components/ui/toaster";
 import type { NotifyProps } from "@/interface/props/ui/GenericNotificationProps";
-import type { NotificationVariant } from "@/types/common/NotificationVariant";
 
 // === GLOBAL ESCAPE KEY LISTENER ===
 // Instantly clears any toast blocking the screen when you press 'Esc'

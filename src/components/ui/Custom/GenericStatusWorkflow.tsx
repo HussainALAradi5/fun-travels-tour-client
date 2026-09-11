@@ -2,7 +2,6 @@ import { Box, Flex, Text, Badge, Icon, Float, VStack, Spinner } from "@chakra-ui
 import { Check } from "lucide-react";
 import { glowPulse, floatIn } from "@/utilities/Animations";
 import { useState } from "react";
-import type { StatusConfig } from "@/interface/common/StatusConfig";
 import type { GenericStatusWorkflowProps } from "@/interface/props/ui/GenericStatusWorkflowProps";
 
 export type { StatusConfig } from "@/interface/common/StatusConfig";

@@ -4,6 +4,7 @@ import { toaster } from "@/components/ui/toaster";
 import { glowPulse } from "@/utilities/Animations";
 import { FormFieldWrapper } from "./GenericFormComponents/FormField";
 import type { GenericFormProps } from "@/interface/props/ui/GenericFormProps";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
 
 export function GenericForm<T extends Record<string, unknown>>({
   fields,

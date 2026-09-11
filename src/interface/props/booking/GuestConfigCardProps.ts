@@ -1,12 +1,4 @@
-import type { Seat } from "../../tour/Seat";
-import type { MealPlan } from "../../tour/MealPlan";
-
-export interface GuestConfig {
-  id: string;
-  label: string;
-  assignedSeat: Seat | null;
-  selectedMeals: MealPlan[];
-}
+import type { GuestConfig } from "../../common/GuestConfig";
 
 export interface GuestConfigCardProps {
   guest: GuestConfig;

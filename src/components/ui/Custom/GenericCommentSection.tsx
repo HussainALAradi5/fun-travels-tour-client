@@ -3,7 +3,6 @@ import { MessageSquare } from "lucide-react";
 import { CommentHeader } from "./Comment/CommentHeader";
 import { CommentItemDisplay } from "./Comment/CommentItemDisplay";
 import { CommentInputArea } from "./Comment/CommentInputArea";
-import type { CommentItem } from "@/interface/common/CommentItem";
 import type { GenericCommentSectionProps } from "@/interface/props/ui/GenericCommentSectionProps";
 
 export type { CommentItem } from "@/interface/common/CommentItem";

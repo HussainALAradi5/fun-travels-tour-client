@@ -1,7 +1,7 @@
-import type { Transportation } from "../../tour/Transportation";
-import type { GenericStatus } from "../../../enums/GenericStatus";
+import type { Transportation } from "@/interface/tour/Transportation";
+import type { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
 
 export interface TransportationStatusSidebarProps {
-  transportation: Transportation;
-  onStatusChange: (status: GenericStatus) => void;
+  transport: Transportation;
+  onStatusChange: (status: TransportationStatus) => Promise<void>;
 }

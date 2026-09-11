@@ -1,9 +1,6 @@
-import type { LucideIcon } from 'lucide-react';
 import { Box, VStack } from "@chakra-ui/react";
-import React from "react";
 import { GenericDialog } from "./GenericDialog";
 import { GenericTable } from "../GenericTable";
-import type { GenericTableProps } from "@/interface/props/ui/GenericTableProps";
 import type { GenericTableDialogProps } from "@/interface/props/ui/GenericTableDialogProps";
 
 export function GenericTableDialog<T extends { id?: number | string | null }>({

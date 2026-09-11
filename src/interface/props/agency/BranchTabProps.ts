@@ -1,5 +1,7 @@
-import type { Agency } from "../../agency/Agency";
+import type { AgencyBranch } from "../../agency/AgencyBranch";
 
 export interface BranchTabProps {
-  agency: Agency;
+  branches: AgencyBranch[];
+  agencyName: string;
+  loading: boolean;
 }
