@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import {
   Box,
@@ -42,7 +42,7 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
   const [isBranchDialogOpen, setIsBranchDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     if (!id) return;
     setLoading(true);
     try {
@@ -57,11 +57,11 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     loadData();
-  }, [id]);
+  }, [loadData]);
 
   const handleCreateBranch = async (branchData: AgencyBranch) => {
     if (!id) return;

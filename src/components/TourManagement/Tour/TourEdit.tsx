@@ -94,7 +94,7 @@ export const EditTour = () => {
           destinationCountries: tour.destinationCountries?.map(c => String(c.id)) ?? [],
         } as TourFormValues);
 
-      } catch (err: unknown) {
+      } catch {
         setError("Synchronization Error: Failed to load logistics data.");
       } finally {
         setIsLoading(false);
@@ -182,7 +182,11 @@ export const EditTour = () => {
               if (name === "startCountry" || name === "endCountry") {
                 const res = await cityService.getCitiesByCountry(Number(value));
                 const cityOptions = mapToOptions(res);
-                name === "startCountry" ? setStartCities(cityOptions) : setEndCities(cityOptions);
+                if (name === "startCountry") {
+                  setStartCities(cityOptions);
+                } else {
+                  setEndCities(cityOptions);
+                }
               }
             }}
             submitLabel="Commit Changes"

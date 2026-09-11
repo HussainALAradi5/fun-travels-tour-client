@@ -31,7 +31,7 @@ export function FormSelect({ field, value, onChange }: FormSelectProps) {
 
   const collection = useMemo(() => {
     return createListCollection({
-      items: rawOptions.map((item: any) => ({
+      items: rawOptions.map((item: { label: string | number | boolean; value: string | number | boolean | null | undefined }) => ({
         label: String(item.label),
         value: getInternalValue(item.value),
         original: item.value,
@@ -39,10 +39,10 @@ export function FormSelect({ field, value, onChange }: FormSelectProps) {
     });
   }, [rawOptions]);
 
-  const handleValueChange = (details: any) => {
+  const handleValueChange = (details: { value: string[] }) => {
     const id = details.value[0];
-    const found = collection.items.find((item: any) => item.value === id);
-    onChange(field.name, found ? (found as any).original : id);
+    const found = collection.items.find((item) => item.value === id);
+    onChange(field.name, found ? (found as { original: string | number | boolean }).original : id);
   };
 
   return (
@@ -87,7 +87,7 @@ export function FormSelect({ field, value, onChange }: FormSelectProps) {
             borderColor="border.subtle"
             minW="200px"
           >
-            {collection.items.map((item: any) => (
+            {collection.items.map((item) => (
               <SelectItem
                 key={item.value}
                 item={item}

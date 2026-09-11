@@ -1,5 +1,5 @@
 export interface AuthContextType {
-  user: any;
+  user: Record<string, unknown> | null;
   isAdmin: boolean;
   isAuthenticated: boolean;
   loading: boolean;

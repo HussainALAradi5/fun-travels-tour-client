@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { VStack, HStack, Badge, Icon, Button, Box } from "@chakra-ui/react";
 import { UnifiedFilterBar, type FilterGroup } from "@/components/ui/Custom/UnifiedFilterBar";
@@ -19,9 +19,8 @@ export const UserRequestManager = () => {
   const [filters, setFilters] = useState({ type: "", status: "", search: "" });
   const [isCreateOpen, setIsCreateOpen] = useState(false);
 
-  const fetchRequests = async () => {
+  const fetchRequests = useCallback(async () => {
     if (!user?.id) return;
-    setLoading(true);
     const res = await userRequestService.getRequests({
       currentUserId: user.id,
       type: filters.type as UserRequestType,
@@ -29,9 +28,19 @@ export const UserRequestManager = () => {
     });
     if (res) setData(res);
     setLoading(false);
-  };
+  }, [user, filters.type, filters.status]);
 
-  useEffect(() => { fetchRequests(); }, [user?.id, filters.type, filters.status]);
+  useEffect(() => {
+    if (!user?.id) return;
+    userRequestService.getRequests({
+      currentUserId: user.id,
+      type: filters.type as UserRequestType,
+      status: filters.status as UserRequestStatus
+    }).then((res) => {
+      if (res) setData(res);
+      setLoading(false);
+    });
+  }, [user, filters.type, filters.status]);
 
   const filterConfig: FilterGroup[] = [
     {

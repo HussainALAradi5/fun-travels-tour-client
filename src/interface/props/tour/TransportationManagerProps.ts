@@ -1,3 +1,1 @@
-export interface TransportationManagerProps {
-  // No props needed - uses hook internally
-}
+export type TransportationManagerProps = Record<string, never>

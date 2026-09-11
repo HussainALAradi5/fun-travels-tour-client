@@ -35,10 +35,10 @@ const tableLinkStyles = {
 };
 
 // Smart renderer for generic field types
-const renderCellValue = (item: any, col: any) => {
+const renderCellValue = (item: Record<string, unknown>, col: { key?: string; type?: string; render?: (row: Record<string, unknown>) => React.ReactNode }) => {
   if (col.render) return col.render(item);
   
-  const value = item[col.key];
+  const value = col.key ? item[col.key] : undefined;
   
   if (value === null || value === undefined || value === "") {
     return <Text color="fg.muted">-</Text>;
@@ -48,21 +48,21 @@ const renderCellValue = (item: any, col: any) => {
     case "email":
       return (
         <Link 
-          href={`mailto:${value}`} 
+          href={`mailto:${String(value)}`} 
           onClick={(e) => e.stopPropagation()}
           {...tableLinkStyles}
         >
           {/* Explicitly using HStack as requested */}
           <HStack gap={2}>
             <Icon size="sm" color="inherit" opacity={0.8}><Mail size={14} /></Icon>
-            <Text fontSize="sm" fontWeight="medium" color="inherit">{value}</Text>
+            <Text fontSize="sm" fontWeight="medium" color="inherit">{String(value)}</Text>
           </HStack>
         </Link>
       );
     case "mobile":
       return (
         <Link 
-          href={`tel:${value.replace(/\s+/g, '')}`} 
+          href={`tel:${String(value).replace(/\s+/g, '')}`} 
           dir="ltr"
           onClick={(e) => e.stopPropagation()}
           {...tableLinkStyles}
@@ -70,7 +70,7 @@ const renderCellValue = (item: any, col: any) => {
           {/* Explicitly using HStack as requested */}
           <HStack gap={2}>
             <Icon size="sm" color="inherit" opacity={0.8}><Smartphone size={14} /></Icon>
-            <Text fontSize="sm" fontWeight="medium" color="inherit">{value}</Text>
+            <Text fontSize="sm" fontWeight="medium" color="inherit">{String(value)}</Text>
           </HStack>
         </Link>
       );
@@ -81,16 +81,27 @@ const renderCellValue = (item: any, col: any) => {
         </Badge>
       );
     case "date":
-      return <Text>{new Date(value).toLocaleDateString()}</Text>;
+      return <Text>{new Date(String(value)).toLocaleDateString()}</Text>;
     default:
-      return value; 
+      return <>{String(value)}</>; 
   }
 };
 
 export const TableRow = ({ 
   item, id, columns, showSelect, isSelected, toggleOne, 
   isExpanded, setExpandedRowId, renderExpansion, colorPalette 
-}: any) => (
+}: {
+  item: Record<string, unknown>;
+  id: string | number | null;
+  columns: { key?: string; type?: string; render?: (row: Record<string, unknown>) => React.ReactNode }[];
+  showSelect: boolean;
+  isSelected: boolean;
+  toggleOne: (id: string | number) => void;
+  isExpanded: boolean;
+  setExpandedRowId: (id: string | number | null) => void;
+  renderExpansion?: (row: Record<string, unknown>) => React.ReactNode;
+  colorPalette: string;
+}) => (
   <React.Fragment>
     <Table.Row
       cursor={renderExpansion ? "pointer" : "default"}
@@ -107,7 +118,7 @@ export const TableRow = ({
           </Checkbox.Root>
         </Table.Cell>
       )}
-      {columns.map((col: any, idx: number) => (
+      {columns.map((col, idx) => (
         <Table.Cell key={idx} py={3} fontSize="sm">
           {renderCellValue(item, col)}
         </Table.Cell>

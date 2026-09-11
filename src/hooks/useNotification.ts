@@ -15,7 +15,7 @@ export const useNotification = (userId?: number, filters?: Record<string, string
     try {
       const res = await notificationService.getUserNotifications(userId, filters);
       setNotifications(Array.isArray(res) ? res : []);
-    } catch (err) {
+    } catch {
       notify({ 
         title: "Sync Failed", 
         description: "Could not load your latest notifications.", 
@@ -24,7 +24,7 @@ export const useNotification = (userId?: number, filters?: Record<string, string
     } finally {
       setLoading(false);
     }
-  }, [userId, JSON.stringify(filters)]); 
+  }, [userId, filters]); 
 
   const markAsRead = async (id: number) => {
     try {
@@ -36,7 +36,7 @@ export const useNotification = (userId?: number, filters?: Record<string, string
 
       decrementCount();
       
-    } catch (err) {
+    } catch {
       notify({ 
         title: "Action Failed", 
         description: "We couldn't mark this as read. Please try again.", 

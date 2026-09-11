@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { 
   Stack, Center, Spinner, Heading, Text, VStack, HStack, Button, Box, Grid 
@@ -19,18 +19,17 @@ export const CustomerTicketDetailManager = () => {
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchTicket = () => {
+  const fetchTicket = useCallback(() => {
     if (!id) return;
-    setLoading(true);
     ticketService.getById(Number(id))
       .then(setTicket)
       .catch((err) => console.error("Fetch failed:", err))
       .finally(() => setLoading(false));
-  };
+  }, [id]);
 
   useEffect(() => {
     fetchTicket();
-  }, [id]);
+  }, [fetchTicket]);
 
   const { isCancelled, isCompleted } = useMemo(() => {
     if (!ticket || !ticket.tour) return { isCancelled: false, isCompleted: false };

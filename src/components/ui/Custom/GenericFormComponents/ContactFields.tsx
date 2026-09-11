@@ -89,7 +89,7 @@ export const MobileField = ({ value, onChange, placeholder, disabled }: CustomFi
       }
     };
     fetchDBCountries();
-  }, []);
+  }, [value]);
 
   // Filter countries based on search
   const filteredCountries = useMemo(() => {

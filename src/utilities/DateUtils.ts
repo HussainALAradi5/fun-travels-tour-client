@@ -12,7 +12,7 @@ export const calculateTourDuration = (startDate: string, endDate: string): numbe
     // differenceInDays returns full 24h periods. We add 1 to include the last day.
     const days = differenceInDays(end, start) + 1;
     return days > 0 ? days : 1;
-  } catch (error) {
+  } catch {
     return 1;
   }
 };

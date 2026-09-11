@@ -14,23 +14,20 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const refreshCount = useCallback(async () => {
     if (isAuthenticated && user?.id) {
       try {
-        const counts = await notificationService.getCounts(user.id);
+        const counts = await notificationService.getCounts(user.id as unknown as number);
         setUnreadCount(counts.unreadCount);
       } catch (error) {
         console.error("Failed to fetch notification counts", error);
       }
     }
-  }, [isAuthenticated, user?.id]);
+  }, [isAuthenticated, user]);
 
   const decrementCount = () => setUnreadCount(prev => Math.max(0, prev - 1));
 
   useEffect(() => {
     if (!isAuthenticated || !user?.id) {
-      setUnreadCount(0);
       return;
     }
-
-    refreshCount();
 
     const stompClient = new Client({
       brokerURL: 'ws://localhost:8080/ws-notifications', 
@@ -54,7 +51,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     return () => {
       stompClient.deactivate();
     };
-  }, [isAuthenticated, user?.id, refreshCount]);
+  }, [isAuthenticated, user]);
 
   return (
     <NotificationContext.Provider value={{ unreadCount, decrementCount, refreshCount }}>
@@ -63,6 +60,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useNotificationContext = () => {
   const context = useContext(NotificationContext);
   if (!context) throw new Error("useNotificationContext must be used within NotificationProvider");

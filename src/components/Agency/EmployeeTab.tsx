@@ -101,7 +101,7 @@ export function EmployeeTab({
       toaster.create({ title: "Added successfully", type: "success" });
       onClose();
       onRefresh();
-    } catch (error) {
+    } catch {
       toaster.create({ title: "Failed to add employee", type: "error" });
     } finally {
       setIsSubmitting(false);

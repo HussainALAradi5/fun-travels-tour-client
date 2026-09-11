@@ -1,3 +1,1 @@
-export interface CustomerNotificationManagerProps {
-  // No props needed - uses hook internally
-}
+export type CustomerNotificationManagerProps = Record<string, never>

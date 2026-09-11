@@ -12,8 +12,6 @@ export const TourEventLogDetailView = ({ tourId }: TourEventLogDetailViewProps) 
   useEffect(() => {
     if (!tourId) return;
     
-    setIsLoading(true);
-    
     genericTrackingService.getTimeline("TOUR" as never, tourId)
       .then((res) => {
         const rawEvents = res?.events || [];

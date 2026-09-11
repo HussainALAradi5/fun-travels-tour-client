@@ -115,12 +115,12 @@ export function GenericTable<T extends { id?: number | string | null }>(props: G
                 paginatedData.map((item, idx) => (
                   <CustomTableRow 
                     key={item.id ?? idx} 
-                    item={item} 
-                    id={item.id}
-                    columns={columns}
-                    showSelect={showSelect}
+                    item={item as Record<string, unknown>} 
+                    id={item.id ?? null}
+                    columns={columns as Array<{ key?: string; type?: string; render?: (row: Record<string, unknown>) => React.ReactNode }>}
+                    showSelect={showSelect ?? false}
                     colorPalette={colorPalette}
-                    renderExpansion={renderExpansion}
+                    renderExpansion={renderExpansion as unknown as (item: Record<string, unknown>) => React.ReactNode}
                     isSelected={item.id ? state.selectedIds.has(item.id) : false}
                     isExpanded={item.id === state.expandedRowId}
                     toggleOne={actions.toggleOne} 

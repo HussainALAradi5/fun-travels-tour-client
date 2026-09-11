@@ -65,7 +65,7 @@ export const StripeCheckoutForm = ({ amount, method, onSuccess, onClose }: Strip
       console.log("✅ Full Flow Completed. Closing Modal & Triggering Success Callback.");
       onSuccess();
       onClose();
-    } catch (err: unknown) {
+    } catch {
       console.error("❌ Full Flow Failed at Backend Stage.");
     } finally {
       console.groupEnd(); // End the visual grouping

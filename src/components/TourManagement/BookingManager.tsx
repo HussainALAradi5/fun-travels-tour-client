@@ -44,7 +44,6 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
 
   useEffect(() => {
     if (tour?.transportation?.id) {
-      setSeatsLoading(true);
       seatService.filter({ transportId: tour.transportation.id })
         .then((res: Seat[] | { data: Seat[] }) => {
            const responseArray = Array.isArray(res) ? res : ((res as { data: Seat[] }).data || []);
@@ -122,7 +121,7 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
         requestedSlots: guests.length,
         tickets: guests.map(g => ({
           assignedSeat: g.assignedSeat && typeof g.assignedSeat === 'object' ? { id: g.assignedSeat.id! } : null,
-          selectedMeals: (g.selectedMeals ?? []).map(m => ({ id: typeof m === 'number' ? m : (m as any).id ?? 0 }))
+          selectedMeals: (g.selectedMeals ?? []).map(m => ({ id: typeof m === 'number' ? m : (m as MealPlan).id ?? 0 }))
         }))
       };
       

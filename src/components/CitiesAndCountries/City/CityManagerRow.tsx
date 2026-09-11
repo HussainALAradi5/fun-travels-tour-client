@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   HStack,
   Input,
@@ -35,11 +35,7 @@ export default function CityManagerRow({
 
   const { isAdmin } = useAuth();
 
-  useEffect(() => {
-    fetchCities();
-  }, [countryId]);
-
-  const fetchCities = async () => {
+  const fetchCities = useCallback(async () => {
     setFetching(true);
     try {
       const res = await cityService.getCitiesByCountry(countryId);
@@ -49,7 +45,11 @@ export default function CityManagerRow({
     } finally {
       setFetching(false);
     }
-  };
+  }, [countryId]);
+
+  useEffect(() => {
+    fetchCities();
+  }, [fetchCities]);
 
   const handleAdd = async () => {
     if (!newCity.trim() || !isAdmin) return;

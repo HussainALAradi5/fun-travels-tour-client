@@ -8,8 +8,8 @@ export interface TableToolbarProps {
   isExportOpen: boolean;
   setIsExportOpen: (open: boolean) => void;
   selectedIds: Set<string | number>;
-  selectedData: any[];
-  data: any[];
+  selectedData: Record<string, unknown>[];
+  data: Record<string, unknown>[];
   exportFileName?: string;
   colorPalette: string;
   pageSize: number;

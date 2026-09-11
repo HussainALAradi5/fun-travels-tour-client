@@ -1,13 +1,13 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import { authUtils } from "@/utilities/AuthUtils";
 import type { AuthContextType } from "@/interface/common/AuthContextType";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<any>(null);
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<AuthContextType["user"]>(() => authUtils.getUser());
+  const [isAdmin, setIsAdmin] = useState<boolean>(() => authUtils.isAdmin());
+  const [loading, setLoading] = useState<boolean>(false);
 
   /**
    * Syncs the React state with the current data in localStorage.
@@ -33,14 +33,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Note: We don't set loading back to true here as the operation is instant
   };
 
-  /**
-   * Runs once when the application boots up.
-   * This is the bridge between the browser's storage and your React UI.
-   */
-  useEffect(() => {
-    refreshAuth();
-  }, []);
-
   // Derived state: If a user object exists, the user is authenticated.
   const isAuthenticated = !!user;
 
@@ -63,6 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 /**
  * Custom hook to access auth state anywhere in the component tree.
  */
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

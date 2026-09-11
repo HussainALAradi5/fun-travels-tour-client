@@ -15,7 +15,6 @@ export const CustomerTicketsManager = () => {
 
   useEffect(() => {
     if (!user?.id) return;
-    setLoading(true);
     ticketService.filter({ customerId: user.id })
       .then((res) => setTickets(Array.isArray(res) ? res : []))
       .catch(() => notify({ title: "Failed to load tickets", type: "error" }))

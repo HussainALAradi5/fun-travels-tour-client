@@ -1,12 +1,12 @@
 export interface ExportOptionProps {
   title: string;
   desc: string;
-  icon: any;
+  icon: React.ComponentType<{ size?: number }>;
   scheme: string;
   onSelect: () => void;
 }
 
-export interface GenericExportDialogProps<T extends Record<string, any>> {
+export interface GenericExportDialogProps<T extends Record<string, unknown>> {
   open: boolean;
   onClose: () => void;
   data: T[];

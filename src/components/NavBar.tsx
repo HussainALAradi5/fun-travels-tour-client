@@ -42,7 +42,7 @@ export const NavBar = () => {
                   {/* Removed Link/asChild. Using HStack directly inside SmartLink */}
                   <HStack gap={1} color="blue.500" cursor="pointer" _hover={{ opacity: 0.8 }}>
                     <UserCircle size={18} />
-                    <Text fontSize="xs" display={{ base: "none", sm: "inline" }}>{user.name}</Text>
+                    <Text fontSize="xs" display={{ base: "none", sm: "inline" }}>{String(user.name ?? "")}</Text>
                   </HStack>
                 </SmartLink>
 

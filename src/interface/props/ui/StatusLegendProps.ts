@@ -1,4 +1,4 @@
 export interface StatusLegendProps {
-  colorMap: Record<string, any>;
+  colorMap: Record<string, string | { light?: string; dark?: string; text?: string }>;
   title?: string;
 }

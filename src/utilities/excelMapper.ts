@@ -39,7 +39,7 @@ export const mapExcelToUsers = (file: File): Promise<User[]> => {
         });
 
         resolve(mappedUsers);
-      } catch (err) {
+      } catch {
         reject(new Error("Failed to parse Excel file"));
       }
     };

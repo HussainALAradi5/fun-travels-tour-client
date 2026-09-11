@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // ADDED Badge, Grid, Flex, IconButton HERE
 import { 
@@ -36,7 +36,7 @@ export const UserRequestDetails = () => {
   const isSupport = user?.userType?.toUpperCase() === "SUPPORT_AGENT" || isAdmin;
   const isOwner = user?.id === request?.user?.id;
 
-  const fetchData = async (showGlobalLoader = true) => {
+  const fetchData = useCallback(async (showGlobalLoader = true) => {
     if (!id) return;
     try {
       if (showGlobalLoader) setLoading(true);
@@ -48,14 +48,14 @@ export const UserRequestDetails = () => {
         setEvents((trackRes.events || []).sort((a: { createdAt?: string }, b: { createdAt?: string }) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()) as never);
         setComments((trackRes.comments || []).sort((a: { createdAt?: string }, b: { createdAt?: string }) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime()) as never);
       }
-    } catch (error) {
+    } catch {
       notify({ title: "Error", description: "Failed to load request data", type: "error" });
     } finally {
       if (showGlobalLoader) setLoading(false);
     }
-  };
+  }, [id]);
 
-  useEffect(() => { fetchData(true); }, [id]);
+  useEffect(() => { fetchData(true); }, [fetchData]);
 
   const formattedAuditEvents: AuditEventItem[] = events.map(event => ({
     id: event.id || Math.random(),

@@ -1,11 +1,11 @@
 export interface DialogMultiAttachmentProps {
   open: boolean;
   onClose: () => void;
-  onUpload: (file: File) => Promise<any>;
+  onUpload: (file: File) => Promise<unknown>;
   onSuccess?: () => void;
   title: string;
   description: string;
-  templateData: any[];
+  templateData: Record<string, unknown>[];
   templateFileName: string;
   instructions: string;
   colorPalette?: string;

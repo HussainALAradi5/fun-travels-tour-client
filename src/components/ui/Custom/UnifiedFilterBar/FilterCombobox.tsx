@@ -13,7 +13,7 @@ export const FilterCombobox = ({ f }: { f: FilterGroup }) => {
   const isCombobox = f.variant === "combobox";
 
   // Helper to get string for search/accessibility
-  const getStringValue = (item: any) => 
+  const getStringValue = (item: { searchText?: string; label: string | React.ReactNode; value: string }) => 
     item.searchText || (typeof item.label === "string" ? item.label : "") || item.value;
 
   const filteredItems = useMemo(() => {
@@ -33,7 +33,7 @@ export const FilterCombobox = ({ f }: { f: FilterGroup }) => {
   const commonProps = {
     collection,
     value: f.value ? [f.value] : [],
-    onValueChange: (details: any) => {
+    onValueChange: (details: { value: string[] }) => {
       f.onChange?.(details.value[0] || "");
       setSearchTerm("");
     },

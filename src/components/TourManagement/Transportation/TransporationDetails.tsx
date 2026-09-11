@@ -52,7 +52,7 @@ export const TransportationDetails = () => {
     try {
       const data = await transportationService.getById(Number(id));
       setTransport(data);
-    } catch (error: unknown) {
+    } catch {
       toaster.create({
         title: "Error fetching unit details",
         type: "error",

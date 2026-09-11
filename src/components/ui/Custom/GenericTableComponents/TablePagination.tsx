@@ -3,7 +3,15 @@ import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-r
 
 export const TablePagination = ({ 
   totalItems, startIndex, endIndex, currentPage, totalPages, setCurrentPage, headerBg 
-}: any) => (
+}: {
+  totalItems: number;
+  startIndex: number;
+  endIndex: number;
+  currentPage: number;
+  totalPages: number;
+  setCurrentPage: (page: number | ((p: number) => number)) => void;
+  headerBg: string;
+}) => (
   <HStack justifyContent="space-between" p={4} bg={headerBg} borderTop="1px solid" borderColor="border.subtle">
     <Text fontSize="xs" color="fg.muted" fontWeight="medium">
       Showing {totalItems === 0 ? 0 : startIndex + 1} to {Math.min(endIndex, totalItems)} of {totalItems} entries

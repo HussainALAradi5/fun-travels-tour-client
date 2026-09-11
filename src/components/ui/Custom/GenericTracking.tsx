@@ -10,6 +10,20 @@ import type { GenericTrackingProps } from "@/interface/props/ui/GenericTrackingP
 
 export type { TrackingItem } from "@/interface/props/ui/GenericTrackingProps";
 
+function Connector({ color, animate }: { color: string; animate: boolean }) {
+  return (
+    <Box w="10" display="flex" justifyContent="center">
+      <Box 
+        w="2px" 
+        h="30px" 
+        bg={color} 
+        animation={animate ? `${barGlow} 2s infinite ease-in-out` : undefined}
+        opacity={animate ? 0.4 : 0.2}
+      />
+    </Box>
+  );
+}
+
 export const GenericTracking = ({ items, initialVisibleMiddle = 1, animate = true }: GenericTrackingProps) => {
   const [open, setOpen] = useState(false);
 
@@ -22,18 +36,6 @@ export const GenericTracking = ({ items, initialVisibleMiddle = 1, animate = tru
   const visibleMiddle = middleItems.slice(0, initialVisibleMiddle);
   const hiddenMiddle = middleItems.slice(initialVisibleMiddle);
 
-  const Connector = ({ color }: { color: string }) => (
-    <Box w="10" display="flex" justifyContent="center">
-      <Box 
-        w="2px" 
-        h="30px" 
-        bg={color} 
-        animation={animate ? `${barGlow} 2s infinite ease-in-out` : undefined}
-        opacity={animate ? 0.4 : 0.2}
-      />
-    </Box>
-  );
-
   return (
     <VStack align="start" gap="0" w="full">
       <TrackingStep 
@@ -45,7 +47,7 @@ export const GenericTracking = ({ items, initialVisibleMiddle = 1, animate = tru
         animate={animate}
       />
       
-      {items.length > 1 && <Connector color={firstItem.color} />}
+      {items.length > 1 && <Connector color={firstItem.color} animate={animate} />}
 
       {visibleMiddle.map((item) => (
         <Box key={item.id} w="full">
@@ -57,7 +59,7 @@ export const GenericTracking = ({ items, initialVisibleMiddle = 1, animate = tru
               glowColor={item.glowColor!} 
               animate={animate}
             />
-          <Connector color={item.color} />
+          <Connector color={item.color} animate={animate} />
         </Box>
       ))}
 
@@ -92,7 +94,7 @@ export const GenericTracking = ({ items, initialVisibleMiddle = 1, animate = tru
                       glowColor={item.glowColor!} 
                       animate={animate}
                     />
-                    <Connector color={item.color} />
+                    <Connector color={item.color} animate={animate} />
                   </Box>
                 ))}
               </VStack>

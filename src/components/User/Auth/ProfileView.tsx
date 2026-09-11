@@ -29,12 +29,12 @@ export const ProfileView = () => {
   const roleColor = user?.userType ? RoleColors[user.userType] : "blue";
   const bannerImg = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2070&auto=format&fit=crop";
 
-  const handleUpdate = async (formValues: any) => {
+  const handleUpdate = async (formValues: Record<string, unknown>) => {
     if (!user?.id) return;
     setIsSubmitting(true);
     try {
-      const { removeImage, base64Image, profileImageUrl, ...rest } = formValues;
-      let payload: any = { ...user, ...rest };
+      const { removeImage, base64Image, profileImageUrl, ...rest } = formValues as Record<string, unknown> & { removeImage?: boolean; base64Image?: string; profileImageUrl?: string };
+      const payload: Record<string, unknown> = { ...user, ...rest };
 
       if (removeImage) {
         payload.profileImageUrl = null;
@@ -47,7 +47,7 @@ export const ProfileView = () => {
         payload.base64Image = null;
       }
 
-      const response = await userService.updateUser(user.id, payload);
+      const response = await userService.updateUser(user.id as unknown as number, payload as unknown as import("@/interface/user/User").User);
       
       if (response) {
         authUtils.saveSession(authUtils.getToken() || "", response);
@@ -55,7 +55,7 @@ export const ProfileView = () => {
         setIsEditOpen(false);
         toaster.create({ title: "Profile updated successfully", type: "success" });
       }
-    } catch (error) {
+    } catch {
       toaster.create({ title: "Update failed", type: "error" });
     } finally {
       setIsSubmitting(false);
@@ -154,7 +154,7 @@ export const ProfileView = () => {
   );
 };
 
-const InfoCard = ({ icon: IconComponent, label, value }: { icon: any, label: string, value: string }) => (
+const InfoCard = ({ icon: IconComponent, label, value }: { icon: React.ComponentType<{ size?: number }>, label: string, value: string }) => (
   <HStack gap={4} p={4} borderRadius="xl" border="1px solid" borderColor="border.subtle" bg="bg.muted/30">
     <Center boxSize="10" borderRadius="lg" bg="bg.panel" color="blue.500"><IconComponent size={20} /></Center>
     <VStack align="start" gap={0}>

@@ -2,6 +2,7 @@ import { Button, Text, VStack, Box, HStack, Separator, Center } from "@chakra-ui
 import { Download, FileSpreadsheet, FileText, ChevronRight } from "lucide-react";
 import { GenericDialog } from "./GenericDialog";
 import { ExportUtils } from "@/utilities/ExportUtility";
+import type { ExportRecord } from "@/interface/common/ExportRecord";
 
 import type { ExportOptionProps } from "@/interface/props/ui/ExportOptionProps";
 
@@ -32,7 +33,7 @@ const ExportOption = ({ title, desc, icon: Icon, scheme, onSelect }: ExportOptio
 );
 
 // Added optional imageColumns array to configure which fields carry Base64 image data
-export function GenericExportDialog<T extends Record<string, any>>({
+export function GenericExportDialog<T extends Record<string, unknown>>({
   open,
   onClose,
   data,
@@ -56,7 +57,7 @@ export function GenericExportDialog<T extends Record<string, any>>({
           icon={FileText}
           scheme="red"
           onSelect={() => { 
-            ExportUtils.downloadAsPDF(data, fileName, imageColumns); 
+            ExportUtils.downloadAsPDF(data as unknown as ExportRecord[], fileName, imageColumns); 
             onClose(); 
           }}
         />
@@ -67,7 +68,7 @@ export function GenericExportDialog<T extends Record<string, any>>({
           icon={FileSpreadsheet}
           scheme="green"
           onSelect={() => { 
-            ExportUtils.downloadAsExcel(data, fileName); 
+            ExportUtils.downloadAsExcel(data as unknown as ExportRecord[], fileName); 
             onClose(); 
           }}
         />

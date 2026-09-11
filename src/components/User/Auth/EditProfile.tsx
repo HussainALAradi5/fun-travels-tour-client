@@ -5,7 +5,7 @@ import { UserCircle, Lock, Phone, Image as ImageIcon, Link, Trash2 } from "lucid
 import type { EditProfileProps } from "@/interface/props/ui/EditProfileProps";
 
 export const EditProfile = ({ open, onClose, onSubmit, loading, initialValues }: EditProfileProps) => {
-  const fields: FieldConfig<any>[] = [
+  const fields: FieldConfig<Record<string, unknown>>[] = [
     { name: "userName", label: "Username", type: "text", disabled: true, gridSpan: 1 },
     { name: "email", label: "Email Address", type: "email", disabled: true, gridSpan: 1 },
     { name: "mobileNumber", label: "Mobile Number", type: "mobile", icon: Phone, isRequired: true, gridSpan: 1 },
@@ -23,7 +23,7 @@ export const EditProfile = ({ open, onClose, onSubmit, loading, initialValues }:
   };
 
   return (
-    <GenericFormDialog<any>
+    <GenericFormDialog<Record<string, unknown>>
       open={open}
       onClose={onClose}
       onSubmit={onSubmit}

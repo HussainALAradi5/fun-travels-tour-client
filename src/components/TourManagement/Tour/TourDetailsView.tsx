@@ -33,8 +33,6 @@ export const TourDetailView = ({ tour: initialTour }: TourDetailViewProps) => {
   const { open: confirmOpen, onOpen: onConfirmOpen, onClose: onConfirmClose } = useDisclosure();
 
   useEffect(() => {
-    setCurrentTour(initialTour);
-
     if (initialTour?.id) {
       ticketService.filter({ tourId: initialTour.id })
         .then((res: Ticket[]) => setTourTickets(res || []))
