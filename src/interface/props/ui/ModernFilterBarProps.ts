@@ -1,7 +1,4 @@
-export interface FilterOption {
-  label: string;
-  value: string;
-}
+import type { FilterOption } from "@/interface/common/FilterOption";
 
 export interface ModernFilterBarProps {
   filterLabel: string;

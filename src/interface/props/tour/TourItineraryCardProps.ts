@@ -1,4 +1,4 @@
-import type { TrackingItem } from "@/interface/props/ui/ActivityTimelineProps";
+import type { TrackingItem } from "@/interface/common/TrackingItem";
 import type { Tour } from "@/interface/tour/Tour";
 export interface TourItineraryCardProps {
   tour: Tour;

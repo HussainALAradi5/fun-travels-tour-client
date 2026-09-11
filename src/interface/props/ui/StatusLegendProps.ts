@@ -1,4 +1,6 @@
+import type { StatusLegendColor } from "./StatusLegendColor";
+
 export interface StatusLegendProps {
-  colorMap: Record<string, string | { light?: string; dark?: string; text?: string }>;
+  colorMap: Record<string, string | StatusLegendColor>;
   title?: string;
 }

@@ -5,7 +5,7 @@ import type { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
 import { SeatStatusColors, ChairTypeColors } from "@/constants/roles/Colors";
 import { DataTable } from "@/components/ui/Custom/DataTable";
 
-import type { SeatColumn } from "@/interface/tour/SeatColumn";
+import type { Column } from "@/interface/common/Column";
 import type { SeatManagerTableProps } from "@/interface/props/tour/SeatManagerTableProps";
 
 export const SeatManagerTable = ({ data, loading, onEdit }: SeatManagerTableProps) => {
@@ -19,7 +19,7 @@ export const SeatManagerTable = ({ data, loading, onEdit }: SeatManagerTableProp
     }
   };
 
-  const columns: SeatColumn[] = [
+  const columns: Column<Seat>[] = [
     {
       header: "Seat Identity",
       key: "seatCode",

@@ -1,7 +1,7 @@
 import { Tabs, Text, Icon, Badge, Box, Circle, Float } from "@chakra-ui/react";
 import {
   Globe, Building2, Users, Map, Ticket, Bus, UtensilsCrossed, BellRing, Bell,
-  MessageSquare, ReceiptText, Wallet
+  MessageSquare, ReceiptText, Wallet, Blocks
 } from "lucide-react";
 import { useLocation } from "@/lib/navigation";
 import { useAuth } from "@/utilities/AuthContext";
@@ -23,6 +23,7 @@ export const TabsManager = () => {
     : pathSegments.includes("my-requests") ? "requests"
     : pathSegments.includes("my-notifications") ? "notifications"
     : pathSegments.includes("transactions") ? "transactions"
+    : pathSegments.includes("components") ? "components"
     : (pathSegments.includes("tours") || pathSegments.includes("reserve")) ? "tours"
     : "";
 
@@ -51,7 +52,16 @@ export const TabsManager = () => {
     { value: "users", label: "Users", icon: Users, path: "/admin/users" },
   ];
 
-  const visibleTabs = isAuthenticated ? (isAdmin ? adminOnlyTabs : userTabs) : [userTabs[0]];
+  const componentShowcaseTab: TabItem = {
+    value: "components",
+    label: "Components",
+    icon: Blocks,
+    path: "/components",
+  };
+
+  const visibleTabs = isAuthenticated
+    ? [...(isAdmin ? adminOnlyTabs : userTabs), componentShowcaseTab]
+    : [userTabs[0], componentShowcaseTab];
 
   return (
     <Tabs.Root value={currentTab} variant="line" colorPalette="blue" size="sm" lazyMount>

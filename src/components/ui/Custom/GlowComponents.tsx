@@ -1,6 +1,7 @@
 import { glowPulse } from "@/utilities/Animations";
 import { Box, HStack, VStack, Circle, Text, Icon } from "@chakra-ui/react";
-import type { TrackingStepProps, MetricBoxProps } from "@/interface/props/ui/GlowComponentsProps";
+import type { TrackingStepProps } from "@/interface/props/ui/TrackingStepProps";
+import type { MetricBoxProps } from "@/interface/props/ui/MetricBoxProps";
 
 export const TrackingStep = ({ icon: I, bg, title, location, glowColor, animate = true }: TrackingStepProps) => (
   <HStack gap={4} align="start">

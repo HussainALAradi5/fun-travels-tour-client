@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "@/lib/navigation";
 import { Box, VStack, Separator, HStack, Text, Input, Center, Spinner } from "@chakra-ui/react";
 
@@ -26,15 +26,29 @@ export const CustomerNotificationsManager = () => {
   });
 
   const isReadParam = filters.status === "READ" ? true : filters.status === "UNREAD" ? false : undefined;
+  const notificationFilters = useMemo(
+    () => ({
+      search: filters.search || undefined,
+      isRead: isReadParam,
+      type: filters.type || undefined,
+      refType: filters.refType || undefined,
+      startDate: filters.startDate || undefined,
+      endDate: filters.endDate || undefined,
+    }) as Record<string, string | number | boolean>,
+    [
+      filters.search,
+      filters.type,
+      filters.refType,
+      filters.startDate,
+      filters.endDate,
+      isReadParam,
+    ],
+  );
 
-  const { notifications, loading, fetchNotifications, markAsRead } = useNotification(user?.id, {
-    search: filters.search || undefined,
-    isRead: isReadParam,
-    type: filters.type || undefined,
-    refType: filters.refType || undefined,
-    startDate: filters.startDate || undefined,
-    endDate: filters.endDate || undefined,
-  } as Record<string, string | number | boolean>);
+  const { notifications, loading, fetchNotifications, markAsRead } = useNotification(
+    user?.id,
+    notificationFilters,
+  );
 
   useEffect(() => {
     fetchNotifications();

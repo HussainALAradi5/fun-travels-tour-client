@@ -1,24 +1,23 @@
 import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interface/common/ApiResponse";
-import type { MealPlanResponse } from "@/interface/tour/MealPlanResponse";
 import type { MealPlan } from "@/interface/tour/MealPlan";
 
 export const mealPlanService = {
   getAll: async (): Promise<MealPlan[]> => {
     const response =
-      await apiClient.get<ApiResponse<MealPlanResponse[]>>("/meals");
+      await apiClient.get<ApiResponse<MealPlan[]>>("/meals");
     return response.data.data as unknown as MealPlan[];
   },
 
   getAgencyCatalog: async (agencyId: number): Promise<MealPlan[]> => {
-    const response = await apiClient.get<ApiResponse<MealPlanResponse[]>>(
+    const response = await apiClient.get<ApiResponse<MealPlan[]>>(
       `/meals/agency/${agencyId}`,
     );
     return response.data.data as unknown as MealPlan[];
   },
 
-  create: async (mealPlan: Partial<MealPlanResponse>): Promise<MealPlan> => {
-    const response = await apiClient.post<ApiResponse<MealPlanResponse>>(
+  create: async (mealPlan: Partial<MealPlan>): Promise<MealPlan> => {
+    const response = await apiClient.post<ApiResponse<MealPlan>>(
       "/meals",
       mealPlan,
     );
@@ -37,7 +36,7 @@ export const mealPlanService = {
   },
 
   updatePrice: async (id: number, price: number): Promise<MealPlan> => {
-    const response = await apiClient.put<ApiResponse<MealPlanResponse>>(
+    const response = await apiClient.put<ApiResponse<MealPlan>>(
       `/meals/${id}/price`,
       null,
       {

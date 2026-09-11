@@ -1,7 +1,6 @@
 import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interface/common/ApiResponse";
 import type { Transaction } from "@/interface/payment/Transaction";
-import type { TransactionResponse } from "@/interface/payment/TransactionResponse";
 import type { PaymentMethod } from "@/enums/payment/PaymentMethod";
 
 export const walletService = {
@@ -11,7 +10,7 @@ export const walletService = {
   },
 
   topUp: async (amount: number, method: PaymentMethod, gatewayToken: string): Promise<Transaction> => {
-    const response = await apiClient.post<ApiResponse<TransactionResponse>>(
+    const response = await apiClient.post<ApiResponse<Transaction>>(
       "/wallet/top-up",
       null,
       {

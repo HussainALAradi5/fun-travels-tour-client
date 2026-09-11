@@ -130,7 +130,7 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
     </AppDialog>
   );
 };
-import type { LegendItemProps } from "@/interface/props/tour/SeatPickerDialogProps";
+import type { LegendItemProps } from "@/interface/props/tour/LegendItemProps";
 
 const LegendItem = ({ colorPalette, bg, color, label, icon: IconCmp, fill, opacity = 1 }: LegendItemProps) => {
   const isOutline = !!colorPalette;

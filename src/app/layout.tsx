@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import "@/index.css";
 import { Providers } from "./providers";
 import { ClientShell } from "./client-shell";
 

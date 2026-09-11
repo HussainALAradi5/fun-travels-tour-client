@@ -1,17 +1,16 @@
 import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interface/common/ApiResponse";
 import type { User } from "@/interface/user/User";
-import type { UserResponse } from "@/interface/user/UserResponse";
 import type { LoginRequest } from "@/interface/auth/LoginRequest";
-import type { AuthResponse } from "@/interface/auth/AuthResponse";
+import type { AuthSession } from "@/interface/auth/AuthSession";
 import type { RegisterRequest } from "@/interface/auth/RegisterRequest";
 import { authUtils } from "@/utilities/AuthUtils";
 
 export const userService = {
   login: async (
     credentials: LoginRequest,
-  ): Promise<ApiResponse<AuthResponse>> => {
-    const response = await apiClient.post<ApiResponse<AuthResponse>>(
+  ): Promise<ApiResponse<AuthSession>> => {
+    const response = await apiClient.post<ApiResponse<AuthSession>>(
       "/auth/login",
       credentials,
     );
@@ -23,8 +22,8 @@ export const userService = {
 
   register: async (
     user: RegisterRequest,
-  ): Promise<ApiResponse<UserResponse>> => {
-    const response = await apiClient.post<ApiResponse<UserResponse>>(
+  ): Promise<ApiResponse<User>> => {
+    const response = await apiClient.post<ApiResponse<User>>(
       "/auth/register",
       user,
     );
@@ -32,7 +31,7 @@ export const userService = {
   },
 
   getAllUsers: async (): Promise<User[]> => {
-    const response = await apiClient.get<ApiResponse<UserResponse[]>>("/users");
+    const response = await apiClient.get<ApiResponse<User[]>>("/users");
     return response.data.data as unknown as User[];
   },
 
@@ -41,21 +40,21 @@ export const userService = {
     role?: string,
   ): Promise<User[]> => {
     const roleParam = role && role !== "ALL" ? `?role=${role}` : "";
-    const response = await apiClient.get<ApiResponse<UserResponse[]>>(
+    const response = await apiClient.get<ApiResponse<User[]>>(
       `/users/agency/${agencyId}${roleParam}`,
     );
     return response.data.data as unknown as User[];
   },
 
   getProfile: async (id: number): Promise<User> => {
-    const response = await apiClient.get<ApiResponse<UserResponse>>(
+    const response = await apiClient.get<ApiResponse<User>>(
       `/users/${id}`,
     );
     return response.data.data as unknown as User;
   },
 
   updateUser: async (id: number, userDetails: User): Promise<User> => {
-    const response = await apiClient.put<ApiResponse<UserResponse>>(
+    const response = await apiClient.put<ApiResponse<User>>(
       `/users/${id}`,
       userDetails,
     );
@@ -73,7 +72,7 @@ export const userService = {
     if (agencyId) params.append("agencyId", agencyId.toString());
     if (branchId) params.append("branchId", branchId.toString());
 
-    const response = await apiClient.post<ApiResponse<UserResponse>>(
+    const response = await apiClient.post<ApiResponse<User>>(
       `/users/add-employee?${params.toString()}`,
       user,
     );
@@ -88,7 +87,7 @@ export const userService = {
     const params = new URLSearchParams({ type });
     if (branchId) params.append("branchId", branchId.toString());
 
-    const response = await apiClient.put<ApiResponse<UserResponse>>(
+    const response = await apiClient.put<ApiResponse<User>>(
       `/users/permissions/${id}?${params.toString()}`,
     );
     return response.data.data as unknown as User;
@@ -100,7 +99,7 @@ export const userService = {
   },
 
   getUsersByRole: async (type: string): Promise<User[]> => {
-    const response = await apiClient.get<ApiResponse<UserResponse[]>>(
+    const response = await apiClient.get<ApiResponse<User[]>>(
       `/users/role/${type}`,
     );
     return response.data.data as unknown as User[];
@@ -156,7 +155,7 @@ export const userService = {
       token,
       newPassword,
     });
-    const response = await apiClient.post<ApiResponse<UserResponse>>(
+    const response = await apiClient.post<ApiResponse<User>>(
       `/users/confirm-password-reset?${params.toString()}`,
     );
     return response.data.data as unknown as User;

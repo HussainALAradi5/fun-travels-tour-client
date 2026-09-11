@@ -1,4 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
+import type { SelectOption } from './SelectOption';
 
 export type FieldType =
   | "text"
@@ -20,7 +21,7 @@ export interface FieldConfig<T> {
   label: string;
   type: FieldType;
   placeholder?: string;
-  options?: { label: string; value: string | number | boolean }[];
+  options?: SelectOption[];
   isRequired?: boolean;
   gridSpan?: number;
   disabled?: boolean;

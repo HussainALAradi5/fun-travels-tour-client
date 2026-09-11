@@ -22,26 +22,22 @@ export const UserRequestManager = () => {
 
   const fetchRequests = useCallback(async () => {
     if (!user?.id) return;
-    const res = await userRequestService.getRequests({
-      currentUserId: user.id,
-      type: filters.type as UserRequestType,
-      status: filters.status as UserRequestStatus
-    });
-    if (res) setData(res);
-    setLoading(false);
-  }, [user, filters.type, filters.status]);
+    setLoading(true);
+    try {
+      const res = await userRequestService.getRequests({
+        currentUserId: user.id,
+        type: filters.type as UserRequestType,
+        status: filters.status as UserRequestStatus
+      });
+      setData(res || []);
+    } finally {
+      setLoading(false);
+    }
+  }, [user?.id, filters.type, filters.status]);
 
   useEffect(() => {
-    if (!user?.id) return;
-    userRequestService.getRequests({
-      currentUserId: user.id,
-      type: filters.type as UserRequestType,
-      status: filters.status as UserRequestStatus
-    }).then((res) => {
-      if (res) setData(res);
-      setLoading(false);
-    });
-  }, [user, filters.type, filters.status]);
+    void fetchRequests();
+  }, [fetchRequests]);
 
   const filterConfig: FilterGroup[] = [
     {

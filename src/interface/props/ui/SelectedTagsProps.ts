@@ -1,5 +1,7 @@
+import type { SelectOption } from "@/interface/common/SelectOption";
+
 export interface SelectedTagsProps {
   values: string[];
-  options: { label: string; value: string | number }[];
+  options: SelectOption[];
   onRemove: (value: string) => void;
 }

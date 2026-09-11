@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { ComponentVariant } from '@/enums/ComponentVariant';
 
 export interface ContentCardProps {
   header?: ReactNode;
@@ -11,4 +12,5 @@ export interface ContentCardProps {
   p?: string;
   onClick?: () => void;
   _hover?: Record<string, string>;
+  variant?: ComponentVariant;
 }

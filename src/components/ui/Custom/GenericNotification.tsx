@@ -1,5 +1,5 @@
 import { toaster } from "@/components/ui/toaster";
-import type { NotifyProps } from "@/interface/props/ui/GenericNotificationProps";
+import type { NotifyProps } from "@/interface/props/ui/NotifyProps";
 if (typeof window !== "undefined") {
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {

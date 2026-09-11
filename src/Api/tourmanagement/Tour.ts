@@ -1,25 +1,26 @@
 import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interface/common/ApiResponse";
-import type { TourResponse } from "@/interface/tour/TourResponse";
-import type { TourCreateRequest } from "@/interface/tour/TourCreateRequest";
 import type { Tour } from "@/interface/tour/Tour";
+import type { TourCreateRequest } from "@/interface/tour/TourCreateRequest";
 import type { GenericStatus } from "@/enums/GenericStatus";
+import type { TourFilterParams } from "@/interface/tour/TourFilterParams";
+import type { TourCatalogParams } from "@/interface/tour/TourCatalogParams";
 
 export const tourService = {
   getAll: async (): Promise<Tour[]> => {
-    const response = await apiClient.get<ApiResponse<TourResponse[]>>("/tours");
+    const response = await apiClient.get<ApiResponse<Tour[]>>("/tours");
     return response.data.data as unknown as Tour[];
   },
 
   getById: async (id: number): Promise<Tour> => {
-    const response = await apiClient.get<ApiResponse<TourResponse>>(
+    const response = await apiClient.get<ApiResponse<Tour>>(
       `/tours/${id}`,
     );
     return response.data.data as unknown as Tour;
   },
 
   create: async (tour: TourCreateRequest): Promise<Tour> => {
-    const response = await apiClient.post<ApiResponse<TourResponse>>(
+    const response = await apiClient.post<ApiResponse<Tour>>(
       "/tours",
       tour,
     );
@@ -30,7 +31,7 @@ export const tourService = {
     id: number,
     tour: Partial<TourCreateRequest>,
   ): Promise<Tour> => {
-    const response = await apiClient.put<ApiResponse<TourResponse>>(
+    const response = await apiClient.put<ApiResponse<Tour>>(
       `/tours/${id}`,
       tour,
     );
@@ -38,7 +39,7 @@ export const tourService = {
   },
 
   updateStatus: async (id: number, status: GenericStatus): Promise<Tour> => {
-    const response = await apiClient.put<ApiResponse<TourResponse>>(
+    const response = await apiClient.put<ApiResponse<Tour>>(
       `/tours/${id}/status`,
       null,
       {
@@ -48,35 +49,16 @@ export const tourService = {
     return response.data.data as unknown as Tour;
   },
 
-  filter: async (params: {
-    status?: string;
-    minSlots?: number;
-    startDate?: string;
-    endDate?: string;
-    agencyId?: number;
-    branchId?: number;
-    minPrice?: number;
-    maxPrice?: number;
-    countryId?: number;
-    cityId?: number;
-    createdById?: number;
-    sortBy?: string;
-    sortDir?: "asc" | "desc";
-  }): Promise<Tour[]> => {
-    const response = await apiClient.get<ApiResponse<TourResponse[]>>(
+  filter: async (params: TourFilterParams): Promise<Tour[]> => {
+    const response = await apiClient.get<ApiResponse<Tour[]>>(
       "/tours/filter",
       { params },
     );
     return response.data.data as unknown as Tour[];
   },
 
-  getCatalog: async (params: {
-    startCountryId?: number;
-    endCountryId?: number;
-    startDate?: string;
-    endDate?: string;
-  }): Promise<Tour[]> => {
-    const response = await apiClient.get<ApiResponse<TourResponse[]>>(
+  getCatalog: async (params: TourCatalogParams): Promise<Tour[]> => {
+    const response = await apiClient.get<ApiResponse<Tour[]>>(
       "/tours/catalog",
       { params },
     );

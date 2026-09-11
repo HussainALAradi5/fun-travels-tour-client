@@ -1,5 +1,6 @@
 import { Box, VStack, HStack } from "@chakra-ui/react";
 import type { ContentCardProps } from "@/interface/props/ui/ContentCardProps";
+import { ComponentVariant } from "@/enums/ComponentVariant";
 
 export const ContentCard = ({
   header,
@@ -11,14 +12,16 @@ export const ContentCard = ({
   bg,
   p,
   onClick,
+  variant = ComponentVariant.OUTLINE,
 }: ContentCardProps) => {
   return (
     <Box
-      borderWidth="1px"
+      borderWidth={variant === "outline" ? "1px" : "0"}
       borderRadius="2xl"
       overflow="hidden"
-      bg={bg ?? "bg.panel"}
-      shadow="sm"
+      bg={bg ?? (variant === "solid" ? "blue.600" : variant === "subtle" ? "bg.muted" : "bg.panel")}
+      color={variant === "solid" ? "white" : undefined}
+      shadow={variant === "elevated" ? "xl" : "sm"}
       transition="all 0.2s"
       w={w}
       border={border}

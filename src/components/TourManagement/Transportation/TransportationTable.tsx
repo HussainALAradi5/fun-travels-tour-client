@@ -22,7 +22,7 @@ import { TransportationStatus } from "@/enums/tourmanagement/TransportationStatu
 import type { Transportation } from "@/interface/tour/Transportation";
 import { TransportationColors } from "@/constants/roles/Colors";
 
-import type { TransportationColumn } from "@/interface/tour/TransportationColumn";
+import type { Column } from "@/interface/common/Column";
 import type { TransportationTableProps } from "@/interface/props/tour/TransportationTableProps";
 
 const STATUS_CONFIG: Record<TransportationStatus, { color: string; icon: typeof CheckCircle2; label: string }> = {
@@ -44,7 +44,7 @@ const VehicleIcon = ({ type, size = 16 }: { type: TransportationType; size?: num
 };
 
 export const TransportationTable = ({ data, loading, onEdit, onView }: TransportationTableProps) => {
-  const columns: TransportationColumn[] = [
+  const columns: Column<Transportation>[] = [
     {
       header: "Internal Code",
       key: "code",

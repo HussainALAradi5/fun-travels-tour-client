@@ -1,5 +1,6 @@
 import type { ChairType } from '../../enums/tourmanagement/ChirType';
 import type { SeatStatus } from '../../enums/tourmanagement/SeatStatus';
+import type { EntityReference } from '../common/EntityReference';
 
 export interface Seat {
   id?: number;
@@ -7,6 +8,6 @@ export interface Seat {
   chairType: ChairType;
   status: SeatStatus;
   seatPriceModifier: number;
-  transportation?: { id?: number };
-  ticket?: { id?: number };
+  transportation?: Partial<EntityReference>;
+  ticket?: Partial<EntityReference>;
 }

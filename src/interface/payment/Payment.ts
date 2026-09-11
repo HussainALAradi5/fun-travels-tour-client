@@ -1,22 +1,14 @@
-import type { PaymentMethod } from '../../enums/payment/PaymentMethod';
-import type { PaymentStatus } from '../../enums/payment/PaymentStatus';
-import type { TourReservation } from '../tour/TourReservation';
-import type { Transaction } from './Transaction';
+import type { PaymentMethod } from "@/enums/payment/PaymentMethod";
+import type { PaymentStatus } from "@/enums/payment/PaymentStatus";
+import type { PaymentReservationSummary } from "./PaymentReservationSummary";
 
 export interface Payment {
-  id?: number;
-  transactionId?: string;
-  method: PaymentMethod;
-  status: PaymentStatus;
+  id: number;
   amount: number;
   currency?: string;
+  method: PaymentMethod;
+  status: PaymentStatus;
+  transactionId?: string;
+  reservation?: PaymentReservationSummary | null;
   paymentDate?: string;
-  reservation?: Partial<TourReservation>;
-  transactions?: Transaction[];
 }
-
-export const DEFAULT_PAYMENT: Partial<Payment> = {
-  method: "CREDIT_CARD" as PaymentMethod,
-  status: "PENDING" as PaymentStatus,
-  amount: 0,
-};

@@ -1,8 +1,11 @@
-import type { Country } from './Country';
+import type { CityCountrySummary } from "./CityCountrySummary";
 
 export interface City {
-  id?: number;
+  id: number;
   name: string;
-  countryId?: string | number;
-  country?: Country;
+  country: CityCountrySummary;
 }
+
+export const DEFAULT_CITY: Partial<City> = {
+  name: "",
+};

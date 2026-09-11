@@ -9,15 +9,22 @@ export const SmartLink = ({ to, children }: SmartLinkProps) => {
   const [menuState, setMenuState] = useState({ isOpen: false, x: 0, y: 0 });
 
   useEffect(() => {
-    const closeMenu = () => setMenuState((prev) => ({ ...prev, isOpen: false }));
+    if (!menuState.isOpen) return;
+
+    const closeMenu = () => {
+      setMenuState((previous) =>
+        previous.isOpen ? { ...previous, isOpen: false } : previous,
+      );
+    };
+
     window.addEventListener("click", closeMenu);
-    window.addEventListener("scroll", closeMenu);
+    window.addEventListener("scroll", closeMenu, { passive: true });
 
     return () => {
       window.removeEventListener("click", closeMenu);
       window.removeEventListener("scroll", closeMenu);
     };
-  }, []);
+  }, [menuState.isOpen]);
 
   const handleClick = (e: React.MouseEvent) => {
     if (e.button === 2) return;

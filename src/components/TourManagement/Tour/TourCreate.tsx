@@ -93,8 +93,8 @@ export const TourCreate = () => {
         hasTransportation: Boolean(formData.transportation),
         startCountry: formData.startCountry ? ({ id: Number(formData.startCountry) } as Country) : undefined,
         endCountry: formData.endCountry ? ({ id: Number(formData.endCountry) } as Country) : undefined,
-        startCity: formData.startCity ? ({ id: Number(formData.startCity) } as City) : undefined,
-        endCity: formData.endCity ? ({ id: Number(formData.endCity) } as City) : undefined,
+        startCity: formData.startCity ? ({ id: Number(formData.startCity) } as Partial<City>) : undefined,
+        endCity: formData.endCity ? ({ id: Number(formData.endCity) } as Partial<City>) : undefined,
         transportation: formData.transportation ? ({ id: Number(formData.transportation) } as Transportation) : undefined,
         destinationCountries: Array.isArray(formData.destinationCountries)
           ? formData.destinationCountries.map((id) => ({ id: Number(id) } as Country))

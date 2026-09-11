@@ -18,4 +18,17 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    files: ['src/interface/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'TSTypeLiteral',
+          message:
+            'Do not declare inline object types in interface files. Extract the shape into a named interface and import it.',
+        },
+      ],
+    },
+  },
 ])

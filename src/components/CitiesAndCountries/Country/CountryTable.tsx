@@ -93,12 +93,14 @@ export function CountryTable({ data, loading, onDelete }: CountryTableProps) {
         columns={columns}
         loading={loading}
         searchKey="famousName"
-        renderExpansion={(country) => (
-          <CityManagerRow
-            countryId={country.id as number}
-            countryName={country.famousName}
-          />
-        )}
+        renderExpansion={(country) =>
+          country.id != null ? (
+            <CityManagerRow
+              countryId={country.id}
+              countryName={country.famousName}
+            />
+          ) : null
+        }
       />
     </Box>
   );

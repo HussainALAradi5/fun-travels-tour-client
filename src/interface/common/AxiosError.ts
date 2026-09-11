@@ -1,8 +1,6 @@
+import type { AxiosErrorResponse } from "./AxiosErrorResponse";
+
 export interface AxiosError {
-  response?: {
-    data?: {
-      message?: string;
-    };
-  };
+  response?: AxiosErrorResponse;
   message?: string;
 }

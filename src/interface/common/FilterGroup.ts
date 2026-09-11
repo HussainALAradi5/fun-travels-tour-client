@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { FilterOption } from './FilterOption';
 
 export interface FilterGroup {
   label: string;
@@ -7,5 +7,5 @@ export interface FilterGroup {
   onChange?: (val: string) => void;
   minWidth?: string;
   placeholder?: string;
-  options?: { label: ReactNode; value: string; searchText?: string }[];
+  options?: FilterOption[];
 }

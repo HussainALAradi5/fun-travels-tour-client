@@ -1,4 +1,6 @@
 import type { UserType } from '../../enums/UserType';
+import type { AgencySummary } from '../tour/AgencySummary';
+import type { BranchSummary } from '../tour/BranchSummary';
 
 export interface User extends Record<string, unknown> {
   id?: number;
@@ -11,8 +13,8 @@ export interface User extends Record<string, unknown> {
   mobileNumber: string;
   profileImageUrl: string | null;
   base64Image?: string;
-  agency?: { id?: number; agencyName?: string } | null;
-  agencyBranch?: { id?: number; branchName?: string } | null;
+  agency?: Partial<AgencySummary> | null;
+  agencyBranch?: Partial<BranchSummary> | null;
   active: boolean;
 }
 

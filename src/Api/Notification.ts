@@ -1,15 +1,14 @@
 import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interface/common/ApiResponse";
-import type { NotificationResponse } from "@/interface/notification/NotificationResponse";
-import type { NotificationCounts } from "@/interface/notification/NotificationCounts";
 import type { Notification } from "@/interface/notification/Notification";
+import type { NotificationCounts } from "@/interface/notification/NotificationCounts";
 
 export const notificationService = {
   getUserNotifications: async (
     userId: number,
     filters?: Record<string, string | number | boolean>,
   ): Promise<Notification[]> => {
-    const response = await apiClient.get<ApiResponse<NotificationResponse[]>>(
+    const response = await apiClient.get<ApiResponse<Notification[]>>(
       `/notifications/user/${userId}`,
       { params: filters },
     );

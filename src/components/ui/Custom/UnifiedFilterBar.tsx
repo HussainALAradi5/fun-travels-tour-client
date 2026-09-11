@@ -88,13 +88,14 @@ export const UnifiedFilterBar = ({
 {activeFilters.map((f, idx) => (
         <FilterCombobox key={`${idx}-${f.value}`} f={f} />
       ))}
-<Button
-        size="sm" variant="subtle" h="10" w="10" borderRadius="xl"
+      <Button
+        size="sm" variant="outline" h="10" borderRadius="xl" px={4}
         onClick={() => { setLocalSearch(""); onReset(); }}
         _hover={{ bg: "red.100", color: "red.600" }}
         title="Reset all filters"
+        aria-label="Reset search and filters"
       >
-        <RotateCcw size={14} />
+        <RotateCcw size={14} /> Reset
       </Button>
     </HStack>
   );

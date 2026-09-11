@@ -1,25 +1,20 @@
 import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interface/common/ApiResponse";
-import type { UserRequestResponse } from "@/interface/support/UserRequestResponse";
 import type { UserRequest } from "@/interface/support/UserRequest";
 import { UserRequestStatus } from "@/enums/UserRequest/UserRequestStatus";
 import { UserRequestType } from "@/enums/UserRequest/UserRequestType";
+import type { UserRequestFilterParams } from "@/interface/support/UserRequestFilterParams";
 
 export const userRequestService = {
-  create: async (request: Partial<UserRequestResponse>): Promise<UserRequest> => {
-    const response = await apiClient.post<ApiResponse<UserRequestResponse>>(
+  create: async (request: Partial<UserRequest>): Promise<UserRequest> => {
+    const response = await apiClient.post<ApiResponse<UserRequest>>(
       "/user-requests",
       request,
     );
     return response.data.data as unknown as UserRequest;
   },
 
-  getRequests: async (params: {
-    currentUserId: number;
-    status?: UserRequestStatus;
-    type?: UserRequestType;
-    userIdFilter?: number;
-  }): Promise<UserRequest[]> => {
+  getRequests: async (params: UserRequestFilterParams): Promise<UserRequest[]> => {
     const queryParams = new URLSearchParams();
     queryParams.append("currentUserId", params.currentUserId.toString());
 
@@ -28,33 +23,33 @@ export const userRequestService = {
     if (params.userIdFilter)
       queryParams.append("userIdFilter", params.userIdFilter.toString());
 
-    const response = await apiClient.get<ApiResponse<UserRequestResponse[]>>(
+    const response = await apiClient.get<ApiResponse<UserRequest[]>>(
       `/user-requests?${queryParams.toString()}`,
     );
     return response.data.data as unknown as UserRequest[];
   },
 
   getById: async (id: number): Promise<UserRequest> => {
-    const response = await apiClient.get<ApiResponse<UserRequestResponse>>(`/user-requests/${id}`);
+    const response = await apiClient.get<ApiResponse<UserRequest>>(`/user-requests/${id}`);
     return response.data.data as unknown as UserRequest;
   },
 
   assignToAgent: async (requestId: number, agentId: number): Promise<UserRequest> => {
-    const response = await apiClient.patch<ApiResponse<UserRequestResponse>>(
+    const response = await apiClient.patch<ApiResponse<UserRequest>>(
       `/user-requests/${requestId}/assign/${agentId}`,
     );
     return response.data.data as unknown as UserRequest;
   },
 
   solveRequest: async (requestId: number, solverId: number): Promise<UserRequest> => {
-    const response = await apiClient.patch<ApiResponse<UserRequestResponse>>(
+    const response = await apiClient.patch<ApiResponse<UserRequest>>(
       `/user-requests/${requestId}/solve/${solverId}`,
     );
     return response.data.data as unknown as UserRequest;
   },
 
   rejectRequest: async (requestId: number, rejectedById: number): Promise<UserRequest> => {
-    const response = await apiClient.patch<ApiResponse<UserRequestResponse>>(
+    const response = await apiClient.patch<ApiResponse<UserRequest>>(
       `/user-requests/${requestId}/reject/${rejectedById}`,
     );
     return response.data.data as unknown as UserRequest;

@@ -1,7 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-import { userService } from "@/Api/User";
+import { useState, useCallback } from "react";
 import { useUser } from "@/hooks/User/useUser";
-import type { User } from "@/interface/user/User";
 import type { Tour } from "@/interface/tour/Tour";
 import type { Guest } from "@/interface/common/Guest";
 import { useNavigate } from "@/lib/navigation";
@@ -10,14 +8,7 @@ import { toaster } from "@/components/ui/toaster";
 export function useBookingCheckout(tour: Tour | null) {
   const navigate = useNavigate();
   const { user: currentUser } = useUser();
-  const [customer, setCustomer] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (currentUser?.id) {
-      userService.getProfile(currentUser.id).then(setCustomer);
-    }
-  }, [currentUser?.id]);
 
   const buildReservationPayload = useCallback((guests: Guest[]) => {
     if (!tour || !currentUser) return null;
@@ -55,7 +46,7 @@ export function useBookingCheckout(tour: Tour | null) {
     }
   }, [tour, currentUser, buildReservationPayload, navigate]);
 
-  return { customer, loading, handleCheckout, buildReservationPayload };
+  return { customer: currentUser, loading, handleCheckout, buildReservationPayload };
 }
 
 

@@ -1,7 +1,7 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { Flag, CheckCircle, Clock, Navigation, MapPin } from "lucide-react";
 import { ActivityTimeline } from "@/components/ui/Custom/ActivityTimeline";
-import type { TrackingItem } from "@/interface/props/ui/ActivityTimelineProps";
+import type { TrackingItem } from "@/interface/common/TrackingItem";
 import type { Ticket } from "@/interface/tour/Ticket";
 
 export const TicketJourneyTracker = ({ ticket }: { ticket: Ticket }) => {

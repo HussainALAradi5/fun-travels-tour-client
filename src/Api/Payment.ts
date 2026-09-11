@@ -1,14 +1,13 @@
 import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interface/common/ApiResponse";
-import type { PaymentResponse } from "@/interface/payment/PaymentResponse";
 import type { Payment } from "@/interface/payment/Payment";
-import type { ReservationResponse } from "@/interface/tour/ReservationResponse";
+import type { TourReservation } from "@/interface/tour/TourReservation";
 import type { PaymentMethod } from "@/enums/payment/PaymentMethod";
-import type { PaymentStatus } from "@/enums/payment/PaymentStatus";
+import type { PaymentFilterParams } from "@/interface/payment/PaymentFilterParams";
 
 export const paymentService = {
-  execute: async (reservationId: number, method: PaymentMethod): Promise<ReservationResponse> => {
-    const response = await apiClient.post<ApiResponse<ReservationResponse>>(
+  execute: async (reservationId: number, method: PaymentMethod): Promise<TourReservation> => {
+    const response = await apiClient.post<ApiResponse<TourReservation>>(
       `/payments/execute/${reservationId}`,
       null,
       { params: { method } },
@@ -16,21 +15,15 @@ export const paymentService = {
     return response.data.data;
   },
 
-  filter: async (params: {
-    userId?: number;
-    status?: PaymentStatus;
-    method?: PaymentMethod;
-    date?: string;
-  }): Promise<Payment[]> => {
-    const response = await apiClient.get<ApiResponse<PaymentResponse[]>>("/payments/filter", {
+  filter: async (params: PaymentFilterParams = {}): Promise<Payment[]> => {
+    const response = await apiClient.get<ApiResponse<Payment[]>>("/payments/filter", {
       params,
     });
-    return response.data.data as unknown as Payment[];
+    return response.data.data;
   },
 
   getById: async (id: number): Promise<Payment> => {
-    const response = await apiClient.get<ApiResponse<PaymentResponse>>(`/payments/${id}`);
-    return response.data.data as unknown as Payment;
+    const response = await apiClient.get<ApiResponse<Payment>>(`/payments/${id}`);
+    return response.data.data;
   },
 };
-

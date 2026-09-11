@@ -38,7 +38,7 @@ export const TourDetailView = ({ tour: initialTour }: TourDetailViewProps) => {
         .then((res: Ticket[]) => setTourTickets(res || []))
         .catch((err) => console.error("Failed to load passenger tickets:", err));
     }
-  }, [initialTour]);
+  }, [initialTour.id]);
 
   const handleStatusUpdate = async () => {
     if (pendingStatus && currentTour.id) {
@@ -54,7 +54,7 @@ export const TourDetailView = ({ tour: initialTour }: TourDetailViewProps) => {
     {
       id: "start",
       title: "Departure",
-      description: `${currentTour.startCity?.name || 'N/A'}, ${currentTour.startCity?.country?.officialName || ''}`,
+      description: `${currentTour.startCity?.name || "N/A"}, ${currentTour.startCountry?.famousName || ""}`,
       icon: MapPin,
       color: "blue.500",
       glowColor: "rgba(66, 153, 225, 0.5)",
@@ -70,7 +70,7 @@ export const TourDetailView = ({ tour: initialTour }: TourDetailViewProps) => {
     {
       id: "end",
       title: "Arrival",
-      description: `${currentTour.endCity?.name || 'N/A'}, ${currentTour.endCity?.country?.officialName || ''}`,
+      description: `${currentTour.endCity?.name || "N/A"}, ${currentTour.endCountry?.famousName || ""}`,
       icon: Navigation,
       color: "green.500",
       glowColor: "rgba(72, 187, 120, 0.5)",

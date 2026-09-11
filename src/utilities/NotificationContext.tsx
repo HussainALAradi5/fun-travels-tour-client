@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { Client } from '@stomp/stompjs';
 import { useAuth } from './AuthContext';
 import { notificationService } from '@/Api/Notification';
@@ -8,22 +8,26 @@ const NotificationContext = createContext<NotificationContextType | undefined>(u
 
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, user } = useAuth();
+  const userId = user?.id;
   const [unreadCount, setUnreadCount] = useState(0);
   const refreshCount = useCallback(async () => {
-    if (isAuthenticated && user?.id) {
+    if (isAuthenticated && userId) {
       try {
-        const counts = await notificationService.getCounts(user.id as unknown as number);
+        const counts = await notificationService.getCounts(userId);
         setUnreadCount(counts.unreadCount);
       } catch (error) {
         console.error("Failed to fetch notification counts", error);
       }
     }
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, userId]);
 
-  const decrementCount = () => setUnreadCount(prev => Math.max(0, prev - 1));
+  const decrementCount = useCallback(
+    () => setUnreadCount(prev => Math.max(0, prev - 1)),
+    [],
+  );
 
   useEffect(() => {
-    if (!isAuthenticated || !user?.id) {
+    if (!isAuthenticated || !userId) {
       return;
     }
 
@@ -33,7 +37,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
       onConnect: () => {
-        stompClient.subscribe(`/topic/notifications/${user.id}`, (message) => {
+        stompClient.subscribe(`/topic/notifications/${userId}`, (message) => {
           const data = JSON.parse(message.body);
           setUnreadCount(data.unread);
           window.dispatchEvent(new CustomEvent('newNotificationReceived'));
@@ -46,10 +50,15 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     return () => {
       stompClient.deactivate();
     };
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, userId]);
+
+  const value = useMemo(
+    () => ({ unreadCount, decrementCount, refreshCount }),
+    [unreadCount, decrementCount, refreshCount],
+  );
 
   return (
-    <NotificationContext.Provider value={{ unreadCount, decrementCount, refreshCount }}>
+    <NotificationContext.Provider value={value}>
       {children}
     </NotificationContext.Provider>
   );

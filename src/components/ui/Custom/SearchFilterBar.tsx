@@ -72,12 +72,12 @@ export const SearchFilterBar = ({
             Search
           </Button>
         </HStack>
-<Button
+        <Button
           size="sm"
           variant="outline"
           h="10"
-          w="10"
           borderRadius="xl"
+          px={4}
           onClick={handleClear}
           _hover={{
             bg: "red.50",
@@ -85,8 +85,9 @@ export const SearchFilterBar = ({
             borderColor: "red.200"
           }}
           transition="all 0.2s"
+          aria-label="Reset search"
         >
-          <RotateCcw size={14} />
+          <RotateCcw size={14} /> Reset
         </Button>
       </HStack>
     </VStack>

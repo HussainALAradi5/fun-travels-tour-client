@@ -119,8 +119,8 @@ export const EditTour = () => {
       ...formData,
       startCountry: { id: Number(formData.startCountry) } as Country,
       endCountry: { id: Number(formData.endCountry) } as Country,
-      startCity: { id: Number(formData.startCity) } as City,
-      endCity: { id: Number(formData.endCity) } as City,
+      startCity: { id: Number(formData.startCity) } as Partial<City>,
+      endCity: { id: Number(formData.endCity) } as Partial<City>,
       transportation: { id: Number(formData.transportation) } as Transportation,
       destinationCountries: (formData.destinationCountries ?? []).map(cid => ({ id: Number(cid) } as Country)),
     };
