@@ -31,18 +31,16 @@ const ExportOption = ({ title, desc, icon: Icon, scheme, onSelect }: ExportOptio
     </HStack>
   </Box>
 );
-
-// Added optional imageColumns array to configure which fields carry Base64 image data
 export function GenericExportDialog<T extends Record<string, unknown>>({
   open,
   onClose,
   data,
   fileName,
-  imageColumns = ["qrCode", "barcode"] // Defaults applied here
-}: { 
-  open: boolean; 
-  onClose: () => void; 
-  data: T[]; 
+  imageColumns = ["qrCode", "barcode"]
+}: {
+  open: boolean;
+  onClose: () => void;
+  data: T[];
   fileName: string;
   imageColumns?: string[];
 }) {
@@ -50,26 +48,26 @@ export function GenericExportDialog<T extends Record<string, unknown>>({
     <GenericDialog open={open} onClose={onClose} title="Export Data" icon={Download} size="sm">
       <VStack gap={4} align="stretch">
         <Text fontSize="xs" fontWeight="bold" color="fg.muted">PICK A FORMAT</Text>
-        
-        <ExportOption 
+
+        <ExportOption
           title="PDF Document"
           desc="Best for viewing and printing"
           icon={FileText}
           scheme="red"
-          onSelect={() => { 
-            ExportUtils.downloadAsPDF(data as unknown as ExportRecord[], fileName, imageColumns); 
-            onClose(); 
+          onSelect={() => {
+            ExportUtils.downloadAsPDF(data as unknown as ExportRecord[], fileName, imageColumns);
+            onClose();
           }}
         />
 
-       <ExportOption 
+       <ExportOption
           title="Excel Spreadsheet"
           desc="Professional Auto-Width layout"
           icon={FileSpreadsheet}
           scheme="green"
-          onSelect={() => { 
-            ExportUtils.downloadAsExcel(data as unknown as ExportRecord[], fileName); 
-            onClose(); 
+          onSelect={() => {
+            ExportUtils.downloadAsExcel(data as unknown as ExportRecord[], fileName);
+            onClose();
           }}
         />
 

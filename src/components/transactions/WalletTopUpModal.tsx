@@ -1,25 +1,22 @@
 import { useState, useEffect } from "react";
-import { 
-  VStack, HStack, Text, Box, Button, Input, 
+import {
+  VStack, HStack, Text, Box, Button, Input,
   SimpleGrid, Icon, Separator, Center, Spinner
 } from "@chakra-ui/react";
 import { CreditCard, Wallet, Landmark, ShieldCheck, AlertCircle } from "lucide-react";
 import { loadStripe, type Stripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
-import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog"; 
+import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
 import { PaymentMethodColors } from "@/constants/roles/Colors";
 import { walletService } from "@/Api/Wallet";
 import { StripeCheckoutForm } from "./Wallet/StripeCheckoutForm";
 import type { WalletTopUpModalProps } from "@/interface/props/booking/WalletTopUpModalProps";
-// Make sure this path matches where you saved the StripeCheckoutForm!
 
 export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalProps) => {
   const [amount, setAmount] = useState<string>("50");
   const [method, setMethod] = useState<string>("CREDIT_CARD");
   const predefinedAmounts = ["50", "100", "250", "500"];
-
-  // State to hold the dynamically loaded Stripe configuration
   const [stripePromise, setStripePromise] = useState<Promise<Stripe | null> | null>(null);
 
   useEffect(() => {
@@ -28,7 +25,6 @@ export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalP
       walletService.getConfig()
         .then((data: { publishableKey: string }) => {
           console.log("✅ Modal: Config fetched successfully. Injecting key into loadStripe().");
-          // Instantiates Stripe using your backend's application.properties key
           setStripePromise(loadStripe(data.publishableKey));
         })
         .catch((err: unknown) => {
@@ -36,8 +32,6 @@ export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalP
         });
     }
   }, [open, stripePromise]);
-
-  // Reset form when modal closes
   const handleClose = () => {
     console.log("🟨 Modal Closed: Resetting state.");
     setAmount("50");
@@ -46,25 +40,23 @@ export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalP
   };
 
   return (
-    <GenericDialog 
-      open={open} 
-      onClose={handleClose} 
-      title="Top Up Digital Wallet" 
-      icon={Wallet} 
+    <GenericDialog
+      open={open}
+      onClose={handleClose}
+      title="Top Up Digital Wallet"
+      icon={Wallet}
       size="md"
     >
       <VStack align="stretch" gap={6} py={2}>
-        
-        {/* AMOUNT SELECTION */}
-        <VStack align="start" gap={3}>
+<VStack align="start" gap={3}>
           <Text fontSize="sm" fontWeight="bold" color="fg.muted" letterSpacing="wider">
             SELECT AMOUNT (USD)
           </Text>
           <SimpleGrid columns={4} gap={3} w="full">
             {predefinedAmounts.map((amt) => (
-              <Button 
-                key={amt} 
-                variant={amount === amt ? "solid" : "outline"} 
+              <Button
+                key={amt}
+                variant={amount === amt ? "solid" : "outline"}
                 colorPalette="blue"
                 onClick={() => setAmount(amt)}
                 size="lg"
@@ -74,10 +66,10 @@ export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalP
               </Button>
             ))}
           </SimpleGrid>
-          <Input 
-            type="number" 
-            placeholder="Or enter custom amount..." 
-            value={amount} 
+          <Input
+            type="number"
+            placeholder="Or enter custom amount..."
+            value={amount}
             onChange={(e) => setAmount(e.target.value)}
             size="xl"
             borderRadius="xl"
@@ -88,34 +80,30 @@ export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalP
         </VStack>
 
         <Separator />
-
-        {/* PAYMENT METHOD */}
-        <VStack align="start" gap={3}>
+<VStack align="start" gap={3}>
           <Text fontSize="sm" fontWeight="bold" color="fg.muted" letterSpacing="wider">
             PAYMENT METHOD
           </Text>
           <HStack w="full" gap={3}>
-            <PaymentOption 
-              icon={CreditCard} label="Credit Card" 
-              active={method === "CREDIT_CARD"} 
+            <PaymentOption
+              icon={CreditCard} label="Credit Card"
+              active={method === "CREDIT_CARD"}
               colorScheme={PaymentMethodColors.CREDIT_CARD}
-              onClick={() => setMethod("CREDIT_CARD")} 
+              onClick={() => setMethod("CREDIT_CARD")}
             />
-            <PaymentOption 
-              icon={Landmark} label="Bank Transfer" 
-              active={method === "BANK_TRANSFER"} 
+            <PaymentOption
+              icon={Landmark} label="Bank Transfer"
+              active={method === "BANK_TRANSFER"}
               colorScheme={PaymentMethodColors.BANK_TRANSFER}
-              onClick={() => setMethod("BANK_TRANSFER")} 
+              onClick={() => setMethod("BANK_TRANSFER")}
             />
           </HStack>
         </VStack>
-
-        {/* CHECKOUT AREA */}
-        <Box 
-          p={5} 
-          bg="bg.subtle" 
-          borderRadius="2xl" 
-          border="1px solid" 
+<Box
+          p={5}
+          bg="bg.subtle"
+          borderRadius="2xl"
+          border="1px solid"
           borderColor="border.subtle"
         >
           <HStack justify="space-between" mb={4}>
@@ -124,15 +112,13 @@ export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalP
               <Text fontSize="xs" fontWeight="bold">SECURE CHECKOUT</Text>
             </HStack>
           </HStack>
-
-          {/* DYNAMIC STRIPE WRAPPER */}
-          {stripePromise ? (
+{stripePromise ? (
             <Elements stripe={stripePromise}>
-              <StripeCheckoutForm 
-                amount={amount} 
-                method={method} 
-                onSuccess={onSuccess} 
-                onClose={handleClose} 
+              <StripeCheckoutForm
+                amount={amount}
+                method={method}
+                onSuccess={onSuccess}
+                onClose={handleClose}
               />
             </Elements>
           ) : (
@@ -142,7 +128,7 @@ export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalP
           )}
 
         </Box>
-        
+
         <HStack justify="center" opacity={0.6}>
           <Icon as={AlertCircle} size="xs" />
           <Text fontSize="xs">This is a secure, 256-bit encrypted transaction.</Text>
@@ -154,17 +140,15 @@ export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalP
 };
 
 import type { PaymentOptionProps } from "@/interface/props/ui/PaymentOptionProps";
-
-// UI Helper Sub-Component
 const PaymentOption = ({ icon: IconComponent, label, active, onClick, colorScheme }: PaymentOptionProps) => (
-  <Button 
-    flex={1} 
-    h="auto" 
-    py={5} 
-    variant={active ? "solid" : "outline"} 
-    colorPalette={active ? colorScheme || "blue" : "gray"} 
+  <Button
+    flex={1}
+    h="auto"
+    py={5}
+    variant={active ? "solid" : "outline"}
+    colorPalette={active ? colorScheme || "blue" : "gray"}
     onClick={onClick}
-    flexDirection="column" 
+    flexDirection="column"
     gap={3}
     borderRadius="xl"
     borderWidth={active ? "2px" : "1px"}

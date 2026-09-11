@@ -1,4 +1,3 @@
-// src/pages/TourManagement/BookingPage.tsx
 import { useParams } from "react-router-dom";
 import { BookingManager } from "@/components/TourManagement/BookingManager";
 

@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { 
-  Input, 
-  Group, 
-  Icon, 
-  Box, 
-  HStack, 
-  Text, 
-  Image, 
-  createListCollection, 
-  Select, 
+import {
+  Input,
+  Group,
+  Icon,
+  Box,
+  HStack,
+  Text,
+  Image,
+  createListCollection,
+  Select,
   Spinner,
   Portal
 } from "@chakra-ui/react";
@@ -25,7 +25,7 @@ const modernInputStyles = {
   borderWidth: "1px",
   borderColor: "border.subtle",
   transition: "all 0.2s ease-in-out",
-  _hover: { 
+  _hover: {
     borderColor: "blue.400",
     bg: "blue.50",
     _dark: { bg: "blue.900/20" }
@@ -40,7 +40,7 @@ export const EmailField = ({ value, onChange, placeholder, disabled }: CustomFie
       </Box>
       <Input
         type="email"
-        bg="transparent" 
+        bg="transparent"
         border="none"
         outline="none"
         boxShadow="none"
@@ -90,11 +90,9 @@ export const MobileField = ({ value, onChange, placeholder, disabled }: CustomFi
     };
     fetchDBCountries();
   }, [value]);
-
-  // Filter countries based on search
   const filteredCountries = useMemo(() => {
-    return countries.filter(c => 
-      c.famousName?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    return countries.filter(c =>
+      c.famousName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       c.dialCode?.includes(searchQuery)
     );
   }, [countries, searchQuery]);
@@ -108,7 +106,7 @@ export const MobileField = ({ value, onChange, placeholder, disabled }: CustomFi
   }, [filteredCountries]);
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const num = e.target.value.replace(/[^0-9]/g, ''); 
+    const num = e.target.value.replace(/[^0-9]/g, '');
     setLocalNumber(num);
     if (selectedCountry?.dialCode) {
       onChange(`${selectedCountry.dialCode}${num}`);
@@ -123,7 +121,7 @@ export const MobileField = ({ value, onChange, placeholder, disabled }: CustomFi
     if (newCountry) {
       setSelectedCountry(newCountry);
       onChange(`${newCountry.dialCode}${localNumber}`);
-      setSearchQuery(""); // Reset search after selection
+      setSearchQuery("");
     }
   };
 
@@ -143,15 +141,15 @@ export const MobileField = ({ value, onChange, placeholder, disabled }: CustomFi
             onValueChange={handleCountryChange}
             size="sm"
             disabled={disabled}
-            positioning={{ 
-              placement: "bottom-start", 
+            positioning={{
+              placement: "bottom-start",
               strategy: "fixed",
               flip: false,
               gutter: 8
             }}
           >
             <Select.HiddenSelect />
-            
+
             <Select.Trigger bg="transparent" border="none" px={1} h="full" cursor="pointer" _focus={{ outline: "none" }}>
               <HStack gap={1} justify="center">
                 {selectedCountry?.flagPngUrl && (
@@ -162,18 +160,17 @@ export const MobileField = ({ value, onChange, placeholder, disabled }: CustomFi
                 </Text>
               </HStack>
             </Select.Trigger>
-            
+
             <Portal>
               <Select.Positioner zIndex={9999}>
                 <Select.Content borderRadius="xl" boxShadow="2xl" bg="bg.panel" p={2} minW="220px" maxH="350px">
-                  {/* Search Input inside the dropdown */}
-                  <Group attached mb={2}>
+<Group attached mb={2}>
                      <Box pl={2} display="flex" alignItems="center" color="fg.muted">
                         <Search size={14} />
                      </Box>
-                     <Input 
-                        placeholder="Search country..." 
-                        size="xs" 
+                     <Input
+                        placeholder="Search country..."
+                        size="xs"
                         variant="flushed"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}

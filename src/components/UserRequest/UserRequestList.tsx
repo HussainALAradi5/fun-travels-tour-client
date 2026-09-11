@@ -1,5 +1,6 @@
 import { Badge, HStack, Text, IconButton, Box, Icon } from "@chakra-ui/react";
-import { GenericTable, type Column } from "@/components/ui/Custom/GenericTable";
+import { GenericTable } from "@/components/ui/Custom/GenericTable";
+import type { Column } from "@/interface/common/Column";
 import type { UserRequest } from "@/interface/support/UserRequest";
 import { RequestStatusColors, RequestTypeColors } from "@/constants/roles/Colors";
 import { User, Eye } from "lucide-react";
@@ -40,13 +41,12 @@ export const UserRequestList = ({ data, loading, onView }: UserRequestListProps)
       header: "Requester",
       key: "user",
       render: (item) => (
-        /* Using HStack for perfect alignment of Icon and Text */
-        <HStack gap={2}>
-          <Badge 
-            variant="subtle" 
-            colorPalette="blue" // Changed to Blue for a nicer look
-            borderRadius="full" 
-            px={3} 
+<HStack gap={2}>
+          <Badge
+            variant="subtle"
+            colorPalette="blue"
+            borderRadius="full"
+            px={3}
             py={1}
             display="inline-flex"
             alignItems="center"
@@ -74,9 +74,9 @@ export const UserRequestList = ({ data, loading, onView }: UserRequestListProps)
       header: "Actions",
       key: "id",
       render: (item) => (
-        <IconButton 
-          variant="ghost" 
-          size="sm" 
+        <IconButton
+          variant="ghost"
+          size="sm"
           colorPalette="blue"
           onClick={() => onView(item)}
           aria-label="View Details"
@@ -89,11 +89,11 @@ export const UserRequestList = ({ data, loading, onView }: UserRequestListProps)
   ];
 
   return (
-    <GenericTable 
-      data={data} 
-      columns={columns} 
-      loading={loading} 
-      searchDisabled={true} 
+    <GenericTable
+      data={data}
+      columns={columns}
+      loading={loading}
+      searchDisabled={true}
     />
   );
 };

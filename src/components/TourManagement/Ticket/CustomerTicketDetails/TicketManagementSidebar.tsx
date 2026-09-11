@@ -3,7 +3,8 @@ import { VStack, HStack, Box, Text, Button, Icon } from "@chakra-ui/react";
 import { ShieldAlert, XCircle, AlertTriangle, Ban, FileText, ShieldCheck, CheckCircle } from "lucide-react";
 
 import { GenericCard } from "@/components/ui/Custom/GenericCard";
-import { GenericStatusWorkflow, type StatusConfig } from "@/components/ui/Custom/GenericStatusWorkflow";
+import { GenericStatusWorkflow } from "@/components/ui/Custom/GenericStatusWorkflow";
+import type { StatusConfig } from "@/interface/common/StatusConfig";
 import { ConfirmDialog } from "@/components/ui/Custom/Dialogs/ConfirmDialog";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import type { GenericStatus } from "@/enums/GenericStatus";
@@ -11,7 +12,7 @@ import type { TicketManagementSidebarProps } from "@/interface/props/tour/Ticket
 
 const TICKET_STATUS_MAP: Partial<Record<string, StatusConfig>> = {
   "PENDING": { label: "Pending", colorPalette: "gray", icon: FileText },
-  "APPROVED": { label: "Approved", colorPalette: "yellow", icon: ShieldCheck }, // Added Approved
+  "APPROVED": { label: "Approved", colorPalette: "yellow", icon: ShieldCheck },
   "CONFIRMED": { label: "Confirmed", colorPalette: "blue", icon: ShieldCheck },
   "COMPLETED": { label: "Completed", colorPalette: "green", icon: CheckCircle },
   "CANCELLED": { label: "Cancelled", colorPalette: "red", icon: Ban },
@@ -38,25 +39,23 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
 
   return (
     <VStack gap={6} align="stretch" position="sticky" top="24px" hideFrom="print">
-      <GenericCard 
-        w="full" 
+      <GenericCard
+        w="full"
         header={
           <Text fontSize="xs" fontWeight="bold" color="fg.muted" letterSpacing="widest" textTransform="uppercase">
             Ticket Lifecycle
           </Text>
-        } 
+        }
       >
         <VStack gap={6} align="stretch">
-          
+
           <GenericStatusWorkflow
             currentStatus={ticket.ticketStatus}
             statusMap={TICKET_STATUS_MAP}
             steps={STEPS as unknown as string[]}
             onStatusChange={onWorkflowStatusChange}
           />
-
-          {/* DANGER ZONE - Only show if active */}
-          {!isCancelled && !isCompleted && (
+{!isCancelled && !isCompleted && (
             <Box pt={5} borderTop="1px dashed" borderColor="border.subtle">
               <VStack align="stretch" gap={4}>
                 <VStack align="start" gap={1}>
@@ -71,11 +70,11 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
                   </Text>
                 </VStack>
 
-                <Button 
+                <Button
                   w="full"
-                  size="sm" 
-                  colorPalette="red" 
-                  variant="outline" 
+                  size="sm"
+                  colorPalette="red"
+                  variant="outline"
                   loading={isMutating}
                   onClick={() => setIsCancelDialogOpen(true)}
                 >
@@ -84,9 +83,7 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
               </VStack>
             </Box>
           )}
-
-          {/* CANCELLED STATE UI */}
-          {isCancelled && (
+{isCancelled && (
             <Box pt={5} borderTop="1px dashed" borderColor="red.200" color="red.500">
               <HStack>
                 <Icon as={Ban} boxSize="5" />

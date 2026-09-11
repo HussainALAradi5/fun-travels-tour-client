@@ -21,8 +21,6 @@ export const AddEmployeesAction = ({
 }: AddEmployeesActionProps) => {
   const { open, onToggle } = useDisclosure();
   const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
-
-  // MEMOIZE TEMPLATE: Generates headers dynamically
   const templateData = useMemo(() => [{
     Name: "",
     Username: "",
@@ -33,8 +31,6 @@ export const AddEmployeesAction = ({
     Role: "",
     Branch: "",
   }], []);
-
-  // DYNAMIC INSTRUCTIONS: Extracted from headers to avoid redundancy
   const columnInstructions = useMemo(
     () => `Required Columns: ${Object.keys(templateData[0]).join(", ")}.`,
     [templateData],
@@ -98,9 +94,7 @@ export const AddEmployeesAction = ({
                 Get Template
               </Button>
             </HStack>
-
-            {/* MODERNIZED DYNAMIC UPLOAD */}
-            <MultiAttachmentUpload
+<MultiAttachmentUpload
               onUpload={handleBulkUpload}
               onSuccess={() => onRefresh?.()}
               instructions={columnInstructions}
@@ -108,9 +102,7 @@ export const AddEmployeesAction = ({
           </VStack>
         </Box>
       </CollapsibleContainer>
-
-      {/* THE UNIFIED DYNAMIC DIALOG */}
-      <GenericExportDialog
+<GenericExportDialog
         open={isTemplateDialogOpen}
         onClose={() => setIsTemplateDialogOpen(false)}
         data={templateData}

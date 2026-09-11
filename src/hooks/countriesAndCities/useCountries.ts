@@ -14,7 +14,7 @@ export function useCountries() {
 
   const fetchCountries = useCallback(async () => {
     if (!isAdmin) return;
-    
+
     setLoading(true);
     try {
       const response = await countryService.getAllCountries();

@@ -1,4 +1,3 @@
-// src/pages/MealsPage.tsx
 
 import { MealPlanManager } from "@/components/TourManagement/MealPlanManager";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";

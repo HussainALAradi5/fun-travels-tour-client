@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
-import { 
-  format, addMonths, subMonths, startOfMonth, 
-  startOfWeek, isSameMonth, isSameDay, addDays, 
+import {
+  format, addMonths, subMonths, startOfMonth,
+  startOfWeek, isSameMonth, isSameDay, addDays,
   isAfter, isBefore, parseISO, setYear, setMonth, getYear,
   addYears, subYears, startOfDay
 } from "date-fns";
@@ -13,13 +13,13 @@ import {
 import type { DatePickerProps } from "@/interface/props/ui/DatePickerProps";
 import type { ViewMode } from "@/types/ui/ViewMode";
 
-export const DatePicker = ({ 
-  label, 
-  value, 
-  onChange, 
-  valueEnd, 
+export const DatePicker = ({
+  label,
+  value,
+  onChange,
+  valueEnd,
   onChangeEnd,
-  minDate = new Date() // Defaults to today
+  minDate = new Date()
 }: DatePickerProps) => {
   const [open, setOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("days");
@@ -27,8 +27,6 @@ export const DatePicker = ({
 
   const from = useMemo(() => value ? parseISO(value) : undefined, [value]);
   const to = useMemo(() => valueEnd ? parseISO(valueEnd) : undefined, [valueEnd]);
-
-  // Validates if a specific day should be disabled
   const isDateDisabled = (day: Date) => {
     return isBefore(startOfDay(day), startOfDay(minDate));
   };
@@ -39,7 +37,7 @@ export const DatePicker = ({
   }, [viewDate]);
 
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  
+
   const years = useMemo(() => {
     const currentYear = getYear(viewDate);
     const startYear = currentYear - (currentYear % 12);
@@ -47,7 +45,6 @@ export const DatePicker = ({
   }, [viewDate]);
 
   const handleDayClick = (day: Date) => {
-    // If date is in the past, do nothing
     if (isDateDisabled(day)) return;
 
     const dateStr = format(day, "yyyy-MM-dd");
@@ -59,7 +56,7 @@ export const DatePicker = ({
         onChange(dateStr);
       } else {
         onChangeEnd(dateStr);
-        setOpen(false); 
+        setOpen(false);
       }
     } else {
       onChange(dateStr);
@@ -78,13 +75,13 @@ export const DatePicker = ({
   };
 
   return (
-    <PopoverRoot 
-      open={open} 
+    <PopoverRoot
+      open={open}
       onOpenChange={(e) => {
         setOpen(e.open);
-        if (!e.open) setViewMode("days"); 
-      }} 
-      portalled={true} 
+        if (!e.open) setViewMode("days");
+      }}
+      portalled={true}
       positioning={{ strategy: "fixed", placement: "bottom-start", gutter: 12 }}
     >
       <PopoverTrigger asChild>
@@ -100,14 +97,14 @@ export const DatePicker = ({
               </Text>
             </VStack>
             {value && (
-              <IconButton 
-                aria-label="Clear" 
-                size="xl" 
-                variant="ghost" 
-                onClick={(e) => { 
-                  e.stopPropagation(); 
-                  onChange(""); 
-                  if(onChangeEnd) onChangeEnd(""); 
+              <IconButton
+                aria-label="Clear"
+                size="xl"
+                variant="ghost"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onChange("");
+                  if(onChangeEnd) onChangeEnd("");
                 }}
               >
                 <ClearIcon size={14} />
@@ -116,16 +113,15 @@ export const DatePicker = ({
           </HStack>
         </Button>
       </PopoverTrigger>
-      
+
       <Portal>
-        <PopoverPositioner zIndex="3000"> 
+        <PopoverPositioner zIndex="3000">
           <PopoverContent bg="white" _dark={{ bg: "gray.900" }} boxShadow="2xl" width="340px" borderRadius="2xl" border="1px solid" borderColor="border.muted">
             <PopoverBody p={6}>
               <VStack gap={4}>
-                {/* HEADER */}
-                <HStack width="full" justifyContent="space-between">
+<HStack width="full" justifyContent="space-between">
                   <HStack gap={1}>
-                    <Button 
+                    <Button
                       variant="ghost" size="sm" px={2} borderRadius="md"
                       onClick={() => setViewMode(viewMode === "months" ? "days" : "months")}
                       bg={viewMode === "months" ? "blue.50" : "transparent"}
@@ -134,7 +130,7 @@ export const DatePicker = ({
                       <Text fontWeight="bold" fontSize="md">{format(viewDate, "MMMM")}</Text>
                       <Box as="span" ml={1} opacity={0.5}><ChevronDown size={14} /></Box>
                     </Button>
-                    <Button 
+                    <Button
                       variant="ghost" size="sm" px={2} borderRadius="md"
                       onClick={() => setViewMode(viewMode === "years" ? "days" : "years")}
                       bg={viewMode === "years" ? "blue.50" : "transparent"}
@@ -151,14 +147,13 @@ export const DatePicker = ({
                 </HStack>
 
                 <Box width="full" minHeight="240px">
-                  {/* MONTH VIEW */}
-                  {viewMode === "months" && (
+{viewMode === "months" && (
                     <SimpleGrid columns={3} gap={3} pt={2}>
                       {months.map((m, i) => (
-                        <Button 
-                          key={m} 
+                        <Button
+                          key={m}
                           height="60px"
-                          variant={viewDate.getMonth() === i ? "solid" : "ghost"} 
+                          variant={viewDate.getMonth() === i ? "solid" : "ghost"}
                           colorPalette="blue"
                           onClick={() => { setViewDate(setMonth(viewDate, i)); setViewMode("days"); }}
                         >
@@ -167,15 +162,13 @@ export const DatePicker = ({
                       ))}
                     </SimpleGrid>
                   )}
-
-                  {/* YEAR VIEW */}
-                  {viewMode === "years" && (
+{viewMode === "years" && (
                     <SimpleGrid columns={3} gap={3} pt={2}>
                       {years.map((y) => (
-                        <Button 
-                          key={y} 
+                        <Button
+                          key={y}
                           height="60px"
-                          variant={viewDate.getFullYear() === y ? "solid" : "ghost"} 
+                          variant={viewDate.getFullYear() === y ? "solid" : "ghost"}
                           colorPalette="blue"
                           onClick={() => { setViewDate(setYear(viewDate, y)); setViewMode("days"); }}
                         >
@@ -184,9 +177,7 @@ export const DatePicker = ({
                       ))}
                     </SimpleGrid>
                   )}
-
-                  {/* DAYS VIEW */}
-                  {viewMode === "days" && (
+{viewMode === "days" && (
                     <VStack gap={4}>
                       <SimpleGrid columns={7} width="full" textAlign="center">
                         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
@@ -201,17 +192,17 @@ export const DatePicker = ({
                           const isCurMonth = isSameMonth(day, viewDate);
 
                           return (
-                            <Center 
-                              key={i} 
-                              onClick={() => handleDayClick(day)} 
-                              cursor={disabled ? "not-allowed" : "pointer"} 
-                              height="38px" fontSize="sm" 
+                            <Center
+                              key={i}
+                              onClick={() => handleDayClick(day)}
+                              cursor={disabled ? "not-allowed" : "pointer"}
+                              height="38px" fontSize="sm"
                               opacity={disabled ? 0.3 : 1}
-                              fontWeight={isSel ? "bold" : "medium"} 
-                              borderRadius="lg" 
-                              bg={isSel ? "blue.600" : isRange ? "blue.50" : "transparent"} 
+                              fontWeight={isSel ? "bold" : "medium"}
+                              borderRadius="lg"
+                              bg={isSel ? "blue.600" : isRange ? "blue.50" : "transparent"}
                               _dark={{ bg: isSel ? "blue.500" : isRange ? "blue.900/30" : "transparent" }}
-                              color={isSel ? "white" : isCurMonth ? "fg" : "fg.subtle"} 
+                              color={isSel ? "white" : isCurMonth ? "fg" : "fg.subtle"}
                               _hover={!disabled ? { bg: isSel ? "blue.700" : "gray.100", _dark: { bg: isSel ? "blue.400" : "white/5" } } : {}}
                             >
                               {format(day, "d")}

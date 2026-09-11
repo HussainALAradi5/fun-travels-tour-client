@@ -63,7 +63,6 @@ export const TransportationEditDialog = ({
       gridSpan: 2,
       disabled: true,
     },
-    // Seating Configuration fields to sync with backend seat generation
     {
       name: "seatConfig.PREMIUM_RECLINER" as keyof TransportationFormValues,
       label: "Premium Seats",

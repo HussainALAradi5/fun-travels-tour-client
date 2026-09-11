@@ -1,4 +1,3 @@
-// src/components/TourManagement/Seat/SeatEditDialog.tsx
 import { useState, useEffect } from "react";
 import { VStack, Text, Button, Grid, Box, Separator } from "@chakra-ui/react";
 import { Settings2, Save } from "lucide-react";
@@ -8,8 +7,6 @@ import { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
 import { ChairTypeColors } from "@/constants/roles/Colors";
 import type { Seat } from "@/interface/tour/Seat";
 import type { SeatEditDialogProps } from "@/interface/props/tour/SeatEditDialogProps";
-
-// Helper to map status to Chakra color palettes for buttons
 const getStatusPalette = (status: string) => {
   switch (status) {
     case SeatStatus.AVAILABLE: return "green";
@@ -30,18 +27,16 @@ export const SeatEditDialog = ({ open, onClose, seat, onSave, loading }: SeatEdi
   if (!localSeat) return null;
 
   return (
-    <GenericDialog 
-      open={open} 
-      onClose={onClose} 
-      title={`Configure Seat: ${localSeat.seatCode}`} 
-      icon={Settings2} 
+    <GenericDialog
+      open={open}
+      onClose={onClose}
+      title={`Configure Seat: ${localSeat.seatCode}`}
+      icon={Settings2}
       size="md"
       colorPalette="blue"
     >
       <VStack w="full" align="stretch" gap={6} py={2}>
-        
-        {/* Chair Classification Section */}
-        <Box>
+<Box>
           <Text fontSize="xs" fontWeight="bold" mb={3} color="fg.muted" letterSpacing="widest">
             CHAIR CLASSIFICATION
           </Text>
@@ -51,9 +46,9 @@ export const SeatEditDialog = ({ open, onClose, seat, onSave, loading }: SeatEdi
               const isSelected = localSeat.chairType === type;
               return (
                 <Button
-                  key={type} 
-                  size="sm" 
-                  h="12" 
+                  key={type}
+                  size="sm"
+                  h="12"
                   whiteSpace="normal"
                   variant={isSelected ? "solid" : "outline"}
                   colorPalette={color}
@@ -68,9 +63,7 @@ export const SeatEditDialog = ({ open, onClose, seat, onSave, loading }: SeatEdi
         </Box>
 
         <Separator />
-
-        {/* Operational Status Section */}
-        <Box>
+<Box>
           <Text fontSize="xs" fontWeight="bold" mb={3} color="fg.muted" letterSpacing="widest">
             OPERATIONAL STATUS
           </Text>
@@ -80,9 +73,9 @@ export const SeatEditDialog = ({ open, onClose, seat, onSave, loading }: SeatEdi
               const isSelected = localSeat.status === status;
               return (
                 <Button
-                  key={status} 
-                  size="sm" 
-                  h="12" 
+                  key={status}
+                  size="sm"
+                  h="12"
                   whiteSpace="normal"
                   variant={isSelected ? "solid" : "outline"}
                   colorPalette={color}
@@ -96,8 +89,8 @@ export const SeatEditDialog = ({ open, onClose, seat, onSave, loading }: SeatEdi
           </Grid>
         </Box>
 
-        <Button 
-          w="full" colorPalette="blue" size="lg" borderRadius="2xl" 
+        <Button
+          w="full" colorPalette="blue" size="lg" borderRadius="2xl"
           onClick={() => onSave(localSeat)} loading={loading}
           mt={4}
         >

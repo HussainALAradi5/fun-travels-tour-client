@@ -6,7 +6,8 @@ import { useUser } from "@/hooks/User/useUser";
 import { useNotification } from "@/hooks/useNotification";
 import type { Notification as AppNotification } from "@/interface/notification/Notification";
 
-import { UnifiedFilterBar, type FilterGroup } from "@/components/ui/Custom/UnifiedFilterBar";
+import { UnifiedFilterBar } from "@/components/ui/Custom/UnifiedFilterBar";
+import type { FilterGroup } from "@/interface/common/FilterGroup";
 import { NotificationHeader } from "./NotificationHeader";
 import { NotificationEmptyState } from "./NotificationEmptyState";
 import { NotificationItem } from "./NotificationItem";
@@ -14,7 +15,7 @@ import { NotificationItem } from "./NotificationItem";
 export const CustomerNotificationsManager = () => {
   const { user } = useUser();
   const navigate = useNavigate();
-  
+
   const [filters, setFilters] = useState({
     search: "",
     status: "",
@@ -26,7 +27,6 @@ export const CustomerNotificationsManager = () => {
 
   const isReadParam = filters.status === "READ" ? true : filters.status === "UNREAD" ? false : undefined;
 
-  // Passing the state straight to your backend-powered hook
   const { notifications, loading, fetchNotifications, markAsRead } = useNotification(user?.id, {
     search: filters.search || undefined,
     isRead: isReadParam,
@@ -52,7 +52,6 @@ export const CustomerNotificationsManager = () => {
 
   const handleNavigation = (notif: AppNotification) => {
     if (!notif.isRead) markAsRead(notif.id);
-    // Navigate based on notification type
     if (notif.referenceId) {
       switch (notif.referenceType) {
         case "TOUR":
@@ -119,10 +118,9 @@ export const CustomerNotificationsManager = () => {
   return (
     <VStack gap={6} align="stretch" w="full" maxW="4xl" mx="auto" pb={12}>
       <NotificationHeader unreadCount={unreadCount} />
-      
-      {/* Modern Filter Toolbar */}
-      <Box 
-        bg="bg.panel" p={5} borderRadius="2xl" 
+
+      <Box
+        bg="bg.panel" p={5} borderRadius="2xl"
         shadow="sm" borderWidth="1px" borderColor="border.subtle"
       >
         <UnifiedFilterBar
@@ -134,35 +132,33 @@ export const CustomerNotificationsManager = () => {
           count={notifications.length}
           onReset={handleReset}
         />
-        
+
         <Separator my={5} />
 
         <HStack gap={6} flexWrap="wrap">
           <VStack align="start" gap={2}>
             <Text fontSize="xs" fontWeight="bold" color="fg.muted" textTransform="uppercase" letterSpacing="wider">From Date</Text>
-            <Input 
+            <Input
               type="date" size="sm" borderRadius="xl" h="10" bg="bg.surface" borderColor="border.muted"
-              value={filters.startDate} 
-              onChange={(e) => setFilters(prev => ({ ...prev, startDate: e.target.value }))} 
+              value={filters.startDate}
+              onChange={(e) => setFilters(prev => ({ ...prev, startDate: e.target.value }))}
               _hover={{ borderColor: "blue.400" }}
             />
           </VStack>
           <VStack align="start" gap={2}>
             <Text fontSize="xs" fontWeight="bold" color="fg.muted" textTransform="uppercase" letterSpacing="wider">To Date</Text>
-            <Input 
+            <Input
               type="date" size="sm" borderRadius="xl" h="10" bg="bg.surface" borderColor="border.muted"
-              value={filters.endDate} 
-              onChange={(e) => setFilters(prev => ({ ...prev, endDate: e.target.value }))} 
+              value={filters.endDate}
+              onChange={(e) => setFilters(prev => ({ ...prev, endDate: e.target.value }))}
               _hover={{ borderColor: "blue.400" }}
             />
           </VStack>
         </HStack>
       </Box>
 
-      {/* Render Body */}
       {loading ? (
         <Center p={16} color="fg.muted" flexDirection="column" gap={4}>
-          {/* FIXED: Removed the unsupported thickness prop */}
           <Spinner size="lg" color="blue.500" />
           <Text fontWeight="medium">Syncing your inbox...</Text>
         </Center>
@@ -171,11 +167,11 @@ export const CustomerNotificationsManager = () => {
       ) : (
         <VStack gap={3} align="stretch">
           {notifications.map((notif: AppNotification) => (
-            <NotificationItem 
-              key={notif.id} 
-              notif={notif} 
-              onMarkAsRead={markAsRead} 
-              onNavigate={handleNavigation} 
+            <NotificationItem
+              key={notif.id}
+              notif={notif}
+              onMarkAsRead={markAsRead}
+              onNavigate={handleNavigation}
             />
           ))}
         </VStack>

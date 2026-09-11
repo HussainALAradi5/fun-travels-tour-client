@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ticketService } from "@/Api/tourmanagement/Ticket";
 import type { Ticket } from "@/interface/tour/Ticket";
 import { useUser } from "@/hooks/User/useUser";
-import { TicketTable } from "./TicketTable"; // Your GenericTable implementation
+import { TicketTable } from "./TicketTable";
 import { notify } from "@/components/ui/Custom/GenericNotification";
 
 export const CustomerTicketsManager = () => {
@@ -23,10 +23,10 @@ export const CustomerTicketsManager = () => {
 
   return (
     <Box>
-      <TicketTable 
-        tickets={tickets} 
-        isLoading={loading} 
-        onView={(id) => navigate(`/my-bookings/${id}`)} 
+      <TicketTable
+        tickets={tickets}
+        isLoading={loading}
+        onView={(id) => navigate(`/my-bookings/${id}`)}
       />
     </Box>
   );

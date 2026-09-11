@@ -9,7 +9,8 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { PlaneTakeoff, PlaneLanding, MapPin, Calendar } from "lucide-react";
-import { GenericTable, type Column } from "@/components/ui/Custom/GenericTable";
+import { GenericTable } from "@/components/ui/Custom/GenericTable";
+import type { Column } from "@/interface/common/Column";
 import type { Tour } from "@/interface/tour/Tour";
 import { useNavigate } from "react-router-dom";
 import type { CustomerTourCatalogTableProps } from "@/interface/props/tour/CustomerTourCatalogTableProps";
@@ -113,8 +114,6 @@ export const CustomerTourCatalogTable = ({
       key: "destinationCountries",
       render: (tour) => {
         const countries = tour.destinationCountries || [];
-
-        // If there are no countries in the array, show "Direct"
         if (countries.length === 0) {
           return (
             <HStack gap={1}>
@@ -125,8 +124,6 @@ export const CustomerTourCatalogTable = ({
             </HStack>
           );
         }
-
-        // Otherwise, render the flags/names
         return (
           <HStack gap={1.5} maxW="200px" flexWrap="wrap">
             {countries.map((c, idx) => (

@@ -8,7 +8,7 @@ export function useWallet() {
 
   const handleTopUp = async (amount: number, method: PaymentMethod, gatewayToken: string) => {
     setIsProcessing(true);
-    
+
     try {
       const tx = await walletService.topUp(amount, method, gatewayToken);
       toaster.create({ title: "Top-up successful!", description: "Funds added to your wallet.", type: "success" });

@@ -1,22 +1,21 @@
 import { useState } from "react";
-import { 
-  Box, VStack, HStack, Text, Icon, 
-  Collapsible, Button 
+import {
+  Box, VStack, HStack, Text, Icon,
+  Collapsible, Button
 } from "@chakra-ui/react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { barGlow } from "@/utilities/Animations";
 import { TrackingStep } from "./GlowComponents";
 import type { GenericTrackingProps } from "@/interface/props/ui/GenericTrackingProps";
 
-export type { TrackingItem } from "@/interface/props/ui/GenericTrackingProps";
 
 function Connector({ color, animate }: { color: string; animate: boolean }) {
   return (
     <Box w="10" display="flex" justifyContent="center">
-      <Box 
-        w="2px" 
-        h="30px" 
-        bg={color} 
+      <Box
+        w="2px"
+        h="30px"
+        bg={color}
         animation={animate ? `${barGlow} 2s infinite ease-in-out` : undefined}
         opacity={animate ? 0.4 : 0.2}
       />
@@ -38,25 +37,25 @@ export const GenericTracking = ({ items, initialVisibleMiddle = 1, animate = tru
 
   return (
     <VStack align="start" gap="0" w="full">
-      <TrackingStep 
-        icon={firstItem.icon!} 
-        bg={firstItem.color} 
-        title={firstItem.title} 
-        location={firstItem.description} 
-        glowColor={firstItem.glowColor!} 
+      <TrackingStep
+        icon={firstItem.icon!}
+        bg={firstItem.color}
+        title={firstItem.title}
+        location={firstItem.description}
+        glowColor={firstItem.glowColor!}
         animate={animate}
       />
-      
+
       {items.length > 1 && <Connector color={firstItem.color} animate={animate} />}
 
       {visibleMiddle.map((item) => (
         <Box key={item.id} w="full">
-            <TrackingStep 
-              icon={item.icon!} 
-              bg={item.color} 
-              title={item.title} 
-              location={item.description} 
-              glowColor={item.glowColor!} 
+            <TrackingStep
+              icon={item.icon!}
+              bg={item.color}
+              title={item.title}
+              location={item.description}
+              glowColor={item.glowColor!}
               animate={animate}
             />
           <Connector color={item.color} animate={animate} />
@@ -86,12 +85,12 @@ export const GenericTracking = ({ items, initialVisibleMiddle = 1, animate = tru
               <VStack align="start" gap="0">
                 {hiddenMiddle.map((item) => (
                   <Box key={item.id} w="full">
-                    <TrackingStep 
-                      icon={item.icon!} 
-                      bg={item.color} 
-                      title={item.title} 
-                      location={item.description} 
-                      glowColor={item.glowColor!} 
+                    <TrackingStep
+                      icon={item.icon!}
+                      bg={item.color}
+                      title={item.title}
+                      location={item.description}
+                      glowColor={item.glowColor!}
                       animate={animate}
                     />
                     <Connector color={item.color} animate={animate} />
@@ -107,12 +106,12 @@ export const GenericTracking = ({ items, initialVisibleMiddle = 1, animate = tru
       )}
 
       {lastItem && (
-        <TrackingStep 
-          icon={lastItem.icon!} 
-          bg={lastItem.color} 
-          title={lastItem.title} 
-          location={lastItem.description} 
-          glowColor={lastItem.glowColor!} 
+        <TrackingStep
+          icon={lastItem.icon!}
+          bg={lastItem.color}
+          title={lastItem.title}
+          location={lastItem.description}
+          glowColor={lastItem.glowColor!}
           animate={animate}
         />
       )}

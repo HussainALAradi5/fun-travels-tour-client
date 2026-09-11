@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { 
-  Box, Heading, Text, VStack, Button, Center, 
-  Spinner, Alert, Icon, HStack, Separator 
+import {
+  Box, Heading, Text, VStack, Button, Center,
+  Spinner, Alert, Icon, HStack, Separator
 } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ChevronLeft, Globe, MapPin, LayoutDashboard } from "lucide-react";
@@ -30,19 +30,17 @@ export const EditTour = () => {
   const [transports, setTransports] = useState<SelectOption[]>([]);
   const [startCities, setStartCities] = useState<SelectOption[]>([]);
   const [endCities, setEndCities] = useState<SelectOption[]>([]);
-  
+
   const [initialValues, setInitialValues] = useState<TourFormValues | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const returnToDetail = useCallback(() => navigate(`/admin/tours/${id}`), [id, navigate]);
-
-  // --- BULLETPROOF MAPPING UTILITY ---
   const mapToOptions = useCallback((payload: Country[] | City[] | { data: Country[] | City[] } | unknown, labelKey: string = 'name') => {
     const items = Array.isArray(payload) ? payload : ((payload as { data: Country[] | City[] })?.data || []);
-    return items.map((item: Country | City) => ({ 
-      label: String((item as unknown as Record<string, unknown>)[labelKey as string] || (item as Country).officialName || (item as Country).famousName || `Unknown (ID: ${item.id})`), 
-      value: String(item.id) 
+    return items.map((item: Country | City) => ({
+      label: String((item as unknown as Record<string, unknown>)[labelKey as string] || (item as Country).officialName || (item as Country).famousName || `Unknown (ID: ${item.id})`),
+      value: String(item.id)
     }));
   }, []);
 
@@ -59,15 +57,11 @@ export const EditTour = () => {
           setError(`Editing is restricted. Tour is currently ${tour.status}.`);
           return;
         }
-
-        // Apply bulletproof mapping to our options
         setCountries(mapToOptions(countriesResponse));
-
-        // FIXED: Used a custom mapper for transports to avoid the 'never' type issue
         const rawTransports = Array.isArray(transportsResponse) ? transportsResponse : ((transportsResponse as { data: Transportation[] })?.data || []);
-        setTransports(rawTransports.map((t: Transportation) => ({ 
-          label: `${t.providerName} (${t.type})`, 
-          value: String(t.id) 
+        setTransports(rawTransports.map((t: Transportation) => ({
+          label: `${t.providerName} (${t.type})`,
+          value: String(t.id)
         })));
 
         const fetchCities = async (countryId: number | null | undefined) => {
@@ -80,7 +74,7 @@ export const EditTour = () => {
           fetchCities(tour.startCountry?.id),
           fetchCities(tour.endCountry?.id)
         ]);
-        
+
         setStartCities(sCities);
         setEndCities(eCities);
 
@@ -177,7 +171,7 @@ export const EditTour = () => {
             fields={fields}
             initialValues={initialValues}
             onSubmit={handleUpdate}
-            onCancel={returnToDetail} 
+            onCancel={returnToDetail}
             onFieldChange={async (name, value) => {
               if (name === "startCountry" || name === "endCountry") {
                 const res = await cityService.getCitiesByCountry(Number(value));

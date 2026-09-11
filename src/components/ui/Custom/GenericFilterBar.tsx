@@ -31,19 +31,18 @@ export const GenericSearchFilter = ({
       </HStack>
 
       <HStack gap={2} width="full">
-        {/* Unified Search Container */}
-        <HStack 
-          flex={1} 
-          bg="bg.panel" 
-          borderWidth="1px" 
-          borderColor="border.subtle" 
-          borderRadius="xl" 
+<HStack
+          flex={1}
+          bg="bg.panel"
+          borderWidth="1px"
+          borderColor="border.subtle"
+          borderRadius="xl"
           px={3}
           h="10"
           transition="all 0.2s"
-          _focusWithin={{ 
-            borderColor: "blue.500", 
-            outline: "1px solid", 
+          _focusWithin={{
+            borderColor: "blue.500",
+            outline: "1px solid",
             outlineColor: "blue.500",
             boxShadow: "0 0 0 1px var(--chakra-colors-blue-500)"
           }}
@@ -61,11 +60,10 @@ export const GenericSearchFilter = ({
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && onSearch(inputValue)}
           />
-          {/* Internal Ghost Button */}
-          <Box borderLeftWidth="1px" borderColor="border.subtle" h="20px" mx={1} />
-          <Button 
-            size="xs" 
-            variant="ghost" 
+<Box borderLeftWidth="1px" borderColor="border.subtle" h="20px" mx={1} />
+          <Button
+            size="xs"
+            variant="ghost"
             colorPalette="blue"
             fontWeight="bold"
             h="7"
@@ -74,19 +72,17 @@ export const GenericSearchFilter = ({
             Search
           </Button>
         </HStack>
-
-        {/* Reset Button */}
-        <Button 
-          size="sm" 
-          variant="outline" 
-          h="10" 
-          w="10" 
-          borderRadius="xl" 
+<Button
+          size="sm"
+          variant="outline"
+          h="10"
+          w="10"
+          borderRadius="xl"
           onClick={handleClear}
-          _hover={{ 
-            bg: "red.50", 
-            color: "red.600", 
-            borderColor: "red.200" 
+          _hover={{
+            bg: "red.50",
+            color: "red.600",
+            borderColor: "red.200"
           }}
           transition="all 0.2s"
         >

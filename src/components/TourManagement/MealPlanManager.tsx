@@ -46,8 +46,8 @@ export const MealPlanManager = () => {
 
   return (
     <Stack gap={8}>
-      
-      <GenericCard 
+
+      <GenericCard
         header={
           <Group justify="space-between" width="full">
             <Box>
@@ -60,28 +60,28 @@ export const MealPlanManager = () => {
           </Group>
         }
       >
-        <GenericTable<MealPlan> 
-          data={Array.isArray(data) ? (data as unknown as MealPlan[]).flat() : []} 
+        <GenericTable<MealPlan>
+          data={Array.isArray(data) ? (data as unknown as MealPlan[]).flat() : []}
           loading={loading}
           columns={[
             { header: "Meal Name", key: "mealName" },
-            { 
-              header: "Dietary", 
-              key: "isVegetarian", 
+            {
+              header: "Dietary",
+              key: "isVegetarian",
               render: (m) => (
                 <Group gap={2}>
                   {m.isVegetarian && <Badge colorPalette="green" variant="surface">Veg</Badge>}
                   {m.isVegan && <Badge colorPalette="purple" variant="surface">Vegan</Badge>}
                 </Group>
-              ) 
+              )
             },
             { header: "Price", key: "mealPrice", render: (m) => <Text fontWeight="bold">${m.mealPrice}</Text> },
-            { 
-              header: "Status", 
+            {
+              header: "Status",
               key: "status",
               render: (m) => <Badge colorPalette={m.status === "ACTIVE" ? "blue" : "red"}>{m.status}</Badge>
             }
-          ]} 
+          ]}
           exportFileName="Meals"
           enableExport
         />

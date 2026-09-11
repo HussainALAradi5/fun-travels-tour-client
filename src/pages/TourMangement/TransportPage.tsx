@@ -1,4 +1,3 @@
-// src/pages/TransportPage.tsx
 
 import { TransportationManager } from "@/components/TourManagement/TransportationManager";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";

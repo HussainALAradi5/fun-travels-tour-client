@@ -22,11 +22,8 @@ export function ConfirmDialog({
     setLoading(true);
     try {
       await onConfirm();
-      onClose(); // Only close the dialog if the promise actually succeeds
+      onClose();
     } catch {
-      // Do nothing here! 
-      // Your useTourManagement hook is already catching this and firing the exact backend error toast.
-      // We just catch it here so the dialog stays open, allowing the user to see the error.
     } finally {
       setLoading(false);
     }
@@ -45,7 +42,7 @@ export function ConfirmDialog({
     >
       <VStack align="stretch" gap={6}>
         <Text color="fg.muted">{message}</Text>
-        
+
         <DialogFooter p={0} pt={4}>
           <DialogActionTrigger asChild>
             <Button variant="ghost" disabled={loading} onClick={onClose}>

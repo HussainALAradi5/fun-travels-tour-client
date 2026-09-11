@@ -19,8 +19,6 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: AddBranchD
   const [selectedCountryId, setSelectedCountryId] = useState<string | null>(
     null,
   );
-
-  // 1. Load Initial Data (Users and Countries)
   useEffect(() => {
     const loadInitialData = async () => {
       try {
@@ -57,8 +55,6 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: AddBranchD
       loadInitialData();
     }
   }, [open]);
-
-  // 2. Load Cities when country changes
   useEffect(() => {
     const fetchCities = async () => {
       if (!selectedCountryId) {

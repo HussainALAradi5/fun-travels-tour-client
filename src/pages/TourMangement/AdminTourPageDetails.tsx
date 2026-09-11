@@ -1,4 +1,3 @@
-// src/pages/TourManagement/AdminTourDetailsPage.tsx
 import { useParams } from "react-router-dom";
 import { TourDetailView } from "@/components/TourManagement/Tour/TourDetailsView";
 import { Center, Spinner, Text, VStack } from "@chakra-ui/react";
@@ -21,8 +20,8 @@ export const AdminTourDetailsPage = () => {
   if (!tour) return <Center h="60vh">Information not found for Tour ID: {id}</Center>;
 
   return (
-    <PageWrapper 
-      title={tour.title} 
+    <PageWrapper
+      title={tour.title}
       subtitle={`Operational Console • ${tour.tourNumber}`}
       imageUrl="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80"
     >

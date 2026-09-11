@@ -1,4 +1,3 @@
-// src/components/TourManagement/Transportation/TransportationHeader.tsx
 import { HStack, VStack, Heading, Text, Button, Box } from "@chakra-ui/react";
 import { Plus } from "lucide-react";
 import { UnifiedFilterBar } from "../../ui/Custom/UnifiedFilterBar";
@@ -37,12 +36,12 @@ export const TransportationHeader = ({
             <Heading size="md" letterSpacing="tight" fontWeight="black">Fleet Inventory</Heading>
             <Text color="fg.muted" fontSize="xs">Advanced Resource Search & Management</Text>
           </VStack>
-          <Button 
-            colorPalette="blue" 
-            size="sm" 
-            onClick={onAdd} 
-            variant="solid" 
-            borderRadius="full" 
+          <Button
+            colorPalette="blue"
+            size="sm"
+            onClick={onAdd}
+            variant="solid"
+            borderRadius="full"
             px={5}
             _hover={{ transform: "scale(1.02)" }}
           >
@@ -52,11 +51,11 @@ export const TransportationHeader = ({
       }
     >
       <Box p={4}>
-        <UnifiedFilterBar 
+        <UnifiedFilterBar
           searchLabel="SearchBar"
           searchPlaceholder="Search"
-          searchValue={searchValue} 
-          onSearchTrigger={onSearch} 
+          searchValue={searchValue}
+          onSearchTrigger={onSearch}
           count={count}
           onReset={onReset}
           filters={[

@@ -4,11 +4,10 @@ import { glowPulse, floatIn } from "@/utilities/Animations";
 import { useState } from "react";
 import type { GenericStatusWorkflowProps } from "@/interface/props/ui/GenericStatusWorkflowProps";
 
-export type { StatusConfig } from "@/interface/common/StatusConfig";
 
-export const GenericStatusWorkflow = <T extends string>({ 
-  currentStatus, 
-  statusMap, 
+export const GenericStatusWorkflow = <T extends string>({
+  currentStatus,
+  statusMap,
   steps,
   onStatusChange,
   isReadOnly = false
@@ -17,9 +16,8 @@ export const GenericStatusWorkflow = <T extends string>({
   const currentIndex = steps.indexOf(currentStatus);
 
   const handleStepClick = async (step: T) => {
-    // Prevent clicking if read-only, already loading, or clicking the current status
     if (isReadOnly || !onStatusChange || step === currentStatus || loadingStatus) return;
-    
+
     setLoadingStatus(step);
     try {
       await onStatusChange(step);
@@ -42,8 +40,7 @@ export const GenericStatusWorkflow = <T extends string>({
 
           return (
             <Flex key={stepKey} direction="column" align="center" flex={1} position="relative">
-              {/* Line Connector */}
-              {index !== 0 && (
+{index !== 0 && (
                 <Box
                   position="absolute"
                   top="20px"
@@ -56,8 +53,8 @@ export const GenericStatusWorkflow = <T extends string>({
                 />
               )}
 
-              <VStack 
-                zIndex={1} 
+              <VStack
+                zIndex={1}
                 cursor={!isReadOnly && !isCurrent ? "pointer" : "default"}
                 onClick={() => handleStepClick(stepKey)}
                 gap={3}

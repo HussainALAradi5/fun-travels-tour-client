@@ -5,21 +5,18 @@ import { CollapsibleContainer } from "./CollapsibleContainer";
 import type { AuditEventItem } from "@/interface/common/AuditEventItem";
 import type { GenericAuditLogProps } from "@/interface/props/ui/GenericAuditLogProps";
 
-export type { AuditEventItem } from "@/interface/common/AuditEventItem";
 
-export const GenericAuditLog = ({ 
-  events, 
-  title = "System Audit Log", 
+export const GenericAuditLog = ({
+  events,
+  title = "System Audit Log",
   emptyMessage = "No system events recorded yet.",
-  initiallyVisibleCount = 3 
+  initiallyVisibleCount = 3
 }: GenericAuditLogProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const visibleEvents = events.slice(0, initiallyVisibleCount);
   const hiddenEvents = events.slice(initiallyVisibleCount);
   const hasHiddenEvents = hiddenEvents.length > 0;
-
-  // Reusable render function to keep code DRY
   const renderEvent = (event: AuditEventItem) => (
     <HStack key={event.id} align="start" gap={3}>
       <Center w={6} h={6} mt={1} borderRadius="full" bg="bg.muted" color="fg.muted" flexShrink={0}>
@@ -56,18 +53,13 @@ export const GenericAuditLog = ({
           <Text color="fg.muted" fontSize="sm">{emptyMessage}</Text>
         ) : (
           <>
-            {/* Always show initially visible events */}
-            {visibleEvents.map(renderEvent)}
-
-            {/* Collapsible container for the rest */}
-            <CollapsibleContainer isOpen={isExpanded}>
+{visibleEvents.map(renderEvent)}
+<CollapsibleContainer isOpen={isExpanded}>
               <VStack align="stretch" gap={4} pt={4}>
                 {hiddenEvents.map(renderEvent)}
               </VStack>
             </CollapsibleContainer>
-
-            {/* Toggle Button */}
-            {hasHiddenEvents && (
+{hasHiddenEvents && (
               <Button variant="ghost" size="sm" color="fg.muted" w="full" onClick={() => setIsExpanded(!isExpanded)}>
                 {isExpanded ? (
                   <><ChevronUp size={14} style={{marginRight:'4px'}}/> Show Less</>

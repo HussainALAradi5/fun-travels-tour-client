@@ -8,12 +8,7 @@ export function FormCombobox({ field, value, onChange, multiple }: FormComboboxP
   const [searchTerm, setSearchTerm] = useState("");
 
   const rawOptions = useMemo(() => field.options || [], [field.options]);
-
-  /**
-   * Object Handling for "No DTO"
-   * Extracts a unique string ID to track selection internally.
-   */
-  const getInternalValue = (val: string | number | Record<string, unknown> | null | undefined) => {
+const getInternalValue = (val: string | number | Record<string, unknown> | null | undefined) => {
     if (!val) return "";
     return typeof val === "object" ? String((val as Record<string, unknown>).id || JSON.stringify(val)) : String(val);
   };
@@ -51,8 +46,8 @@ export function FormCombobox({ field, value, onChange, multiple }: FormComboboxP
   }, [filteredItems]);
 
   const handleValueChange = (details: { value: string[] }) => {
-    const nextIds = details.value; 
-    
+    const nextIds = details.value;
+
     const selectedObjects = nextIds.map((id: string) => {
       const found = collection.items.find((item: CollectionItem) => item.value === id);
       return found ? found.original : id;
@@ -75,10 +70,10 @@ export function FormCombobox({ field, value, onChange, multiple }: FormComboboxP
   return (
     <Box w="100%">
       {multiple && (
-        <SelectedTags 
-          values={selectedValues} 
-          options={rawOptions.map(o => ({...o, value: String(o.value)}))} 
-          onRemove={handleRemoveTag} 
+        <SelectedTags
+          values={selectedValues}
+          options={rawOptions.map(o => ({...o, value: String(o.value)}))}
+          onRemove={handleRemoveTag}
         />
       )}
 
@@ -103,14 +98,13 @@ export function FormCombobox({ field, value, onChange, multiple }: FormComboboxP
           <Combobox.Content bg="bg.panel" boxShadow="md" borderRadius="md">
             {collection.items.length === 0 && (
               <Box px={4} py={2}>
-                {/* Now properly imported from @chakra-ui/react */}
-                <Text fontSize="xs" color="fg.muted">No results found</Text>
+<Text fontSize="xs" color="fg.muted">No results found</Text>
               </Box>
             )}
-            
+
             {collection.items.map((item) => (
-              <Combobox.Item 
-                key={item.value} 
+              <Combobox.Item
+                key={item.value}
                 item={item}
                 px={2}
                 py={1.5}

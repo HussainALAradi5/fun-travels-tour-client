@@ -5,20 +5,19 @@ import { CommentItemDisplay } from "./Comment/CommentItemDisplay";
 import { CommentInputArea } from "./Comment/CommentInputArea";
 import type { GenericCommentSectionProps } from "@/interface/props/ui/GenericCommentSectionProps";
 
-export type { CommentItem } from "@/interface/common/CommentItem";
 
-export const GenericCommentSection = ({ 
-  comments, 
-  currentUserId, 
-  onAddComment, 
+export const GenericCommentSection = ({
+  comments,
+  currentUserId,
+  onAddComment,
   onEditComment,
   title = "Discussion",
   emptyMessage = "No comments yet. Start the discussion!",
-  isReadOnly = false 
+  isReadOnly = false
 }: GenericCommentSectionProps) => {
   return (
     <Box bg="bg.panel" p={6} borderRadius="3xl" borderWidth="1px" shadow="md" display="flex" flexDirection="column" h="full" minH="600px">
-      
+
       <CommentHeader title={title} count={comments.length} />
 
       <Box flex="1" overflowY="auto" mb={6} pr={2}>
@@ -32,7 +31,7 @@ export const GenericCommentSection = ({
             </Center>
           ) : (
             comments.map(comment => (
-              <CommentItemDisplay 
+              <CommentItemDisplay
                 key={comment.id}
                 comment={comment}
                 isReadOnly={isReadOnly}

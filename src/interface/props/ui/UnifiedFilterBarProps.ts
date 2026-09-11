@@ -1,6 +1,4 @@
-import type { FilterGroup } from "@/components/ui/Custom/UnifiedFilterBar/FilterCombobox";
-
-export type { FilterGroup };
+import type { FilterGroup } from "@/interface/common/FilterGroup";
 
 export interface UnifiedFilterBarProps {
   searchLabel: string;

@@ -82,8 +82,7 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
 
   return (
     <VStack gap={8} align="stretch">
-      {/* Header */}
-      <HStack justify="space-between" align="center">
+<HStack justify="space-between" align="center">
         <HStack gap={5}>
           <Box p={4} bg="blue.600" color="white" borderRadius="2xl" shadow="lg">
             <Building2 size={32} />
@@ -115,9 +114,7 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
           <Plus size={18} /> Add New Branch
         </Button>
       </HStack>
-
-      {/* Info Cards */}
-      <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
+<SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
         <InfoCard
           icon={UserIcon}
           label="Agency Owner"
@@ -137,9 +134,7 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
           subValue="Main Headquarters"
         />
       </SimpleGrid>
-
-      {/* Tabs Section */}
-      <Box
+<Box
         bg="bg.panel"
         borderRadius="xl"
         border="1px solid"
@@ -171,10 +166,9 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
           </Tabs.Content>
 
           <Tabs.Content value="employees">
-            {/* FIXED: Passing required agencyId and onRefresh props */}
-            <EmployeeTab 
-              employees={employees} 
-              agencyName={agency.agencyName} 
+<EmployeeTab
+              employees={employees}
+              agencyName={agency.agencyName}
               agencyId={Number(id)}
               onRefresh={loadData}
             />
@@ -191,8 +185,6 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
     </VStack>
   );
 }
-
-// Sub-components
 import type { InfoCardProps } from "@/interface/props/agency/InfoCardProps";
 
 function InfoCard({ icon: Icon, label, value, subValue }: InfoCardProps) {

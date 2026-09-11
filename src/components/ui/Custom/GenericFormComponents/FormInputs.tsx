@@ -28,12 +28,12 @@ export const TextAreaInput = ({ field, value, onChange }: FormInputProps) => (
 );
 
 export const BooleanInput = ({ field, value, onChange }: FormInputProps) => (
-  <HStack 
-    height="36px" 
-    width="full" 
-    px={3} 
-    borderWidth="1px" 
-    borderRadius="md" 
+  <HStack
+    height="36px"
+    width="full"
+    px={3}
+    borderWidth="1px"
+    borderRadius="md"
     bg="bg.subtle"
     justify="space-between"
     transition="all 0.2s"
@@ -42,9 +42,9 @@ export const BooleanInput = ({ field, value, onChange }: FormInputProps) => (
     <Text fontSize="xs" fontWeight="bold" color="fg.muted" textTransform="uppercase">
       {field.placeholder || field.label}
     </Text>
-    
-    <Switch.Root 
-      colorPalette="blue" 
+
+    <Switch.Root
+      colorPalette="blue"
       size="sm"
       disabled={field.disabled}
       checked={!!value}
@@ -67,7 +67,6 @@ export const DateInput = ({ field, value, onChange }: FormInputProps) => (
       label={field.label}
       value={value as string}
       onChange={(dateString: string) => {
-        // Formats the ISO string from DatePicker (e.g., 2024-05-20T...) to YYYY-MM-DD
         const formattedDate = dateString.split("T")[0];
         onChange(field.name as string, formattedDate);
       }}

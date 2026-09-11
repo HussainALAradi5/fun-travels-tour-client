@@ -5,8 +5,6 @@ import type { FormFileProps } from "@/interface/props/ui/FormFileProps";
 
 export const FormFile = ({ field, value, onChange }: FormFileProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Checks if the value is a valid base64 image string
   const hasImage = typeof value === "string" && value.startsWith("data:image");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +21,7 @@ export const FormFile = ({ field, value, onChange }: FormFileProps) => {
 
   const handleClear = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onChange(field.name as string, ""); 
+    onChange(field.name as string, "");
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -37,10 +35,10 @@ export const FormFile = ({ field, value, onChange }: FormFileProps) => {
         accept="image/*"
         disabled={field.disabled}
       />
-      
+
       <HStack
         width="full"
-        minH="48px" // Slightly taller for better touch target
+        minH="48px"
         py={2}
         px={3}
         borderWidth="1px"
@@ -55,8 +53,7 @@ export const FormFile = ({ field, value, onChange }: FormFileProps) => {
         justify="space-between"
       >
         <HStack gap={3} overflow="hidden">
-          {/* V3 FIX: Using Avatar.Root instead of Image fallback */}
-          <Avatar.Root size="sm" shape="rounded">
+<Avatar.Root size="sm" shape="rounded">
              {hasImage ? (
                <Avatar.Image src={value as string} objectFit="cover" />
              ) : (
@@ -77,9 +74,7 @@ export const FormFile = ({ field, value, onChange }: FormFileProps) => {
             )}
           </VStack>
         </HStack>
-
-        {/* Action Icons */}
-        <HStack>
+<HStack>
           {hasImage && !field.disabled ? (
             <Button
               variant="ghost"

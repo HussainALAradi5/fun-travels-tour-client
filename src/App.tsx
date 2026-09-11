@@ -26,7 +26,7 @@ const AppContent = () => {
 export default function App() {
   return (
     <AuthProvider>
-      <NotificationProvider> {/* Add this here */}
+      <NotificationProvider>
         <Router>
           <AppContent />
         </Router>

@@ -1,4 +1,3 @@
-// src/pages/Transactions/TransactionDetailsPage.tsx
 import { TransactionDetails } from "@/components/transactions/TransactionDetails";
 import { Box } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";

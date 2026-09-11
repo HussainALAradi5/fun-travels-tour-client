@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { Badge, IconButton, Icon, HStack, Text, VStack } from "@chakra-ui/react";
 import { Eye, Calendar, CreditCard, Landmark, CheckCircle, XCircle, Clock } from "lucide-react";
-import { GenericTable, type Column } from "@/components/ui/Custom/GenericTable";
+import { GenericTable } from "@/components/ui/Custom/GenericTable";
+import type { Column } from "@/interface/common/Column";
 import { usePayment } from "@/hooks/usePayment";
 import type { Payment } from "@/interface/payment/Payment";
 import { PaymentStatusColors, PaymentMethodColors } from "@/constants/roles/Colors";
@@ -11,8 +12,6 @@ import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
 export const PaymentTable = () => {
   const { payments, isLoading } = usePayment();
   const navigate = useNavigate();
-
-  // Helper to add nice icons next to the status text
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "COMPLETED": return CheckCircle;
@@ -45,10 +44,10 @@ export const PaymentTable = () => {
       key: "method",
       render: (p) => (
         <HStack color="fg.muted" fontSize="sm">
-          <Icon 
-            as={p.method === "CREDIT_CARD" ? CreditCard : Landmark} 
-            size="xs" 
-            color={PaymentMethodColors[p.method] || "gray"} 
+          <Icon
+            as={p.method === "CREDIT_CARD" ? CreditCard : Landmark}
+            size="xs"
+            color={PaymentMethodColors[p.method] || "gray"}
           />
           <Text fontWeight="medium">{p.method?.replace("_", " ") || "UNKNOWN"}</Text>
         </HStack>
@@ -58,11 +57,11 @@ export const PaymentTable = () => {
       header: "Status",
       key: "status",
       render: (p) => (
-        <Badge 
-          colorPalette={PaymentStatusColors[p.status] || "gray"} 
-          variant="subtle" 
-          px={3} 
-          py={1} 
+        <Badge
+          colorPalette={PaymentStatusColors[p.status] || "gray"}
+          variant="subtle"
+          px={3}
+          py={1}
           borderRadius="full"
         >
           <Icon as={getStatusIcon(p.status)} mr={1} size="xs" />
@@ -84,10 +83,10 @@ export const PaymentTable = () => {
       header: "View",
       key: "actions",
       render: (p) => (
-        <IconButton 
-          size="sm" 
-          variant="ghost" 
-          colorPalette="blue" 
+        <IconButton
+          size="sm"
+          variant="ghost"
+          colorPalette="blue"
           borderRadius="full"
           onClick={() => navigate(`/payments/${p.id}`)}
         >
@@ -98,15 +97,15 @@ export const PaymentTable = () => {
   ], [navigate]);
 
   return (
-    <PageWrapper 
-      title="Payment Gateway History" 
+    <PageWrapper
+      title="Payment Gateway History"
       subtitle="View all external Stripe and PayPal processing attempts."
     >
-      <GenericTable 
-        columns={columns} 
-        data={payments || []} 
-        loading={isLoading} 
-        searchPlaceholder="Search by Ref ID..." 
+      <GenericTable
+        columns={columns}
+        data={payments || []}
+        loading={isLoading}
+        searchPlaceholder="Search by Ref ID..."
       />
     </PageWrapper>
   );

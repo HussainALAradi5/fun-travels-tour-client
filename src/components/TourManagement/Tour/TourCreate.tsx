@@ -18,15 +18,15 @@ import type { TourCreateFormValues } from "@/types/tour/TourCreateFormValues";
 
 export const TourCreate = () => {
   const navigate = useNavigate();
-  
-  const { 
-    transportation, fetchTransportation, 
-    meals, fetchMeals, 
-    handleCreateTour, isMutating, calculateEndDate 
+
+  const {
+    transportation, fetchTransportation,
+    meals, fetchMeals,
+    handleCreateTour, isMutating, calculateEndDate
   } = useTourManagement();
-  
-  const { countries, fetchCountries, loading: isCountriesLoading } = useCountries(); 
-  
+
+  const { countries, fetchCountries, loading: isCountriesLoading } = useCountries();
+
   const [selectedStartCountryId, setSelectedStartCountryId] = useState<string | null>(null);
   const [selectedEndCountryId, setSelectedEndCountryId] = useState<string | null>(null);
 
@@ -38,26 +38,24 @@ export const TourCreate = () => {
     fetchTransportation();
     fetchMeals();
   }, [fetchCountries, fetchTransportation, fetchMeals]);
-
-  // FIX: Fallback to c.name to ensure labels render properly
-  const countryOptions = useMemo(() => 
-    countries.map(c => ({ label:c.officialName, value: String(c.id) })), 
+  const countryOptions = useMemo(() =>
+    countries.map(c => ({ label:c.officialName, value: String(c.id) })),
   [countries]);
 
-  const startCityOptions = useMemo(() => 
-    rawStartCities.map(c => ({ label: c.name, value: String(c.id) })), 
+  const startCityOptions = useMemo(() =>
+    rawStartCities.map(c => ({ label: c.name, value: String(c.id) })),
   [rawStartCities]);
 
-  const endCityOptions = useMemo(() => 
-    rawEndCities.map(c => ({ label: c.name, value: String(c.id) })), 
+  const endCityOptions = useMemo(() =>
+    rawEndCities.map(c => ({ label: c.name, value: String(c.id) })),
   [rawEndCities]);
 
-  const transportOptions = useMemo(() => 
-    transportation.map(t => ({ label: `${t.providerName} - ${t.code}`, value: String(t.id) })), 
+  const transportOptions = useMemo(() =>
+    transportation.map(t => ({ label: `${t.providerName} - ${t.code}`, value: String(t.id) })),
   [transportation]);
 
-  const mealOptions = useMemo(() => 
-    meals.map(m => ({ label: `${m.mealName} ($${m.mealPrice})`, value: String(m.id) })), 
+  const mealOptions = useMemo(() =>
+    meals.map(m => ({ label: `${m.mealName} ($${m.mealPrice})`, value: String(m.id) })),
   [meals]);
 
   const fields = useMemo<FieldConfig<TourCreateFormValues>[]>(
@@ -82,18 +80,17 @@ export const TourCreate = () => {
   );
 
   const handleSubmit = async (formData: TourCreateFormValues) => {
-      // FIX: End Date is now calculated successfully because numberOfDays is in state
       const finalEndDate = calculateEndDate(formData.startDate, Number(formData.numberOfDays));
 
       const payload: Tour = {
         ...formData,
         endDate: finalEndDate,
         numberOfDays: Number(formData.numberOfDays),
-        price: Number(formData.basePrice), 
+        price: Number(formData.basePrice),
         basePrice: Number(formData.basePrice),
         discountPrice: Number(formData.discountPrice || 0),
         availableSlots: Number(formData.maxCapacity),
-        hasTransportation: Boolean(formData.transportation), // Auto-derive boolean based on selection
+        hasTransportation: Boolean(formData.transportation),
         startCountry: formData.startCountry ? ({ id: Number(formData.startCountry) } as Country) : undefined,
         endCountry: formData.endCountry ? ({ id: Number(formData.endCountry) } as Country) : undefined,
         startCity: formData.startCity ? ({ id: Number(formData.startCity) } as City) : undefined,
@@ -110,7 +107,7 @@ export const TourCreate = () => {
       try {
         await handleCreateTour(payload);
         navigate("/admin/tours");
-      } catch (e: unknown) { console.error("Create failed", e); } 
+      } catch (e: unknown) { console.error("Create failed", e); }
   };
 
   if (isCountriesLoading) {

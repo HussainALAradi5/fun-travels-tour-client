@@ -1,8 +1,8 @@
 import { HStack, Text, IconButton } from "@chakra-ui/react";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 
-export const TablePagination = ({ 
-  totalItems, startIndex, endIndex, currentPage, totalPages, setCurrentPage, headerBg 
+export const TablePagination = ({
+  totalItems, startIndex, endIndex, currentPage, totalPages, setCurrentPage, headerBg
 }: {
   totalItems: number;
   startIndex: number;

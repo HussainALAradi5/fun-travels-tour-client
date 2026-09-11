@@ -12,7 +12,7 @@ export const TourItineraryCard = ({ tour, itinerarySteps, onSeatOpen }: TourItin
   };
 
   return (
-    <GenericCard 
+    <GenericCard
       header={
         <HStack gap="3">
           <Icon as={Navigation} color="blue.500" animation={`${glowPulse} 2s infinite`} />

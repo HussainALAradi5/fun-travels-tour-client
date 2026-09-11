@@ -17,8 +17,8 @@ export const CommentItemDisplay = ({ comment, isMe, isReadOnly, onEdit }: Commen
   };
 
   return (
-    <Flex 
-      direction={isMe ? "row-reverse" : "row"} 
+    <Flex
+      direction={isMe ? "row-reverse" : "row"}
       gap={3} align="flex-end"
       transition="transform 0.2s ease"
       _hover={{ transform: "translateY(-2px)" }}
@@ -28,7 +28,7 @@ export const CommentItemDisplay = ({ comment, isMe, isReadOnly, onEdit }: Commen
           <Icon size="xs" as={User}/>
         </Center>
       )}
-      
+
       <VStack align={isMe ? "flex-end" : "flex-start"} gap={1} maxW="85%">
         <HStack fontSize="11px" color="fg.muted" gap={2} px={1}>
           {!isMe && <Text fontWeight="bold" color="blue.600">{comment.authorName}</Text>}
@@ -49,9 +49,9 @@ export const CommentItemDisplay = ({ comment, isMe, isReadOnly, onEdit }: Commen
             </HStack>
           </Box>
         ) : (
-          <Box 
+          <Box
             bg={isMe ? "blue.500" : "white"} _dark={{ bg: isMe ? "blue.600" : "whiteAlpha.100" }}
-            color={isMe ? "white" : "fg.emphasized"} p={4} borderRadius="2xl" borderWidth={isMe ? "0" : "1px"} 
+            color={isMe ? "white" : "fg.emphasized"} p={4} borderRadius="2xl" borderWidth={isMe ? "0" : "1px"}
             borderColor="border.subtle" shadow="sm" borderTopRightRadius={isMe ? "4px" : "2xl"} borderTopLeftRadius={!isMe ? "4px" : "2xl"}
             _hover={{ shadow: "md", borderColor: isMe ? "transparent" : "blue.300", bg: isMe ? "blue.600" : "blue.50/30" }}
           >

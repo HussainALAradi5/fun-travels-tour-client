@@ -1,8 +1,8 @@
 import { useMemo } from "react";
-import { 
-  createListCollection, 
-  Box, 
-  Text 
+import {
+  createListCollection,
+  Box,
+  Text
 } from "@chakra-ui/react";
 import {
   SelectRoot,
@@ -53,13 +53,10 @@ export function FormSelect({ field, value, onChange }: FormSelectProps) {
         value={selectedValue}
         onValueChange={handleValueChange}
         disabled={field.disabled}
-        /* When inside a Dialog, we use strategy: "fixed" 
-           but we do NOT use a Portal.
-        */
-        positioning={{ 
-          sameWidth: true, 
-          gutter: 4, 
-          strategy: "fixed" 
+positioning={{
+          sameWidth: true,
+          gutter: 4,
+          strategy: "fixed"
         }}
       >
         <SelectTrigger
@@ -76,9 +73,7 @@ export function FormSelect({ field, value, onChange }: FormSelectProps) {
             placeholder={field.placeholder || `Select ${field.label}...`}
           />
         </SelectTrigger>
-
-        {/* Removed <Portal> to avoid focus-trap conflicts with Dialog */}
-        <SelectPositioner> 
+<SelectPositioner>
           <SelectContent
             bg="bg.panel"
             boxShadow="xl"

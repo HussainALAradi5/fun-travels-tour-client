@@ -54,13 +54,11 @@ const handleFormSubmit = async (e: React.FormEvent) => {
 
   try {
     const response = await onSubmit(formData);
-
-    // Only show toast if NOT disabled
     if (!disableToast) {
       toaster.create({
         title: "Success",
-        description: typeof response === "string" 
-          ? response 
+        description: typeof response === "string"
+          ? response
           : `${submitLabel} completed successfully.`,
         type: "success",
       });
@@ -68,8 +66,6 @@ const handleFormSubmit = async (e: React.FormEvent) => {
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : "An unexpected error occurred.";
     setErrorMessage(msg);
-
-    // Only show error toast if NOT disabled
     if (!disableToast) {
       toaster.create({
         title: "Submission Failed",

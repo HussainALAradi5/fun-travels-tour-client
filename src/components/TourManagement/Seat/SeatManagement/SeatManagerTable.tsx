@@ -1,4 +1,3 @@
-// src/components/TourManagement/Seat/SeatManagerTable.tsx
 import { Box, HStack, Text, Badge, Button, Circle } from "@chakra-ui/react";
 import { Armchair, Settings2 } from "lucide-react";
 import type { Seat } from "@/interface/tour/Seat";
@@ -10,7 +9,6 @@ import type { SeatColumn } from "@/interface/tour/SeatColumn";
 import type { SeatManagerTableProps } from "@/interface/props/tour/SeatManagerTableProps";
 
 export const SeatManagerTable = ({ data, loading, onEdit }: SeatManagerTableProps) => {
-  // Helper to map complex SeatStatusColors to Chakra colorPalettes for the Badge
   const getStatusPalette = (status: string) => {
     switch (status) {
       case "AVAILABLE": return "green";
@@ -43,11 +41,11 @@ export const SeatManagerTable = ({ data, loading, onEdit }: SeatManagerTableProp
       render: (s) => {
         const colorPalette = ChairTypeColors[s.chairType as keyof typeof ChairTypeColors] || "gray";
         return (
-          <Badge 
-            variant="surface" 
-            colorPalette={colorPalette} 
-            borderRadius="full" 
-            px={3} 
+          <Badge
+            variant="surface"
+            colorPalette={colorPalette}
+            borderRadius="full"
+            px={3}
             py={0.5}
             textTransform="capitalize"
           >
@@ -62,21 +60,20 @@ export const SeatManagerTable = ({ data, loading, onEdit }: SeatManagerTableProp
       render: (s) => {
         const palette = getStatusPalette(s.status);
         const config = SeatStatusColors[s.status as SeatStatus] || { text: "gray.500" };
-        
+
         return (
-          <Badge 
-            variant="subtle" 
-            colorPalette={palette} 
-            borderRadius="lg" 
-            px={3} 
+          <Badge
+            variant="subtle"
+            colorPalette={palette}
+            borderRadius="lg"
+            px={3}
             py={1}
             display="flex"
             alignItems="center"
             gap={2}
             width="fit-content"
           >
-            {/* Modern status dot indicator */}
-            <Circle size="6px" bg={`${palette}.500`} />
+<Circle size="6px" bg={`${palette}.500`} />
             <Text fontSize="xs" fontWeight="bold" color={config.text === "white" ? undefined : config.text}>
               {s.status}
             </Text>
@@ -88,14 +85,14 @@ export const SeatManagerTable = ({ data, loading, onEdit }: SeatManagerTableProp
       header: "Actions",
       key: "actions",
       render: (s) => (
-        <Button 
-          size="sm" 
-          variant="ghost" 
-          colorPalette="blue" 
-          borderRadius="xl" 
+        <Button
+          size="sm"
+          variant="ghost"
+          colorPalette="blue"
+          borderRadius="xl"
           onClick={() => onEdit(s)}
         >
-          <Settings2 size={14} /> 
+          <Settings2 size={14} />
           <Text fontSize="xs" fontWeight="bold" ml={1}>Configure</Text>
         </Button>
       )
@@ -103,17 +100,17 @@ export const SeatManagerTable = ({ data, loading, onEdit }: SeatManagerTableProp
   ];
 
   return (
-    <Box 
-      p={1} 
-      bg="bg.panel" 
-      borderRadius="3xl" 
+    <Box
+      p={1}
+      bg="bg.panel"
+      borderRadius="3xl"
       overflow="hidden"
     >
       <GenericTable<Seat>
         data={data}
         loading={loading}
         columns={columns}
-        searchDisabled 
+        searchDisabled
       />
     </Box>
   );

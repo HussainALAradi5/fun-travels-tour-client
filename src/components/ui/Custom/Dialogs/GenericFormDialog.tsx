@@ -31,8 +31,7 @@ export function GenericFormDialog<T extends Record<string, unknown>>({
       size={size}
     >
       <VStack gap={4} align="stretch">
-        {/* Info Box Section */}
-        {infoMessage && (
+{infoMessage && (
           <HStack
             bg="blue.50"
             _dark={{ bg: "blue.950/30" }}
@@ -45,7 +44,7 @@ export function GenericFormDialog<T extends Record<string, unknown>>({
             <Box mt={0.5}>
               <Info size={16} color="var(--chakra-colors-blue-500)" />
             </Box>
-            
+
             {typeof infoMessage === "string" ? (
               <Text
                 fontSize="xs"
@@ -60,16 +59,12 @@ export function GenericFormDialog<T extends Record<string, unknown>>({
             )}
           </HStack>
         )}
-
-        {/* Extra UI Content (e.g., SeatMap, Metrics) */}
-        {extraContent && (
+{extraContent && (
           <Box width="full">
             {extraContent}
           </Box>
         )}
-
-        {/* The Main Form */}
-        <GenericForm<T>
+<GenericForm<T>
           fields={fields}
           initialValues={initialValues}
           onFieldChange={onFieldChange}

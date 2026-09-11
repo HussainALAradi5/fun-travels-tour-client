@@ -26,15 +26,12 @@ export function GenericTableDialog<T extends { id?: number | string | null }>({
       scrollBehavior="inside"
     >
       <VStack w="full" align="stretch" gap={6}>
-        {/* Render custom filters or metrics above the table */}
-        {topContent && <Box w="full">{topContent}</Box>}
-        
-        {/* The Table Wrapper */}
-        <Box 
-          borderRadius="2xl" 
-          borderWidth="1px" 
-          borderColor="border.subtle" 
-          shadow="sm" 
+{topContent && <Box w="full">{topContent}</Box>}
+<Box
+          borderRadius="2xl"
+          borderWidth="1px"
+          borderColor="border.subtle"
+          shadow="sm"
           overflow="hidden"
           bg="bg.panel"
         >

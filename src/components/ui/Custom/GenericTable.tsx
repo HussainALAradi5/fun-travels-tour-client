@@ -10,28 +10,25 @@ import { Search } from "lucide-react";
 import { TableToolbar } from "./GenericTableComponents/TableHeader";
 import type { GenericTableProps } from "@/interface/props/ui/GenericTableProps";
 
-export type { Column } from "@/interface/common/Column";
 
 export function GenericTable<T extends { id?: number | string | null }>(props: GenericTableProps<T>) {
-  const { 
-    data, 
-    columns, 
-    loading, 
-    showSelect, 
-    colorPalette = "blue", 
+  const {
+    data,
+    columns,
+    loading,
+    showSelect,
+    colorPalette = "blue",
     renderExpansion,
-    searchDisabled = false // Default to false
+    searchDisabled = false
   } = props;
 
   const [isExportOpen, setIsExportOpen] = useState(false);
   const { state, actions, selectedData } = useTableLogic(data, props.onSelectionChange);
   const headerBg = useColorModeValue("gray.50/80", "gray.900/80");
-
-  // Logic: If search is disabled, we pass an empty string to the filter process
-  const { paginatedData, totalPages, totalItems, startIndex, endIndex } = GenericFilter.process(data, { 
-    ...state, 
+  const { paginatedData, totalPages, totalItems, startIndex, endIndex } = GenericFilter.process(data, {
+    ...state,
     searchKey: props.searchKey,
-    searchTerm: searchDisabled ? "" : state.searchTerm 
+    searchTerm: searchDisabled ? "" : state.searchTerm
   });
 
   if (loading) return <TableLoading colorPalette={colorPalette} />;
@@ -39,7 +36,7 @@ export function GenericTable<T extends { id?: number | string | null }>(props: G
   const currentPageIds = paginatedData
     .map((i) => i.id)
     .filter((id): id is string | number => id != null);
-    
+
   const isAllSelected = currentPageIds.length > 0 && currentPageIds.every(id => state.selectedIds.has(id));
   const isSomeSelected = currentPageIds.some(id => state.selectedIds.has(id)) && !isAllSelected;
 
@@ -57,24 +54,23 @@ export function GenericTable<T extends { id?: number | string | null }>(props: G
   return (
     <Box width="full">
       <Stack gap={4}>
-        {/* Pass searchDisabled to the Toolbar */}
-        <TableToolbar 
-          {...props} 
-          {...state} 
-          {...actions} 
+<TableToolbar
+          {...props}
+          {...state}
+          {...actions}
           searchDisabled={searchDisabled}
-          selectedData={selectedData} 
+          selectedData={selectedData}
           isExportOpen={isExportOpen}
           setIsExportOpen={setIsExportOpen}
           colorPalette={colorPalette}
           data={data}
         />
-        
-        <Box 
-          borderRadius="2xl" 
-          borderWidth="1px" 
-          borderColor="border.subtle" 
-          overflow="hidden" 
+
+        <Box
+          borderRadius="2xl"
+          borderWidth="1px"
+          borderColor="border.subtle"
+          overflow="hidden"
           bg="bg.panel"
           shadow="xs"
         >
@@ -83,8 +79,8 @@ export function GenericTable<T extends { id?: number | string | null }>(props: G
               <Table.Row borderBottomWidth="2px">
                 {showSelect && (
                   <Table.ColumnHeader width="50px" textAlign="center">
-                    <Checkbox.Root 
-                      size="sm" 
+                    <Checkbox.Root
+                      size="sm"
                       colorPalette={colorPalette}
                       checked={isAllSelected ? true : isSomeSelected ? "indeterminate" : false}
                       onCheckedChange={handleToggleAll}
@@ -95,12 +91,12 @@ export function GenericTable<T extends { id?: number | string | null }>(props: G
                   </Table.ColumnHeader>
                 )}
                 {columns.map((col, i) => (
-                  <Table.ColumnHeader 
-                    key={i} 
-                    py={5} 
-                    fontWeight="bold" 
-                    fontSize="xs" 
-                    color="fg.muted" 
+                  <Table.ColumnHeader
+                    key={i}
+                    py={5}
+                    fontWeight="bold"
+                    fontSize="xs"
+                    color="fg.muted"
                     textTransform="uppercase"
                     letterSpacing="widest"
                   >
@@ -113,9 +109,9 @@ export function GenericTable<T extends { id?: number | string | null }>(props: G
             <Table.Body>
               {paginatedData.length > 0 ? (
                 paginatedData.map((item, idx) => (
-                  <CustomTableRow 
-                    key={item.id ?? idx} 
-                    item={item as Record<string, unknown>} 
+                  <CustomTableRow
+                    key={item.id ?? idx}
+                    item={item as Record<string, unknown>}
                     id={item.id ?? null}
                     columns={columns as Array<{ key?: string; type?: string; render?: (row: Record<string, unknown>) => React.ReactNode }>}
                     showSelect={showSelect ?? false}
@@ -123,15 +119,15 @@ export function GenericTable<T extends { id?: number | string | null }>(props: G
                     renderExpansion={renderExpansion as unknown as (item: Record<string, unknown>) => React.ReactNode}
                     isSelected={item.id ? state.selectedIds.has(item.id) : false}
                     isExpanded={item.id === state.expandedRowId}
-                    toggleOne={actions.toggleOne} 
-                    setExpandedRowId={actions.setExpandedRowId} 
+                    toggleOne={actions.toggleOne}
+                    setExpandedRowId={actions.setExpandedRowId}
                   />
                 ))
               ) : (
                 <Table.Row>
-                  <Table.Cell 
-                    colSpan={columns.length + (showSelect ? 1 : 0)} 
-                    textAlign="center" 
+                  <Table.Cell
+                    colSpan={columns.length + (showSelect ? 1 : 0)}
+                    textAlign="center"
                     py={20}
                   >
                     <VStack gap={2} opacity={0.6}>
@@ -145,14 +141,14 @@ export function GenericTable<T extends { id?: number | string | null }>(props: G
             </Table.Body>
           </Table.Root>
 
-          <TablePagination 
-            {...state} 
-            {...actions} 
-            totalItems={totalItems} 
-            totalPages={totalPages} 
-            startIndex={startIndex} 
-            endIndex={endIndex} 
-            headerBg={headerBg} 
+          <TablePagination
+            {...state}
+            {...actions}
+            totalItems={totalItems}
+            totalPages={totalPages}
+            startIndex={startIndex}
+            endIndex={endIndex}
+            headerBg={headerBg}
           />
         </Box>
       </Stack>

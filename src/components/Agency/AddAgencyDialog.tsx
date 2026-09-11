@@ -20,8 +20,6 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: AddAgencyD
   const [selectedCountryId, setSelectedCountryId] = useState<string | null>(
     null,
   );
-
-  // 1. Fetch Countries and Users (Potential Owners)
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
@@ -58,8 +56,6 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: AddAgencyD
       fetchInitialData();
     }
   }, [open]);
-
-  // 2. Fetch Cities whenever the Country selection changes
   useEffect(() => {
     const fetchCities = async () => {
       if (!selectedCountryId) {

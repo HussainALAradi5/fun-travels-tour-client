@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { Badge, IconButton, Icon, HStack, Text, VStack } from "@chakra-ui/react";
 import { Eye, ReceiptText, Calendar, ArrowUpRight, ArrowDownRight } from "lucide-react";
-import { GenericTable, type Column } from "@/components/ui/Custom/GenericTable";
+import { GenericTable } from "@/components/ui/Custom/GenericTable";
+import type { Column } from "@/interface/common/Column";
 import { useTransaction } from "@/hooks/useTransaction";
 import type { Transaction } from "@/interface/payment/Transaction";
 import { TransactionTypeColors } from "@/constants/roles/Colors";
@@ -62,7 +63,7 @@ export const TransactionTable = () => {
       header: "View",
       key: "actions",
       render: (t) => (
-        <IconButton 
+        <IconButton
           size="sm" variant="ghost" colorPalette="blue" borderRadius="full"
           onClick={() => navigate(`/transactions/${t.id}`)}
         >

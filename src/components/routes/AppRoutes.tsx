@@ -2,15 +2,11 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "@/utilities/AuthContext";
 import { Center, Spinner, VStack, Text } from "@chakra-ui/react";
-
-// Auth & Public Pages
 import { HomePage } from "@/pages/HomePage";
 import LoginPage from "@/pages/User/Auth/LoginPage";
 import RegisterPage from "@/pages/User/Auth/RegisterPage";
 import ProfilePage from "@/pages/User/Auth/ProfilePage";
 import { ForgetPassword } from "../User/Auth/ForgetPassword";
-
-// Admin System Pages
 import ManageCountries from "@/pages/User/Admin/ManageCountries";
 import AgencyNetworkPage from "@/pages/User/Admin/Agency/AgencyNetworkPage";
 import AgencyDetail from "../Agency/AgencyDetail";
@@ -23,8 +19,6 @@ import TourCreatePage from "@/pages/TourMangement/TourCreatePage";
 import { AdminTourDetailsPage } from "@/pages/TourMangement/AdminTourPageDetails";
 import TourEditPage from "@/pages/TourMangement/TourEditPage";
 import UsersPage from "@/pages/User/Admin/UsersPage";
-
-// Booking, Ticket, Notification & Request Pages
 import BookingPage from "@/pages/TourMangement/BookingPage";
 import CustomerTicketsPage from "@/pages/TourMangement/Ticket/CustomerTicketsPage";
 import CustomerTicketDetailPage from "@/pages/TourMangement/Ticket/CustomerTicketDetailPage";
@@ -32,8 +26,6 @@ import CustomerNotificationsPage from "@/pages/CustomerNotificationsPage";
 import TransportationCreatePage from "@/pages/TourMangement/Transportation/TransportationCreatePage";
 import UserRequestsPage from "@/pages/UserRequestsPage";
 import UserRequestDetailsPage from "@/pages/UserRequestDetailsPage";
-
-// --- NEW CLEAN IMPORTS ---
 import TransactionTablePage from "@/pages/Transactions/TransactionTablePage";
 import TransactionDetailsPage from "@/pages/Transactions/TransactionDetailsPage";
 import PaymentTablePage from "@/pages/Payemnts/PaymentTablePage";
@@ -68,40 +60,28 @@ export const AppRoutes = () => {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/forgot-password" element={<ForgetPassword />} />
       <Route path="/tours" element={<CustomerCatalogPage />} />
-
-      {/* PRIVATE USER ROUTES */}
-      <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
-      <Route path="/reserve/:tourId" element={<PrivateRoute><BookingPage /></PrivateRoute>} />      
+<Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+      <Route path="/reserve/:tourId" element={<PrivateRoute><BookingPage /></PrivateRoute>} />
       <Route path="/my-bookings" element={<PrivateRoute><CustomerTicketsPage /></PrivateRoute>} />
       <Route path="/my-bookings/:id" element={<PrivateRoute><CustomerTicketDetailPage /></PrivateRoute>} />
       <Route path="/my-notifications" element={<PrivateRoute><CustomerNotificationsPage /></PrivateRoute>} />
       <Route path="/my-requests" element={<PrivateRoute><UserRequestsPage /></PrivateRoute>} />
       <Route path="/my-requests/:id" element={<PrivateRoute><UserRequestDetailsPage /></PrivateRoute>} />
-
-      {/* Internal Ledger (Wallet Transactions) */}
-      <Route path="/transactions" element={<PrivateRoute><TransactionTablePage /></PrivateRoute>} />
+<Route path="/transactions" element={<PrivateRoute><TransactionTablePage /></PrivateRoute>} />
       <Route path="/transactions/:id" element={<PrivateRoute><TransactionDetailsPage /></PrivateRoute>} />
-
-      {/* External Gateway (Payments - Stripe/PayPal) */}
-      <Route path="/payments" element={<PrivateRoute><PaymentTablePage /></PrivateRoute>} />
+<Route path="/payments" element={<PrivateRoute><PaymentTablePage /></PrivateRoute>} />
       <Route path="/payments/:id" element={<PrivateRoute><PaymentDetailsPage /></PrivateRoute>} />
-
-      {/* ADMIN ROUTES */}
-      <Route path="/admin/requests" element={<AdminRoute><UserRequestsPage /></AdminRoute>} />
+<Route path="/admin/requests" element={<AdminRoute><UserRequestsPage /></AdminRoute>} />
       <Route path="/admin/requests/:id" element={<AdminRoute><UserRequestDetailsPage /></AdminRoute>} />
       <Route path="/admin/countries" element={<AdminRoute><ManageCountries /></AdminRoute>} />
       <Route path="/admin/agencies" element={<AdminRoute><AgencyNetworkPage /></AdminRoute>} />
       <Route path="/admin/agencies/:id" element={<AdminRoute><AgencyDetail /></AdminRoute>} />
-      <Route path="/admin/users" element={<AdminRoute><UsersPage /></AdminRoute>} />      
-      
-      {/* Admin Financial Ledger & Payments */}
-      <Route path="/admin/transactions" element={<AdminRoute><TransactionTablePage /></AdminRoute>} />
+      <Route path="/admin/users" element={<AdminRoute><UsersPage /></AdminRoute>} />
+<Route path="/admin/transactions" element={<AdminRoute><TransactionTablePage /></AdminRoute>} />
       <Route path="/admin/transactions/:id" element={<AdminRoute><TransactionDetailsPage /></AdminRoute>} />
       <Route path="/admin/payments" element={<AdminRoute><PaymentTablePage /></AdminRoute>} />
       <Route path="/admin/payments/:id" element={<AdminRoute><PaymentDetailsPage /></AdminRoute>} />
-
-      {/* Admin Tour Management */}
-      <Route path="/admin/tours" element={<AdminRoute><AdminToursPage /></AdminRoute>} />
+<Route path="/admin/tours" element={<AdminRoute><AdminToursPage /></AdminRoute>} />
       <Route path="/admin/tours/create" element={<AdminRoute><TourCreatePage /></AdminRoute>} />
       <Route path="/admin/tours/edit/:id" element={<AdminRoute><TourEditPage /></AdminRoute>} />
       <Route path="/admin/tours/:id" element={<AdminRoute><AdminTourDetailsPage /></AdminRoute>} />

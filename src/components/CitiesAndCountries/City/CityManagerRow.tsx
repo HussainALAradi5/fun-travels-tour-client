@@ -177,8 +177,7 @@ export default function CityManagerRow({
                 </HStack>
               </Dialog.Header>
               <Dialog.Body>
-                {/* Are you sure you want to remove <b>{selectedCity?.name}</b>? */}
-              </Dialog.Body>
+</Dialog.Body>
               <Dialog.Footer>
                 <Dialog.ActionTrigger asChild>
                   <Button variant="outline">Cancel</Button>

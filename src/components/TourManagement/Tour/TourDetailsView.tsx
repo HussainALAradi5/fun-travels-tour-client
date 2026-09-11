@@ -1,14 +1,14 @@
 import { useState, useEffect, useMemo } from "react";
 import { Box, SimpleGrid, useDisclosure, Grid } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { MapPin, Navigation } from "lucide-react"; 
+import { MapPin, Navigation } from "lucide-react";
 
 import type { Tour } from "@/interface/tour/Tour";
 import type { Ticket } from "@/interface/tour/Ticket";
 import { GenericStatus } from "@/enums/GenericStatus";
 import { floatIn } from "@/utilities/Animations";
 
-import { TourHeader } from "./TourDetails/TourHead"; 
+import { TourHeader } from "./TourDetails/TourHead";
 import { TourMetrics } from "./TourDetails/TourMetrics";
 import { TourItineraryCard } from "./TourDetails/TourItineraryCard";
 import { TourWorkflowSidebar } from "./TourDetails/TourWorkflowSidebar";
@@ -23,10 +23,10 @@ import type { TourDetailViewProps } from "@/interface/props/tour/TourDetailViewP
 export const TourDetailView = ({ tour: initialTour }: TourDetailViewProps) => {
   const navigate = useNavigate();
   const { handleUpdateTourStatus, isMutating } = useTourManagement();
-  
+
   const [currentTour, setCurrentTour] = useState<Tour>(initialTour);
   const [pendingStatus, setPendingStatus] = useState<GenericStatus | null>(null);
-  
+
   const [tourTickets, setTourTickets] = useState<Ticket[]>([]);
 
   const { open: seatOpen, onOpen: onSeatOpen, onClose: onSeatClose } = useDisclosure();
@@ -80,48 +80,45 @@ export const TourDetailView = ({ tour: initialTour }: TourDetailViewProps) => {
   return (
     <Box animation={`${floatIn} 0.6s ease-out`} p="4" opacity={isMutating ? 0.7 : 1} pointerEvents={isMutating ? "none" : "auto"}>
       <TourHeader tour={currentTour} />
-      
+
       <Box mt="6" mb="8">
         <TourMetrics tour={currentTour} bookedCount={tourTickets.length} />
       </Box>
 
       <SimpleGrid columns={{ base: 1, lg: 3 }} gap="8">
         <Box gridColumn={{ lg: "span 2" }}>
-            <TourItineraryCard 
-                tour={currentTour} 
-                itinerarySteps={itinerarySteps as never} 
-                onSeatOpen={onSeatOpen} 
+            <TourItineraryCard
+                tour={currentTour}
+                itinerarySteps={itinerarySteps as never}
+                onSeatOpen={onSeatOpen}
             />
         </Box>
 
-        <TourWorkflowSidebar 
-          tour={currentTour} 
+        <TourWorkflowSidebar
+          tour={currentTour}
           onStatusChange={async (status) => {
             setPendingStatus(status);
             onConfirmOpen();
           }}
           onEdit={() => navigate(`/admin/tours/edit/${currentTour.id}`)}
-          onCancel={() => { 
+          onCancel={() => {
             setPendingStatus(GenericStatus.CANCELLED);
             onConfirmOpen();
           }}
         />
       </SimpleGrid>
-
-      {/* --- INTEGRATED MANIFEST & AUDIT LOG --- */}
-      <Grid templateColumns={{ base: "1fr", xl: "2fr 1fr" }} gap={8} mt="8" alignItems="start">
+<Grid templateColumns={{ base: "1fr", xl: "2fr 1fr" }} gap={8} mt="8" alignItems="start">
         <Box>
           <TourPassengerManifest tickets={tourTickets} />
         </Box>
 
         <Box>
-          {/* Automatically fetches and renders the event log via the GenericTrackingService */}
-          {currentTour.id && <TourEventLogDetailView tourId={currentTour.id} />}
+{currentTour.id && <TourEventLogDetailView tourId={currentTour.id} />}
         </Box>
       </Grid>
 
-      <TourDialogs 
-        confirmOpen={confirmOpen} 
+      <TourDialogs
+        confirmOpen={confirmOpen}
         onConfirmClose={onConfirmClose}
         seatOpen={seatOpen}
         onSeatClose={onSeatClose}

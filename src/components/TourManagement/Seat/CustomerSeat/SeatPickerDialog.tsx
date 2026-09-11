@@ -7,13 +7,9 @@ import { ChairTypeColors, SeatStatusColors } from "@/constants/roles/Colors";
 import type { SeatPickerDialogProps } from "@/interface/props/tour/SeatPickerDialogProps";
 
 export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, loading }: SeatPickerDialogProps) => {
-  
-  // 1. Fully dynamic style resolver using your interfaces
   const resolveSeatStyles = (seat: Seat) => {
     const isSelected = selectedId === seat.id;
     const isAvailable = seat.status === "AVAILABLE";
-
-    // Selected state overrides everything
     if (isSelected) {
       return {
         bg: "blue.500",
@@ -22,8 +18,6 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
         _hover: { bg: "blue.600" },
       };
     }
-
-    // Unavailable states (uses SeatStatusColors interface)
     if (!isAvailable) {
       const statusTheme = SeatStatusColors[seat.status] || SeatStatusColors.MAINTENANCE;
       return {
@@ -36,8 +30,6 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
         _hover: {},
       };
     }
-
-    // Available states (uses ChairTypeColors interface)
     const typePalette = ChairTypeColors[seat.chairType] || ChairTypeColors.STANDARD;
     return {
       bg: "transparent",
@@ -53,8 +45,6 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
       },
     };
   };
-
-  // 2. Dynamic icon resolver 
   const renderChairIcon = (chairType: string) => {
     const color = `${ChairTypeColors[chairType] || ChairTypeColors.STANDARD}.500`;
     const iconProps = { w: "12px", h: "12px", position: "absolute", top: "1.5", right: "1.5", color } as const;
@@ -69,7 +59,7 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
 
   const renderLayout = () => {
     const items: JSX.Element[] = [];
-    
+
     seats.forEach((seat, idx) => {
       const isAvailable = seat.status === "AVAILABLE";
       const styles = resolveSeatStyles(seat);
@@ -92,11 +82,9 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
           <Text fontSize="10px" fontWeight="black">{seat.seatCode}</Text>
         </Button>
       );
-      
-      // Invisible spacer for the aisle (Assuming a 2-x-2 layout)
       if (idx % 4 === 1) items.push(<Box key={`aisle-${idx}`} w="full" h="full" />);
     });
-    
+
     return items;
   };
 
@@ -110,9 +98,7 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
       size="lg"
     >
       <VStack gap={8} py={4}>
-        
-        {/* Front Indicator */}
-        <Box w="full" position="relative" mt={2}>
+<Box w="full" position="relative" mt={2}>
           <Box h="2px" bg="border.subtle" w="full" />
           <Center position="absolute" top="-10px" w="full">
             <Text fontSize="xs" fontWeight="black" letterSpacing="widest" px={4} bg="bg.panel" color="fg.muted" borderRadius="full" border="1px solid" borderColor="border.subtle">
@@ -120,28 +106,20 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
             </Text>
           </Center>
         </Box>
-
-        {/* Seat Layout Grid */}
-        <Grid templateColumns="repeat(5, 1fr)" gap={3} w="full" px={4}>
+<Grid templateColumns="repeat(5, 1fr)" gap={3} w="full" px={4}>
           {renderLayout()}
         </Grid>
-
-        {/* Dynamic Legend */}
-        <HStack gap={4} wrap="wrap" justify="center" pt={6} borderTopWidth="1px" borderColor="border.subtle" w="full">
+<HStack gap={4} wrap="wrap" justify="center" pt={6} borderTopWidth="1px" borderColor="border.subtle" w="full">
           <LegendItem bg="blue.500" color="white" label="Selected" />
-          
-          {/* Dynamically reading from ChairTypeColors */}
-          <LegendItem colorPalette={ChairTypeColors.STANDARD} label="Standard" />
+<LegendItem colorPalette={ChairTypeColors.STANDARD} label="Standard" />
           <LegendItem colorPalette={ChairTypeColors.PREMIUM_RECLINER} label="Premium" icon={Star} fill />
           <LegendItem colorPalette={ChairTypeColors.WHEELCHAIR_ACCESSIBLE} label="Accessible" icon={Accessibility} />
           <LegendItem colorPalette={ChairTypeColors.KIDS_CHAIR} label="Kids" icon={Baby} />
-          
-          {/* Dynamically reading from SeatStatusColors */}
-          <LegendItem 
-            bg={SeatStatusColors.BOOKED.light} 
-            color={SeatStatusColors.BOOKED.text} 
-            label="Unavailable" 
-            opacity={0.6} 
+<LegendItem
+            bg={SeatStatusColors.BOOKED.light}
+            color={SeatStatusColors.BOOKED.text}
+            label="Unavailable"
+            opacity={0.6}
           />
         </HStack>
 
@@ -152,8 +130,6 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
     </GenericDialog>
   );
 };
-
-// Clean Legend Item Component
 import type { LegendItemProps } from "@/interface/props/tour/SeatPickerDialogProps";
 
 const LegendItem = ({ colorPalette, bg, color, label, icon: IconCmp, fill, opacity = 1 }: LegendItemProps) => {

@@ -1,15 +1,11 @@
 import { useState, useCallback, useEffect } from "react";
 import { toaster } from "@/components/ui/toaster";
-
-// Services
 import { tourService } from "@/Api/tourmanagement/Tour";
 import { seatService } from "@/Api/tourmanagement/Seat";
 import { transportationService } from "@/Api/tourmanagement/Transportation";
 import { mealPlanService } from "@/Api/tourmanagement/MealPlan";
 import { ticketService } from "@/Api/tourmanagement/Ticket";
 import { reservationService } from "@/Api/tourmanagement/TourReservation";
-
-// Interfaces
 import type { Tour } from "@/interface/tour/Tour";
 import type { Ticket } from "@/interface/tour/Ticket";
 import type { TourReservation } from "@/interface/tour/TourReservation";
@@ -22,8 +18,6 @@ import { useUser } from "../User/useUser";
 
 export function useTourManagement(param?: string | number | (() => Promise<unknown>)) {
   const { user: currentUser } = useUser();
-
-  // --- State ---
   const [tour, setTour] = useState<Tour | null>(null);
   const [tours, setTours] = useState<Tour[]>([]);
   const [seats, setSeats] = useState<Seat[]>([]);
@@ -34,8 +28,6 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
   const [isLoading, setIsLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isMutating, setIsMutating] = useState(false);
-
-  // --- Utilities ---
   const calculateEndDate = useCallback((startDate: string, days: number): string => {
     if (!startDate || !days || days <= 0) return startDate || "";
     const date = new Date(startDate);
@@ -55,8 +47,6 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
       setIsMutating(false);
     }
   };
-
-  // --- Fetchers ---
   const fetchTours = useCallback(async (params: Record<string, string | number | boolean> = {}) => {
     setIsLoading(true);
     try {
@@ -126,8 +116,6 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
       fetchMeals();
     }
   }, [param, fetchMeals]);
-
-  // --- Mutations ---
   const handleCreateTour = (tourData: Tour) =>
     execute(tourService.create(tourData as never), "Expedition Created", "Tour successfully configured.");
 
@@ -200,8 +188,6 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
     const payload = { ...reservationData, user: reservationData.user || ({ id: currentUser.id } as User) };
     return execute(reservationService.create(payload as never), "Reservation Success", "Your dates have been secured.");
   };
-
-  // --- Lifecycle ---
   useEffect(() => {
     if (!param) return;
     if (typeof param === "function") {

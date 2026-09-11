@@ -1,5 +1,5 @@
-import { 
-  Box, Heading, Text, Button, Image, Stack, Badge, Flex, HStack, Card 
+import {
+  Box, Heading, Text, Button, Image, Stack, Badge, Flex, HStack, Card
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import type { CustomerTourCatalogCardProps } from "@/interface/props/tour/CustomerTourCatalogCardProps";
@@ -11,7 +11,7 @@ export const CustomerTourCatalogCard = ({ tour, isAuthenticated }: CustomerTourC
   const displayPrice = tour.totalPrice ?? tour.basePrice ?? 0;
 
   return (
-    <Card.Root 
+    <Card.Root
       variant="elevated"
       bg="bg.surface"
       overflow="hidden"
@@ -19,12 +19,12 @@ export const CustomerTourCatalogCard = ({ tour, isAuthenticated }: CustomerTourC
       _hover={{ transform: "translateY(-4px)", shadow: "xl" }}
       borderRadius="2xl"
     >
-      <Image 
-        src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80" 
-        alt={tour.title} 
-        h="48" 
-        w="full" 
-        objectFit="cover" 
+      <Image
+        src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80"
+        alt={tour.title}
+        h="48"
+        w="full"
+        objectFit="cover"
       />
 
       <Card.Body p={6}>
@@ -43,13 +43,13 @@ export const CustomerTourCatalogCard = ({ tour, isAuthenticated }: CustomerTourC
               {tour.startDate ? new Date(tour.startDate).toLocaleDateString() : "TBD"}
             </Text>
           </HStack>
-          
+
           <Heading size="md" color="fg">{tour.title}</Heading>
-          
+
           <Text color="fg.muted" fontSize="sm" lineClamp={2}>
             {tour.description || "Join us for an incredible journey through the most beautiful landscapes."}
           </Text>
-          
+
           <Flex gap={2} mt={2}>
              <Badge variant="outline" colorPalette={hasSlots ? "green" : "red"}>
                {tour.availableSlots} slots left
@@ -67,19 +67,19 @@ export const CustomerTourCatalogCard = ({ tour, isAuthenticated }: CustomerTourC
           </Box>
 
           {isAuthenticated ? (
-            <Button 
+            <Button
               disabled={!canBook}
-              colorPalette={canBook ? "blue" : "gray"} 
+              colorPalette={canBook ? "blue" : "gray"}
               rounded="lg"
               onClick={() => navigate(`/reserve/${tour.id}`)}
             >
               {canBook ? "Book Now" : (hasSlots ? "Coming Soon" : "Full")}
             </Button>
           ) : (
-            <Badge 
-              variant="surface" 
-              colorPalette="orange" 
-              p={2} 
+            <Badge
+              variant="surface"
+              colorPalette="orange"
+              p={2}
               borderRadius="md"
               cursor="pointer"
               onClick={() => navigate("/login")}

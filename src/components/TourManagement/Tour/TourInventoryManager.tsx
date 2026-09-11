@@ -30,16 +30,11 @@ export const TourInventoryManager = () => {
         title="Tour Inventory Management"
         subtitle="Operational intelligence for your travel resource allocation."
         imageUrl="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80"
-        showAction={false} // This hides the "Get Started" button
+        showAction={false}
       >
         <Stack gap={8}>
           <TourInventoryStats tours={tours} />
-
-          {/* Note: The PageWrapper already provides the white/panel Box 
-              with borderRadius="3xl" and padding, so we just place the 
-              content inside.
-          */}
-          <TourInventoryHeader
+<TourInventoryHeader
             statusFilter={statusFilter}
             onFilterChange={setStatusFilter}
             onCreateClick={() => navigate("/admin/tours/create")}

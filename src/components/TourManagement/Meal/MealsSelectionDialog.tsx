@@ -4,12 +4,12 @@ import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
 import { MealSelectionList } from "./MealSelectionList";
 import type { MealsSelectionDialogProps } from "@/interface/props/tour/MealsSelectionDialogProps";
 
-export const MealsSelectionDialog = ({ 
-  open, 
-  onClose, 
-  availableMeals, 
-  selectedMeals, 
-  onToggleMeal 
+export const MealsSelectionDialog = ({
+  open,
+  onClose,
+  availableMeals,
+  selectedMeals,
+  onToggleMeal
 }: MealsSelectionDialogProps) => {
   return (
     <GenericDialog
@@ -18,18 +18,18 @@ export const MealsSelectionDialog = ({
       title="Dietary Preferences & Meals"
       description="Select add-on meals for this passenger during the tour."
       icon={Utensils}
-      colorPalette="green" // Using green to differentiate from the blue seat picker
+      colorPalette="green"
       size="lg"
     >
       <VStack align="stretch" gap={6}>
-        <MealSelectionList 
-          availableMeals={availableMeals} 
-          selectedMeals={selectedMeals} 
-          onToggleMeal={onToggleMeal} 
+        <MealSelectionList
+          availableMeals={availableMeals}
+          selectedMeals={selectedMeals}
+          onToggleMeal={onToggleMeal}
         />
-        <Button 
-          size="lg" 
-          colorPalette="green" 
+        <Button
+          size="lg"
+          colorPalette="green"
           onClick={onClose}
           borderRadius="xl"
         >

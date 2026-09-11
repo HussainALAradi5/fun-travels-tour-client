@@ -1,4 +1,3 @@
-// src/components/ui/Custom/Dialogs/GenericDialog.tsx
 import {
   DialogRoot,
   DialogContent,
@@ -37,8 +36,7 @@ export function GenericDialog({
       size={size}
       scrollBehavior={scrollBehavior}
     >
-      {/* Normal Dialog Content */}
-      <Portal>
+<Portal>
         <DialogBackdrop />
         <DialogPositioner px={4} py={10}>
           <DialogContent
@@ -76,15 +74,15 @@ export function GenericDialog({
               </HStack>
             </DialogHeader>
 
-            <DialogBody 
-              p={6} 
-              overflowY="auto" 
+            <DialogBody
+              p={6}
+              overflowY="auto"
               scrollbarWidth="thin"
               css={{
                 "&::-webkit-scrollbar": { width: "4px" },
-                "&::-webkit-scrollbar-thumb": { 
+                "&::-webkit-scrollbar-thumb": {
                   background: "var(--chakra-colors-border-emphasized)",
-                  borderRadius: "10px" 
+                  borderRadius: "10px"
                 }
               }}
             >

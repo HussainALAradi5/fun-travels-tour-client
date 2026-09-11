@@ -1,21 +1,20 @@
-// src/components/TourManagement/Transportation/TransportationTable.tsx
 import { Box, HStack, Text, Badge, Button, Icon, VStack, Float } from "@chakra-ui/react";
-import { 
-  Bus, 
-  Plane, 
-  Ship, 
-  Car, 
-  Fingerprint, 
-  Hash, 
-  Settings2, 
-  Eye, 
-  CheckCircle2, 
-  AlertTriangle, 
-  Wrench, 
-  Gauge, 
-  CircleSlash, 
-  Activity, 
-  Building2 
+import {
+  Bus,
+  Plane,
+  Ship,
+  Car,
+  Fingerprint,
+  Hash,
+  Settings2,
+  Eye,
+  CheckCircle2,
+  AlertTriangle,
+  Wrench,
+  Gauge,
+  CircleSlash,
+  Activity,
+  Building2
 } from "lucide-react";
 import { GenericTable } from "../../ui/Custom/GenericTable";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
@@ -52,10 +51,10 @@ export const TransportationTable = ({ data, loading, onEdit, onView }: Transport
       render: (t) => (
         <HStack gap={3}>
           <Box position="relative">
-            <Box 
-              p={2.5} 
-              bg={`${TransportationColors[t.type] || "blue"}.500/10`} 
-              color={`${TransportationColors[t.type] || "blue"}.600`} 
+            <Box
+              p={2.5}
+              bg={`${TransportationColors[t.type] || "blue"}.500/10`}
+              color={`${TransportationColors[t.type] || "blue"}.600`}
               borderRadius="2xl"
             >
               <VehicleIcon type={t.type} size={20} />
@@ -76,11 +75,11 @@ export const TransportationTable = ({ data, loading, onEdit, onView }: Transport
       header: "Category",
       key: "type",
       render: (t) => (
-        <Badge 
-          variant="surface" 
-          colorPalette={TransportationColors[t.type] || "blue"} 
-          size="md" 
-          borderRadius="full" 
+        <Badge
+          variant="surface"
+          colorPalette={TransportationColors[t.type] || "blue"}
+          size="md"
+          borderRadius="full"
           px={3}
         >
           <HStack gap={1.5}>
@@ -116,7 +115,7 @@ export const TransportationTable = ({ data, loading, onEdit, onView }: Transport
             <Text fontSize="sm" fontWeight="bold" color="fg.emphasized">
               {t.providerName || "none"}
             </Text>
-            
+
           </VStack>
         </HStack>
       ),
@@ -165,21 +164,21 @@ export const TransportationTable = ({ data, loading, onEdit, onView }: Transport
       key: "actions",
       render: (t) => (
         <HStack gap={2}>
-          <Button 
-            size="sm" 
-            variant="subtle" 
-            colorPalette="blue" 
-            borderRadius="xl" 
+          <Button
+            size="sm"
+            variant="subtle"
+            colorPalette="blue"
+            borderRadius="xl"
             onClick={() => onView(String(t.id))}
             _hover={{ transform: "translateY(-1px)", shadow: "md" }}
           >
             <Eye size={14} /> <Text fontSize="xs" fontWeight="bold" ml={1}>View</Text>
           </Button>
-          <Button 
-            size="sm" 
-            variant="ghost" 
-            colorPalette="gray" 
-            borderRadius="xl" 
+          <Button
+            size="sm"
+            variant="ghost"
+            colorPalette="gray"
+            borderRadius="xl"
             onClick={() => onEdit(t)}
           >
             <Settings2 size={14} /> <Text fontSize="xs" fontWeight="bold" ml={1}>Manage</Text>

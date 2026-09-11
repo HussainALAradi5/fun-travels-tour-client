@@ -94,8 +94,7 @@ export default function ManageCountries() {
               </DialogHeader>
 
               <DialogBody py={6}>
-                {/* FIXED: Passing string to description to resolve TS2322 */}
-                <AlertComponent
+<AlertComponent
                   status="error"
                   description={`Are you sure you want to remove ${countryToDelete?.famousName}? This action is permanent and cannot be undone.`}
                 />

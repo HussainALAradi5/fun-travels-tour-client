@@ -10,8 +10,6 @@ const apiClient = axios.create({
     "Content-Type": "application/json",
   },
 });
-
-// REQUEST INTERCEPTOR: Attach Token automatically
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -22,18 +20,13 @@ apiClient.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
-
-// RESPONSE INTERCEPTOR: Global Error Handling
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Handle Auth Errors (401/403)
     if (error.response?.status === 401 || error.response?.status === 403) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     }
-
-    // Skip global toast for auth endpoints (login/register handle their own errors)
     const isAuthEndpoint = error.config?.url?.includes("/auth/");
 
     if (!isAuthEndpoint) {

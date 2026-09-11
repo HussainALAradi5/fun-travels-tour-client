@@ -26,8 +26,7 @@ export const GuestConfigCard = ({ guest, onOpenSeatPicker, onOpenMealPicker, onR
       </HStack>
 
       <Stack gap={4}>
-        {/* Seat Row */}
-        <HStack justify="space-between" p={4} bg="bg.muted" borderRadius="xl">
+<HStack justify="space-between" p={4} bg="bg.muted" borderRadius="xl">
           <HStack gap={4}>
             <Circle size="10" bg={guest.assignedSeat ? "blue.500" : "bg.panel"} color={guest.assignedSeat ? "white" : "fg.muted"}>
               <CheckCircle2 size={20} />
@@ -39,9 +38,9 @@ export const GuestConfigCard = ({ guest, onOpenSeatPicker, onOpenMealPicker, onR
               </Text>
             </Stack>
           </HStack>
-          <Button 
-            variant="surface" 
-            colorPalette="blue" 
+          <Button
+            variant="surface"
+            colorPalette="blue"
             size="sm"
             onClick={() => onOpenSeatPicker(guest.id)}
             animation={!guest.assignedSeat ? `${glowPulse} 2s infinite` : "none"}
@@ -50,9 +49,7 @@ export const GuestConfigCard = ({ guest, onOpenSeatPicker, onOpenMealPicker, onR
             {guest.assignedSeat ? "Change" : "Pick Seat"}
           </Button>
         </HStack>
-
-        {/* Meal Row */}
-        <HStack justify="space-between" p={4} bg="bg.muted" borderRadius="xl">
+<HStack justify="space-between" p={4} bg="bg.muted" borderRadius="xl">
           <HStack gap={4}>
             <Circle size="10" bg={(guest.selectedMeals?.length ?? 0) > 0 ? "green.500" : "bg.panel"} color={(guest.selectedMeals?.length ?? 0) > 0 ? "white" : "fg.muted"}>
               <Utensils size={18} />
@@ -64,9 +61,9 @@ export const GuestConfigCard = ({ guest, onOpenSeatPicker, onOpenMealPicker, onR
               </Text>
             </Stack>
           </HStack>
-          <Button 
-            variant="surface" 
-            colorPalette="green" 
+          <Button
+            variant="surface"
+            colorPalette="green"
             size="sm"
             onClick={() => onOpenMealPicker(guest.id)}
           >

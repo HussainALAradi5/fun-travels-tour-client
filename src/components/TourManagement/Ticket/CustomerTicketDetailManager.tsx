@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import { 
-  Stack, Center, Spinner, Heading, Text, VStack, HStack, Button, Box, Grid 
+import {
+  Stack, Center, Spinner, Heading, Text, VStack, HStack, Button, Box, Grid
 } from "@chakra-ui/react";
 import { Printer, AlertCircle } from "lucide-react";
 
@@ -10,8 +10,6 @@ import { BoardingPassCard } from "./CustomerTicketDetails/BoardingPassCard";
 import type { Ticket } from "@/interface/tour/Ticket";
 import { TicketVerification } from "./CustomerTicketDetails/TicketVerification";
 import { TicketJourneyTracker } from "./CustomerTicketDetails/TicketJourneyTracker";
-
-// Import the new Sidebar
 import { TicketManagementSidebar } from "./CustomerTicketDetails/TicketManagementSidebar";
 
 export const CustomerTicketDetailManager = () => {
@@ -47,7 +45,7 @@ export const CustomerTicketDetailManager = () => {
       </VStack>
     </Center>
   );
-  
+
   if (!ticket || !ticket.tour) return (
     <Center h="60vh">
       <VStack gap={4} p={8} bg="bg.panel" borderRadius="2xl" borderWidth="1px">
@@ -59,9 +57,7 @@ export const CustomerTicketDetailManager = () => {
 
   return (
     <Stack gap={8} maxW="6xl" mx="auto" w="full" pb={12}>
-      
-      {/* HEADER */}
-      <HStack justify="space-between" align="center" hideFrom="print">
+<HStack justify="space-between" align="center" hideFrom="print">
         <Heading size="lg">Expedition Ticket</Heading>
         <Button variant="outline" size="sm" onClick={() => window.print()}>
           <Printer size={16} style={{ marginRight: '8px' }} /> Print
@@ -69,9 +65,7 @@ export const CustomerTicketDetailManager = () => {
       </HStack>
 
       <Grid templateColumns={{ base: "1fr", lg: "1.3fr 0.7fr" }} gap={8} alignItems="start">
-        
-        {/* LEFT COLUMN: Main Content */}
-        <VStack gap={8} align="stretch">
+<VStack gap={8} align="stretch">
           <Box opacity={isCancelled ? 0.6 : 1} filter={isCancelled ? "grayscale(100%)" : "none"} transition="all 0.3s">
             <BoardingPassCard ticket={ticket} />
           </Box>
@@ -79,13 +73,11 @@ export const CustomerTicketDetailManager = () => {
           {!isCancelled && <TicketVerification ticket={ticket} />}
           <TicketJourneyTracker ticket={ticket} />
         </VStack>
-
-        {/* RIGHT COLUMN: The Cleaned Up Sidebar */}
-        <TicketManagementSidebar 
-          ticket={ticket} 
-          isCancelled={isCancelled} 
-          isCompleted={isCompleted} 
-          onRefresh={fetchTicket} 
+<TicketManagementSidebar
+          ticket={ticket}
+          isCancelled={isCancelled}
+          isCompleted={isCompleted}
+          onRefresh={fetchTicket}
         />
 
       </Grid>

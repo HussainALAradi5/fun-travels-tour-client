@@ -4,16 +4,16 @@ import type { TrackingStepProps, MetricBoxProps } from "@/interface/props/ui/Glo
 
 export const TrackingStep = ({ icon: I, bg, title, location, glowColor, animate = true }: TrackingStepProps) => (
   <HStack gap={4} align="start">
-    <Circle 
-      size="10" 
-      bg={bg} 
-      color="white" 
+    <Circle
+      size="10"
+      bg={bg}
+      color="white"
       zIndex={1}
       animation={animate ? `${glowPulse} 3s infinite ease-in-out` : undefined}
       _hover={{ transform: "scale(1.1)", shadow: animate ? `0 0 20px ${glowColor}` : "none" }}
       transition="all 0.2s"
     >
-      <Icon as={I} size="sm" /> 
+      <Icon as={I} size="sm" />
     </Circle>
     <VStack align="start" gap={0}>
       <Text fontWeight="bold" fontSize="sm" lineHeight="shorter">{title}</Text>
@@ -23,18 +23,18 @@ export const TrackingStep = ({ icon: I, bg, title, location, glowColor, animate 
 );
 
 export const MetricBox = ({ icon: I, color, label, children, bg }: MetricBoxProps) => (
-  <Box 
-    p={4} 
-    borderRadius="xl" 
-    borderWidth="1px" 
-    bg={bg || "bg.panel"} 
+  <Box
+    p={4}
+    borderRadius="xl"
+    borderWidth="1px"
+    bg={bg || "bg.panel"}
     borderColor="border.subtle"
     role="group"
     transition="all 0.2s cubic-bezier(.4,0,.2,1)"
-    _hover={{ 
-      borderColor: color, 
+    _hover={{
+      borderColor: color,
       shadow: `0 0 15px ${color.includes("blue") ? "rgba(66, 153, 225, 0.2)" : "rgba(237, 137, 54, 0.1)"}`,
-      transform: "translateY(-2px)" 
+      transform: "translateY(-2px)"
     }}
   >
     <HStack mb={2} color={color}>

@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { Plus, ArrowLeft } from "lucide-react";
 import { AgencyTable } from "@/components/Agency/AgencyTable";
-import { AddAgencyDialog } from "@/components/Agency/AddAgencyDialog"; // Import Agency Dialog
+import { AddAgencyDialog } from "@/components/Agency/AddAgencyDialog";
 import { AddBranchDialog } from "@/components/Agency/AddBranchDialog";
 import AgencyDetail from "@/components/Agency/AgencyDetail";
 
@@ -19,11 +19,9 @@ export default function AgencyNetworkPage() {
   const {
     agencies,
     loading,
-    // Agency Dialog States
     isAgencyDialogOpen,
     setIsAgencyDialogOpen,
     handleCreateAgency,
-    // Branch Dialog States
     isBranchDialogOpen,
     setIsBranchDialogOpen,
     handleCreateBranch,
@@ -67,8 +65,7 @@ export default function AgencyNetworkPage() {
                   Manage global branches and headquarters.
                 </Text>
               </VStack>
-              {/* Updated Button to Trigger Agency Dialog */}
-              <Button
+<Button
                 colorPalette="blue"
                 variant="ghost"
                 size="sm"
@@ -87,17 +84,13 @@ export default function AgencyNetworkPage() {
           </VStack>
         )}
       </Container>
-
-      {/* Agency Dialog Implementation */}
-      <AddAgencyDialog
+<AddAgencyDialog
         open={isAgencyDialogOpen}
         onClose={() => setIsAgencyDialogOpen(false)}
         onSubmit={handleCreateAgency}
         loading={isSubmitting}
       />
-
-      {/* Branch Dialog remains for table-row actions */}
-      <AddBranchDialog
+<AddBranchDialog
         open={isBranchDialogOpen}
         onClose={() => setIsBranchDialogOpen(false)}
         onSubmit={handleCreateBranch}

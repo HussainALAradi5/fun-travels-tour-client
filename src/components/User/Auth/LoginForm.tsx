@@ -37,7 +37,7 @@ export const LoginForm = () => {
         submitLabel={loading ? "Signing In..." : "Sign In"}
         columns={1}
       />
-     
+
       <Flex justify="space-between" align="center" mt={6} pt={4} borderTop="1px solid" borderColor="gray.100" _dark={{ borderColor: "gray.800" }}>
         <HStack gap={1}>
           <Text fontSize="sm" color="fg.muted">New?</Text>

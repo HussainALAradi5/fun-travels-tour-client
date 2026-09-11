@@ -16,31 +16,31 @@ export const useNotification = (userId?: number, filters?: Record<string, string
       const res = await notificationService.getUserNotifications(userId, filters);
       setNotifications(Array.isArray(res) ? res : []);
     } catch {
-      notify({ 
-        title: "Sync Failed", 
-        description: "Could not load your latest notifications.", 
-        type: "error" 
+      notify({
+        title: "Sync Failed",
+        description: "Could not load your latest notifications.",
+        type: "error"
       });
     } finally {
       setLoading(false);
     }
-  }, [userId, filters]); 
+  }, [userId, filters]);
 
   const markAsRead = async (id: number) => {
     try {
       await notificationService.markAsRead(id);
-      
+
       setNotifications((prev) =>
         prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
       );
 
       decrementCount();
-      
+
     } catch {
-      notify({ 
-        title: "Action Failed", 
-        description: "We couldn't mark this as read. Please try again.", 
-        type: "error" 
+      notify({
+        title: "Action Failed",
+        description: "We couldn't mark this as read. Please try again.",
+        type: "error"
       });
     }
   };

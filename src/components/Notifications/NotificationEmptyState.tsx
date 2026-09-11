@@ -2,12 +2,12 @@ import { Box, Icon, Text, VStack } from "@chakra-ui/react";
 import { Inbox } from "lucide-react";
 
 export const NotificationEmptyState = () => (
-  <Box 
-    p={16} 
-    textAlign="center" 
-    borderRadius="3xl" 
-    borderStyle="dashed" 
-    borderWidth="2px" 
+  <Box
+    p={16}
+    textAlign="center"
+    borderRadius="3xl"
+    borderStyle="dashed"
+    borderWidth="2px"
     borderColor="border.subtle"
     bg="bg.surface"
     transition="all 0.3s"

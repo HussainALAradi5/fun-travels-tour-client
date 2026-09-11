@@ -1,4 +1,3 @@
-// src/components/TourManagement/TransportationManager.tsx
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Stack, useDisclosure } from "@chakra-ui/react";
@@ -11,22 +10,20 @@ import type { Transportation } from "@/interface/tour/Transportation";
 export const TransportationManager = () => {
   const navigate = useNavigate();
   const { open, onOpen, onClose } = useDisclosure();
-  
-  const { 
-    transportation: list, 
-    isLoading, 
-    isMutating, 
-    fetchTransportation, 
-    handleUpdateTransportation 
+
+  const {
+    transportation: list,
+    isLoading,
+    isMutating,
+    fetchTransportation,
+    handleUpdateTransportation
   } = useTourManagement();
 
   const [selectedItem, setSelectedItem] = useState<Transportation | null>(null);
-  
-  // Single global search state
-  const [filters, setFilters] = useState({ 
-    type: "ALL", 
-    status: "ALL", 
-    globalSearch: "" 
+  const [filters, setFilters] = useState({
+    type: "ALL",
+    status: "ALL",
+    globalSearch: ""
   });
 
   const filteredList = useMemo(() => (list || []).filter(t => t?.id), [list]);
@@ -55,12 +52,12 @@ export const TransportationManager = () => {
         count={filteredList.length}
         searchValue={filters.globalSearch}
         onSearch={(val) => setFilters(p => ({ ...p, globalSearch: val }))}
-        
+
         typeFilterValue={filters.type}
         statusFilterValue={filters.status}
         onTypeFilterChange={(val) => setFilters(p => ({ ...p, type: val }))}
         onStatusFilterChange={(val) => setFilters(p => ({ ...p, status: val }))}
-        
+
         onAdd={() => navigate("/admin/transports/create")}
         onReset={() => setFilters({ type: "ALL", status: "ALL", globalSearch: "" })}
       />
@@ -72,7 +69,7 @@ export const TransportationManager = () => {
         onView={(id) => navigate(`/admin/transports/${id}`)}
       />
 
-      <TransportationEditDialog 
+      <TransportationEditDialog
         open={open}
         onClose={onClose}
         transport={selectedItem}

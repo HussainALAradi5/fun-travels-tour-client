@@ -62,8 +62,7 @@ const MultiAttachmentUpload = ({
 
   return (
     <VStack w="full" gap={5} align="stretch" animation={`${floatIn} 0.5s ease-out`}>
-      {/* --- DROPZONE AREA --- */}
-      <Box
+<Box
         {...getRootProps()}
         position="relative"
         p={10}
@@ -100,9 +99,7 @@ const MultiAttachmentUpload = ({
           </VStack>
         </VStack>
       </Box>
-
-      {/* --- PENDING FILES LIST --- */}
-      {files.length > 0 && (
+{files.length > 0 && (
         <VStack
           align="stretch"
           gap={0}
@@ -186,9 +183,7 @@ const MultiAttachmentUpload = ({
           </Box>
         </VStack>
       )}
-
-      {/* --- DYNAMIC INSTRUCTIONS --- */}
-      <HStack color="fg.muted" gap={3} px={4} py={2} bg="bg.muted/30" borderRadius="lg" borderWidth="1px">
+<HStack color="fg.muted" gap={3} px={4} py={2} bg="bg.muted/30" borderRadius="lg" borderWidth="1px">
         <Icon as={FiInfo} boxSize={3.5} />
         <Text fontSize="xs" fontWeight="medium">
           {instructions}

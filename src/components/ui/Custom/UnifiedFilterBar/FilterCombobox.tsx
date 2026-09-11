@@ -1,19 +1,15 @@
 import { useState, useMemo } from "react";
-import { 
-  HStack, Icon, Text, VStack, Box, 
-  createListCollection, Combobox, Select 
+import {
+  HStack, Icon, Text, VStack, Box,
+  createListCollection, Combobox, Select
 } from "@chakra-ui/react";
 import { Filter as FilterIcon } from "lucide-react";
 import type { FilterGroup } from "@/interface/common/FilterGroup";
 
-export type { FilterGroup } from "@/interface/common/FilterGroup";
-
 export const FilterCombobox = ({ f }: { f: FilterGroup }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const isCombobox = f.variant === "combobox";
-
-  // Helper to get string for search/accessibility
-  const getStringValue = (item: { searchText?: string; label: string | React.ReactNode; value: string }) => 
+  const getStringValue = (item: { searchText?: string; label: string | React.ReactNode; value: string }) =>
     item.searchText || (typeof item.label === "string" ? item.label : "") || item.value;
 
   const filteredItems = useMemo(() => {
@@ -48,16 +44,15 @@ export const FilterCombobox = ({ f }: { f: FilterGroup }) => {
       </Text>
 
       {isCombobox ? (
-        /* --- SEARCHABLE COMBOBOX VARIANT --- */
-        <Combobox.Root {...commonProps} onInputValueChange={(e) => setSearchTerm(e.inputValue)}>
+<Combobox.Root {...commonProps} onInputValueChange={(e) => setSearchTerm(e.inputValue)}>
           <Combobox.Control borderRadius="xl" bg="bg.panel" h="10" borderWidth="1px" borderColor="border.subtle">
             <HStack gap={2} px={3} w="full">
               <Icon size="xs" color="blue.fg"><FilterIcon size={14} /></Icon>
-              <Combobox.Input 
-                placeholder={f.placeholder || "Search..."} 
-                bg="transparent" 
+              <Combobox.Input
+                placeholder={f.placeholder || "Search..."}
+                bg="transparent"
                 fontSize="sm"
-                _focus={{ outline: "none" }} 
+                _focus={{ outline: "none" }}
               />
             </HStack>
             <Combobox.Trigger />
@@ -77,8 +72,7 @@ export const FilterCombobox = ({ f }: { f: FilterGroup }) => {
           </Combobox.Positioner>
         </Combobox.Root>
       ) : (
-        /* --- STANDARD SELECT VARIANT (DEFAULT) --- */
-        <Select.Root {...commonProps}>
+<Select.Root {...commonProps}>
           <Select.Trigger borderRadius="xl" bg="bg.panel" h="10" borderWidth="1px" borderColor="border.subtle">
             <HStack gap={2} px={3}>
               <Icon size="xs" color="blue.fg"><FilterIcon size={14} /></Icon>

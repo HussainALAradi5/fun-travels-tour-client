@@ -1,4 +1,3 @@
-// src/components/TourManagement/Seat/SeatManager.tsx
 import { useState, useEffect, useMemo } from "react";
 import {
   VStack,
@@ -24,12 +23,8 @@ import { SeatManagerTable } from "./SeatManagerTable";
 export const SeatManager = ({ transportId }: { transportId: number }) => {
   const { seats, fetchSeats, isLoading, isMutating, handleUpdateSeat } =
     useTourManagement();
-
-  // Dialog & Edit States
   const [isTableOpen, setIsTableOpen] = useState(false);
   const [editingSeat, setEditingSeat] = useState<Seat | null>(null);
-
-  // Filter States
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState<string>("ALL");
   const [filterStatus, setFilterStatus] = useState<string>("ALL");
@@ -37,8 +32,6 @@ export const SeatManager = ({ transportId }: { transportId: number }) => {
   useEffect(() => {
     if (transportId) fetchSeats(transportId);
   }, [transportId, fetchSeats]);
-
-  // 1. Calculate Live Totals for the Summary Cards
   const totals = useMemo(() => {
     return seats.reduce(
       (acc, seat) => {
@@ -48,8 +41,6 @@ export const SeatManager = ({ transportId }: { transportId: number }) => {
       {} as Record<string, number>,
     );
   }, [seats]);
-
-  // 2. Local Filtering Logic (Search + Type + Status)
   const filteredSeats = useMemo(() => {
     return seats.filter((seat) => {
       const matchesSearch = seat.seatCode
@@ -84,8 +75,7 @@ export const SeatManager = ({ transportId }: { transportId: number }) => {
 
   return (
     <>
-      {/* --- Dashboard Summary Widget --- */}
-      <Box
+<Box
         w="full"
         bg="bg.panel"
         p={6}
@@ -153,9 +143,7 @@ export const SeatManager = ({ transportId }: { transportId: number }) => {
           ))}
         </SimpleGrid>
       </Box>
-
-      {/* --- The Main Management Modal --- */}
-      <GenericDialog
+<GenericDialog
         open={isTableOpen}
         onClose={() => setIsTableOpen(false)}
         title="Seating Management"
@@ -165,8 +153,7 @@ export const SeatManager = ({ transportId }: { transportId: number }) => {
         colorPalette="blue"
       >
         <VStack w="full" align="stretch" gap={5} mt={2}>
-          {/* Integrated Header with restored multi-filters */}
-          <SeatManagerHeader
+<SeatManagerHeader
             count={filteredSeats.length}
             searchValue={search}
             onSearch={setSearch}
@@ -178,9 +165,7 @@ export const SeatManager = ({ transportId }: { transportId: number }) => {
             totals={totals}
             totalSeats={seats.length}
           />
-
-          {/* Table wrapper to fix the "bad shape" and double borders */}
-          <Box
+<Box
             borderWidth="1px"
             borderColor="border.subtle"
             borderRadius="2xl"
@@ -196,9 +181,7 @@ export const SeatManager = ({ transportId }: { transportId: number }) => {
           </Box>
         </VStack>
       </GenericDialog>
-
-      {/* --- Individual Seat Configuration Dialog --- */}
-      <SeatEditDialog
+<SeatEditDialog
         open={!!editingSeat}
         onClose={() => setEditingSeat(null)}
         seat={editingSeat}

@@ -41,8 +41,7 @@ export const TableToolbar = ({
 }: TableToolbarProps) => {
   return (
     <HStack justifyContent="space-between" pb={4} width="full">
-      {/* 1. Conditional Search Input */}
-      {!searchDisabled ? (
+{!searchDisabled ? (
         <Box position="relative" maxW="400px" width="full">
           <Box
             position="absolute"
@@ -74,12 +73,9 @@ export const TableToolbar = ({
           />
         </Box>
       ) : (
-        /* If search is disabled, this pushes the action buttons to the right */
-        <Box flex={1} />
+<Box flex={1} />
       )}
-
-      {/* 2. Action Buttons (Export & Page Size) */}
-      <HStack gap={3}>
+<HStack gap={3}>
         {enableExport && (
           <>
             <Button
@@ -102,9 +98,7 @@ export const TableToolbar = ({
             />
           </>
         )}
-
-        {/* Fix applied here: Using Select.Root pattern */}
-        <Select.Root
+<Select.Root
           size="md"
           width="140px"
           collection={pageSizeOptions}

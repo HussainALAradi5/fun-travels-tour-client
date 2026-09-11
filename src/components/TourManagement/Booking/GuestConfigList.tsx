@@ -18,12 +18,12 @@ export const GuestConfigList = ({ guests, maxCapacity, onAddGuest, onRemoveGuest
 
       <Stack gap={6}>
         {guests.map((guest, index) => (
-          <GuestConfigCard 
+          <GuestConfigCard
             key={guest.id}
             guest={guest}
             onOpenSeatPicker={onOpenSeatPicker}
             onOpenMealPicker={onOpenMealPicker}
-            onRemove={index !== 0 ? onRemoveGuest : undefined} 
+            onRemove={index !== 0 ? onRemoveGuest : undefined}
           />
         ))}
       </Stack>

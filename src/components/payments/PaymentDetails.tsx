@@ -19,8 +19,7 @@ export const PaymentDetails = ({ paymentId }: { paymentId: number }) => {
       </Button>
 
       <Card.Root maxW="lg" mx="auto" variant="elevated" borderRadius="3xl" overflow="hidden">
-        {/* Header Block */}
-        <Box bg={isSuccess ? "green.600" : p.status === "FAILED" ? "red.600" : "yellow.600"} p={10} color="white" textAlign="center">
+<Box bg={isSuccess ? "green.600" : p.status === "FAILED" ? "red.600" : "yellow.600"} p={10} color="white" textAlign="center">
           <VStack gap={2}>
             <Text fontSize="xs" fontWeight="bold" opacity={0.8} letterSpacing="widest">PAYMENT AMOUNT</Text>
             <Heading size="4xl" fontWeight="black">${Number(p.amount).toFixed(2)}</Heading>
@@ -29,15 +28,13 @@ export const PaymentDetails = ({ paymentId }: { paymentId: number }) => {
             </Badge>
           </VStack>
         </Box>
-
-        {/* Receipt Body */}
-        <Card.Body p={8} bg="bg.panel">
+<Card.Body p={8} bg="bg.panel">
           <VStack align="stretch" gap={5}>
             <HStack justify="space-between">
               <Text color="fg.muted" fontSize="sm">Stripe Ref ID</Text>
               <Text fontWeight="bold">{p.transactionId || "N/A"}</Text>
             </HStack>
-            
+
             <HStack justify="space-between">
               <Text color="fg.muted" fontSize="sm">Payment Method</Text>
               <HStack>
@@ -72,7 +69,7 @@ export const PaymentDetails = ({ paymentId }: { paymentId: number }) => {
             <Button colorPalette="blue" borderRadius="xl" gap={2} mt={4} variant="outline">
                <Download size={16} /> Download Gateway Receipt
             </Button>
-            
+
             <HStack justify="center" pt={2} opacity={0.6}>
                <Icon as={CheckCircle2} color="green.500" />
                <Text fontSize="10px" fontWeight="bold">SECURE ENCRYPTED PAYMENT</Text>

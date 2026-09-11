@@ -6,7 +6,7 @@ export const GenericFilter = {
     const { searchTerm, searchKey, currentPage, pageSize, filters } = state;
 
     const filtered = data.filter((item) => {
-      const matchesSearch = !searchTerm || !searchKey || 
+      const matchesSearch = !searchTerm || !searchKey ||
         String(item[searchKey]).toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesFilters = !filters || Object.entries(filters).every(([key, value]) => {

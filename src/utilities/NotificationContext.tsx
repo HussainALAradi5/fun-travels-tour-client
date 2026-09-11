@@ -9,8 +9,6 @@ const NotificationContext = createContext<NotificationContextType | undefined>(u
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, user } = useAuth();
   const [unreadCount, setUnreadCount] = useState(0);
-
-  // Function to manually refresh count from API
   const refreshCount = useCallback(async () => {
     if (isAuthenticated && user?.id) {
       try {
@@ -30,17 +28,14 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     }
 
     const stompClient = new Client({
-      brokerURL: 'ws://localhost:8080/ws-notifications', 
+      brokerURL: 'ws://localhost:8080/ws-notifications',
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
       onConnect: () => {
         stompClient.subscribe(`/topic/notifications/${user.id}`, (message) => {
           const data = JSON.parse(message.body);
-          // 1. Update global state count
           setUnreadCount(data.unread);
-          
-          // 2. We still use an event JUST to tell the specific list page to re-fetch its array
           window.dispatchEvent(new CustomEvent('newNotificationReceived'));
         });
       },

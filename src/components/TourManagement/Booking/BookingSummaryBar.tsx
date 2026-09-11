@@ -7,11 +7,11 @@ export const BookingSummaryBar = ({ selectedSeat, selectedMeals, onConfirm, isBo
   if (!selectedSeat) return null;
 
   return (
-    <Box 
-      p={6} 
-      bg="blue.600" 
-      color="white" 
-      borderRadius="2xl" 
+    <Box
+      p={6}
+      bg="blue.600"
+      color="white"
+      borderRadius="2xl"
       shadow="2xl"
       animation={`${floatIn} 0.4s ease-out`}
     >
@@ -21,7 +21,7 @@ export const BookingSummaryBar = ({ selectedSeat, selectedMeals, onConfirm, isBo
             FINALIZING RESERVATION
           </Text>
           <Heading size="lg">
-            Seat {selectedSeat.seatCode} 
+            Seat {selectedSeat.seatCode}
             {selectedMeals.length > 0 && ` + ${selectedMeals.length} Meal Plan(s)`}
           </Heading>
         </VStack>
