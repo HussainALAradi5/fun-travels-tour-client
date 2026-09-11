@@ -2,7 +2,7 @@ import { HStack, VStack, Heading, Text, Badge, Box } from "@chakra-ui/react";
 import { LayoutGrid } from "lucide-react";
 import { ChairType } from "@/enums/tourmanagement/ChirType";
 import { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
-import { GenericCard } from "@/components/ui/Custom/GenericCard";
+import { ContentCard } from "@/components/ui/Custom/ContentCard";
 import { UnifiedFilterBar } from "@/components/ui/Custom/UnifiedFilterBar";
 import { ChairTypeColors } from "@/constants/roles/Colors";
 import type { SeatManagerHeaderProps } from "@/interface/props/tour/SeatManagerHeaderProps";
@@ -31,7 +31,7 @@ export const SeatManagerHeader = ({
   ];
 
   return (
-    <GenericCard
+    <ContentCard
       header={
         <HStack justify="space-between" width="full" flexWrap="wrap" gap={4}>
           <VStack align="start" gap={0}>
@@ -85,6 +85,6 @@ export const SeatManagerHeader = ({
           ]}
         />
       </Box>
-    </GenericCard>
+    </ContentCard>
   );
 };

@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "@/lib/navigation";
 import {
   Stack, Center, Spinner, Heading, Text, VStack, HStack, Button, Box, Grid
 } from "@chakra-ui/react";

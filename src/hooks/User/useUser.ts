@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import { userService } from "@/Api/User";
 import { authUtils } from "@/utilities/AuthUtils";
 import type { User } from "@/interface/user/User";

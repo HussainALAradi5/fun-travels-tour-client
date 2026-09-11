@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import { Badge, IconButton, Icon, HStack, Text, VStack } from "@chakra-ui/react";
 import { Eye, ReceiptText, Calendar, ArrowUpRight, ArrowDownRight } from "lucide-react";
-import { GenericTable } from "@/components/ui/Custom/GenericTable";
+import { DataTable } from "@/components/ui/Custom/DataTable";
 import type { Column } from "@/interface/common/Column";
 import { useTransaction } from "@/hooks/useTransaction";
 import type { Transaction } from "@/interface/payment/Transaction";
 import { TransactionTypeColors } from "@/constants/roles/Colors";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
 
 export const TransactionTable = () => {
@@ -75,7 +75,7 @@ export const TransactionTable = () => {
 
   return (
     <PageWrapper title="Financial Ledger" subtitle="Overview of all transactions">
-      <GenericTable data={transactions} columns={columns} loading={isLoading} colorPalette="blue" enableExport />
+      <DataTable data={transactions} columns={columns} loading={isLoading} colorPalette="blue" enableExport />
     </PageWrapper>
   );
 };

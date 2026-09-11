@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "@/lib/navigation";
 import {
   Box, Center, Flex, HStack, IconButton, Spinner, VStack, Text,
   Button, Icon, Heading, Badge, Grid
@@ -14,8 +14,8 @@ import { userRequestService } from "@/Api/UserRequest";
 import { useUser } from "@/hooks/User/useUser";
 import type { GenericComment } from "@/interface/support/GenericComment"; import type { GenericEventLog } from "@/interface/support/GenericEventLog";
 import type { UserRequest } from "@/interface/support/UserRequest";
-import { GenericAuditLog } from "../ui/Custom/GenericAuditLog";
-import { GenericCommentSection } from "../ui/Custom/GenericCommentSection";
+import { AuditLog } from "../ui/Custom/AuditLog";
+import { CommentSection } from "../ui/Custom/CommentSection";
 import type { AuditEventItem } from "@/interface/common/AuditEventItem";
 import type { CommentItem } from "@/interface/common/CommentItem";
 import { notify } from "../ui/Custom/GenericNotification";
@@ -198,14 +198,14 @@ export const UserRequestDetails = () => {
             </Box>
           )}
 
-          <GenericAuditLog
+          <AuditLog
             events={formattedAuditEvents}
             title="Activity Timeline"
           />
         </VStack>
 
         <Box position="sticky" top="24px">
-          <GenericCommentSection
+          <CommentSection
             comments={formattedComments}
             currentUserId={user?.id || 0}
             onAddComment={handleAddComment}

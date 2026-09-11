@@ -1,6 +1,6 @@
 import { VStack, HStack, Text, Badge, Icon, Circle } from "@chakra-ui/react";
 import { Calendar, Clock } from "lucide-react";
-import { GenericTable } from "@/components/ui/Custom/GenericTable";
+import { DataTable } from "@/components/ui/Custom/DataTable";
 import { CapacityProgress } from "@/components/ui/Custom/CapacityProgress";
 import { StatusColors } from "@/constants/roles/Colors";
 import { formatTourRange } from "@/utilities/DateUtils";
@@ -8,7 +8,7 @@ import type { Tour } from "@/interface/tour/Tour"; import type { TourTableProps 
 
 export const TourInventoryTable = ({ data, isLoading, onViewDetails }: TourTableProps) => {
   return (
-    <GenericTable
+    <DataTable
       data={data}
       loading={isLoading}
       searchDisabled

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import { ticketService } from "@/Api/tourmanagement/Ticket";
 import type { Ticket } from "@/interface/tour/Ticket";
 import { useUser } from "@/hooks/User/useUser";

@@ -1,6 +1,6 @@
 import { Box, HStack, Heading, Badge, Text, Circle, Icon, VStack } from "@chakra-ui/react";
 import { User as UserIcon } from "lucide-react";
-import { GenericTable } from "@/components/ui/Custom/GenericTable";
+import { DataTable } from "@/components/ui/Custom/DataTable";
 import type { Ticket } from "@/interface/tour/Ticket";
 
 export const TourPassengerManifest = ({ tickets }: { tickets: Ticket[] }) => {
@@ -20,7 +20,7 @@ export const TourPassengerManifest = ({ tickets }: { tickets: Ticket[] }) => {
         </Badge>
       </HStack>
 
-      <GenericTable
+      <DataTable
         data={tickets}
         enableExport
         searchDisabled

@@ -1,5 +1,5 @@
 import { Badge, HStack, Text, IconButton, Box, Icon } from "@chakra-ui/react";
-import { GenericTable } from "@/components/ui/Custom/GenericTable";
+import { DataTable } from "@/components/ui/Custom/DataTable";
 import type { Column } from "@/interface/common/Column";
 import type { UserRequest } from "@/interface/support/UserRequest";
 import { RequestStatusColors, RequestTypeColors } from "@/constants/roles/Colors";
@@ -89,7 +89,7 @@ export const UserRequestList = ({ data, loading, onView }: UserRequestListProps)
   ];
 
   return (
-    <GenericTable
+    <DataTable
       data={data}
       columns={columns}
       loading={loading}

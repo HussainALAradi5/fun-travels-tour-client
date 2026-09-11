@@ -1,6 +1,6 @@
 import { VStack, Button } from "@chakra-ui/react";
 import { Utensils } from "lucide-react";
-import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
+import { AppDialog } from "@/components/ui/Custom/Dialogs/AppDialog";
 import { MealSelectionList } from "./MealSelectionList";
 import type { MealsSelectionDialogProps } from "@/interface/props/tour/MealsSelectionDialogProps";
 
@@ -12,7 +12,7 @@ export const MealsSelectionDialog = ({
   onToggleMeal
 }: MealsSelectionDialogProps) => {
   return (
-    <GenericDialog
+    <AppDialog
       open={open}
       onClose={onClose}
       title="Dietary Preferences & Meals"
@@ -36,7 +36,6 @@ export const MealsSelectionDialog = ({
           Done
         </Button>
       </VStack>
-    </GenericDialog>
+    </AppDialog>
   );
 };
-

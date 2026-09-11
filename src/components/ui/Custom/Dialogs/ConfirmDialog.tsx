@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, DialogFooter, DialogActionTrigger, Text, VStack } from "@chakra-ui/react";
-import { GenericDialog } from "./GenericDialog";
+import { AppDialog } from "./AppDialog";
 import type { ConfirmDialogProps } from "@/interface/props/ui/ConfirmDialogProps";
 
 export function ConfirmDialog({
@@ -24,13 +24,14 @@ export function ConfirmDialog({
       await onConfirm();
       onClose();
     } catch {
+      return;
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <GenericDialog
+    <AppDialog
       open={open}
       onClose={onClose}
       title={title}
@@ -58,7 +59,6 @@ export function ConfirmDialog({
           </Button>
         </DialogFooter>
       </VStack>
-    </GenericDialog>
+    </AppDialog>
   );
 }
-

@@ -2,8 +2,8 @@ import { useState } from "react";
 import { VStack, HStack, Box, Text, Button, Icon } from "@chakra-ui/react";
 import { ShieldAlert, XCircle, AlertTriangle, Ban, FileText, ShieldCheck, CheckCircle } from "lucide-react";
 
-import { GenericCard } from "@/components/ui/Custom/GenericCard";
-import { GenericStatusWorkflow } from "@/components/ui/Custom/GenericStatusWorkflow";
+import { ContentCard } from "@/components/ui/Custom/ContentCard";
+import { StatusWorkflow } from "@/components/ui/Custom/StatusWorkflow";
 import type { StatusConfig } from "@/interface/common/StatusConfig";
 import { ConfirmDialog } from "@/components/ui/Custom/Dialogs/ConfirmDialog";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
@@ -39,7 +39,7 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
 
   return (
     <VStack gap={6} align="stretch" position="sticky" top="24px" hideFrom="print">
-      <GenericCard
+      <ContentCard
         w="full"
         header={
           <Text fontSize="xs" fontWeight="bold" color="fg.muted" letterSpacing="widest" textTransform="uppercase">
@@ -49,7 +49,7 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
       >
         <VStack gap={6} align="stretch">
 
-          <GenericStatusWorkflow
+          <StatusWorkflow
             currentStatus={ticket.ticketStatus}
             statusMap={TICKET_STATUS_MAP}
             steps={STEPS as unknown as string[]}
@@ -92,7 +92,7 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
             </Box>
           )}
         </VStack>
-      </GenericCard>
+      </ContentCard>
 
       <ConfirmDialog
         open={isCancelDialogOpen}

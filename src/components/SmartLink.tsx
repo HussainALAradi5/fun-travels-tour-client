@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button, VStack, Icon } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import { ExternalLink, Monitor } from "lucide-react";
 import type { SmartLinkProps } from "@/interface/props/common/SmartLinkProps";
 

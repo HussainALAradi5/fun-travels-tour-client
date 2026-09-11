@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { SimpleGrid, Box, Center, Spinner, GridItem } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import { seatService } from "@/Api/tourmanagement/Seat";

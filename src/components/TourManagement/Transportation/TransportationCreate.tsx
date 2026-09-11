@@ -1,7 +1,7 @@
 import { Box, Heading, Text, VStack, Button, HStack, Icon, Separator, Badge } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import { Star, Accessibility, Baby, ChevronLeft, Rocket, Info } from "lucide-react";
-import { GenericForm } from "@/components/ui/Custom/GenericForm";
+import { DynamicForm } from "@/components/ui/Custom/DynamicForm";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import type { Transportation } from "@/interface/tour/Transportation";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
@@ -90,7 +90,7 @@ export const TransportationCreate = () => {
           filter="blur(60px)"
         />
 
-        <GenericForm<TransportationFormValues>
+        <DynamicForm<TransportationFormValues>
           disableToast={true}
           fields={fields}
           initialValues={{ code: "", transportationNumber: "", providerName: "", type: "" as TransportationFormValues["type"], totalCapacity: 0, seats: [] } as unknown as TransportationFormValues}

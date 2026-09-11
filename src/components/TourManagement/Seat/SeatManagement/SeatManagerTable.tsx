@@ -3,7 +3,7 @@ import { Armchair, Settings2 } from "lucide-react";
 import type { Seat } from "@/interface/tour/Seat";
 import type { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
 import { SeatStatusColors, ChairTypeColors } from "@/constants/roles/Colors";
-import { GenericTable } from "@/components/ui/Custom/GenericTable";
+import { DataTable } from "@/components/ui/Custom/DataTable";
 
 import type { SeatColumn } from "@/interface/tour/SeatColumn";
 import type { SeatManagerTableProps } from "@/interface/props/tour/SeatManagerTableProps";
@@ -106,7 +106,7 @@ export const SeatManagerTable = ({ data, loading, onEdit }: SeatManagerTableProp
       borderRadius="3xl"
       overflow="hidden"
     >
-      <GenericTable<Seat>
+      <DataTable<Seat>
         data={data}
         loading={loading}
         columns={columns}

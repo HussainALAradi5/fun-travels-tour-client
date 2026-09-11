@@ -8,7 +8,7 @@ import type { User } from "@/interface/user/User";
 import type { Country } from "@/interface/geography/Country";
 import type { City } from "@/interface/geography/City";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
-import { GenericFormDialog } from "../ui/Custom/Dialogs/GenericFormDialog";
+import { DynamicFormDialog } from "../ui/Custom/Dialogs/DynamicFormDialog";
 
 import type { SelectOption } from "@/interface/common/SelectOption";
 import type { AddAgencyDialogProps } from "@/interface/props/agency/AddAgencyDialogProps";
@@ -139,7 +139,7 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: AddAgencyD
   );
 
   return (
-    <GenericFormDialog<Record<string, unknown>>
+    <DynamicFormDialog<Record<string, unknown>>
       open={open}
       onClose={onClose}
       onSubmit={async (formData) => {

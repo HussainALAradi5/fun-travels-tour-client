@@ -1,6 +1,6 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "@/lib/navigation";
 import { Text, Link as ChakraLink } from "@chakra-ui/react";
-import { GenericForm } from "@/components/ui/Custom/GenericForm";
+import { DynamicForm } from "@/components/ui/Custom/DynamicForm";
 import type { RegisterRequest } from "@/interface/auth/RegisterRequest";
 import { DEFAULT_USER } from "@/interface/user/User";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
@@ -35,7 +35,7 @@ export const RegisterForm = () => {
         </div>
       )}
 
-      <GenericForm<RegisterRequest>
+      <DynamicForm<RegisterRequest>
         fields={registerFields}
         initialValues={defaultValues}
         onSubmit={register}

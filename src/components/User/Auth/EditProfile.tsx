@@ -1,4 +1,4 @@
-import { GenericFormDialog } from "@/components/ui/Custom/Dialogs/GenericFormDialog";
+import { DynamicFormDialog } from "@/components/ui/Custom/Dialogs/DynamicFormDialog";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
 import { UserCircle, Lock, Phone, Image as ImageIcon, Link, Trash2 } from "lucide-react";
 
@@ -23,7 +23,7 @@ export const EditProfile = ({ open, onClose, onSubmit, loading, initialValues }:
   };
 
   return (
-    <GenericFormDialog<Record<string, unknown>>
+    <DynamicFormDialog<Record<string, unknown>>
       open={open}
       onClose={onClose}
       onSubmit={onSubmit}

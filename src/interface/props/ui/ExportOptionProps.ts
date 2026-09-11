@@ -6,7 +6,7 @@ export interface ExportOptionProps {
   onSelect: () => void;
 }
 
-export interface GenericExportDialogProps<T extends Record<string, unknown>> {
+export interface ExportDialogProps<T extends Record<string, unknown>> {
   open: boolean;
   onClose: () => void;
   data: T[];

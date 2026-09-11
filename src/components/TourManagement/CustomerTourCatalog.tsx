@@ -6,7 +6,7 @@ import { LayoutGrid, List } from "lucide-react";
 
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import { useAuth } from "@/utilities/AuthContext";
-import apiClient from "@/config/BaseApi";
+import { countryService } from "@/Api/Country";
 
 import { Hero } from "@/components/ui/Custom/Hero";
 import { UnifiedFilterBar } from "@/components/ui/Custom/UnifiedFilterBar";
@@ -30,8 +30,8 @@ export const CustomerTourCatalog = () => {
     endDate: "",
   });
   useEffect(() => {
-    apiClient.get<Country[]>("/countries").then((res) => {
-      const options = res.data.map((c: Country) => {
+    countryService.getAllCountries().then((countryList) => {
+      const options = countryList.map((c: Country) => {
         const name = c.officialName || c.famousName;
         return {
           label: (

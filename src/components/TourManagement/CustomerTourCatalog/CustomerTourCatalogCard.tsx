@@ -1,7 +1,7 @@
 import {
   Box, Heading, Text, Button, Image, Stack, Badge, Flex, HStack, Card
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import type { CustomerTourCatalogCardProps } from "@/interface/props/tour/CustomerTourCatalogCardProps";
 
 export const CustomerTourCatalogCard = ({ tour, isAuthenticated }: CustomerTourCatalogCardProps) => {

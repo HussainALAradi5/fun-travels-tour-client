@@ -3,10 +3,10 @@ import {
   Box, Heading, Text, VStack, Button, Center,
   Spinner, Alert, Icon, HStack, Separator
 } from "@chakra-ui/react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "@/lib/navigation";
 import { ChevronLeft, Globe, MapPin, LayoutDashboard } from "lucide-react";
 
-import { GenericForm } from "@/components/ui/Custom/GenericForm";
+import { DynamicForm } from "@/components/ui/Custom/DynamicForm";
 import { tourService } from "@/Api/tourmanagement/Tour";
 import { countryService } from "@/Api/Country";
 import { cityService } from "@/Api/City";
@@ -167,7 +167,7 @@ export const EditTour = () => {
 
       {!error && initialValues && (
         <Box w="full" bg="bg.panel" p={{ base: 4, md: 8 }} borderRadius="3xl" borderWidth="1px" borderColor="border.subtle" shadow="sm">
-          <GenericForm<TourFormValues>
+          <DynamicForm<TourFormValues>
             fields={fields}
             initialValues={initialValues}
             onSubmit={handleUpdate}

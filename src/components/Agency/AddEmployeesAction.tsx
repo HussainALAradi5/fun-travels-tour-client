@@ -12,7 +12,7 @@ import { FileUp, ChevronUp, ChevronDown, Download } from "lucide-react";
 import MultiAttachmentUpload from "../ui/Custom/MultiAttachmentUpload";
 import { userService } from "@/Api/User";
 import { CollapsibleContainer } from "../ui/Custom/CollapsibleContainer";
-import { GenericExportDialog } from "../ui/Custom/Dialogs/GenericExportDialog";
+import { ExportDialog } from "../ui/Custom/Dialogs/ExportDialog";
 import type { AddEmployeesActionProps } from "@/interface/props/agency/AddEmployeesActionProps";
 
 export const AddEmployeesAction = ({
@@ -102,7 +102,7 @@ export const AddEmployeesAction = ({
           </VStack>
         </Box>
       </CollapsibleContainer>
-<GenericExportDialog
+<ExportDialog
         open={isTemplateDialogOpen}
         onClose={() => setIsTemplateDialogOpen(false)}
         data={templateData}

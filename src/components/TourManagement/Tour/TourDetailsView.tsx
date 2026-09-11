@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { Box, SimpleGrid, useDisclosure, Grid } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import { MapPin, Navigation } from "lucide-react";
 
 import type { Tour } from "@/interface/tour/Tour";

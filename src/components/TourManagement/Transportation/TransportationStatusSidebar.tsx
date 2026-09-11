@@ -1,7 +1,7 @@
 import { VStack, Box, Text, Heading,  Icon, Button } from "@chakra-ui/react";
 import { Wrench, CheckCircle2, AlertTriangle, Gauge, Info } from "lucide-react";
-import { GenericCard } from "@/components/ui/Custom/GenericCard";
-import { GenericStatusWorkflow } from "@/components/ui/Custom/GenericStatusWorkflow";
+import { ContentCard } from "@/components/ui/Custom/ContentCard";
+import { StatusWorkflow } from "@/components/ui/Custom/StatusWorkflow";
 import type { StatusConfig } from "@/interface/common/StatusConfig";
 import { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
 import type { TransportationStatusSidebarProps } from "@/interface/props/tour/TransportationStatusSidebarProps";
@@ -36,8 +36,8 @@ export const TransportationStatusSidebar = ({ transport, onStatusChange }: Trans
 
   return (
     <VStack gap="6">
-      <GenericCard w="full" header={<Heading size="xs">Unit Operations</Heading>}>
-        <GenericStatusWorkflow
+      <ContentCard w="full" header={<Heading size="xs">Unit Operations</Heading>}>
+        <StatusWorkflow
           currentStatus={transport.unitStatus as TransportationStatus}
           statusMap={STATUS_MAP}
           steps={STEPS}
@@ -57,8 +57,8 @@ export const TransportationStatusSidebar = ({ transport, onStatusChange }: Trans
             </VStack>
           </Box>
         )}
-      </GenericCard>
-<GenericCard w="full">
+      </ContentCard>
+<ContentCard w="full">
         <VStack gap="3" align="stretch">
           <Text fontSize="xs" fontWeight="black" color="fg.muted">MANUAL OVERRIDE</Text>
 
@@ -81,7 +81,7 @@ export const TransportationStatusSidebar = ({ transport, onStatusChange }: Trans
             </Button>
           )}
         </VStack>
-      </GenericCard>
+      </ContentCard>
     </VStack>
   );
 };

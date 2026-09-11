@@ -4,10 +4,26 @@ import type { CountryResponse } from "@/interface/geography/CountryResponse";
 import type { Country } from "@/interface/geography/Country";
 import { authUtils } from "@/utilities/AuthUtils";
 
+const extractCountries = (payload: unknown): Country[] => {
+  if (Array.isArray(payload)) {
+    return payload as Country[];
+  }
+
+  if (payload && typeof payload === "object" && "data" in payload) {
+    return extractCountries(payload.data);
+  }
+
+  if (payload && typeof payload === "object" && "content" in payload) {
+    return extractCountries(payload.content);
+  }
+
+  return [];
+};
+
 export const countryService = {
   getAllCountries: async (): Promise<Country[]> => {
     const response = await apiClient.get<ApiResponse<CountryResponse[]>>("countries");
-    return response.data.data as unknown as Country[];
+    return extractCountries(response.data);
   },
 
   syncFromExternal: async (name: string): Promise<Country> => {
@@ -25,7 +41,7 @@ export const countryService = {
   syncAllFromExternal: async (): Promise<Country[]> => {
     const userType = authUtils.getUserType();
     const response = await apiClient.post<ApiResponse<CountryResponse[]>>(`countries/sync-all?userType=${userType}`);
-    return response.data.data as unknown as Country[];
+    return extractCountries(response.data);
   },
 
   deleteCountry: async (id: number): Promise<null> => {

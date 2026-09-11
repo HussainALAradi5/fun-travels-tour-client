@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Center, Spinner } from "@chakra-ui/react";
 
-import { GenericAuditLog } from "@/components/ui/Custom/GenericAuditLog";
+import { AuditLog } from "@/components/ui/Custom/AuditLog";
 import type { AuditEventItem } from "@/interface/common/AuditEventItem";
 import { genericTrackingService } from "@/Api/genericTracking";
 import type { TourEventLogDetailViewProps } from "@/interface/props/tour/TourEventLogDetailViewProps";
@@ -40,7 +40,7 @@ export const TourEventLogDetailView = ({ tourId }: TourEventLogDetailViewProps) 
   }
 
   return (
-    <GenericAuditLog
+    <AuditLog
       events={events}
       title="Tour Audit Log"
       emptyMessage="No events have been recorded for this tour yet."

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { VStack, Text, Button, Grid, Box, Separator } from "@chakra-ui/react";
 import { Settings2, Save } from "lucide-react";
-import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
+import { AppDialog } from "@/components/ui/Custom/Dialogs/AppDialog";
 import { ChairType } from "@/enums/tourmanagement/ChirType";
 import { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
 import { ChairTypeColors } from "@/constants/roles/Colors";
@@ -27,7 +27,7 @@ export const SeatEditDialog = ({ open, onClose, seat, onSave, loading }: SeatEdi
   if (!localSeat) return null;
 
   return (
-    <GenericDialog
+    <AppDialog
       open={open}
       onClose={onClose}
       title={`Configure Seat: ${localSeat.seatCode}`}
@@ -97,7 +97,6 @@ export const SeatEditDialog = ({ open, onClose, seat, onSave, loading }: SeatEdi
           <Save size={18} style={{ marginRight: '8px' }} /> Confirm Configuration
         </Button>
       </VStack>
-    </GenericDialog>
+    </AppDialog>
   );
 };
-

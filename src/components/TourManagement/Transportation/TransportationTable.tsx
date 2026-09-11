@@ -16,7 +16,7 @@ import {
   Activity,
   Building2
 } from "lucide-react";
-import { GenericTable } from "../../ui/Custom/GenericTable";
+import { DataTable } from "../../ui/Custom/DataTable";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
 import { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
 import type { Transportation } from "@/interface/tour/Transportation";
@@ -190,7 +190,7 @@ export const TransportationTable = ({ data, loading, onEdit, onView }: Transport
 
   return (
     <Box p={1} bg="bg.panel" borderRadius="3xl" border="1px solid" borderColor="border.subtle" shadow="xl" overflow="hidden">
-      <GenericTable<Transportation>
+      <DataTable<Transportation>
         data={data}
         loading={loading}
         enableExport

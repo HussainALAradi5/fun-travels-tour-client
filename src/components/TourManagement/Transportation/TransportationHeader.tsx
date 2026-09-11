@@ -1,7 +1,7 @@
 import { HStack, VStack, Heading, Text, Button, Box } from "@chakra-ui/react";
 import { Plus } from "lucide-react";
 import { UnifiedFilterBar } from "../../ui/Custom/UnifiedFilterBar";
-import { GenericCard } from "../../ui/Custom/GenericCard";
+import { ContentCard } from "../../ui/Custom/ContentCard";
 import { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
 import type { TransportationHeaderProps } from "@/interface/props/tour/TransportationHeaderProps";
@@ -29,7 +29,7 @@ export const TransportationHeader = ({
   ];
 
   return (
-    <GenericCard
+    <ContentCard
       header={
         <HStack justify="space-between" width="full">
           <VStack align="start" gap={0}>
@@ -64,6 +64,6 @@ export const TransportationHeader = ({
           ]}
         />
       </Box>
-    </GenericCard>
+    </ContentCard>
   );
 };

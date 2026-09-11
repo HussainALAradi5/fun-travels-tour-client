@@ -9,10 +9,10 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { PlaneTakeoff, PlaneLanding, MapPin, Calendar } from "lucide-react";
-import { GenericTable } from "@/components/ui/Custom/GenericTable";
+import { DataTable } from "@/components/ui/Custom/DataTable";
 import type { Column } from "@/interface/common/Column";
 import type { Tour } from "@/interface/tour/Tour";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import type { CustomerTourCatalogTableProps } from "@/interface/props/tour/CustomerTourCatalogTableProps";
 
 export const CustomerTourCatalogTable = ({
@@ -216,7 +216,7 @@ export const CustomerTourCatalogTable = ({
   ];
 
   return (
-    <GenericTable
+    <DataTable
       data={tours}
       columns={columns}
       loading={loading}

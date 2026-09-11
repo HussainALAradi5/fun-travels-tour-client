@@ -4,7 +4,7 @@ import { useUser } from "@/hooks/User/useUser";
 import type { User } from "@/interface/user/User";
 import type { Tour } from "@/interface/tour/Tour";
 import type { Guest } from "@/interface/common/Guest";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import { toaster } from "@/components/ui/toaster";
 
 export function useBookingCheckout(tour: Tour | null) {

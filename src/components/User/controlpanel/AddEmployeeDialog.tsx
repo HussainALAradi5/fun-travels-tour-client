@@ -3,7 +3,7 @@ import type { User } from "@/interface/user/User";
 import { DEFAULT_USER } from "@/interface/user/User";
 import { UserType } from "@/enums/UserType";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
-import { GenericFormDialog } from "@/components/ui/Custom/Dialogs/GenericFormDialog";
+import { DynamicFormDialog } from "@/components/ui/Custom/Dialogs/DynamicFormDialog";
 
 import type { AddEmployeeDialogProps } from "@/interface/props/agency/AddEmployeeDialogProps";
 
@@ -30,7 +30,7 @@ export function AddEmployeeDialog({
   };
 
   return (
-    <GenericFormDialog<User>
+    <DynamicFormDialog<User>
       open={open}
       onClose={onClose}
       onSubmit={onSubmit}

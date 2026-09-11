@@ -13,7 +13,7 @@ import { userService } from "@/Api/User";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
 import { EditProfile } from "./EditProfile";
 import { toaster } from "@/components/ui/toaster";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import { WalletTopUpModal } from "@/components/transactions/WalletTopUpModal";
 
 export const ProfileView = () => {

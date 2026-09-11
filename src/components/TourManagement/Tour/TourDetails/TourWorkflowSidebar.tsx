@@ -1,8 +1,8 @@
 import { useState, useMemo } from "react";
 import { VStack, Box, Text, Heading, Icon, Button, Center } from "@chakra-ui/react";
 import { XCircle, Edit3, ShieldCheck, Play, CheckCircle, FileText, RefreshCw, AlertTriangle } from "lucide-react";
-import { GenericCard } from "@/components/ui/Custom/GenericCard";
-import { GenericStatusWorkflow } from "@/components/ui/Custom/GenericStatusWorkflow";
+import { ContentCard } from "@/components/ui/Custom/ContentCard";
+import { StatusWorkflow } from "@/components/ui/Custom/StatusWorkflow";
 import type { StatusConfig } from "@/interface/common/StatusConfig";
 import { GenericStatus } from "@/enums/GenericStatus";
 import type { TourWorkflowSidebarProps } from "@/interface/props/tour/TourWorkflowSidebarProps";
@@ -68,16 +68,16 @@ export const TourWorkflowSidebar = ({ tour, onStatusChange, onEdit, onCancel }: 
 
   return (
     <VStack gap="6" w="full">
-      <GenericCard w="full" header={<Heading size="xs">Tour Process Lifecycle</Heading>}>
-        <GenericStatusWorkflow
+      <ContentCard w="full" header={<Heading size="xs">Tour Process Lifecycle</Heading>}>
+        <StatusWorkflow
           currentStatus={tour.status as GenericStatus}
           statusMap={TOUR_STATUS_MAP}
           steps={STEPS}
           onStatusChange={onStatusChange}
         />
-      </GenericCard>
+      </ContentCard>
 {isCancelled && (
-        <GenericCard
+        <ContentCard
           w="full"
           border="2px dashed"
           borderColor="red.500/40"
@@ -97,10 +97,10 @@ export const TourWorkflowSidebar = ({ tour, onStatusChange, onEdit, onCancel }: 
               <Icon as={RefreshCw} mr={2} boxSize="4" /> Restore to Pending
             </Button>
           </VStack>
-        </GenericCard>
+        </ContentCard>
       )}
 {!isCancelled && (isEditable || isCancelAllowed) && (
-        <GenericCard
+        <ContentCard
           w="full"
           border="2px dashed"
           borderColor="blue.500/30"
@@ -130,7 +130,7 @@ export const TourWorkflowSidebar = ({ tour, onStatusChange, onEdit, onCancel }: 
                 </Button>
               )}
            </VStack>
-        </GenericCard>
+        </ContentCard>
       )}
 
       <Box w="full" p={5} borderRadius="2xl" border="1px solid" borderColor="border.subtle" bg="bg.panel">

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import { VStack, HStack, Badge, Icon, Button, Box } from "@chakra-ui/react";
 import { UnifiedFilterBar } from "@/components/ui/Custom/UnifiedFilterBar";
 import type { FilterGroup } from "@/interface/common/FilterGroup";

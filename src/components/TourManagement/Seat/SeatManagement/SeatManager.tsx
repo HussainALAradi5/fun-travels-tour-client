@@ -15,7 +15,7 @@ import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import { ChairTypeColors } from "@/constants/roles/Colors";
 import type { Seat } from "@/interface/tour/Seat";
 
-import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
+import { AppDialog } from "@/components/ui/Custom/Dialogs/AppDialog";
 import { SeatEditDialog } from "./SeatEditDialog";
 import { SeatManagerHeader } from "./SeatManagerHeader";
 import { SeatManagerTable } from "./SeatManagerTable";
@@ -143,7 +143,7 @@ export const SeatManager = ({ transportId }: { transportId: number }) => {
           ))}
         </SimpleGrid>
       </Box>
-<GenericDialog
+<AppDialog
         open={isTableOpen}
         onClose={() => setIsTableOpen(false)}
         title="Seating Management"
@@ -180,7 +180,7 @@ export const SeatManager = ({ transportId }: { transportId: number }) => {
             />
           </Box>
         </VStack>
-      </GenericDialog>
+      </AppDialog>
 <SeatEditDialog
         open={!!editingSeat}
         onClose={() => setEditingSeat(null)}

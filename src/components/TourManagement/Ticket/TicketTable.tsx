@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Badge, IconButton, Icon, HStack, Text, VStack } from "@chakra-ui/react";
 import { Eye, MapPin, Calendar } from "lucide-react";
-import { GenericTable } from "@/components/ui/Custom/GenericTable";
+import { DataTable } from "@/components/ui/Custom/DataTable";
 import type { Column } from "@/interface/common/Column";
 import type { Ticket } from "@/interface/tour/Ticket";
 import { StatusColors } from "@/constants/roles/Colors";
@@ -69,7 +69,7 @@ export const TicketTable = ({ tickets, isLoading, onView }: TicketTableProps) =>
   ], [onView]);
 
   return (
-    <GenericTable<Ticket>
+    <DataTable<Ticket>
       data={tickets}
       exportFileName="My Tickets"
       enableExport

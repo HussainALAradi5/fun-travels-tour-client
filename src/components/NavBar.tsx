@@ -1,13 +1,12 @@
 import { Box, Flex, Button, Container, HStack, IconButton, Text } from "@chakra-ui/react";
-import { useColorMode, useColorModeValue } from "../components/ui/color-mode";
-import { Moon, Sun, UserCircle, LogOut } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { ColorModeButton, useColorModeValue } from "../components/ui/color-mode";
+import { UserCircle, LogOut } from "lucide-react";
+import { useNavigate } from "@/lib/navigation";
 import { useAuth } from "@/utilities/AuthContext";
 import { TabsManager } from "./Tabs/TabsManager";
 import { SmartLink } from "./SmartLink";
 
 export const NavBar = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -31,9 +30,7 @@ export const NavBar = () => {
           </HStack>
 
           <HStack gap={1}>
-            <IconButton onClick={toggleColorMode} variant="ghost" size="xs">
-              {colorMode === "light" ? <Moon size={16} /> : <Sun size={16} />}
-            </IconButton>
+            <ColorModeButton size="xs" />
 
             {user ? (
               <HStack gap={2}>

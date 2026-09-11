@@ -1,7 +1,7 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "@/lib/navigation";
 import { Text, Link as ChakraLink, Alert, Flex, HStack } from "@chakra-ui/react";
 import type { LoginRequest } from "@/interface/auth/LoginRequest";
-import { GenericForm } from "@/components/ui/Custom/GenericForm";
+import { DynamicForm } from "@/components/ui/Custom/DynamicForm";
 import { useLogin } from "@/hooks/auth/useLogin";
 
 export const LoginForm = () => {
@@ -17,7 +17,7 @@ export const LoginForm = () => {
         </Alert.Root>
       )}
 
-      <GenericForm<LoginRequest>
+      <DynamicForm<LoginRequest>
         fields={[
           {
             name: "identifier",

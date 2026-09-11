@@ -3,7 +3,7 @@ import {
   Globe, Building2, Users, Map, Ticket, Bus, UtensilsCrossed, BellRing, Bell,
   MessageSquare, ReceiptText, Wallet
 } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "@/lib/navigation";
 import { useAuth } from "@/utilities/AuthContext";
 import { useNotificationContext } from "@/utilities/NotificationContext";
 import { SmartLink } from "../SmartLink";

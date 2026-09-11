@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { VStack, HStack, Text, Box, Separator, Icon } from "@chakra-ui/react";
 import { UploadCloud, Info } from "lucide-react";
-import { GenericDialog } from "./GenericDialog";
+import { AppDialog } from "./AppDialog";
 import MultiAttachmentUpload from "../MultiAttachmentUpload";
-import { GenericExportDialog } from "./GenericExportDialog";
+import { ExportDialog } from "./ExportDialog";
 import type { DialogMultiAttachmentProps } from "@/interface/props/ui/DialogMultiAttachmentProps";
 
 export function DialogMultiAttachment({
@@ -27,7 +27,7 @@ export function DialogMultiAttachment({
 
   return (
     <>
-      <GenericDialog
+      <AppDialog
         open={open}
         onClose={onClose}
         title={title}
@@ -72,9 +72,9 @@ export function DialogMultiAttachment({
             />
           </Box>
         </VStack>
-      </GenericDialog>
+      </AppDialog>
 
-      <GenericExportDialog
+      <ExportDialog
         open={isTemplateOpen}
         onClose={() => setIsTemplateOpen(false)}
         data={templateData}

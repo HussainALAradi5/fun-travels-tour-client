@@ -1,11 +1,11 @@
-import { GenericFormDialog } from "../ui/Custom/Dialogs/GenericFormDialog";
+import { DynamicFormDialog } from "../ui/Custom/Dialogs/DynamicFormDialog";
 import { Plus } from "lucide-react";
 import type { UserRequest } from "@/interface/support/UserRequest";
 import type { UserRequestCreateDialogProps } from "@/interface/props/user/UserRequestCreateDialogProps";
 
 export const UserRequestCreateDialog = ({ open, onClose, onSubmit, loading, currentUserId }: UserRequestCreateDialogProps) => {
   return (
-    <GenericFormDialog<UserRequest>
+    <DynamicFormDialog<UserRequest>
       open={open}
       onClose={onClose}
       onSubmit={onSubmit}

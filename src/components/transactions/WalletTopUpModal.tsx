@@ -7,7 +7,7 @@ import { CreditCard, Wallet, Landmark, ShieldCheck, AlertCircle } from "lucide-r
 import { loadStripe, type Stripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
-import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
+import { AppDialog } from "@/components/ui/Custom/Dialogs/AppDialog";
 import { PaymentMethodColors } from "@/constants/roles/Colors";
 import { walletService } from "@/Api/Wallet";
 import { StripeCheckoutForm } from "./Wallet/StripeCheckoutForm";
@@ -40,7 +40,7 @@ export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalP
   };
 
   return (
-    <GenericDialog
+    <AppDialog
       open={open}
       onClose={handleClose}
       title="Top Up Digital Wallet"
@@ -135,7 +135,7 @@ export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalP
         </HStack>
 
       </VStack>
-    </GenericDialog>
+    </AppDialog>
   );
 };
 

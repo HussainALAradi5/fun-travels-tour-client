@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Box, Heading, VStack, Link as ChakraLink, Text, Button, HStack, Icon } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "@/lib/navigation";
 import { LuShieldCheck, LuCheck } from "react-icons/lu";
 import { userService } from "@/Api/User";
-import { GenericForm } from "@/components/ui/Custom/GenericForm";
+import { DynamicForm } from "@/components/ui/Custom/DynamicForm";
 const EmailRequestForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const handleEmailRequest = async (values: { email: string }) => {
     const res = await userService.requestPasswordReset(values.email, "");
@@ -14,7 +14,7 @@ const EmailRequestForm = ({ onSuccess }: { onSuccess: () => void }) => {
   };
 
   return (
-    <GenericForm<{ email: string }>
+    <DynamicForm<{ email: string }>
       fields={[
         {
           name: "email",

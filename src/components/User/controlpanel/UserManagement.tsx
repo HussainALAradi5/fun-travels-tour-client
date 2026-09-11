@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { Box, Badge, Text, HStack, VStack, Image, Circle } from "@chakra-ui/react";
-import { GenericTable } from "@/components/ui/Custom/GenericTable";
+import { DataTable } from "@/components/ui/Custom/DataTable";
 import { Users, ShieldCheck } from "lucide-react";
 import type { User } from "@/interface/user/User";
 import { userService } from "@/Api/User";
@@ -136,7 +136,7 @@ export default function UserManagement() {
         </Box>
 
         <Box bg="bg.panel" borderRadius="xl" shadow="sm" borderWidth="1px" overflow="hidden">
-          <GenericTable
+          <DataTable
             data={filteredUsers}
             columns={columns}
             loading={loading}

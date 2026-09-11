@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { Box, Heading, Text, VStack, Button, Center, Spinner } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import { GenericForm } from "@/components/ui/Custom/GenericForm";
+import { useNavigate } from "@/lib/navigation";
+import { DynamicForm } from "@/components/ui/Custom/DynamicForm";
 
 import { DEFAULT_TOUR } from "@/interface/tour/Tour";
 import type { Tour } from "@/interface/tour/Tour";
@@ -122,7 +122,7 @@ export const TourCreate = () => {
         <Text color="fg.muted">Define logistics, meals, and regional coverage for this expedition.</Text>
       </Box>
       <Box w="full" bg="bg.panel" p={8} borderRadius="3xl" border="1px solid" borderColor="border.subtle" shadow="sm" opacity={isMutating || isStartCitiesLoading || isEndCitiesLoading ? 0.6 : 1} pointerEvents={isMutating ? "none" : "auto"}>
-        <GenericForm<TourCreateFormValues>
+        <DynamicForm<TourCreateFormValues>
           disableToast={true}
           fields={fields}
           initialValues={DEFAULT_TOUR as unknown as TourCreateFormValues}

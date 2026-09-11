@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Text, HStack, Badge, Box, VStack } from "@chakra-ui/react";
 import { Globe, User as UserIcon, MapPinned, Phone } from "lucide-react";
-import { GenericTable } from "@/components/ui/Custom/GenericTable";
+import { DataTable } from "@/components/ui/Custom/DataTable";
 import type { AgencyBranch } from "@/interface/agency/AgencyBranch";
 import type { BranchTableProps } from "@/interface/props/agency/BranchTableProps";
 
@@ -89,8 +89,7 @@ export function BranchTable({
 
   return (
     <Box mt={2}>
-      <GenericTable data={branches ?? []} columns={columns} loading={loading} />
+      <DataTable data={branches ?? []} columns={columns} loading={loading} />
     </Box>
   );
 }
-

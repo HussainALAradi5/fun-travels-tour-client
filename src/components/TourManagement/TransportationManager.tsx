@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import { Stack, useDisclosure } from "@chakra-ui/react";
 import { TransportationHeader } from "./Transportation/TransportationHeader";
 import { TransportationTable } from "./Transportation/TransportationTable";

@@ -1,6 +1,6 @@
 import { Box, Button, Center, Grid, HStack, Icon, Text, VStack } from "@chakra-ui/react";
 import { Armchair, Star, Accessibility, Baby } from "lucide-react";
-import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
+import { AppDialog } from "@/components/ui/Custom/Dialogs/AppDialog";
 import type { Seat } from "@/interface/tour/Seat";
 import type { JSX } from "react";
 import { ChairTypeColors, SeatStatusColors } from "@/constants/roles/Colors";
@@ -89,7 +89,7 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
   };
 
   return (
-    <GenericDialog
+    <AppDialog
       open={open}
       onClose={onClose}
       title="Select Your Seat"
@@ -127,7 +127,7 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
           {selectedId ? "Confirm Selection" : "Please select a seat"}
         </Button>
       </VStack>
-    </GenericDialog>
+    </AppDialog>
   );
 };
 import type { LegendItemProps } from "@/interface/props/tour/SeatPickerDialogProps";

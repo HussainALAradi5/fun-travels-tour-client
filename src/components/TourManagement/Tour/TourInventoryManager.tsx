@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import { Box, Stack } from "@chakra-ui/react";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import { floatIn } from "@/utilities/Animations";

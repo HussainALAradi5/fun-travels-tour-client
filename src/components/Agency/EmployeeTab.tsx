@@ -12,10 +12,10 @@ import { authUtils } from "@/utilities/AuthUtils";
 import { toaster } from "../ui/toaster";
 import { AddEmployeesAction } from "./AddEmployeesAction";
 import { UnifiedFilterBar } from "../ui/Custom/UnifiedFilterBar";
-import { GenericTable } from "../ui/Custom/GenericTable";
+import { DataTable } from "../ui/Custom/DataTable";
 import type { Column } from "@/interface/common/Column";
 import { AddEmployeeDialog } from "../User/controlpanel/AddEmployeeDialog";
-import { GenericExportDialog } from "../ui/Custom/Dialogs/GenericExportDialog";
+import { ExportDialog } from "../ui/Custom/Dialogs/ExportDialog";
 import { RoleColors } from "@/constants/roles/Colors";
 import type { EmployeeTabProps } from "@/interface/props/agency/EmployeeTabProps";
 
@@ -158,7 +158,7 @@ export function EmployeeTab({
         }]}
       />
 
-      <GenericTable
+      <DataTable
         data={displayData}
         columns={COLUMNS}
         loading={false}
@@ -174,7 +174,7 @@ export function EmployeeTab({
         agencyName={agencyName}
       />
 
-      <GenericExportDialog
+      <ExportDialog
         open={isExportOpen}
         onClose={() => setIsExportOpen(false)}
         data={displayData.map(u => ({

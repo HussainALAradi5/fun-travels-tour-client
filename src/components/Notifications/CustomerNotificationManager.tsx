@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import { Box, VStack, Separator, HStack, Text, Input, Center, Spinner } from "@chakra-ui/react";
 
 import { useUser } from "@/hooks/User/useUser";

@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { mealPlanService } from "@/Api/tourmanagement/MealPlan";
 import { Heading, Stack, Badge, Box, Text, Group, Button, useDisclosure } from "@chakra-ui/react";
-import { GenericCard } from "../ui/Custom/GenericCard";
-import { GenericTable } from "../ui/Custom/GenericTable";
+import { ContentCard } from "../ui/Custom/ContentCard";
+import { DataTable } from "../ui/Custom/DataTable";
 import { Utensils, Plus } from "lucide-react";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
-import { GenericFormDialog } from "../ui/Custom/Dialogs/GenericFormDialog";
+import { DynamicFormDialog } from "../ui/Custom/Dialogs/DynamicFormDialog";
 import type { MealPlan } from "@/interface/tour/MealPlan";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
 
@@ -47,7 +47,7 @@ export const MealPlanManager = () => {
   return (
     <Stack gap={8}>
 
-      <GenericCard
+      <ContentCard
         header={
           <Group justify="space-between" width="full">
             <Box>
@@ -60,7 +60,7 @@ export const MealPlanManager = () => {
           </Group>
         }
       >
-        <GenericTable<MealPlan>
+        <DataTable<MealPlan>
           data={Array.isArray(data) ? (data as unknown as MealPlan[]).flat() : []}
           loading={loading}
           columns={[
@@ -85,9 +85,9 @@ export const MealPlanManager = () => {
           exportFileName="Meals"
           enableExport
         />
-      </GenericCard>
+      </ContentCard>
 
-      <GenericFormDialog<MealPlanFormValues>
+      <DynamicFormDialog<MealPlanFormValues>
         open={open}
         onClose={onClose}
         title="New Meal Plan"

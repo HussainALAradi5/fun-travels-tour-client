@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Box, HStack, Text, Badge, IconButton, VStack } from "@chakra-ui/react";
 import { Plus, MapPin, Globe, Building2 } from "lucide-react";
-import { GenericTable } from "@/components/ui/Custom/GenericTable";
+import { DataTable } from "@/components/ui/Custom/DataTable";
 import type { Agency } from "@/interface/agency/Agency";
 import type { AgencyTableProps } from "@/interface/props/agency/AgencyTableProps";
 
@@ -96,7 +96,7 @@ export function AgencyTable({
       borderColor="border.subtle"
       shadow="sm"
     >
-      <GenericTable
+      <DataTable
         data={data}
         columns={columns}
         loading={loading}

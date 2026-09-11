@@ -1,7 +1,7 @@
 import { Box, Tabs, VStack, Text } from "@chakra-ui/react";
 import { Settings2, Armchair, Star, Accessibility, Baby } from "lucide-react";
-import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
-import { GenericForm } from "@/components/ui/Custom/GenericForm";
+import { AppDialog } from "@/components/ui/Custom/Dialogs/AppDialog";
+import { DynamicForm } from "@/components/ui/Custom/DynamicForm";
 import { SeatManager } from "../Seat/SeatManagement/SeatManager";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
@@ -87,7 +87,7 @@ export const TransportationEditDialog = ({
   ];
 
   return (
-    <GenericDialog
+    <AppDialog
       open={open}
       onClose={onClose}
       title={`Edit Unit: ${transport.code}`}
@@ -111,7 +111,7 @@ export const TransportationEditDialog = ({
                 UPDATE REGISTRY & CAPACITY INFO
               </Text>
 
-              <GenericForm<TransportationFormValues>
+              <DynamicForm<TransportationFormValues>
                 disableToast={true}
                 fields={editFields}
                 initialValues={transport as TransportationFormValues}
@@ -131,6 +131,6 @@ export const TransportationEditDialog = ({
           </Tabs.Content>
         </Box>
       </Tabs.Root>
-    </GenericDialog>
+    </AppDialog>
   );
 };
