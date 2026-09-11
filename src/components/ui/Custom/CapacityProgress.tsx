@@ -2,6 +2,8 @@ import { barGlow } from "@/utilities/Animations";
 import { Box, Text, VStack, HStack } from "@chakra-ui/react";
 import { useMemo } from "react";
 import type { CapacityProgressProps } from "@/interface/props/ui/CapacityProgressProps";
+import { ProgressVariant } from "@/enums/ProgressVariant";
+import { ProgressType } from "@/enums/ProgressType";
 export const CapacityProgress = ({
   value,
   total,
@@ -11,6 +13,8 @@ export const CapacityProgress = ({
   colorOverride,
   align = "start",
   gap = "1",
+  variant = ProgressVariant.SUBTLE,
+  type = ProgressType.AUTO,
   ...props
 }: CapacityProgressProps) => {
   const percentage = useMemo(() => {
@@ -18,18 +22,31 @@ export const CapacityProgress = ({
     return Math.min((value / total) * 100, 100);
   }, [value, total]);
 
+  const resolvedType = useMemo(() => {
+    if (type !== ProgressType.AUTO) return type;
+    if (percentage <= 20) return ProgressType.DANGER;
+    if (percentage <= 50) return ProgressType.WARNING;
+    return ProgressType.SUCCESS;
+  }, [percentage, type]);
+
   const statusColor = useMemo(() => {
     if (colorOverride) return colorOverride;
-    if (percentage <= 20) return "red.500";
-    if (percentage <= 50) return "orange.400";
-    return "blue.500";
-  }, [percentage, colorOverride]);
+    if (resolvedType === ProgressType.DANGER) return "red.500";
+    if (resolvedType === ProgressType.WARNING) return "orange.400";
+    if (resolvedType === ProgressType.SUCCESS) return "green.500";
+    if (resolvedType === ProgressType.INFO) return "blue.500";
+    return "gray.500";
+  }, [colorOverride, resolvedType]);
 
   const statusLabel = useMemo(() => {
-    if (percentage <= 20) return "CRITICAL";
-    if (percentage <= 50) return "LOW";
-    return "HEALTHY";
-  }, [percentage]);
+    if (resolvedType === ProgressType.DANGER) return "DANGER";
+    if (resolvedType === ProgressType.WARNING) return "WARNING";
+    if (resolvedType === ProgressType.SUCCESS) return "SUCCESS";
+    if (resolvedType === ProgressType.INFO) return "INFO";
+    return "NEUTRAL";
+  }, [resolvedType]);
+
+  const statusCssColor = `var(--chakra-colors-${statusColor.replace('.', '-')})`;
 
   return (
     <VStack align={align} gap={gap} minW="140px" {...props}>
@@ -53,7 +70,7 @@ export const CapacityProgress = ({
       </HStack>
 <Box
         w="full"
-        h="1.5"
+        h={variant === ProgressVariant.MINIMAL ? "1" : variant === ProgressVariant.SOLID ? "3" : "2"}
         bg="gray.100"
         borderRadius="full"
         position="relative"
@@ -62,12 +79,12 @@ export const CapacityProgress = ({
         <Box
           h="full"
           w={`${percentage}%`}
-          bg={statusColor}
+          bg={variant === ProgressVariant.GRADIENT ? `linear-gradient(90deg, var(--chakra-colors-blue-400), ${statusCssColor})` : variant === ProgressVariant.STRIPED ? `repeating-linear-gradient(135deg, ${statusCssColor}, ${statusCssColor} 8px, transparent 8px, transparent 14px)` : statusColor}
           color={statusColor}
           borderRadius="full"
           transition="width 1s cubic-bezier(0.4, 0, 0.2, 1)"
           position="relative"
-          animation={`${barGlow} 3s infinite ease-in-out`}
+          animation={variant === ProgressVariant.MINIMAL ? undefined : `${barGlow} 3s infinite ease-in-out`}
           _hover={{
             filter: "brightness(1.2)",
             boxShadow: `0 0 15px var(--chakra-colors-${statusColor.replace('.', '-')})`,

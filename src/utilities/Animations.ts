@@ -40,3 +40,25 @@ export const ticketDropIn = {
   "0%": { opacity: "0", transform: "scale(0.8) translateY(-20px)" } as Record<string, string>,
   "100%": { opacity: "1", transform: "scale(1) translateY(0)" } as Record<string, string>,
 };
+
+export const calendarPopIn = {
+  "0%": { opacity: "0", transform: "translateY(-8px) scale(0.97)" } as Record<string, string>,
+  "100%": { opacity: "1", transform: "translateY(0) scale(1)" } as Record<string, string>,
+};
+
+export const dateSelectPulse = {
+  "0%": { transform: "scale(0.75)", opacity: "0.4" } as Record<string, string>,
+  "65%": { transform: "scale(1.12)", opacity: "1" } as Record<string, string>,
+  "100%": { transform: "scale(1)", opacity: "1" } as Record<string, string>,
+};
+
+export const rangeHighlightIn = {
+  "0%": { opacity: "0", transform: "scaleX(0.7)" } as Record<string, string>,
+  "100%": { opacity: "1", transform: "scaleX(1)" } as Record<string, string>,
+};
+
+export const workflowStepComplete = {
+  "0%": { transform: "scale(0.85)", opacity: "0.6" } as Record<string, string>,
+  "60%": { transform: "scale(1.1)", opacity: "1" } as Record<string, string>,
+  "100%": { transform: "scale(1)", opacity: "1" } as Record<string, string>,
+};

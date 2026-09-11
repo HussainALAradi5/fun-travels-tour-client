@@ -1,4 +1,6 @@
 import type { StackProps } from '@chakra-ui/react';
+import type { ProgressVariant } from '@/enums/ProgressVariant';
+import type { ProgressType } from '@/enums/ProgressType';
 
 export interface CapacityProgressProps extends StackProps {
   value: number;
@@ -9,4 +11,6 @@ export interface CapacityProgressProps extends StackProps {
   colorOverride?: string;
   align?: string;
   gap?: string;
+  variant?: ProgressVariant;
+  type?: ProgressType;
 }

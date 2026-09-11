@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import type { DatePickerProps } from "@/interface/props/ui/DatePickerProps";
 import type { ViewMode } from "@/types/ui/ViewMode";
+import { calendarPopIn, dateSelectPulse, rangeHighlightIn } from "@/utilities/Animations";
 
 export const DatePicker = ({
   label,
@@ -19,14 +20,20 @@ export const DatePicker = ({
   onChange,
   valueEnd,
   onChangeEnd,
+  range,
+  onRangeChange,
   minDate = new Date()
 }: DatePickerProps) => {
   const [open, setOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("days");
   const [viewDate, setViewDate] = useState(new Date());
+  const [hoveredDay, setHoveredDay] = useState<Date>();
 
-  const from = useMemo(() => value ? parseISO(value) : undefined, [value]);
-  const to = useMemo(() => valueEnd ? parseISO(valueEnd) : undefined, [valueEnd]);
+  const fromValue = range?.from ?? value;
+  const toValue = range?.to ?? valueEnd;
+  const isRangePicker = Boolean(onRangeChange || onChangeEnd);
+  const from = useMemo(() => fromValue ? parseISO(fromValue) : undefined, [fromValue]);
+  const to = useMemo(() => toValue ? parseISO(toValue) : undefined, [toValue]);
   const isDateDisabled = (day: Date) => {
     return isBefore(startOfDay(day), startOfDay(minDate));
   };
@@ -48,18 +55,24 @@ export const DatePicker = ({
     if (isDateDisabled(day)) return;
 
     const dateStr = format(day, "yyyy-MM-dd");
-    if (onChangeEnd) {
+    if (isRangePicker) {
       if (!from || (from && to)) {
-        onChange(dateStr);
-        onChangeEnd("");
+        onChange?.(dateStr);
+        onChangeEnd?.("");
+        onRangeChange?.({ from: dateStr, to: "" });
       } else if (isBefore(day, from)) {
-        onChange(dateStr);
+        const previousFrom = format(from, "yyyy-MM-dd");
+        onChange?.(dateStr);
+        onChangeEnd?.(previousFrom);
+        onRangeChange?.({ from: dateStr, to: previousFrom });
+        setOpen(false);
       } else {
-        onChangeEnd(dateStr);
+        onChangeEnd?.(dateStr);
+        onRangeChange?.({ from: format(from, "yyyy-MM-dd"), to: dateStr });
         setOpen(false);
       }
     } else {
-      onChange(dateStr);
+      onChange?.(dateStr);
       setOpen(false);
     }
   };
@@ -74,12 +87,22 @@ export const DatePicker = ({
     }
   };
 
+  const handleDayKeyDown = (event: React.KeyboardEvent, day: Date) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleDayClick(day);
+    }
+  };
+
   return (
     <PopoverRoot
       open={open}
       onOpenChange={(e) => {
         setOpen(e.open);
-        if (!e.open) setViewMode("days");
+        if (!e.open) {
+          setViewMode("days");
+          setHoveredDay(undefined);
+        }
       }}
       portalled={true}
       positioning={{ strategy: "fixed", placement: "bottom-start", gutter: 12 }}
@@ -96,15 +119,16 @@ export const DatePicker = ({
                 {from ? (to ? `${format(from, "MMM d")} - ${format(to, "MMM d")}` : format(from, "PPP")) : `Select Date`}
               </Text>
             </VStack>
-            {value && (
+            {fromValue && (
               <IconButton
                 aria-label="Clear"
                 size="xl"
                 variant="ghost"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onChange("");
-                  if(onChangeEnd) onChangeEnd("");
+                  onChange?.("");
+                  onChangeEnd?.("");
+                  onRangeChange?.({ from: "", to: "" });
                 }}
               >
                 <ClearIcon size={14} />
@@ -116,7 +140,7 @@ export const DatePicker = ({
 
       <Portal>
         <PopoverPositioner zIndex="3000">
-          <PopoverContent bg="white" _dark={{ bg: "gray.900" }} boxShadow="2xl" width="340px" borderRadius="2xl" border="1px solid" borderColor="border.muted">
+          <PopoverContent animation={`${calendarPopIn} 180ms ease-out`} transformOrigin="top left" bg="white" _dark={{ bg: "gray.900" }} boxShadow="2xl" width="340px" borderRadius="2xl" border="1px solid" borderColor="border.muted">
             <PopoverBody p={6}>
               <VStack gap={4}>
 <HStack width="full" justifyContent="space-between">
@@ -179,30 +203,50 @@ export const DatePicker = ({
                   )}
 {viewMode === "days" && (
                     <VStack gap={4}>
+                      {isRangePicker && (
+                        <Text width="full" fontSize="xs" color="fg.muted" textAlign="center">
+                          {!from || to ? "Choose a start date" : "Hover to preview, then choose an end date"}
+                        </Text>
+                      )}
                       <SimpleGrid columns={7} width="full" textAlign="center">
                         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
                           <Text key={d} fontSize="xs" fontWeight="bold" color="blue.500" opacity={0.8}>{d}</Text>
                         ))}
                       </SimpleGrid>
-                      <SimpleGrid columns={7} width="full" gap={1}>
+                      <SimpleGrid columns={7} width="full" gap={1} onMouseLeave={() => setHoveredDay(undefined)}>
                         {days.map((day, i) => {
                           const disabled = isDateDisabled(day);
                           const isSel = (from && isSameDay(day, from)) || (to && isSameDay(day, to));
                           const isRange = from && to && isAfter(day, from) && isBefore(day, to);
+                          const previewStart = from && hoveredDay && isBefore(hoveredDay, from) ? hoveredDay : from;
+                          const previewEnd = from && hoveredDay && isBefore(hoveredDay, from) ? from : hoveredDay;
+                          const isPreviewRange = Boolean(isRangePicker && from && !to && previewStart && previewEnd && isAfter(day, previewStart) && isBefore(day, previewEnd));
+                          const isPreviewEnd = Boolean(isRangePicker && from && !to && hoveredDay && isSameDay(day, hoveredDay));
+                          const isHighlighted = Boolean(isRange || isPreviewRange);
                           const isCurMonth = isSameMonth(day, viewDate);
 
                           return (
                             <Center
                               key={i}
                               onClick={() => handleDayClick(day)}
+                              onMouseEnter={() => !disabled && setHoveredDay(day)}
+                              onKeyDown={(event) => handleDayKeyDown(event, day)}
+                              role="button"
+                              aria-label={format(day, "PPP")}
+                              aria-selected={Boolean(isSel)}
+                              tabIndex={disabled ? -1 : 0}
                               cursor={disabled ? "not-allowed" : "pointer"}
                               height="38px" fontSize="sm"
                               opacity={disabled ? 0.3 : 1}
-                              fontWeight={isSel ? "bold" : "medium"}
+                              fontWeight={isSel || isPreviewEnd ? "bold" : "medium"}
                               borderRadius="lg"
-                              bg={isSel ? "blue.600" : isRange ? "blue.50" : "transparent"}
-                              _dark={{ bg: isSel ? "blue.500" : isRange ? "blue.900/30" : "transparent" }}
+                              bg={isSel ? "blue.600" : isPreviewEnd ? "blue.100" : isHighlighted ? "blue.50" : "transparent"}
+                              _dark={{ bg: isSel ? "blue.500" : isPreviewEnd ? "blue.800" : isHighlighted ? "blue.900/30" : "transparent" }}
                               color={isSel ? "white" : isCurMonth ? "fg" : "fg.subtle"}
+                              outline={isPreviewEnd ? "2px solid" : undefined}
+                              outlineColor={isPreviewEnd ? "blue.400" : undefined}
+                              animation={isSel ? `${dateSelectPulse} 240ms ease-out` : isHighlighted ? `${rangeHighlightIn} 180ms ease-out` : undefined}
+                              transition="background-color 140ms ease, color 140ms ease, transform 140ms ease"
                               _hover={!disabled ? { bg: isSel ? "blue.700" : "gray.100", _dark: { bg: isSel ? "blue.400" : "white/5" } } : {}}
                             >
                               {format(day, "d")}
