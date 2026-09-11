@@ -1,25 +1,12 @@
-// src/components/ui/Custom/UnifiedFilterBar/FilterCombobox.tsx
 import { useState, useMemo } from "react";
 import { 
   HStack, Icon, Text, VStack, Box, 
   createListCollection, Combobox, Select 
 } from "@chakra-ui/react";
 import { Filter as FilterIcon } from "lucide-react";
+import type { FilterGroup } from "@/interface/common/FilterGroup";
 
-export interface FilterGroup {
-  label: React.ReactNode;
-  value: string;
-  searchText?: string;
-  variant?: "select" | "combobox"; // Toggle between UI types
-  options: { 
-    label: React.ReactNode; 
-    value: string; 
-    searchText?: string 
-  }[];
-  onChange: (val: string) => void;
-  placeholder?: string;
-  minWidth?: string;
-}
+export type { FilterGroup } from "@/interface/common/FilterGroup";
 
 export const FilterCombobox = ({ f }: { f: FilterGroup }) => {
   const [searchTerm, setSearchTerm] = useState("");

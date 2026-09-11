@@ -7,7 +7,7 @@ import { Printer, AlertCircle } from "lucide-react";
 
 import { ticketService } from "@/Api/tourmanagement/Ticket";
 import { BoardingPassCard } from "./CustomerTicketDetails/BoardingPassCard";
-import type { Ticket } from "@/interface";
+import type { Ticket } from "@/interface/tour/Ticket";
 import { TicketVerification } from "./CustomerTicketDetails/TicketVerification";
 import { TicketJourneyTracker } from "./CustomerTicketDetails/TicketJourneyTracker";
 
@@ -93,3 +93,4 @@ export const CustomerTicketDetailManager = () => {
     </Stack>
   );
 };
+

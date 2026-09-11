@@ -1,6 +1,8 @@
 import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interface/common/ApiResponse";
-import type { TourResponse, TourCreateRequest, Tour } from "@/interface";
+import type { TourResponse } from "@/interface/tour/TourResponse";
+import type { TourCreateRequest } from "@/interface/tour/TourCreateRequest";
+import type { Tour } from "@/interface/tour/Tour";
 import type { GenericStatus } from "@/enums/GenericStatus";
 
 export const tourService = {
@@ -10,24 +12,39 @@ export const tourService = {
   },
 
   getById: async (id: number): Promise<Tour> => {
-    const response = await apiClient.get<ApiResponse<TourResponse>>(`/tours/${id}`);
+    const response = await apiClient.get<ApiResponse<TourResponse>>(
+      `/tours/${id}`,
+    );
     return response.data.data as unknown as Tour;
   },
 
   create: async (tour: TourCreateRequest): Promise<Tour> => {
-    const response = await apiClient.post<ApiResponse<TourResponse>>("/tours", tour);
+    const response = await apiClient.post<ApiResponse<TourResponse>>(
+      "/tours",
+      tour,
+    );
     return response.data.data as unknown as Tour;
   },
 
-  update: async (id: number, tour: Partial<TourCreateRequest>): Promise<Tour> => {
-    const response = await apiClient.put<ApiResponse<TourResponse>>(`/tours/${id}`, tour);
+  update: async (
+    id: number,
+    tour: Partial<TourCreateRequest>,
+  ): Promise<Tour> => {
+    const response = await apiClient.put<ApiResponse<TourResponse>>(
+      `/tours/${id}`,
+      tour,
+    );
     return response.data.data as unknown as Tour;
   },
 
   updateStatus: async (id: number, status: GenericStatus): Promise<Tour> => {
-    const response = await apiClient.put<ApiResponse<TourResponse>>(`/tours/${id}/status`, null, {
-      params: { status },
-    });
+    const response = await apiClient.put<ApiResponse<TourResponse>>(
+      `/tours/${id}/status`,
+      null,
+      {
+        params: { status },
+      },
+    );
     return response.data.data as unknown as Tour;
   },
 
@@ -46,7 +63,10 @@ export const tourService = {
     sortBy?: string;
     sortDir?: "asc" | "desc";
   }): Promise<Tour[]> => {
-    const response = await apiClient.get<ApiResponse<TourResponse[]>>("/tours/filter", { params });
+    const response = await apiClient.get<ApiResponse<TourResponse[]>>(
+      "/tours/filter",
+      { params },
+    );
     return response.data.data as unknown as Tour[];
   },
 
@@ -56,8 +76,10 @@ export const tourService = {
     startDate?: string;
     endDate?: string;
   }): Promise<Tour[]> => {
-    const response = await apiClient.get<ApiResponse<TourResponse[]>>("/tours/catalog", { params });
+    const response = await apiClient.get<ApiResponse<TourResponse[]>>(
+      "/tours/catalog",
+      { params },
+    );
     return response.data.data as unknown as Tour[];
   },
 };
-

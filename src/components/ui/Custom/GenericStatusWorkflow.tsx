@@ -1,23 +1,11 @@
-// src/components/ui/Custom/GenericStatusWorkflow.tsx
 import { Box, Flex, Text, Badge, Icon, Float, VStack, Spinner } from "@chakra-ui/react";
-import { Check, type LucideIcon } from "lucide-react";
+import { Check } from "lucide-react";
 import { glowPulse, floatIn } from "@/utilities/Animations";
 import { useState } from "react";
+import type { StatusConfig } from "@/interface/common/StatusConfig";
+import type { GenericStatusWorkflowProps } from "@/interface/props/ui/GenericStatusWorkflowProps";
 
-export interface StatusConfig {
-  label: string;
-  colorPalette: string;
-  icon: LucideIcon;
-  description?: string;
-}
-
-interface Props<T extends string> {
-  currentStatus: T;
-  statusMap: Partial<Record<T, StatusConfig>>;
-  steps: T[];
-  onStatusChange?: (newStatus: T) => Promise<void>;
-  isReadOnly?: boolean;
-}
+export type { StatusConfig } from "@/interface/common/StatusConfig";
 
 export const GenericStatusWorkflow = <T extends string>({ 
   currentStatus, 
@@ -25,7 +13,7 @@ export const GenericStatusWorkflow = <T extends string>({
   steps,
   onStatusChange,
   isReadOnly = false
-}: Props<T>) => {
+}: GenericStatusWorkflowProps<T>) => {
   const [loadingStatus, setLoadingStatus] = useState<T | null>(null);
   const currentIndex = steps.indexOf(currentStatus);
 

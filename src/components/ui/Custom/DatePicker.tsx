@@ -10,17 +10,8 @@ import {
   Button, PopoverRoot, PopoverTrigger, PopoverContent, PopoverBody, PopoverPositioner,
   Portal, Text, HStack, Box, IconButton, SimpleGrid, VStack, Center
 } from "@chakra-ui/react";
-
-interface DatePickerProps {
-  label: string;
-  value?: string;
-  onChange: (date: string) => void;
-  valueEnd?: string;
-  onChangeEnd?: (date: string) => void;
-  minDate?: Date; // New prop for validation
-}
-
-type ViewMode = "days" | "months" | "years";
+import type { DatePickerProps } from "@/interface/props/ui/DatePickerProps";
+import type { ViewMode } from "@/types/ui/ViewMode";
 
 export const DatePicker = ({ 
   label, 

@@ -3,7 +3,7 @@ import {
   VStack, HStack, Text, Box, Button, Input, 
   SimpleGrid, Icon, Separator, Center, Spinner
 } from "@chakra-ui/react";
-import { CreditCard, Wallet, Landmark, ShieldCheck, AlertCircle } from "lucide-react";
+import { CreditCard, Wallet, Landmark, ShieldCheck, AlertCircle, type LucideIcon } from "lucide-react";
 import { loadStripe, type Stripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
@@ -11,13 +11,8 @@ import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
 import { PaymentMethodColors } from "@/constants/roles/Colors";
 import { walletService } from "@/Api/Wallet";
 import { StripeCheckoutForm } from "./Wallet/StripeCheckoutForm";
+import type { WalletTopUpModalProps } from "@/interface/props/booking/WalletTopUpModalProps";
 // Make sure this path matches where you saved the StripeCheckoutForm!
-
-interface WalletTopUpModalProps {
-  open: boolean;
-  onClose: () => void;
-  onSuccess: () => void;
-}
 
 export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalProps) => {
   const [amount, setAmount] = useState<string>("50");
@@ -31,12 +26,12 @@ export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalP
     if (open && !stripePromise) {
       console.log("🟦 Modal Opened: Initiating Stripe Setup...");
       walletService.getConfig()
-        .then((data) => {
+        .then((data: { publishableKey: string }) => {
           console.log("✅ Modal: Config fetched successfully. Injecting key into loadStripe().");
           // Instantiates Stripe using your backend's application.properties key
           setStripePromise(loadStripe(data.publishableKey));
         })
-        .catch((err) => {
+        .catch((err: unknown) => {
           console.error("❌ Modal: Failed to fetch Stripe configuration from backend.", err);
         });
     }
@@ -158,8 +153,10 @@ export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalP
   );
 };
 
+import type { PaymentOptionProps } from "@/interface/props/ui/PaymentOptionProps";
+
 // UI Helper Sub-Component
-const PaymentOption = ({ icon: IconComponent, label, active, onClick, colorScheme }: any) => (
+const PaymentOption = ({ icon: IconComponent, label, active, onClick, colorScheme }: PaymentOptionProps) => (
   <Button 
     flex={1} 
     h="auto" 

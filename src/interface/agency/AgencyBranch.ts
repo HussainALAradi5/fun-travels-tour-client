@@ -1,4 +1,7 @@
 import type { Agency } from './Agency';
+import type { Country } from '../geography/Country';
+import type { City } from '../geography/City';
+import type { User } from '../user/User';
 
 export interface AgencyBranch {
   id?: number;
@@ -6,10 +9,17 @@ export interface AgencyBranch {
   branchAddress: string;
   contactNumber: string;
   ownerMobileNumber?: string;
-  agency?: Agency;
-  country?: { id?: number; famousName?: string };
-  city?: { id?: number; name?: string };
-  branchManager?: { id?: number; name?: string };
+  agency?: Partial<Agency>;
+  country?: Partial<Country>;
+  city?: Partial<City>;
+  branchManager?: Partial<User>;
   active: boolean;
-  employees?: { id?: number; name?: string }[];
+  employees?: Partial<User>[];
 }
+
+export const DEFAULT_BRANCH: Partial<AgencyBranch> = {
+  branchName: "",
+  branchAddress: "",
+  contactNumber: "",
+  active: true,
+};

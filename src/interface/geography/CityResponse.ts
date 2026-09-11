@@ -1,5 +1,11 @@
+import type { Country } from './Country';
+
 export interface CityResponse {
   id: number;
   name: string;
-  country?: { id: number; famousName: string };
+  country?: Partial<Country>;
 }
+
+export const DEFAULT_CITY_RESPONSE: Partial<CityResponse> = {
+  name: "",
+};

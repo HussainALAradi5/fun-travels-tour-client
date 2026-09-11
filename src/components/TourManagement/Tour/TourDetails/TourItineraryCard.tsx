@@ -3,13 +3,7 @@ import { Navigation, ArrowRight, Bus, LayoutDashboard } from "lucide-react";
 import { GenericCard } from "@/components/ui/Custom/GenericCard";
 import { GenericTracking, type TrackingItem } from "@/components/ui/Custom/GenericTracking";
 import { glowPulse } from "@/utilities/Animations";
-import type { Tour } from "@/interface";
-
-interface TourItineraryCardProps {
-  tour: Tour;
-  itinerarySteps: TrackingItem[];
-  onSeatOpen: () => void;
-}
+import type { TourItineraryCardProps } from "@/interface/props/tour/TourItineraryCardProps";
 
 export const TourItineraryCard = ({ tour, itinerarySteps, onSeatOpen }: TourItineraryCardProps) => {
   const formatDate = (dateString?: string) => {
@@ -75,3 +69,4 @@ export const TourItineraryCard = ({ tour, itinerarySteps, onSeatOpen }: TourItin
     </GenericCard>
   );
 };
+

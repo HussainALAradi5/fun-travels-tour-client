@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { userService } from "@/Api/User";
 import { authUtils } from "@/utilities/AuthUtils";
-import type { User } from "@/interface";
+import type { User } from "@/interface/user/User";
 
 export function useUser() {
     const [user, setUser] = useState<User | null>(authUtils.getUser());
@@ -52,3 +52,4 @@ export function useUser() {
         refreshUser: fetchProfile,
     };
 }
+

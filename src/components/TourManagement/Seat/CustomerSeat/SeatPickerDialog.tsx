@@ -1,7 +1,7 @@
 import { Box, Button, Center, Grid, HStack, Icon, Text, VStack } from "@chakra-ui/react";
 import { Armchair, Star, Accessibility, Baby } from "lucide-react";
 import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
-import type { Seat } from "@/interface";
+import type { Seat } from "@/interface/tour/Seat";
 import type { JSX } from "react";
 import { ChairTypeColors, SeatStatusColors } from "@/constants/roles/Colors";
 
@@ -162,7 +162,17 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
 };
 
 // Clean Legend Item Component
-const LegendItem = ({ colorPalette, bg, color, label, icon: IconCmp, fill, opacity = 1 }: any) => {
+interface LegendItemProps {
+  colorPalette?: string;
+  bg?: string;
+  color?: string;
+  label: string;
+  icon?: typeof Armchair;
+  fill?: boolean;
+  opacity?: number;
+}
+
+const LegendItem = ({ colorPalette, bg, color, label, icon: IconCmp, fill, opacity = 1 }: LegendItemProps) => {
   const isOutline = !!colorPalette;
   const boxBg = bg || "transparent";
   const boxBorder = isOutline ? `1px solid` : "none";

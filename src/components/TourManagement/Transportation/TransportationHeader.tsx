@@ -5,18 +5,7 @@ import { UnifiedFilterBar } from "../../ui/Custom/UnifiedFilterBar";
 import { GenericCard } from "../../ui/Custom/GenericCard";
 import { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
-
-interface TransportationHeaderProps {
-  count: number;
-  searchValue: string;
-  onSearch: (val: string) => void;
-  typeFilterValue: string;
-  onTypeFilterChange: (val: string) => void;
-  statusFilterValue: string;
-  onStatusFilterChange: (val: string) => void;
-  onAdd: () => void;
-  onReset: () => void;
-}
+import type { TransportationHeaderProps } from "@/interface/props/tour/TransportationHeaderProps";
 
 export const TransportationHeader = ({
   count,

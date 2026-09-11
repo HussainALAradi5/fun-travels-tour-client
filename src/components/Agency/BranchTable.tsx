@@ -2,13 +2,8 @@ import { useMemo } from "react";
 import { Text, HStack, Badge, Box, VStack } from "@chakra-ui/react";
 import { Globe, User as UserIcon, MapPinned, Phone } from "lucide-react";
 import { GenericTable } from "@/components/ui/Custom/GenericTable";
-import type { AgencyBranch } from "@/interface";
-
-interface BranchTableProps {
-  branches: AgencyBranch[];
-  loading?: boolean;
-  agencyName?: string;
-}
+import type { AgencyBranch } from "@/interface/agency/AgencyBranch";
+import type { BranchTableProps } from "@/interface/props/agency/BranchTableProps";
 
 export function BranchTable({
   branches,

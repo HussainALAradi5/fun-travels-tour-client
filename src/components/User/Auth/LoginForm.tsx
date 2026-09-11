@@ -1,26 +1,11 @@
-import { useState } from "react";
-import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { Text, Link as ChakraLink, Alert, Flex, HStack } from "@chakra-ui/react";
-import { userService } from "@/Api/User";
-import type { LoginRequest } from "@/interface";
+import type { LoginRequest } from "@/interface/auth/LoginRequest";
 import { GenericForm } from "@/components/ui/Custom/GenericForm";
-import { useAuth } from "@/utilities/AuthContext";
+import { useLogin } from "@/hooks/auth/useLogin";
 
 export const LoginForm = () => {
-  const navigate = useNavigate();
-  const { refreshAuth } = useAuth();
-  const [error, setError] = useState<string | null>(null);
-
-  const handleLogin = async (values: LoginRequest) => {
-    setError(null);
-    const response = await userService.login(values);
-    if (response.success) {
-      refreshAuth();
-      navigate("/profile");
-    } else {
-      setError(response.message || "Login failed");
-    }
-  };
+  const { login, error, loading } = useLogin();
 
   return (
     <>
@@ -48,8 +33,8 @@ export const LoginForm = () => {
           },
         ]}
         initialValues={{ identifier: "", password: "" }}
-        onSubmit={handleLogin}
-        submitLabel="Sign In"
+        onSubmit={login}
+        submitLabel={loading ? "Signing In..." : "Sign In"}
         columns={1}
       />
      
@@ -68,3 +53,5 @@ export const LoginForm = () => {
     </>
   );
 };
+
+

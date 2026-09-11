@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Box } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { ticketService } from "@/Api/tourmanagement/Ticket";
-import type { Ticket } from "@/interface";
+import type { Ticket } from "@/interface/tour/Ticket";
 import { useUser } from "@/hooks/User/useUser";
 import { TicketTable } from "./TicketTable"; // Your GenericTable implementation
 import { notify } from "@/components/ui/Custom/GenericNotification";
@@ -32,3 +32,4 @@ export const CustomerTicketsManager = () => {
     </Box>
   );
 };
+

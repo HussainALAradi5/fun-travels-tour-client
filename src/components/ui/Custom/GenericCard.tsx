@@ -1,10 +1,5 @@
-import { Box, VStack, HStack, type BoxProps } from "@chakra-ui/react";
-
-interface GenericCardProps extends BoxProps {
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
-  children: React.ReactNode;
-}
+import { Box, VStack, HStack } from "@chakra-ui/react";
+import type { GenericCardProps } from "@/interface/props/ui/GenericCardProps";
 
 export const GenericCard = ({
   header,

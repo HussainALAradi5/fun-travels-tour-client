@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { countryService } from "@/Api/Country";
 import { useAuth } from "@/utilities/AuthContext";
 import { toaster } from "@/components/ui/toaster";
-import type { Country } from "@/interface";
+import type { Country } from "@/interface/geography/Country";
 
 export function useCountries() {
   const { isAdmin } = useAuth();
@@ -19,8 +19,7 @@ export function useCountries() {
     try {
       const response = await countryService.getAllCountries();
       setCountries(response || []);
-    } catch (error) {
-      console.error("Failed to fetch countries:", error);
+    } catch {
       setCountries([]);
       toaster.create({ title: "Failed to load countries", type: "error" });
     } finally {
@@ -28,31 +27,24 @@ export function useCountries() {
     }
   }, [isAdmin]);
 
-  // Initial load
   useEffect(() => {
     fetchCountries();
   }, [fetchCountries]);
 
-  // Handle Global/Bulk Sync
   const handleBulkSync = async () => {
     if (!isAdmin) return;
     setFetching(true);
     try {
       await countryService.syncAllFromExternal();
-      toaster.create({
-        title: "Global sync completed successfully",
-        type: "success",
-      });
-      await fetchCountries(); // Refresh the list
-    } catch (error) {
-      console.error("Bulk sync error:", error);
+      toaster.create({ title: "Global sync completed successfully", type: "success" });
+      await fetchCountries();
+    } catch {
       toaster.create({ title: "Bulk sync failed", type: "error" });
     } finally {
       setFetching(false);
     }
   };
 
-  // Handle Single Country Sync
   const handleSingleSync = async (name: string) => {
     if (!name.trim() || !isAdmin) return;
     setFetching(true);
@@ -60,38 +52,24 @@ export function useCountries() {
       await countryService.syncFromExternal(name);
       toaster.create({ title: `${name} synced successfully`, type: "success" });
       await fetchCountries();
-    } catch (error) {
-      console.error("Single sync error:", error);
+    } catch {
       toaster.create({ title: "Sync failed", type: "error" });
     } finally {
       setFetching(false);
     }
   };
 
-  // Logic for actual API deletion
   const confirmDelete = async () => {
     if (!countryToDelete?.id || !isAdmin) return;
 
     try {
-      // 1. Call the backend API
       await countryService.deleteCountry(countryToDelete.id);
-
-      // 2. Update local state only if API call succeeds
       setCountries((prev) => prev.filter((c) => c.id !== countryToDelete.id));
-
-      toaster.create({
-        title: `${countryToDelete.famousName} deleted permanently`,
-        type: "success",
-      });
-    } catch (error: any) {
-      console.error("Deletion error:", error);
-      toaster.create({
-        title: "Deletion failed",
-        description: error.response?.data?.message || "An error occurred",
-        type: "error",
-      });
+      toaster.create({ title: `${countryToDelete.famousName} deleted permanently`, type: "success" });
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : "An error occurred";
+      toaster.create({ title: "Deletion failed", description: msg, type: "error" });
     } finally {
-      // 3. Close the dialog
       setCountryToDelete(null);
     }
   };
@@ -103,9 +81,10 @@ export function useCountries() {
     isAdmin,
     countryToDelete,
     setCountryToDelete,
-    confirmDelete,
+    fetchCountries,
     handleBulkSync,
     handleSingleSync,
-    fetchCountries, // FIXED: Now exporting the function!
+    confirmDelete,
   };
 }
+

@@ -1,21 +1,7 @@
 import { barGlow } from "@/utilities/Animations";
-import { Box, Text, VStack, HStack, type StackProps } from "@chakra-ui/react";
+import { Box, Text, VStack, HStack } from "@chakra-ui/react";
 import { useMemo } from "react";
-
-interface CapacityProgressProps extends StackProps {
-  /** The current number of slots filled or available */
-  value: number;
-  /** The total capacity */
-  total: number;
-  /** Optional unit text (e.g., "Seats") */
-  unit?: string;
-  /** Toggle visibility of the percentage text */
-  showPercentage?: boolean;
-  /** Toggle visibility of the status text (e.g., HEALTHY) */
-  showStatusText?: boolean;
-  /** Manually override the color logic */
-  colorOverride?: string;
-}
+import type { CapacityProgressProps } from "@/interface/props/ui/CapacityProgressProps";
 
 /**
  * High-fidelity, generic capacity progress bar.

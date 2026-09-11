@@ -13,15 +13,10 @@ import {
   Portal
 } from "@chakra-ui/react";
 import { Mail, Smartphone, Search } from "lucide-react";
-import type { Country } from "@/interface";
+import type { Country } from "@/interface/geography/Country";
 import { countryService } from "@/Api/Country";
 
-interface CustomFieldProps {
-  value: string;
-  onChange: (val: string) => void;
-  placeholder?: string;
-  disabled?: boolean;
-}
+import type { CustomFieldProps } from "@/interface/props/ui/ContactFieldsProps";
 
 const modernInputStyles = {
   h: "10",
@@ -72,7 +67,7 @@ export const MobileField = ({ value, onChange, placeholder, disabled }: CustomFi
     const fetchDBCountries = async () => {
       try {
         const data = await countryService.getAllCountries();
-        const countryList: Country[] = Array.isArray(data) ? data : (data as any).data || [];
+        const countryList: Country[] = Array.isArray(data) ? data : ((data as { data: Country[] })?.data || []);
         const validCountries = countryList.filter(c => c.dialCode);
         setCountries(validCountries);
 
@@ -87,7 +82,7 @@ export const MobileField = ({ value, onChange, placeholder, disabled }: CustomFi
             setLocalNumber(value.replace(initialCountry.dialCode!, ""));
           }
         }
-      } catch (err) {
+      } catch (err: unknown) {
         console.error("Failed to load dial codes", err);
       } finally {
         setIsLoading(false);

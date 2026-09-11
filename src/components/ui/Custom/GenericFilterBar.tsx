@@ -1,14 +1,7 @@
 import { Button, HStack, Icon, Input, Text, VStack, Badge, Box } from "@chakra-ui/react";
 import { Search, RotateCcw } from "lucide-react";
 import { useState } from "react";
-
-interface GenericSearchFilterProps {
-  label: string;
-  placeholder?: string;
-  count?: number;
-  onSearch: (value: string) => void;
-  onReset: () => void;
-}
+import type { GenericSearchFilterProps } from "@/interface/props/ui/GenericFilterBarProps";
 
 export const GenericSearchFilter = ({
   label,

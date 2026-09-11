@@ -3,7 +3,7 @@ import { Wrench, CheckCircle2, AlertTriangle, Gauge, Info } from "lucide-react";
 import { GenericCard } from "@/components/ui/Custom/GenericCard";
 import { GenericStatusWorkflow, type StatusConfig } from "@/components/ui/Custom/GenericStatusWorkflow";
 import { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
-import type { Transportation } from "@/interface";
+import type { Transportation } from "@/interface/tour/Transportation";
 
 interface Props {
   transport: Transportation;
@@ -92,3 +92,4 @@ export const TransportationStatusSidebar = ({ transport, onStatusChange }: Props
     </VStack>
   );
 };
+

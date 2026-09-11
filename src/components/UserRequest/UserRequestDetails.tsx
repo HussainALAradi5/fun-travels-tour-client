@@ -14,8 +14,8 @@ import {
 import { genericTrackingService } from "@/Api/genericTracking";
 import { userRequestService } from "@/Api/UserRequest";
 import { useUser } from "@/hooks/User/useUser";
-import type { GenericComment, GenericEventLog } from "@/interface";
-import type { UserRequest } from "@/interface";
+import type { GenericComment } from "@/interface/support/GenericComment"; import type { GenericEventLog } from "@/interface/support/GenericEventLog";
+import type { UserRequest } from "@/interface/support/UserRequest";
 import { GenericAuditLog, type AuditEventItem } from "../ui/Custom/GenericAuditLog";
 import { GenericCommentSection, type CommentItem } from "../ui/Custom/GenericCommentSection";
 import { notify } from "../ui/Custom/GenericNotification";
@@ -223,3 +223,7 @@ export const UserRequestDetails = () => {
     </Box>
   );
 };
+
+
+
+

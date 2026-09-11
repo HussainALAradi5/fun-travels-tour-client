@@ -6,19 +6,7 @@ import { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
 import { GenericCard } from "@/components/ui/Custom/GenericCard";
 import { UnifiedFilterBar } from "@/components/ui/Custom/UnifiedFilterBar";
 import { ChairTypeColors } from "@/constants/roles/Colors";
-
-interface SeatManagerHeaderProps {
-  count: number;
-  searchValue: string;
-  onSearch: (val: string) => void;
-  typeFilterValue: string;
-  onTypeFilterChange: (val: string) => void;
-  statusFilterValue: string;
-  onStatusFilterChange: (val: string) => void;
-  onReset: () => void;
-  totals: Record<string, number>;
-  totalSeats: number;
-}
+import type { SeatManagerHeaderProps } from "@/interface/props/tour/SeatManagerHeaderProps";
 
 export const SeatManagerHeader = ({
   count,

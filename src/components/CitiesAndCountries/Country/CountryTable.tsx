@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Box, Image, Badge, HStack, Text, IconButton } from "@chakra-ui/react";
 import { MapPin, Trash2 } from "lucide-react";
 import { GenericTable } from "@/components/ui/Custom/GenericTable";
-import type { Country } from "@/interface";
+import type { Country } from "@/interface/geography/Country";
 import CityManagerRow from "../City/CityManagerRow";
 
 interface Props {
@@ -108,4 +108,5 @@ export function CountryTable({ data, loading, onDelete }: Props) {
     </Box>
   );
 }
+
 

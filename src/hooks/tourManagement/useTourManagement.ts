@@ -10,8 +10,13 @@ import { ticketService } from "@/Api/tourmanagement/Ticket";
 import { reservationService } from "@/Api/tourmanagement/TourReservation";
 
 // Interfaces
-import type { Tour, Seat, Transportation, MealPlan, Ticket, TourReservation } from "@/interface";
-import type { User } from "@/interface";
+import type { Tour } from "@/interface/tour/Tour";
+import type { Ticket } from "@/interface/tour/Ticket";
+import type { TourReservation } from "@/interface/tour/TourReservation";
+import type { Transportation } from "@/interface/tour/Transportation";
+import type { MealPlan } from "@/interface/tour/MealPlan";
+import type { Seat } from "@/interface/tour/Seat";
+import type { User } from "@/interface/user/User";
 import type { GenericStatus } from "@/enums/GenericStatus";
 import { useUser } from "../User/useUser";
 
@@ -246,3 +251,8 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
     handleConfirmTicket,
   };
 }
+
+
+
+
+

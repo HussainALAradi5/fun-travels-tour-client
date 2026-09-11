@@ -1,7 +1,7 @@
 // src/components/TourManagement/Ticket/CustomerTicketDetails/TicketVerification.tsx
 import { Box, Flex, Heading, Text, VStack, Badge, HStack } from "@chakra-ui/react";
 import { ScanLine } from "lucide-react";
-import type { Ticket } from "@/interface";
+import type { Ticket } from "@/interface/tour/Ticket";
 
 export const TicketVerification = ({ ticket }: { ticket: Ticket }) => {
   if (!ticket.qrCode && !ticket.barcode) return null;
@@ -90,3 +90,4 @@ export const TicketVerification = ({ ticket }: { ticket: Ticket }) => {
     </Box>
   );
 };
+

@@ -1,30 +1,18 @@
 import { useState } from "react";
 import { Box, HStack, VStack, Text, Badge, Icon, Center, Button } from "@chakra-ui/react";
 import { Activity, History, ChevronDown, ChevronUp } from "lucide-react";
-import { CollapsibleContainer } from "./CollapsibleContainer"; // Adjust path if needed
+import { CollapsibleContainer } from "./CollapsibleContainer";
+import type { AuditEventItem } from "@/interface/common/AuditEventItem";
+import type { GenericAuditLogProps } from "@/interface/props/ui/GenericAuditLogProps";
 
-// Standardized interface so ANY data model can be passed to this component
-export interface AuditEventItem {
-  id: string | number;
-  actorName: string;
-  action: string;
-  description?: string;
-  createdAt: string | Date;
-}
-
-interface Props {
-  events: AuditEventItem[];
-  title?: string;
-  emptyMessage?: string;
-  initiallyVisibleCount?: number;
-}
+export type { AuditEventItem } from "@/interface/common/AuditEventItem";
 
 export const GenericAuditLog = ({ 
   events, 
   title = "System Audit Log", 
   emptyMessage = "No system events recorded yet.",
   initiallyVisibleCount = 3 
-}: Props) => {
+}: GenericAuditLogProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const visibleEvents = events.slice(0, initiallyVisibleCount);

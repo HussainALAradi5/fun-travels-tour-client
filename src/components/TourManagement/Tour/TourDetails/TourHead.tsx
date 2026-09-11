@@ -1,11 +1,7 @@
 // src/components/TourManagement/Tour/TourDetails/TourHead.tsx
 import { Box, Heading, Text, HStack, Icon, Badge, Stack } from "@chakra-ui/react";
 import { MapPin, Calendar, Users } from "lucide-react";
-import type { Tour } from "@/interface";
-
-interface TourHeaderProps {
-  tour: Tour | null;
-}
+import type { TourHeaderProps } from "@/interface/props/tour/TourHeadProps";
 
 export const TourHeader = ({ tour }: TourHeaderProps) => {
   return (
@@ -45,3 +41,4 @@ export const TourHeader = ({ tour }: TourHeaderProps) => {
     </Box>
   );
 };
+

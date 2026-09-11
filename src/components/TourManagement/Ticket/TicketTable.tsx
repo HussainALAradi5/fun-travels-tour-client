@@ -3,14 +3,9 @@ import { useMemo } from "react";
 import { Badge, IconButton, Icon, HStack, Text, VStack } from "@chakra-ui/react";
 import { Eye, MapPin, Calendar } from "lucide-react";
 import { GenericTable, type Column } from "@/components/ui/Custom/GenericTable";
-import type { Ticket } from "@/interface";
+import type { Ticket } from "@/interface/tour/Ticket";
 import { StatusColors } from "@/constants/roles/Colors";
-
-interface TicketTableProps {
-  tickets: Ticket[];
-  isLoading: boolean;
-  onView: (id: number) => void;
-}
+import type { TicketTableProps } from "@/interface/props/tour/TicketTableProps";
 
 export const TicketTable = ({ tickets, isLoading, onView }: TicketTableProps) => {
   const columns = useMemo<Column<Ticket>[]>(() => [

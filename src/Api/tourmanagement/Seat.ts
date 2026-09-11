@@ -1,6 +1,7 @@
 import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interface/common/ApiResponse";
-import type { SeatResponse, Seat } from "@/interface";
+import type { SeatResponse } from "@/interface/tour/SeatResponse";
+import type { Seat } from "@/interface/tour/Seat";
 
 export const seatService = {
   getAll: async (): Promise<Seat[]> => {
@@ -9,7 +10,9 @@ export const seatService = {
   },
 
   getById: async (id: number): Promise<Seat> => {
-    const response = await apiClient.get<ApiResponse<SeatResponse>>(`/seats/${id}`);
+    const response = await apiClient.get<ApiResponse<SeatResponse>>(
+      `/seats/${id}`,
+    );
     return response.data.data as unknown as Seat;
   },
 
@@ -19,20 +22,29 @@ export const seatService = {
     chairType?: string;
     keyword?: string;
   }): Promise<Seat[]> => {
-    const response = await apiClient.get<ApiResponse<SeatResponse[]>>("/seats/filter", { params });
+    const response = await apiClient.get<ApiResponse<SeatResponse[]>>(
+      "/seats/filter",
+      { params },
+    );
     return response.data.data as unknown as Seat[];
   },
 
   update: async (id: number, data: Partial<SeatResponse>): Promise<Seat> => {
-    const response = await apiClient.patch<ApiResponse<SeatResponse>>(`/seats/${id}`, data);
+    const response = await apiClient.patch<ApiResponse<SeatResponse>>(
+      `/seats/${id}`,
+      data,
+    );
     return response.data.data as unknown as Seat;
   },
 
   updateStatus: async (id: number, status: string): Promise<Seat> => {
-    const response = await apiClient.patch<ApiResponse<SeatResponse>>(`/seats/${id}/status`, null, {
-      params: { status }
-    });
+    const response = await apiClient.patch<ApiResponse<SeatResponse>>(
+      `/seats/${id}/status`,
+      null,
+      {
+        params: { status },
+      },
+    );
     return response.data.data as unknown as Seat;
   },
 };
-

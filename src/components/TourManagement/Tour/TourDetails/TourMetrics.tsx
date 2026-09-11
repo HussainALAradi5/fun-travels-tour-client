@@ -1,12 +1,7 @@
 import { SimpleGrid, Heading } from "@chakra-ui/react";
 import { DollarSign, Users, Calendar, Ticket as TicketIcon } from "lucide-react";
 import { MetricBox } from "@/components/ui/Custom/GlowComponents";
-import type { Tour } from "@/interface";
-
-interface TourMetricsProps {
-  tour: Tour;
-  bookedCount: number;
-}
+import type { TourMetricsProps } from "@/interface/props/tour/TourMetricsProps";
 
 export const TourMetrics = ({ tour, bookedCount }: TourMetricsProps) => {
   const expectedRevenue = (tour.basePrice || 0) * bookedCount;
@@ -28,3 +23,4 @@ export const TourMetrics = ({ tour, bookedCount }: TourMetricsProps) => {
     </SimpleGrid>
   );
 };
+

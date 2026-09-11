@@ -4,19 +4,7 @@ import { UploadCloud, Info } from "lucide-react"; // FileSpreadsheet now used be
 import { GenericDialog } from "./GenericDialog";
 import MultiAttachmentUpload from "../MultiAttachmentUpload";
 import { GenericExportDialog } from "./GenericExportDialog";
-
-interface DialogMultiAttachmentProps {
-  open: boolean;
-  onClose: () => void;
-  onUpload: (file: File) => Promise<any>;
-  onSuccess?: () => void;
-  title: string;
-  description: string;
-  templateData: any[];
-  templateFileName: string;
-  instructions: string;
-  colorPalette?: string;
-}
+import type { DialogMultiAttachmentProps } from "@/interface/props/ui/DialogMultiAttachmentProps";
 
 export function DialogMultiAttachment({
   open,

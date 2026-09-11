@@ -1,13 +1,7 @@
 import { Box, Heading, HStack, Stack, Text, Badge, Icon, Checkbox as ChakraCheckbox } from "@chakra-ui/react";
 import { Utensils, Info } from "lucide-react";
 import { CollapsibleContainer } from "@/components/ui/Custom/CollapsibleContainer";
-import type { MealPlan } from "@/interface";
-
-interface MealSelectionListProps {
-  availableMeals: MealPlan[];
-  selectedMeals: MealPlan[];
-  onToggleMeal: (meal: MealPlan) => void;
-}
+import type { MealSelectionListProps } from "@/interface/props/tour/MealSelectionListProps";
 
 export const MealSelectionList = ({ availableMeals, selectedMeals, onToggleMeal }: MealSelectionListProps) => {
   if (availableMeals.length === 0) return null;
@@ -88,3 +82,4 @@ export const MealSelectionList = ({ availableMeals, selectedMeals, onToggleMeal 
     </Box>
   );
 };
+

@@ -1,17 +1,11 @@
 import { UserPlus } from "lucide-react";
-import type { User } from "@/interface";
-import { DEFAULT_USER } from "@/interface";
+import type { User } from "@/interface/user/User";
+import { DEFAULT_USER } from "@/interface/user/User";
 import { UserType } from "@/enums/UserType";
-import type { FieldConfig } from "@/utilities/FormTypes";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
 import { GenericFormDialog } from "@/components/ui/Custom/Dialogs/GenericFormDialog";
 
-interface AddEmployeeDialogProps {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: (data: User) => Promise<void>;
-  loading: boolean;
-  agencyName?: string;
-}
+import type { AddEmployeeDialogProps } from "@/interface/props/agency/AddEmployeeDialogProps";
 
 export function AddEmployeeDialog({
   open,
@@ -53,3 +47,5 @@ export function AddEmployeeDialog({
     />
   );
 }
+
+

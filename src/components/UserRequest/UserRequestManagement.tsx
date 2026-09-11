@@ -5,7 +5,7 @@ import { UnifiedFilterBar, type FilterGroup } from "@/components/ui/Custom/Unifi
 import { UserRequestList } from "./UserRequestList";
 import { UserRequestCreateDialog } from "./UserRequestCreateDialog";
 import { ShieldCheck, Plus } from "lucide-react";
-import type { UserRequest } from "@/interface";
+import type { UserRequest } from "@/interface/support/UserRequest";
 import { userRequestService } from "@/Api/UserRequest";
 import { UserRequestType } from "@/enums/UserRequest/UserRequestType";
 import { UserRequestStatus } from "@/enums/UserRequest/UserRequestStatus";
@@ -128,3 +128,5 @@ export const UserRequestManager = () => {
     </VStack>
   );
 };
+
+

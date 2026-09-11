@@ -1,11 +1,13 @@
 import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interface/common/ApiResponse";
-import type { ReservationResponse, TourReservation } from "@/interface";
+import type { ReservationResponse } from "@/interface/tour/ReservationResponse";
+import type { TourReservation } from "@/interface/tour/TourReservation";
 import type { GenericStatus } from "@/enums/GenericStatus";
 
 export const reservationService = {
   getAll: async (): Promise<TourReservation[]> => {
-    const response = await apiClient.get<ApiResponse<ReservationResponse[]>>("/reservations");
+    const response =
+      await apiClient.get<ApiResponse<ReservationResponse[]>>("/reservations");
     return response.data.data as unknown as TourReservation[];
   },
 
@@ -16,7 +18,9 @@ export const reservationService = {
     return response.data.data as unknown as TourReservation;
   },
 
-  create: async (reservation: Partial<ReservationResponse>): Promise<TourReservation> => {
+  create: async (
+    reservation: Partial<ReservationResponse>,
+  ): Promise<TourReservation> => {
     const response = await apiClient.post<ApiResponse<ReservationResponse>>(
       "/reservations",
       reservation,
@@ -24,7 +28,10 @@ export const reservationService = {
     return response.data.data as unknown as TourReservation;
   },
 
-  updateStatus: async (id: number, status: GenericStatus): Promise<TourReservation> => {
+  updateStatus: async (
+    id: number,
+    status: GenericStatus,
+  ): Promise<TourReservation> => {
     const response = await apiClient.patch<ApiResponse<ReservationResponse>>(
       `/reservations/${id}/status`,
       null,
@@ -52,4 +59,3 @@ export const reservationService = {
     return response.data.data as unknown as TourReservation[];
   },
 };
-

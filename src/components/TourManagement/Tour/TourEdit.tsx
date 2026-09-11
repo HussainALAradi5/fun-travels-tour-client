@@ -12,30 +12,24 @@ import { countryService } from "@/Api/Country";
 import { cityService } from "@/Api/City";
 import { transportationService } from "@/Api/tourmanagement/Transportation";
 
-import { type Tour } from "@/interface";
+import type { Tour } from "@/interface/tour/Tour";
 import { GenericStatus } from "@/enums/GenericStatus";
-import type { FieldConfig } from "@/utilities/FormTypes";
-import type { Country } from "@/interface";
-import type { City } from "@/interface";
-import type { Transportation } from "@/interface";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
+import type { Country } from "@/interface/geography/Country";
+import type { City } from "@/interface/geography/City";
+import type { Transportation } from "@/interface/tour/Transportation";
 
-type TourFormValues = Omit<Tour, 'startCountry' | 'endCountry' | 'startCity' | 'endCity' | 'destinationCountries' | 'transportation'> & {
-  startCountry: string;
-  endCountry: string;
-  startCity: string;
-  endCity: string;
-  destinationCountries: string[];
-  transportation: string;
-};
+import type { TourFormValues } from "@/types/tour/TourFormValues";
+import type { SelectOption } from "@/interface/common/SelectOption";
 
 export const EditTour = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const [countries, setCountries] = useState<{ label: string; value: string }[]>([]);
-  const [transports, setTransports] = useState<{ label: string; value: string }[]>([]);
-  const [startCities, setStartCities] = useState<{ label: string; value: string }[]>([]);
-  const [endCities, setEndCities] = useState<{ label: string; value: string }[]>([]);
+  const [countries, setCountries] = useState<SelectOption[]>([]);
+  const [transports, setTransports] = useState<SelectOption[]>([]);
+  const [startCities, setStartCities] = useState<SelectOption[]>([]);
+  const [endCities, setEndCities] = useState<SelectOption[]>([]);
   
   const [initialValues, setInitialValues] = useState<TourFormValues | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,10 +38,10 @@ export const EditTour = () => {
   const returnToDetail = useCallback(() => navigate(`/admin/tours/${id}`), [id, navigate]);
 
   // --- BULLETPROOF MAPPING UTILITY ---
-  const mapToOptions = useCallback((payload: any, labelKey: string = 'name') => {
-    const items = Array.isArray(payload) ? payload : (payload?.data || []);
-    return items.map((item: any) => ({ 
-      label: item[labelKey] || item.officialName || item.commonName || `Unknown (ID: ${item.id})`, 
+  const mapToOptions = useCallback((payload: Country[] | City[] | { data: Country[] | City[] } | unknown, labelKey: keyof Country | keyof City = 'name') => {
+    const items = Array.isArray(payload) ? payload : ((payload as { data: Country[] | City[] })?.data || []);
+    return items.map((item: Country | City) => ({ 
+      label: String((item as Record<string, unknown>)[labelKey] || (item as Country).officialName || (item as Country).commonName || `Unknown (ID: ${item.id})`), 
       value: String(item.id) 
     }));
   }, []);
@@ -70,7 +64,7 @@ export const EditTour = () => {
         setCountries(mapToOptions(countriesResponse));
 
         // FIXED: Used a custom mapper for transports to avoid the 'never' type issue
-        const rawTransports = Array.isArray(transportsResponse) ? transportsResponse : (transportsResponse as any)?.data || [];
+        const rawTransports = Array.isArray(transportsResponse) ? transportsResponse : ((transportsResponse as { data: Transportation[] })?.data || []);
         setTransports(rawTransports.map((t: Transportation) => ({ 
           label: `${t.providerName} (${t.type})`, 
           value: String(t.id) 
@@ -100,7 +94,7 @@ export const EditTour = () => {
           destinationCountries: tour.destinationCountries?.map(c => String(c.id)) ?? [],
         } as TourFormValues);
 
-      } catch (err) {
+      } catch (err: unknown) {
         setError("Synchronization Error: Failed to load logistics data.");
       } finally {
         setIsLoading(false);
@@ -198,5 +192,7 @@ export const EditTour = () => {
     </VStack>
   );
 };
+
+
 
 

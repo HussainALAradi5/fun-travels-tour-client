@@ -13,12 +13,7 @@ import MultiAttachmentUpload from "../ui/Custom/MultiAttachmentUpload";
 import { userService } from "@/Api/User";
 import { CollapsibleContainer } from "../ui/Custom/CollapsibleContainer";
 import { GenericExportDialog } from "../ui/Custom/Dialogs/GenericExportDialog";
-
-interface AddEmployeesActionProps {
-  agencyId: number;
-  onRefresh?: () => void;
-  
-}
+import type { AddEmployeesActionProps } from "@/interface/props/agency/AddEmployeesActionProps";
 
 export const AddEmployeesAction = ({
   agencyId,
@@ -124,4 +119,3 @@ export const AddEmployeesAction = ({
     </Box>
   );
 };
-

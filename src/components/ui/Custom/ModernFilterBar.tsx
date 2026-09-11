@@ -9,20 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { Filter as FilterIcon, Search } from "lucide-react";
 import { useState, useEffect } from "react";
-
-interface FilterOption {
-  label: string;
-  value: string;
-}
-
-interface ModernFilterBarProps {
-  filterLabel: string;
-  filterPlaceholder?: string;
-  filterValue: string;
-  onFilterChange: (val: string) => void;
-  options: FilterOption[];
-  useSearchButton?: boolean; // New Optional Logic
-}
+import type { ModernFilterBarProps } from "@/interface/props/ui/ModernFilterBarProps";
 
 export const ModernFilterBar = ({ 
   filterLabel,

@@ -1,7 +1,6 @@
-import { DEFAULT_USER_REQUEST, type UserRequest } from "@/interface";
-import { Plus } from "lucide-react";
 import { GenericFormDialog } from "../ui/Custom/Dialogs/GenericFormDialog";
-import { UserRequestType } from "@/enums/UserRequest/UserRequestType";
+import { Plus } from "lucide-react";
+import type { UserRequest } from "@/interface/support/UserRequest";
 
 interface Props {
   open: boolean;
@@ -21,12 +20,12 @@ export const UserRequestCreateDialog = ({ open, onClose, onSubmit, loading, curr
       title="Create User Request"
       description="Submit a support ticket or a new suggestion for the platform."
       icon={Plus}
-      // Fixed: Explicitly cast to UserRequest and provided fallback for strings
       initialValues={{ 
-        ...DEFAULT_USER_REQUEST, 
         title: "",
         description: "",
-        user: { id: currentUserId } as any 
+        type: "SUPPORT" as UserRequest["type"],
+        status: "PENDING" as UserRequest["status"],
+        user: { id: currentUserId } 
       } as UserRequest}
       fields={[
         { name: "title", label: "Subject / Title", type: "text", isRequired: true },
@@ -35,8 +34,8 @@ export const UserRequestCreateDialog = ({ open, onClose, onSubmit, loading, curr
           label: "Request Category", 
           type: "select", 
           options: [
-            { label: "Technical Support", value: UserRequestType.SUPPORT },
-            { label: "New Suggestion", value: UserRequestType.SUGGESTION }
+            { label: "Technical Support", value: "SUPPORT" },
+            { label: "New Suggestion", value: "SUGGESTION" }
           ], 
           isRequired: true 
         },

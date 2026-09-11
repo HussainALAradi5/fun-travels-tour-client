@@ -1,15 +1,8 @@
 import { GenericFormDialog } from "@/components/ui/Custom/Dialogs/GenericFormDialog";
-import type { User } from "@/interface";
-import type { FieldConfig } from "@/utilities/FormTypes";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
 import { UserCircle, Lock, Phone, Image as ImageIcon, Link, Trash2 } from "lucide-react";
 
-interface EditProfileProps {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: (data: any) => Promise<void>;
-  loading: boolean;
-  initialValues: User;
-}
+import type { EditProfileProps } from "@/interface/props/ui/EditProfileProps";
 
 export const EditProfile = ({ open, onClose, onSubmit, loading, initialValues }: EditProfileProps) => {
   const fields: FieldConfig<any>[] = [
@@ -46,3 +39,4 @@ export const EditProfile = ({ open, onClose, onSubmit, loading, initialValues }:
     />
   );
 };
+

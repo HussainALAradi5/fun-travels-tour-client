@@ -4,14 +4,7 @@ import { XCircle, Edit3, ShieldCheck, Play, CheckCircle, FileText, RefreshCw, Al
 import { GenericCard } from "@/components/ui/Custom/GenericCard";
 import { GenericStatusWorkflow, type StatusConfig } from "@/components/ui/Custom/GenericStatusWorkflow";
 import { GenericStatus } from "@/enums/GenericStatus";
-import type { Tour } from "@/interface";
-
-interface TourWorkflowSidebarProps {
-  tour: Tour;
-  onStatusChange: (status: GenericStatus) => Promise<void>; 
-  onEdit: () => void;
-  onCancel: () => Promise<void> | void;
-}
+import type { TourWorkflowSidebarProps } from "@/interface/props/tour/TourWorkflowSidebarProps";
 
 const TOUR_STATUS_MAP: Partial<Record<GenericStatus, StatusConfig>> = {
   [GenericStatus.PENDING]: { label: "Pending", colorPalette: "gray", icon: FileText },
@@ -156,3 +149,4 @@ export const TourWorkflowSidebar = ({ tour, onStatusChange, onEdit, onCancel }: 
     </VStack>
   );
 };
+

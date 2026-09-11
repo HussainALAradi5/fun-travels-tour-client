@@ -10,16 +10,17 @@ import {
 import { FormCombobox } from "./FormCombobox";
 import { FormSelect } from "./FormSelect";
 import { FormFile } from "./FormFile";
-import { EmailField, MobileField } from "./ContactFields"; // Import the new components
+import { EmailField, MobileField } from "./ContactFields";
+import type { FormFieldWrapperProps } from "@/interface/props/ui/FormFieldProps";
 
-export function FormFieldWrapper({ field, formData, onChange }: any) {
+export function FormFieldWrapper({ field, formData, onChange }: FormFieldWrapperProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
-  const rawValue = formData[field.name];
+  const rawValue = formData[field.name as string];
 
   const hasValue =
     rawValue !== null && typeof rawValue === "object"
-      ? Object.keys(rawValue).length > 0
+      ? Object.keys(rawValue as object).length > 0
       : rawValue !== undefined && rawValue !== "" && rawValue !== false;
 
   const isInvalid = field.isRequired && !hasValue && isTouched;
@@ -35,9 +36,9 @@ export function FormFieldWrapper({ field, formData, onChange }: any) {
 
   const renderInput = () => {
     const commonProps = {
-      field,
+      field: field as FieldConfig<Record<string, unknown>>,
       value: rawValue,
-      onChange: (name: string, val: any) => {
+      onChange: (name: string, val: string | number | string[] | boolean | null) => {
         setIsTouched(true);
         onChange(name, val);
       },
@@ -47,26 +48,26 @@ export function FormFieldWrapper({ field, formData, onChange }: any) {
 
     switch (field.type) {
       case "file": 
-        return <FormFile {...commonProps} />;
+        return <FormFile field={field} value={rawValue as string | number | boolean | null | undefined} onChange={commonProps.onChange} onBlur={commonProps.onBlur} onFocus={commonProps.onFocus} />;
       case "select": 
-        return <FormSelect {...commonProps} />;
+        return <FormSelect field={field} value={rawValue as string | number | boolean | null | undefined} onChange={commonProps.onChange} onBlur={commonProps.onBlur} onFocus={commonProps.onFocus} />;
       case "search-select":
       case "multi-select":
-        return <FormCombobox {...commonProps} multiple={field.type === "multi-select"} />;
+        return <FormCombobox field={field} value={rawValue as string | string[] | null} onChange={commonProps.onChange} multiple={field.type === "multi-select"} />;
       case "boolean":
       case "checkbox": 
-        return <BooleanInput {...commonProps} />;
+        return <BooleanInput field={field} value={rawValue as string | number | boolean | null | undefined} onChange={commonProps.onChange} onBlur={commonProps.onBlur} onFocus={commonProps.onFocus} />;
       case "date": 
-        return <DateInput {...commonProps} />;
+        return <DateInput field={field} value={rawValue as string | number | boolean | null | undefined} onChange={commonProps.onChange} onBlur={commonProps.onBlur} onFocus={commonProps.onFocus} />;
       case "textarea": 
-        return <TextAreaInput {...commonProps} />;
+        return <TextAreaInput field={field} value={rawValue as string | number | boolean | null | undefined} onChange={commonProps.onChange} onBlur={commonProps.onBlur} onFocus={commonProps.onFocus} />;
       
       // ADDED: Integration for Email and Mobile components
       case "email":
         return (
           <EmailField 
-            value={commonProps.value} 
-            onChange={(val: any) => commonProps.onChange(field.name, val)}
+            value={commonProps.value as string} 
+            onChange={(val: string) => commonProps.onChange(field.name as string, val)}
             placeholder={field.placeholder}
             disabled={field.disabled}
           />
@@ -74,15 +75,15 @@ export function FormFieldWrapper({ field, formData, onChange }: any) {
       case "mobile":
         return (
           <MobileField 
-            value={commonProps.value} 
-            onChange={(val: any) => commonProps.onChange(field.name, val)}
+            value={commonProps.value as string} 
+            onChange={(val: string) => commonProps.onChange(field.name as string, val)}
             placeholder={field.placeholder}
             disabled={field.disabled}
           />
         );
 
       default: 
-        return <TextInput {...commonProps} />;
+        return <TextInput field={field} value={rawValue as string | number | boolean | null | undefined} onChange={commonProps.onChange} onBlur={commonProps.onBlur} onFocus={commonProps.onFocus} />;
     }
   };
 

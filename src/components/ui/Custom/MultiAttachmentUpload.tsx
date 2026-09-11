@@ -15,14 +15,7 @@ import { useDropzone } from "react-dropzone";
 import { FiUploadCloud, FiFile, FiX, FiCheck, FiInfo } from "react-icons/fi";
 import { toaster } from "@/components/ui/toaster";
 import { floatIn, glowPulse } from "@/utilities/Animations";
-
-interface Props {
-  onUpload: (file: File) => Promise<any>;
-  onSuccess?: (data: any) => void;
-  allowedTypesLabel?: string;
-  instructions?: string;
-  accept?: Record<string, string[]>;
-}
+import type { MultiAttachmentUploadProps } from "@/interface/props/ui/MultiAttachmentUploadProps";
 
 const MultiAttachmentUpload = ({
   onUpload,
@@ -33,7 +26,7 @@ const MultiAttachmentUpload = ({
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
     "application/vnd.ms-excel": [".xls"],
   },
-}: Props) => {
+}: MultiAttachmentUploadProps) => {
   const [files, setFiles] = useState<File[]>([]);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -56,10 +49,10 @@ const MultiAttachmentUpload = ({
         type: "success",
       });
       setFiles([]);
-    } catch (error: any) {
+    } catch (error: unknown) {
       toaster.create({
         title: "Upload Failed",
-        description: error.message || "An error occurred",
+        description: error instanceof Error ? error.message : "An error occurred",
         type: "error",
       });
     } finally {

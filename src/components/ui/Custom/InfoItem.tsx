@@ -1,12 +1,5 @@
 import { Box, HStack, Text, VStack } from "@chakra-ui/react";
-import type { ElementType } from "react";
-
-interface InfoItemProps {
-  icon: ElementType;
-  label: string;
-  value: string | number | React.ReactNode;
-  iconColor?: string;
-}
+import type { InfoItemProps } from "@/interface/props/ui/InfoItemProps";
 
 export const InfoItem = ({
   icon: Icon,

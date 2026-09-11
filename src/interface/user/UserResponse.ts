@@ -1,4 +1,5 @@
 import type { UserType } from '../../enums/UserType';
+import type { User } from '../user/User';
 
 export interface UserResponse {
   id: number;
@@ -10,6 +11,13 @@ export interface UserResponse {
   userType: UserType;
   profileImageUrl?: string;
   active: boolean;
-  agency?: { id: number; agencyName: string };
-  agencyBranch?: { id: number; branchName: string };
+  agency?: Partial<User>;
+  agencyBranch?: Partial<User>;
 }
+
+export const DEFAULT_USER_RESPONSE: Partial<UserResponse> = {
+  userName: "",
+  name: "",
+  email: "",
+  active: true,
+};

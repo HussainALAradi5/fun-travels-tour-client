@@ -3,25 +3,10 @@ import { MessageSquare } from "lucide-react";
 import { CommentHeader } from "./Comment/CommentHeader";
 import { CommentItemDisplay } from "./Comment/CommentItemDisplay";
 import { CommentInputArea } from "./Comment/CommentInputArea";
+import type { CommentItem } from "@/interface/common/CommentItem";
+import type { GenericCommentSectionProps } from "@/interface/props/ui/GenericCommentSectionProps";
 
-export interface CommentItem {
-  id: string | number;
-  authorId: string | number;
-  authorName: string;
-  content: string;
-  createdAt: string | Date;
-  updatedAt?: string | Date;
-}
-
-interface Props {
-  comments: CommentItem[];
-  currentUserId: string | number;
-  onAddComment: (content: string) => Promise<void>;
-  onEditComment?: (commentId: string | number, newContent: string) => Promise<void>;
-  title?: string;
-  emptyMessage?: string;
-  isReadOnly?: boolean; 
-}
+export type { CommentItem } from "@/interface/common/CommentItem";
 
 export const GenericCommentSection = ({ 
   comments, 
@@ -31,7 +16,7 @@ export const GenericCommentSection = ({
   title = "Discussion",
   emptyMessage = "No comments yet. Start the discussion!",
   isReadOnly = false 
-}: Props) => {
+}: GenericCommentSectionProps) => {
   return (
     <Box bg="bg.panel" p={6} borderRadius="3xl" borderWidth="1px" shadow="md" display="flex" flexDirection="column" h="full" minH="600px">
       

@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
-// Added Text to the imports below
 import { Combobox, createListCollection, Box, Text } from "@chakra-ui/react";
 import { GenericFilter } from "@/utilities/GenericFilter";
 import { SelectedTags } from "../SelectedTags";
+import type { FormComboboxProps } from "@/interface/props/ui/FormComboboxProps";
 
-export function FormCombobox({ field, value, onChange, multiple }: any) {
+export function FormCombobox({ field, value, onChange, multiple }: FormComboboxProps) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const rawOptions = useMemo(() => field.options || [], [field.options]);
@@ -13,9 +13,9 @@ export function FormCombobox({ field, value, onChange, multiple }: any) {
    * Object Handling for "No DTO"
    * Extracts a unique string ID to track selection internally.
    */
-  const getInternalValue = (val: any) => {
+  const getInternalValue = (val: string | number | boolean | Record<string, unknown> | null | undefined) => {
     if (!val) return "";
-    return typeof val === "object" ? String(val.id || JSON.stringify(val)) : String(val);
+    return typeof val === "object" ? String((val as Record<string, unknown>).id || JSON.stringify(val)) : String(val);
   };
 
   const selectedValues = useMemo(() => {
@@ -34,9 +34,15 @@ export function FormCombobox({ field, value, onChange, multiple }: any) {
     return result.paginatedData;
   }, [rawOptions, searchTerm]);
 
+  interface CollectionItem {
+    label: string;
+    value: string;
+    original: string | number | boolean | Record<string, unknown>;
+  }
+
   const collection = useMemo(() => {
     return createListCollection({
-      items: filteredItems.map((item: any) => ({
+      items: filteredItems.map((item: { label: string; value: string | number | boolean }) => ({
         label: String(item.label),
         value: getInternalValue(item.value),
         original: item.value, // Store full object here
@@ -44,25 +50,25 @@ export function FormCombobox({ field, value, onChange, multiple }: any) {
     });
   }, [filteredItems]);
 
-  const handleValueChange = (details: any) => {
+  const handleValueChange = (details: { value: string[] }) => {
     const nextIds = details.value; 
     
     const selectedObjects = nextIds.map((id: string) => {
-      const found = collection.items.find((item: any) => item.value === id);
-      return found ? (found as any).original : id;
+      const found = collection.items.find((item: CollectionItem) => item.value === id);
+      return found ? found.original : id;
     });
 
     if (multiple) {
-      onChange(field.name, selectedObjects);
+      onChange(field.name as string, selectedObjects as string[]);
     } else {
-      onChange(field.name, selectedObjects[0]);
+      onChange(field.name as string, selectedObjects[0] as string);
     }
   };
 
   const handleRemoveTag = (valToRemove: string) => {
     if (Array.isArray(value)) {
-      const updatedValues = value.filter((v: any) => getInternalValue(v) !== valToRemove);
-      onChange(field.name, updatedValues);
+      const updatedValues = value.filter((v: string | number | boolean | Record<string, unknown>) => getInternalValue(v) !== valToRemove);
+      onChange(field.name as string, updatedValues as string[]);
     }
   };
 

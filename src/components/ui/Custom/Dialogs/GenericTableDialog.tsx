@@ -1,21 +1,10 @@
-// src/components/ui/Custom/Dialogs/GenericTableDialog.tsx
+import type { LucideIcon } from 'lucide-react';
 import { Box, VStack } from "@chakra-ui/react";
-import type { LucideIcon } from "lucide-react";
 import React from "react";
 import { GenericDialog } from "./GenericDialog";
-import { GenericTable, type GenericTableProps } from "../GenericTable";
-
-interface GenericTableDialogProps<T> {
-  open: boolean;
-  onClose: () => void;
-  title: string;
-  description?: string;
-  icon: LucideIcon;
-  tableProps: GenericTableProps<T>;
-  topContent?: React.ReactNode; 
-  size?: "md" | "lg" | "xl" | "full";
-  colorPalette?: string;
-}
+import { GenericTable } from "../GenericTable";
+import type { GenericTableProps } from "@/interface/props/ui/GenericTableProps";
+import type { GenericTableDialogProps } from "@/interface/props/ui/GenericTableDialogProps";
 
 export function GenericTableDialog<T extends { id?: number | string | null }>({
   open,
@@ -58,3 +47,6 @@ export function GenericTableDialog<T extends { id?: number | string | null }>({
     </GenericDialog>
   );
 }
+
+
+

@@ -4,7 +4,8 @@ import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
 import { GenericForm } from "@/components/ui/Custom/GenericForm";
 import { SeatManager } from "../Seat/SeatManagement/SeatManager";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
-import type { Transportation } from "@/interface";
+import type { Transportation } from "@/interface/tour/Transportation";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
 
 interface Props {
   open: boolean;
@@ -13,6 +14,8 @@ interface Props {
   onUpdate: (values: Transportation) => Promise<void>;
   loading: boolean;
 }
+
+import type { TransportationFormValues } from "@/types/tour/TransportationFormValues";
 
 export const TransportationEditDialog = ({
   open,
@@ -23,7 +26,7 @@ export const TransportationEditDialog = ({
 }: Props) => {
   if (!transport) return null;
 
-  const editFields = [
+  const editFields: FieldConfig<TransportationFormValues>[] = [
     {
       name: "code",
       label: "Serial Code",
@@ -70,21 +73,21 @@ export const TransportationEditDialog = ({
     },
     // Seating Configuration fields to sync with backend seat generation
     {
-      name: "seatConfig.PREMIUM_RECLINER",
+      name: "seatConfig.PREMIUM_RECLINER" as keyof TransportationFormValues,
       label: "Premium Seats",
       type: "number",
       icon: Star,
       gridSpan: 1,
     },
     {
-      name: "seatConfig.WHEELCHAIR_ACCESSIBLE",
+      name: "seatConfig.WHEELCHAIR_ACCESSIBLE" as keyof TransportationFormValues,
       label: "Accessible Spaces",
       type: "number",
       icon: Accessibility,
       gridSpan: 1,
     },
     {
-      name: "seatConfig.KIDS_CHAIR",
+      name: "seatConfig.KIDS_CHAIR" as keyof TransportationFormValues,
       label: "Child Safety Seats",
       type: "number",
       icon: Baby,
@@ -117,11 +120,11 @@ export const TransportationEditDialog = ({
                 UPDATE REGISTRY & CAPACITY INFO
               </Text>
 
-              <GenericForm<Transportation>
+              <GenericForm<TransportationFormValues>
                 disableToast={true}
-                fields={editFields as any}
-                initialValues={transport}
-                onSubmit={onUpdate}
+                fields={editFields}
+                initialValues={transport as TransportationFormValues}
+                onSubmit={async (values) => { await onUpdate(values as Transportation); }}
                 onCancel={onClose}
                 isLoading={loading}
                 submitLabel="Update Unit & Sync Seats"
@@ -140,4 +143,3 @@ export const TransportationEditDialog = ({
     </GenericDialog>
   );
 };
-

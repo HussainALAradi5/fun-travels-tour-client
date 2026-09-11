@@ -4,19 +4,10 @@ export interface ApiResponse<T> {
   data: T;
 }
 
-export interface PageResponse<T> {
+export interface ApiPageData<T> {
   content: T[];
-  page: number;
-  size: number;
-  totalElements: number;
   totalPages: number;
-}
-
-export interface FilterParams {
-  page?: number;
-  size?: number;
-  sortBy?: string;
-  sortDir?: 'asc' | 'desc';
-  search?: string;
-  [key: string]: string | number | boolean | undefined;
+  totalElements: number;
+  size: number;
+  number: number;
 }

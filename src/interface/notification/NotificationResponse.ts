@@ -12,3 +12,9 @@ export interface NotificationResponse {
   createdAt: string;
   readAt?: string;
 }
+
+export const DEFAULT_NOTIFICATION_RESPONSE: Partial<NotificationResponse> = {
+  title: "",
+  message: "",
+  isRead: false,
+};

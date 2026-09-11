@@ -2,16 +2,12 @@
 import React from "react";
 import { Box, HStack, Text, Badge, Button, Circle } from "@chakra-ui/react";
 import { Armchair, Settings2 } from "lucide-react";
-import type { Seat } from "@/interface";
+import type { Seat } from "@/interface/tour/Seat";
 import type { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
 import { SeatStatusColors, ChairTypeColors } from "@/constants/roles/Colors";
 import { GenericTable } from "@/components/ui/Custom/GenericTable";
 
-interface SeatColumn {
-  header: string;
-  key: keyof Seat | "actions";
-  render: (s: Seat) => React.ReactNode;
-}
+import type { SeatColumn } from "@/interface/tour/SeatColumn";
 
 interface Props {
   data: Seat[];
@@ -128,3 +124,4 @@ export const SeatManagerTable = ({ data, loading, onEdit }: Props) => {
     </Box>
   );
 };
+

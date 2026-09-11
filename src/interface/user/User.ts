@@ -1,6 +1,6 @@
 import type { UserType } from '../../enums/UserType';
 
-export interface User {
+export interface User extends Record<string, unknown> {
   id?: number;
   userName: string;
   name: string;

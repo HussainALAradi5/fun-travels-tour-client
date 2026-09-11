@@ -21,17 +21,10 @@ import {
 import { GenericTable } from "../../ui/Custom/GenericTable";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
 import { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
-import type { Transportation } from "@/interface";
+import type { Transportation } from "@/interface/tour/Transportation";
 import { TransportationColors } from "@/constants/roles/Colors";
 
-/**
- * Strictly typed column definition for GenericTable
- */
-interface TransportationColumn {
-  header: string;
-  key: keyof Transportation | "actions";
-  render: (t: Transportation) => React.ReactNode;
-}
+import type { TransportationColumn } from "@/interface/tour/TransportationColumn";
 
 interface Props {
   data: Transportation[];
@@ -215,3 +208,4 @@ export const TransportationTable = ({ data, loading, onEdit, onView }: Props) =>
     </Box>
   );
 };
+

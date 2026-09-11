@@ -8,7 +8,7 @@ import { Download, UserPlus, Mail, Phone, Briefcase } from "lucide-react";
 // Components & Services
 import { userService } from "@/Api/User";
 import { UserType } from "@/enums/UserType";
-import { type User } from "@/interface";
+import { type User } from "@/interface/user/User";
 import { authUtils } from "@/utilities/AuthUtils";
 import { toaster } from "../ui/toaster";
 import { AddEmployeesAction } from "./AddEmployeesAction";
@@ -17,6 +17,7 @@ import { GenericTable, type Column } from "../ui/Custom/GenericTable";
 import { AddEmployeeDialog } from "../User/controlpanel/AddEmployeeDialog";
 import { GenericExportDialog } from "../ui/Custom/Dialogs/GenericExportDialog";
 import { RoleColors } from "@/constants/roles/Colors";
+import type { EmployeeTabProps } from "@/interface/props/agency/EmployeeTabProps";
 
 // 1. DEFINE COLUMNS (This was missing)
 const COLUMNS: Column<User>[] = [
@@ -59,13 +60,6 @@ const COLUMNS: Column<User>[] = [
     ),
   },
 ];
-
-interface EmployeeTabProps {
-  agencyName: string;
-  agencyId: number;
-  employees: User[];
-  onRefresh: () => void;
-}
 
 export function EmployeeTab({ 
   agencyName, 
@@ -197,3 +191,4 @@ export function EmployeeTab({
     </Box>
   );
 }
+

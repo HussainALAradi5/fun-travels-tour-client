@@ -1,14 +1,6 @@
 // src/components/ui/Custom/Hero.tsx
 import { Box, Container, Heading, Text, Button, VStack, Image } from "@chakra-ui/react";
-
-interface HeroProps {
-  title: string;
-  subtitle: string;
-  imageUrl?: string;
-  onActionClick?: () => void;
-  showAction?: boolean; // New prop
-  buttonText?: string;  // New prop
-}
+import type { HeroProps } from "@/interface/props/ui/HeroProps";
 
 export const Hero = ({ 
   title, 

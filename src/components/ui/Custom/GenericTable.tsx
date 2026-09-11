@@ -8,29 +8,10 @@ import { TablePagination } from "./GenericTableComponents/TablePagination";
 import { TableRow as CustomTableRow } from "./GenericTableComponents/TableRow";
 import { Search } from "lucide-react";
 import { TableToolbar } from "./GenericTableComponents/TableHeader";
-import type { FieldType } from "@/utilities/FormTypes";
+import type { Column } from "@/interface/common/Column";
+import type { GenericTableProps } from "@/interface/props/ui/GenericTableProps";
 
-export interface Column<T> {
-  header: string;
-  key: keyof T | string;
-  render?: (item: T) => React.ReactNode;
-  type?: FieldType;
-}
-
-export interface GenericTableProps<T> {
-  data: T[];
-  columns: Column<T>[];
-  loading?: boolean;
-  searchPlaceholder?: string;
-  searchKey?: keyof T;
-  searchDisabled?: boolean; // Prop to disable search
-  showSelect?: boolean;
-  onSelectionChange?: (selectedIds: (string | number)[]) => void;
-  exportFileName?: string;
-  enableExport?: boolean;
-  renderExpansion?: (item: T) => React.ReactNode;
-  colorPalette?: string;
-}
+export type { Column } from "@/interface/common/Column";
 
 export function GenericTable<T extends { id?: number | string | null }>(props: GenericTableProps<T>) {
   const { 

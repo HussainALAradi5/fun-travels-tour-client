@@ -2,14 +2,9 @@ import { useState } from "react";
 import { Box, Heading, Text, HStack, Button } from "@chakra-ui/react";
 import { Download } from "lucide-react";
 import { BranchTable } from "./BranchTable";
-import type { AgencyBranch } from "@/interface";
+import type { AgencyBranch } from "@/interface/agency/AgencyBranch";
 import { GenericExportDialog } from "../ui/Custom/Dialogs/GenericExportDialog";
-
-interface BranchTabProps {
-  branches: AgencyBranch[];
-  agencyName: string;
-  loading: boolean;
-}
+import type { BranchTabProps } from "@/interface/props/agency/BranchTabProps";
 
 export function BranchTab({ branches, agencyName, loading }: BranchTabProps) {
   const [isExportOpen, setIsExportOpen] = useState(false);

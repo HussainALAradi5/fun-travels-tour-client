@@ -7,3 +7,11 @@ export interface CountryResponse {
   flagSvgUrl: string;
   dialCode?: string;
 }
+
+export const DEFAULT_COUNTRY_RESPONSE: Partial<CountryResponse> = {
+  famousName: "",
+  officialName: "",
+  countryCode: "",
+  flagPngUrl: "",
+  flagSvgUrl: "",
+};

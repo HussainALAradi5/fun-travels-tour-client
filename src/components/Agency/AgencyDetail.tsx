@@ -19,21 +19,19 @@ import {
   Phone,
   User as UserIcon,
   Users,
+  type LucideIcon,
 } from "lucide-react";
 
 import { agencyService } from "@/Api/Agency/Agency";
 import { branchService } from "@/Api/Agency/AgencyBranch";
-import type { Agency } from "@/interface";
-import type { User } from "@/interface";
-import type { AgencyBranch } from "@/interface";
+import type { Agency } from "@/interface/agency/Agency";
+import type { User } from "@/interface/user/User";
+import type { AgencyBranch } from "@/interface/agency/AgencyBranch";
 
 import { AddBranchDialog } from "@/components/Agency/AddBranchDialog";
 import { BranchTab } from "@/components/Agency/BranchTab";
 import { EmployeeTab } from "@/components/Agency/EmployeeTab";
-
-interface AgencyDetailProps {
-  forcedId?: number;
-}
+import type { AgencyDetailProps } from "@/interface/props/agency/AgencyDetailProps";
 
 export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
   const { id: routeId } = useParams<{ id: string }>();
@@ -55,7 +53,7 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
       ]);
       setAgency(agencyRes);
       setEmployees(employeeRes || []);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Failed to load data", error);
     } finally {
       setLoading(false);
@@ -73,7 +71,7 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
       await branchService.createBranch(Number(id), branchData);
       setIsBranchDialogOpen(false);
       await loadData();
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Error creating branch", error);
     } finally {
       setIsSubmitting(false);
@@ -196,7 +194,14 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
 }
 
 // Sub-components
-function InfoCard({ icon: Icon, label, value, subValue }: any) {
+interface InfoCardProps {
+  icon: LucideIcon;
+  label: string;
+  value: string;
+  subValue?: string;
+}
+
+function InfoCard({ icon: Icon, label, value, subValue }: InfoCardProps) {
   return (
     <HStack p={5} bg="bg.panel" borderRadius="xl" border="1px solid" borderColor="border.subtle" gap={4}>
       <Box p={2.5} bg="blue.50" _dark={{ bg: "blue.950" }} color="blue.600" borderRadius="xl">
@@ -222,4 +227,3 @@ function LoadingSkeleton() {
     </VStack>
   );
 }
-

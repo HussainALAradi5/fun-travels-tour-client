@@ -7,23 +7,15 @@ export function useWallet() {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleTopUp = async (amount: number, method: PaymentMethod, gatewayToken: string) => {
-    console.group("💳 Hook: useWallet -> handleTopUp");
-    console.log("Starting top up process...");
     setIsProcessing(true);
     
     try {
       const tx = await walletService.topUp(amount, method, gatewayToken);
-      console.log("✅ Hook: Transaction returned successfully.", tx);
       toaster.create({ title: "Top-up successful!", description: "Funds added to your wallet.", type: "success" });
-      
-      console.groupEnd();
       return tx;
-    } catch (error: any) {
-      const errorMsg = error.response?.data || "Payment failed. Please check your card.";
-      console.error("❌ Hook: Transaction failed. Error Msg:", errorMsg);
+    } catch (error: unknown) {
+      const errorMsg = error instanceof Error ? error.message : "Payment failed. Please check your card.";
       toaster.create({ title: "Payment Failed", description: errorMsg, type: "error" });
-      
-      console.groupEnd();
       throw error;
     } finally {
       setIsProcessing(false);

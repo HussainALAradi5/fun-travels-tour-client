@@ -1,15 +1,16 @@
 import type { UserRequestStatus } from '../../enums/UserRequest/UserRequestStatus';
 import type { UserRequestType } from '../../enums/UserRequest/UserRequestType';
+import type { User } from '../user/User';
 
-export interface UserRequest {
+export interface UserRequest extends Record<string, unknown> {
   id?: number | null;
   title: string;
   description: string;
   type: UserRequestType;
   status: UserRequestStatus;
-  user: { id?: number; name?: string };
-  assignedTo?: { id?: number; name?: string } | null;
-  solvedBy?: { id?: number; name?: string } | null;
+  user: Partial<User>;
+  assignedTo?: Partial<User> | null;
+  solvedBy?: Partial<User> | null;
   solvedAt?: string | Date | null;
   createdAt?: string | Date | null;
   updatedAt?: string | Date | null;

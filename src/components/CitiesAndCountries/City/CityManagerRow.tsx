@@ -13,7 +13,7 @@ import {
   Portal,
 } from "@chakra-ui/react";
 import { Plus, Trash2, AlertTriangle } from "lucide-react";
-import type { City } from "@/interface";
+import type { City } from "@/interface/geography/City";
 import { cityService } from "@/Api/City";
 import { toaster } from "@/components/ui/toaster";
 import { useAuth } from "@/utilities/AuthContext";
@@ -194,4 +194,5 @@ export default function CityManagerRow({
     </Box>
   );
 }
+
 

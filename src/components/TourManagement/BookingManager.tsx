@@ -7,7 +7,7 @@ import { seatService } from "@/Api/tourmanagement/Seat";
 import { mealPlanService } from "@/Api/tourmanagement/MealPlan";
 import { toaster } from "@/components/ui/toaster";
 import { useUser } from "@/hooks/User/useUser";
-
+import type { MealPlan } from "@/interface/tour/MealPlan";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
 import { floatIn } from "@/utilities/Animations";
 
@@ -18,10 +18,10 @@ import { BookingTourOverview } from "./Booking/BookingTourOverview";
 import { GuestConfigList } from "./Booking/GuestConfigList";
 import { BookingCheckoutCard } from "./Booking/BookingCheckoutCard";
 
-import type { Seat } from "@/interface";
-import type { MealPlan } from "@/interface";
-import type { GuestConfig } from "./Booking/GuestConfigCard";
-import { SeatStatus } from "@/enums/tourmanagement/SeatStatus"; 
+import type { Seat } from "@/interface/tour/Seat";
+import { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
+import type { GuestConfig } from "@/interface/common/GuestConfig";
+import type { ReservationPayload } from "@/interface/tour/ReservationPayload";
 
 export const BookingManager = ({ tourId }: { tourId?: string }) => {
   const navigate = useNavigate();
@@ -46,13 +46,16 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
     if (tour?.transportation?.id) {
       setSeatsLoading(true);
       seatService.filter({ transportId: tour.transportation.id })
-        .then((res: any) => {
-           const responseArray = Array.isArray(res) ? res : (res.data || []);
+        .then((res: Seat[] | { data: Seat[] }) => {
+           const responseArray = Array.isArray(res) ? res : ((res as { data: Seat[] }).data || []);
            setSeats(responseArray.flat());
         })
         .finally(() => setSeatsLoading(false));
     }
-    mealPlanService.getAll().then((res: any) => setAvailableMeals(res.data || []));
+    mealPlanService.getAll().then((res: MealPlan[] | { data: MealPlan[] }) => {
+      const meals = Array.isArray(res) ? res : ((res as { data: MealPlan[] }).data || []);
+      setAvailableMeals(meals);
+    });
   }, [tour?.transportation?.id]);
 
   // --- Handlers ---
@@ -79,10 +82,10 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
     
     setGuests(prev => prev.map(g => {
       if (g.id !== activeMealPickerGuestId) return g;
-      const hasMeal = g.selectedMeals.find(m => m.id === meal.id);
+      const hasMeal = g.selectedMeals.find((m: MealPlan) => m.id === meal.id);
       return { 
         ...g, 
-        selectedMeals: hasMeal ? g.selectedMeals.filter(m => m.id !== meal.id) : [...g.selectedMeals, meal] 
+        selectedMeals: hasMeal ? g.selectedMeals.filter((m: MealPlan) => m.id !== meal.id) : [...g.selectedMeals, meal] 
       };
     }));
   };
@@ -100,13 +103,13 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
     }
 
     try {
-      const reservationPayload: any = {
+      const reservationPayload: ReservationPayload = {
         tour: { id: Number(tourId) }, 
         user: { id: currentUser.id },
         requestedSlots: guests.length,
         tickets: guests.map(g => ({
-          assignedSeat: g.assignedSeat ? { id: g.assignedSeat.id } : null,
-          selectedMeals: g.selectedMeals.map(m => ({ id: m.id }))
+          assignedSeat: g.assignedSeat ? { id: g.assignedSeat.id! } : null,
+          selectedMeals: g.selectedMeals.map(m => ({ id: m.id! }))
         }))
       };
       
@@ -115,7 +118,7 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
       toaster.create({ title: "Booking Secured!", description: "Your group reservation is complete.", type: "success" });
       setTimeout(() => navigate("/my-bookings"), 1500);
       
-    } catch (error) {
+    } catch (error: unknown) {
        console.error("Booking failed", error);
        toaster.create({ title: "Error", description: "Failed to process booking.", type: "error" });
     }

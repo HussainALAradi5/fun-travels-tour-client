@@ -3,27 +3,18 @@ import { Box, Heading, Text, VStack, Button, Center, Spinner } from "@chakra-ui/
 import { useNavigate } from "react-router-dom";
 import { GenericForm } from "@/components/ui/Custom/GenericForm";
 
-import { DEFAULT_TOUR, type Tour } from "@/interface";
-import type { FieldConfig } from "@/utilities/FormTypes";
-import type { Country } from "@/interface";
-import type { City } from "@/interface";
-import type { Transportation } from "@/interface";
-import type { MealPlan } from "@/interface";
-
+import { DEFAULT_TOUR } from "@/interface/tour/Tour";
+import type { Tour } from "@/interface/tour/Tour";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
+import type { Country } from "@/interface/geography/Country";
+import type { City } from "@/interface/geography/City";
+import type { Transportation } from "@/interface/tour/Transportation";
+import type { MealPlan } from "@/interface/tour/MealPlan";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import { useCountries } from "@/hooks/countriesAndCities/useCountries";
 import { useCities } from "@/hooks/countriesAndCities/useCities";
 
-type TourFormValues = Omit<Tour, 'startCountry' | 'endCountry' | 'startCity' | 'endCity' | 'destinationCountries' | 'transportation' | 'availableMeals'> & {
-  startCountry: string;
-  endCountry: string;
-  startCity: string;
-  endCity: string;
-  destinationCountries: string[];
-  transportation: string;
-  availableMeals: string[];
-  numberOfDays: number; // Explicitly defined
-};
+import type { TourCreateFormValues } from "@/types/tour/TourCreateFormValues";
 
 export const TourCreate = () => {
   const navigate = useNavigate();
@@ -69,7 +60,7 @@ export const TourCreate = () => {
     meals.map(m => ({ label: `${m.mealName} ($${m.mealPrice})`, value: String(m.id) })), 
   [meals]);
 
-  const fields = useMemo<FieldConfig<TourFormValues>[]>(
+  const fields = useMemo<FieldConfig<TourCreateFormValues>[]>(
     () => [
       { name: "title", label: "Tour Title", type: "text", isRequired: true, gridSpan: 1 },
       { name: "tourNumber", label: "Tour Code", type: "text", isRequired: true, gridSpan: 1},
@@ -90,7 +81,7 @@ export const TourCreate = () => {
     [countryOptions, startCityOptions, endCityOptions, transportOptions, mealOptions, selectedStartCountryId, selectedEndCountryId]
   );
 
-  const handleSubmit = async (formData: TourFormValues) => {
+  const handleSubmit = async (formData: TourCreateFormValues) => {
       // FIX: End Date is now calculated successfully because numberOfDays is in state
       const finalEndDate = calculateEndDate(formData.startDate, Number(formData.numberOfDays));
 
@@ -119,7 +110,7 @@ export const TourCreate = () => {
       try {
         await handleCreateTour(payload);
         navigate("/admin/tours");
-      } catch (e) { console.error("Create failed", e); } 
+      } catch (e: unknown) { console.error("Create failed", e); } 
   };
 
   if (isCountriesLoading) {
@@ -134,13 +125,13 @@ export const TourCreate = () => {
         <Text color="fg.muted">Define logistics, meals, and regional coverage for this expedition.</Text>
       </Box>
       <Box w="full" bg="bg.panel" p={8} borderRadius="3xl" border="1px solid" borderColor="border.subtle" shadow="sm" opacity={isMutating || isStartCitiesLoading || isEndCitiesLoading ? 0.6 : 1} pointerEvents={isMutating ? "none" : "auto"}>
-        <GenericForm<TourFormValues>
+        <GenericForm<TourCreateFormValues>
           disableToast={true}
           fields={fields}
-          initialValues={DEFAULT_TOUR as unknown as TourFormValues}
+          initialValues={DEFAULT_TOUR as unknown as TourCreateFormValues}
           onSubmit={handleSubmit}
           onCancel={() => navigate("/admin/tours")}
-          onFieldChange={(name: keyof TourFormValues, value: any) => {
+          onFieldChange={(name: keyof TourCreateFormValues, value: string | number | string[] | boolean | null) => {
             if (name === "startCountry") setSelectedStartCountryId(value ? String(value) : null);
             if (name === "endCountry") setSelectedEndCountryId(value ? String(value) : null);
           }}
@@ -151,5 +142,7 @@ export const TourCreate = () => {
     </VStack>
   );
 };
+
+
 
 

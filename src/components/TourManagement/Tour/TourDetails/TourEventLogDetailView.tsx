@@ -3,10 +3,7 @@ import { Center, Spinner } from "@chakra-ui/react";
 
 import { GenericAuditLog, type AuditEventItem } from "@/components/ui/Custom/GenericAuditLog";
 import { genericTrackingService } from "@/Api/genericTracking";
-
-interface TourEventLogDetailViewProps {
-  tourId: number;
-}
+import type { TourEventLogDetailViewProps } from "@/interface/props/tour/TourEventLogDetailViewProps";
 
 export const TourEventLogDetailView = ({ tourId }: TourEventLogDetailViewProps) => {
   const [events, setEvents] = useState<AuditEventItem[]>([]);

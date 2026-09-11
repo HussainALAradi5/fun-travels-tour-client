@@ -1,6 +1,7 @@
-import type { TransportationType } from '../../enums/tourmanagement/TransportationType';
 import type { TransportationStatus } from '../../enums/tourmanagement/TransportationStatus';
+import type { TransportationType } from '../../enums/tourmanagement/TransportationType';
 import type { GenericStatus } from '../../enums/GenericStatus';
+import type { Seat } from './Seat';
 
 export interface TransportationResponse {
   id: number;
@@ -13,5 +14,13 @@ export interface TransportationResponse {
   totalCapacity: number;
   remainingSeats?: number;
   calculatedAvailable?: number;
-  seats?: { id: number; seatCode: string; chairType?: string; status?: string }[];
+  seats?: Seat[];
 }
+
+export const DEFAULT_TRANSPORTATION_RESPONSE: Partial<TransportationResponse> = {
+  transportationNumber: "",
+  type: "BUS",
+  totalCapacity: 0,
+  status: "ACTIVE",
+};
+

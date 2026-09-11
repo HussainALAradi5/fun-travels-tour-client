@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { transactionService } from "@/Api/Transaction";
 import { toaster } from "@/components/ui/toaster";
-import type { Transaction } from "@/interface";
+import type { Transaction } from "@/interface/payment/Transaction";
 
 export function useTransaction(param?: string | number) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -54,3 +54,6 @@ export function useTransaction(param?: string | number) {
     handleManualCredit,
   };
 }
+
+
+

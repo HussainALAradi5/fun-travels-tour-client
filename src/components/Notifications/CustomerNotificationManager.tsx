@@ -4,7 +4,7 @@ import { Box, VStack, Separator, HStack, Text, Input, Center, Spinner } from "@c
 
 import { useUser } from "@/hooks/User/useUser";
 import { useNotification } from "@/hooks/useNotification";
-import type { Notification as AppNotification } from "@/interface";
+import type { Notification as AppNotification } from "@/interface/notification/Notification";
 
 import { UnifiedFilterBar, type FilterGroup } from "@/components/ui/Custom/UnifiedFilterBar";
 import { NotificationHeader } from "./NotificationHeader";
@@ -183,3 +183,4 @@ export const CustomerNotificationsManager = () => {
     </VStack>
   );
 };
+

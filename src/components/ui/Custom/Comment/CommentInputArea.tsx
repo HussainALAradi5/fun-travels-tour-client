@@ -1,13 +1,9 @@
 import { Box, Textarea, HStack, Button, Alert } from "@chakra-ui/react";
 import { Send, Lock } from "lucide-react";
 import { useState } from "react";
+import type { CommentInputAreaProps } from "@/interface/props/ui/CommentInputAreaProps";
 
-interface Props {
-  isReadOnly: boolean;
-  onAdd: (content: string) => Promise<void>;
-}
-
-export const CommentInputArea = ({ isReadOnly, onAdd }: Props) => {
+export const CommentInputArea = ({ isReadOnly, onAdd }: CommentInputAreaProps) => {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
 

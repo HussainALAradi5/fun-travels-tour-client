@@ -5,22 +5,9 @@ import {
 } from "@chakra-ui/react";
 import { Search, RotateCcw } from "lucide-react";
 import { FilterCombobox, type FilterGroup } from "./UnifiedFilterBar/FilterCombobox";
+import type { UnifiedFilterBarProps } from "@/interface/props/ui/UnifiedFilterBarProps";
 
 export type { FilterGroup };
-
-interface UnifiedFilterBarProps {
-  searchLabel: string;
-  searchPlaceholder?: string;
-  searchValue: string;
-  onSearchTrigger: (value: string) => void;
-  filterLabel?: string;
-  filterValue?: string;
-  options?: { label: React.ReactNode; value: string; searchText?: string }[];
-  onFilterChange?: (val: string) => void;
-  filters?: FilterGroup[];
-  count?: number;
-  onReset: () => void;
-}
 
 export const UnifiedFilterBar = ({
   searchLabel,

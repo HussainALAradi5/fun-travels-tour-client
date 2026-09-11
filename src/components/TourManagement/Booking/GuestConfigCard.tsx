@@ -1,22 +1,7 @@
 import { Box, HStack, Stack, Text, Circle, Button, IconButton } from "@chakra-ui/react";
 import { Armchair, CheckCircle2, Trash2, Utensils } from "lucide-react";
 import { glowPulse } from "@/utilities/Animations";
-import type { Seat } from "@/interface";
-import type { MealPlan } from "@/interface";
-
-export interface GuestConfig {
-  id: string;
-  label: string;
-  assignedSeat: Seat | null;
-  selectedMeals: MealPlan[];
-}
-
-interface GuestConfigCardProps {
-  guest: GuestConfig;
-  onOpenSeatPicker: (guestId: string) => void;
-  onOpenMealPicker: (guestId: string) => void;
-  onRemove?: (guestId: string) => void;
-}
+import type { GuestConfigCardProps, GuestConfig } from "@/interface/props/booking/GuestConfigCardProps";
 
 export const GuestConfigCard = ({ guest, onOpenSeatPicker, onOpenMealPicker, onRemove }: GuestConfigCardProps) => {
   return (

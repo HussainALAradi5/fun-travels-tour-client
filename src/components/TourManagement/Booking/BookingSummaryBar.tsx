@@ -1,15 +1,7 @@
 import { Box, HStack, VStack, Text, Heading, Button, Icon } from "@chakra-ui/react";
 import { CheckCircle2 } from "lucide-react";
-import type { Seat } from "@/interface";
-import type { MealPlan } from "@/interface";
 import { floatIn } from "@/utilities/Animations";
-
-interface BookingSummaryBarProps {
-  selectedSeat: Seat | null;
-  selectedMeals: MealPlan[];
-  onConfirm: () => void;
-  isBooking: boolean;
-}
+import type { BookingSummaryBarProps } from "@/interface/props/booking/BookingSummaryBarProps";
 
 export const BookingSummaryBar = ({ selectedSeat, selectedMeals, onConfirm, isBooking }: BookingSummaryBarProps) => {
   if (!selectedSeat) return null;
@@ -50,3 +42,4 @@ export const BookingSummaryBar = ({ selectedSeat, selectedMeals, onConfirm, isBo
     </Box>
   );
 };
+

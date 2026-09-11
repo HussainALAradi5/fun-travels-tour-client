@@ -2,12 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { Client } from '@stomp/stompjs';
 import { useAuth } from './AuthContext';
 import { notificationService } from '@/Api/Notification';
-
-interface NotificationContextType {
-  unreadCount: number;
-  decrementCount: () => void;
-  refreshCount: () => void;
-}
+import type { NotificationContextType } from '@/interface/common/NotificationContextType';
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 

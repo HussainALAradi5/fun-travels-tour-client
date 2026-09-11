@@ -3,25 +3,12 @@ import {
   Box, VStack, HStack, Text, Icon, 
   Collapsible, Button 
 } from "@chakra-ui/react";
-import { ChevronDown, ChevronUp, type LucideIcon } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { barGlow } from "@/utilities/Animations";
 import { TrackingStep } from "./GlowComponents";
+import type { GenericTrackingProps, TrackingItem } from "@/interface/props/ui/GenericTrackingProps";
 
-export interface TrackingItem {
-  id: string | number;
-  title: string;
-  description?: string;
-  icon: LucideIcon;
-  color: string;
-  glowColor: string;
-  isCompleted?: boolean;
-}
-
-interface GenericTrackingProps {
-  items: TrackingItem[];
-  initialVisibleMiddle?: number;
-  animate?: boolean; // New prop to toggle animations
-}
+export type { TrackingItem } from "@/interface/props/ui/GenericTrackingProps";
 
 export const GenericTracking = ({ items, initialVisibleMiddle = 1, animate = true }: GenericTrackingProps) => {
   const [open, setOpen] = useState(false);
@@ -130,3 +117,4 @@ export const GenericTracking = ({ items, initialVisibleMiddle = 1, animate = tru
     </VStack>
   );
 };
+

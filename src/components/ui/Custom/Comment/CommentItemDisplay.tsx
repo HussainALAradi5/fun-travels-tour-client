@@ -1,16 +1,9 @@
 import { useState } from "react";
 import { Flex, VStack, HStack, Box, Text, Center, Icon, IconButton, Textarea, Button } from "@chakra-ui/react";
 import { User, Pencil, X, Check } from "lucide-react";
-import type { CommentItem } from "../GenericCommentSection";
+import type { CommentItemDisplayProps } from "@/interface/props/ui/CommentItemDisplayProps";
 
-interface Props {
-  comment: CommentItem;
-  isMe: boolean;
-  isReadOnly: boolean;
-  onEdit?: (id: string | number, text: string) => Promise<void>;
-}
-
-export const CommentItemDisplay = ({ comment, isMe, isReadOnly, onEdit }: Props) => {
+export const CommentItemDisplay = ({ comment, isMe, isReadOnly, onEdit }: CommentItemDisplayProps) => {
   const [isEditingLocal, setIsEditingLocal] = useState(false);
   const [editValue, setEditValue] = useState(comment.content);
   const [loading, setLoading] = useState(false);

@@ -3,12 +3,13 @@ import type { Tour } from './Tour';
 import type { Ticket } from './Ticket';
 import type { Transaction } from '../payment/Transaction';
 import type { Payment } from '../payment/Payment';
+import type { User } from '../user/User';
 
 export interface TourReservation {
   id?: number;
   reservationNumber: string;
   tour: Tour;
-  user: { id?: number; name?: string };
+  user: Partial<User>;
   requestedSlots: number;
   transactions?: Transaction[];
   payments?: Payment[];
@@ -17,3 +18,10 @@ export interface TourReservation {
   tickets?: Ticket[];
   bookingDate?: string;
 }
+
+export const DEFAULT_RESERVATION: Partial<TourReservation> = {
+  reservationNumber: "",
+  requestedSlots: 1,
+  totalPrice: 0,
+  status: "PENDING",
+};

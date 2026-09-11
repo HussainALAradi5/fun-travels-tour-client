@@ -4,7 +4,7 @@ import { ShieldAlert, XCircle, AlertTriangle, Ban, FileText, ShieldCheck, CheckC
 
 import { GenericCard } from "@/components/ui/Custom/GenericCard";
 import { GenericStatusWorkflow, type StatusConfig } from "@/components/ui/Custom/GenericStatusWorkflow";
-import type { Ticket } from "@/interface";
+import type { Ticket } from "@/interface/tour/Ticket";
 import { ConfirmDialog } from "@/components/ui/Custom/Dialogs/ConfirmDialog";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import type { GenericStatus } from "@/enums/GenericStatus";
@@ -17,7 +17,7 @@ const TICKET_STATUS_MAP: Partial<Record<string, StatusConfig>> = {
   "CANCELLED": { label: "Cancelled", colorPalette: "red", icon: Ban },
 };
 
-const STEPS = ["PENDING", "APPROVED", "CONFIRMED", "COMPLETED"];
+const STEPS = ["PENDING", "APPROVED", "CONFIRMED", "COMPLETED"] as const;
 
 interface Props {
   ticket: Ticket;
@@ -56,9 +56,9 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
         <VStack gap={6} align="stretch">
           
           <GenericStatusWorkflow
-            currentStatus={ticket.ticketStatus as any}
-            statusMap={TICKET_STATUS_MAP as any}
-            steps={STEPS as any[]}
+            currentStatus={ticket.ticketStatus}
+            statusMap={TICKET_STATUS_MAP}
+            steps={STEPS as unknown as string[]}
             onStatusChange={onWorkflowStatusChange}
           />
 

@@ -3,11 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Button, VStack, Icon } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { ExternalLink, Monitor } from "lucide-react";
-
-interface SmartLinkProps {
-  to: string;
-  children: React.ReactNode;
-}
+import type { SmartLinkProps } from "@/interface/props/common/SmartLinkProps";
 
 export const SmartLink = ({ to, children }: SmartLinkProps) => {
   const navigate = useNavigate();

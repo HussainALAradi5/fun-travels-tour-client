@@ -2,11 +2,15 @@ import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interface/common/ApiResponse";
 import type { User } from "@/interface/user/User";
 import type { UserResponse } from "@/interface/user/UserResponse";
-import type { LoginRequest, AuthResponse, RegisterRequest } from "@/interface/auth/LoginRequest";
+import type { LoginRequest } from "@/interface/auth/LoginRequest";
+import type { AuthResponse } from "@/interface/auth/AuthResponse";
+import type { RegisterRequest } from "@/interface/auth/RegisterRequest";
 import { authUtils } from "@/utilities/AuthUtils";
 
 export const userService = {
-  login: async (credentials: LoginRequest): Promise<ApiResponse<AuthResponse>> => {
+  login: async (
+    credentials: LoginRequest,
+  ): Promise<ApiResponse<AuthResponse>> => {
     const response = await apiClient.post<ApiResponse<AuthResponse>>(
       "/auth/login",
       credentials,
@@ -17,7 +21,9 @@ export const userService = {
     return response.data;
   },
 
-  register: async (user: RegisterRequest): Promise<ApiResponse<UserResponse>> => {
+  register: async (
+    user: RegisterRequest,
+  ): Promise<ApiResponse<UserResponse>> => {
     const response = await apiClient.post<ApiResponse<UserResponse>>(
       "/auth/register",
       user,
@@ -30,7 +36,10 @@ export const userService = {
     return response.data.data as unknown as User[];
   },
 
-  getAgencyEmployees: async (agencyId: number, role?: string): Promise<User[]> => {
+  getAgencyEmployees: async (
+    agencyId: number,
+    role?: string,
+  ): Promise<User[]> => {
     const roleParam = role && role !== "ALL" ? `?role=${role}` : "";
     const response = await apiClient.get<ApiResponse<UserResponse[]>>(
       `/users/agency/${agencyId}${roleParam}`,
@@ -39,7 +48,9 @@ export const userService = {
   },
 
   getProfile: async (id: number): Promise<User> => {
-    const response = await apiClient.get<ApiResponse<UserResponse>>(`/users/${id}`);
+    const response = await apiClient.get<ApiResponse<UserResponse>>(
+      `/users/${id}`,
+    );
     return response.data.data as unknown as User;
   },
 
@@ -89,7 +100,9 @@ export const userService = {
   },
 
   getUsersByRole: async (type: string): Promise<User[]> => {
-    const response = await apiClient.get<ApiResponse<UserResponse[]>>(`/users/role/${type}`);
+    const response = await apiClient.get<ApiResponse<UserResponse[]>>(
+      `/users/role/${type}`,
+    );
     return response.data.data as unknown as User[];
   },
 
@@ -98,17 +111,18 @@ export const userService = {
   getManagers: (): Promise<User[]> => userService.getUsersByRole("MANAGER"),
   getCustomers: (): Promise<User[]> => userService.getUsersByRole("CUSTOMER"),
 
-  bulkImport: async (agencyId: number, file: File): Promise<{ imported: number; failed: number; errors: string[] }> => {
+  bulkImport: async (
+    agencyId: number,
+    file: File,
+  ): Promise<{ imported: number; failed: number; errors: string[] }> => {
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await apiClient.post<ApiResponse<{ imported: number; failed: number; errors: string[] }>>(
-      `/users/bulk-import?agencyId=${agencyId}`,
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      },
-    );
+    const response = await apiClient.post<
+      ApiResponse<{ imported: number; failed: number; errors: string[] }>
+    >(`/users/bulk-import?agencyId=${agencyId}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     return response.data.data;
   },
 
@@ -119,7 +133,10 @@ export const userService = {
     return `${backendBase}${imagePath}`;
   },
 
-  requestPasswordReset: async (identifier: string, baseNumber: string): Promise<string> => {
+  requestPasswordReset: async (
+    identifier: string,
+    baseNumber: string,
+  ): Promise<string> => {
     const params = new URLSearchParams({ identifier, baseNumber });
     const response = await apiClient.post<ApiResponse<string>>(
       `/users/request-password-reset?${params.toString()}`,

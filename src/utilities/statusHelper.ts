@@ -3,8 +3,7 @@ import { TicketStatus } from '../enums/tourmanagement/TicketStatus';
 import { SeatStatus } from '../enums/tourmanagement/SeatStatus';
 import { PaymentStatus } from '../enums/payment/PaymentStatus';
 import { TransportationStatus } from '../enums/tourmanagement/TransportationStatus';
-
-type StatusColor = { bg: string; text: string };
+import type { StatusColor } from '@/types/common/StatusColor';
 
 export function getStatusColor(status: GenericStatus | string): StatusColor {
   const colors: Record<string, StatusColor> = {

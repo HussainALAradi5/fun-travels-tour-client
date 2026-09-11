@@ -4,18 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { Star, Accessibility, Baby, ChevronLeft, Rocket, Info } from "lucide-react";
 import { GenericForm } from "@/components/ui/Custom/GenericForm";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
-import { 
-  DEFAULT_TRANSPORTATION, 
-  type Transportation 
-} from "@/interface";
+import { DEFAULT_TRANSPORTATION } from "@/interface/tour/Transportation";
+import type { Transportation } from "@/interface/tour/Transportation";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
+
+import type { TransportationFormValues } from "@/types/tour/TransportationFormValues";
 
 export const TransportationCreate = () => {
   const navigate = useNavigate();
   const { handleCreateTransportation, isMutating } = useTourManagement();
 
   // Modern UX: Flat fields with semantic grouping
-  const fields = [
+  const fields: FieldConfig<TransportationFormValues>[] = [
     { name: "code", label: "Internal Serial", type: "text", isRequired: true, gridSpan: 1, placeholder: "e.g. BUS-2026-001" },
     { name: "transportationNumber", label: "Plate / Registration", type: "text", isRequired: true, gridSpan: 1, placeholder: "Plate Number" },
     { name: "providerName", label: "Operating Provider", type: "text", isRequired: true, gridSpan: 1, placeholder: "Agency Name" },
@@ -29,14 +30,14 @@ export const TransportationCreate = () => {
     },
     { name: "totalCapacity", label: "Maximum Capacity", type: "number", isRequired: true, gridSpan: 1 },
     // Seat Config Logic (Transient fields)
-    { name: "seatConfig.PREMIUM_RECLINER", label: "Premium Seats", type: "number", icon: Star, gridSpan: 1 },
-    { name: "seatConfig.WHEELCHAIR_ACCESSIBLE", label: "Accessible Spaces", type: "number", icon: Accessibility, gridSpan: 1 },
-    { name: "seatConfig.KIDS_CHAIR", label: "Child Safety Seats", type: "number", icon: Baby, gridSpan: 1 },
+    { name: "seatConfig.PREMIUM_RECLINER" as keyof TransportationFormValues, label: "Premium Seats", type: "number", icon: Star, gridSpan: 1 },
+    { name: "seatConfig.WHEELCHAIR_ACCESSIBLE" as keyof TransportationFormValues, label: "Accessible Spaces", type: "number", icon: Accessibility, gridSpan: 1 },
+    { name: "seatConfig.KIDS_CHAIR" as keyof TransportationFormValues, label: "Child Safety Seats", type: "number", icon: Baby, gridSpan: 1 },
   ];
 
-  const handleSubmit = async (values: Transportation) => {
+  const handleSubmit = async (values: TransportationFormValues) => {
     console.group("🚀 Initializing Logistics Unit");
-    await handleCreateTransportation(values);
+    await handleCreateTransportation(values as Transportation);
     console.groupEnd();
     navigate("/admin/transports");
   };
@@ -100,10 +101,10 @@ export const TransportationCreate = () => {
           filter="blur(60px)" 
         />
 
-        <GenericForm<Transportation>
+        <GenericForm<TransportationFormValues>
           disableToast={true}
-          fields={fields as any}
-          initialValues={DEFAULT_TRANSPORTATION as Transportation}
+          fields={fields}
+          initialValues={DEFAULT_TRANSPORTATION as TransportationFormValues}
           onSubmit={handleSubmit}
           onCancel={() => navigate("/admin/transports")}
           isLoading={isMutating}

@@ -1,32 +1,33 @@
 import { Input, Textarea, HStack, Box, Switch, Text } from "@chakra-ui/react";
 import { DatePicker } from "../DatePicker";
+import type { FormInputProps } from "@/interface/props/ui/FormInputProps";
 
-export const TextInput = ({ field, value, onChange }: any) => (
+export const TextInput = ({ field, value, onChange }: FormInputProps) => (
   <Input
     size="sm"
     variant="subtle"
     disabled={field.disabled}
     type={field.type}
     placeholder={field.placeholder}
-    value={value ?? ""}
-    onChange={(e) => onChange(field.name, e.target.value)}
+    value={(value as string) ?? ""}
+    onChange={(e) => onChange(field.name as string, e.target.value)}
     _focus={{ borderColor: "blue.500", bg: "bg.panel" }}
   />
 );
 
-export const TextAreaInput = ({ field, value, onChange }: any) => (
+export const TextAreaInput = ({ field, value, onChange }: FormInputProps) => (
   <Textarea
     size="sm"
     variant="subtle"
     disabled={field.disabled}
     placeholder={field.placeholder}
-    value={value ?? ""}
-    onChange={(e) => onChange(field.name, e.target.value)}
+    value={(value as string) ?? ""}
+    onChange={(e) => onChange(field.name as string, e.target.value)}
     _focus={{ borderColor: "blue.500", bg: "bg.panel" }}
   />
 );
 
-export const BooleanInput = ({ field, value, onChange }: any) => (
+export const BooleanInput = ({ field, value, onChange }: FormInputProps) => (
   <HStack 
     height="36px" 
     width="full" 
@@ -47,7 +48,7 @@ export const BooleanInput = ({ field, value, onChange }: any) => (
       size="sm"
       disabled={field.disabled}
       checked={!!value}
-      onCheckedChange={(e) => onChange(field.name, !!e.checked)}
+      onCheckedChange={(e) => onChange(field.name as string, !!e.checked)}
     >
       <Switch.HiddenInput />
       <Switch.Control>
@@ -60,15 +61,15 @@ export const BooleanInput = ({ field, value, onChange }: any) => (
   </HStack>
 );
 
-export const DateInput = ({ field, value, onChange }: any) => (
+export const DateInput = ({ field, value, onChange }: FormInputProps) => (
   <Box width="100%">
     <DatePicker
       label={field.label}
-      value={value}
+      value={value as string}
       onChange={(dateString: string) => {
         // Formats the ISO string from DatePicker (e.g., 2024-05-20T...) to YYYY-MM-DD
         const formattedDate = dateString.split("T")[0];
-        onChange(field.name, formattedDate);
+        onChange(field.name as string, formattedDate);
       }}
     />
   </Box>

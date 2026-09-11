@@ -1,4 +1,4 @@
-import type { ApiResponse } from '../interface';
+import type { ApiResponse } from '../interface/common/ApiResponse';
 
 export function extractData<T>(response: ApiResponse<T>): T {
   if (!response.success) {

@@ -3,7 +3,7 @@ import { Badge, IconButton, Icon, HStack, Text, VStack } from "@chakra-ui/react"
 import { Eye, Calendar, CreditCard, Landmark, CheckCircle, XCircle, Clock } from "lucide-react";
 import { GenericTable, type Column } from "@/components/ui/Custom/GenericTable";
 import { usePayment } from "@/hooks/usePayment";
-import type { Payment } from "@/interface";
+import type { Payment } from "@/interface/payment/Payment";
 import { PaymentStatusColors, PaymentMethodColors } from "@/constants/roles/Colors";
 import { useNavigate } from "react-router-dom";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
@@ -113,3 +113,4 @@ export const PaymentTable = () => {
 };
 
 export default PaymentTable;
+

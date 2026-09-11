@@ -1,24 +1,11 @@
-// src/components/GenericFormComponents/GenericForm.tsx
 import React, { useState, useMemo, useCallback } from "react";
 import { Box, Button, SimpleGrid, Alert, HStack } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
-import type { FieldConfig } from "@/utilities/FormTypes";
 import { glowPulse } from "@/utilities/Animations";
 import { FormFieldWrapper } from "./GenericFormComponents/FormField";
+import type { GenericFormProps } from "@/interface/props/ui/GenericFormProps";
 
-interface GenericFormProps<T> {
-  fields: FieldConfig<T>[];
-  initialValues: T | Partial<T>;
-  onSubmit: (values: T) => Promise<any>;
-  onCancel?: () => void;
-  isLoading?: boolean;
-  submitLabel?: string;
-  columns?: number;
-  onFieldChange?: (name: keyof T, value: any) => void;
-  disableToast?: boolean;
-}
-
-export function GenericForm<T extends Record<string, any>>({
+export function GenericForm<T extends Record<string, unknown>>({
   fields,
   initialValues,
   onSubmit,
@@ -36,7 +23,7 @@ export function GenericForm<T extends Record<string, any>>({
   const isProcessing = isLoading || internalSubmitting;
 
   const handleInputChange = useCallback(
-    (name: keyof T, value: any) => {
+    (name: keyof T, value: string | number | string[] | boolean | null) => {
       if (errorMessage) setErrorMessage(null);
       setFormData((prev) => ({ ...prev, [name]: value }));
       if (onFieldChange) onFieldChange(name, value);
@@ -52,7 +39,7 @@ export function GenericForm<T extends Record<string, any>>({
         val !== null &&
         val !== undefined &&
         val !== "" &&
-        (typeof val === "object" ? Object.keys(val).length > 0 : true)
+        (typeof val === "object" ? Object.keys(val as object).length > 0 : true)
       );
     });
   }, [formData, fields]);
@@ -77,8 +64,8 @@ const handleFormSubmit = async (e: React.FormEvent) => {
         type: "success",
       });
     }
-  } catch (error: any) {
-    const msg = error.message || "An unexpected error occurred.";
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : "An unexpected error occurred.";
     setErrorMessage(msg);
 
     // Only show error toast if NOT disabled
@@ -99,8 +86,8 @@ const handleFormSubmit = async (e: React.FormEvent) => {
       fields.map((field) => (
         <FormFieldWrapper
           key={String(field.name)}
-          field={field}
-          formData={formData}
+          field={field as FieldConfig<Record<string, unknown>>}
+          formData={formData as Record<string, unknown>}
           onChange={handleInputChange}
         />
       )),

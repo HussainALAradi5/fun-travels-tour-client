@@ -1,16 +1,7 @@
 // src/components/ui/Layout/PageWrapper.tsx
 import { Box, Container } from "@chakra-ui/react";
 import { Hero } from "@/components/ui/Custom/Hero";
-
-interface PageWrapperProps {
-  title: string;
-  subtitle?: string;
-  children: React.ReactNode;
-  imageUrl?: string;
-  showAction?: boolean; // Pass-through prop
-  onActionClick?: () => void;
-  buttonText?: string;
-}
+import type { PageWrapperProps } from "@/interface/props/ui/PageWrapperProps";
 
 export const PageWrapper = ({ 
   title, 

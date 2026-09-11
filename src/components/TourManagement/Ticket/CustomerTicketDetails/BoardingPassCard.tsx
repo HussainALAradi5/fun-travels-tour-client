@@ -1,7 +1,7 @@
 import { Box, HStack, VStack, Text, Heading, Icon, Circle, Badge, Flex, Image } from "@chakra-ui/react";
 import { Plane, Calendar, Armchair, Ticket as TicketIcon } from "lucide-react";
 import { ticketDropIn } from "@/utilities/Animations";
-import type { Ticket } from "@/interface";
+import type { Ticket } from "@/interface/tour/Ticket";
 
 export const BoardingPassCard = ({ ticket }: { ticket: Ticket }) => {
   const tour = ticket.tour;
@@ -161,3 +161,4 @@ export const BoardingPassCard = ({ ticket }: { ticket: Ticket }) => {
     </Box>
   );
 };
+

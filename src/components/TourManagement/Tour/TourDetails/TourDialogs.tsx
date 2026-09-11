@@ -4,17 +4,7 @@ import { ConfirmDialog } from "@/components/ui/Custom/Dialogs/ConfirmDialog";
 import { GenericStatus } from "@/enums/GenericStatus";
 import { SeatManager } from "../../Seat/SeatManagement/SeatManager";
 import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
-
-interface TourDialogsProps {
-  confirmOpen: boolean;
-  onConfirmClose: () => void;
-  seatOpen: boolean;
-  onSeatClose: () => void;
-  pendingStatus: GenericStatus | null;
-  // This must match the signature of your handleStatusUpdate
-  onConfirm: () => Promise<void>;
-  transportId?: number; // Made optional to prevent crashes if undefined
-}
+import type { TourDialogsProps } from "@/interface/props/tour/TourDialogsProps";
 
 export const TourDialogs = ({
   confirmOpen,

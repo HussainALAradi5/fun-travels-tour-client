@@ -3,6 +3,7 @@ import type { TransportationStatus } from '../../enums/tourmanagement/Transporta
 import type { GenericStatus } from '../../enums/GenericStatus';
 import type { Seat } from './Seat';
 import type { Tour } from './Tour';
+import type { Agency } from '../agency/Agency';
 
 export interface Transportation {
   id?: number;
@@ -14,7 +15,7 @@ export interface Transportation {
   totalCapacity: number;
   remainingSeats?: number;
   calculatedAvailable?: number;
-  agency?: { id?: number; agencyName?: string };
+  agency?: Partial<Agency>;
   tours?: Tour[];
   seats: Seat[];
   unitStatus?: TransportationStatus;

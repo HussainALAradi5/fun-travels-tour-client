@@ -1,6 +1,6 @@
 import { Badge, HStack, Text, IconButton, Box, Icon } from "@chakra-ui/react";
 import { GenericTable, type Column } from "@/components/ui/Custom/GenericTable";
-import type { UserRequest } from "@/interface";
+import type { UserRequest } from "@/interface/support/UserRequest";
 import { RequestStatusColors, RequestTypeColors } from "@/constants/roles/Colors";
 import { User, Eye } from "lucide-react";
 
@@ -102,3 +102,5 @@ export const UserRequestList = ({ data, loading, onView }: Props) => {
     />
   );
 };
+
+

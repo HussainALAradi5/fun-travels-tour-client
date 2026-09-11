@@ -2,7 +2,7 @@ import {
   Box, Heading, Text, Button, Image, Stack, Badge, Flex, HStack, Card 
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import type { Tour } from "@/interface";
+import type { Tour } from "@/interface/tour/Tour";
 
 interface Props {
   tour: Tour;
@@ -97,3 +97,8 @@ export const CustomerTourCatalogCard = ({ tour, isAuthenticated }: Props) => {
     </Card.Root>
   );
 };
+
+
+
+
+

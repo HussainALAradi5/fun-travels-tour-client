@@ -4,12 +4,13 @@ import type { Tour } from './Tour';
 import type { Seat } from './Seat';
 import type { MealPlan } from './MealPlan';
 import type { TourReservation } from './TourReservation';
+import type { User } from '../user/User';
 
 export interface Ticket {
   id?: number;
   ticketNumber: string;
   tour: Tour;
-  customer: { id?: number; name?: string };
+  customer: Partial<User>;
   assignedSeat?: Seat;
   seatPriceModifier?: number;
   totalPrice?: number;
@@ -22,10 +23,24 @@ export interface Ticket {
   reservation?: TourReservation;
   createdAt?: string;
   updatedAt?: string;
-  createdBy?: { id?: number; name?: string };
-  updatedBy?: { id?: number; name?: string };
+  createdBy?: Partial<User>;
+  updatedBy?: Partial<User>;
   basePrice?: number;
   discountPrice?: number;
   qrCode?: string;
   barcode?: string;
 }
+
+export const DEFAULT_TICKET: Partial<Ticket> = {
+  ticketNumber: "",
+  tour: { tourNumber: "", title: "", startDate: "", endDate: "", maxCapacity: 0, availableSlots: 0, status: "PENDING", hasTransportation: false, basePrice: 0, discountPrice: 0 } as Tour,
+  customer: {},
+  bookingDate: "",
+  paid: false,
+  ticketStatus: "PENDING",
+  approvalStatus: "PENDING",
+  hasMealPlan: false,
+  selectedMeals: [],
+  basePrice: 0,
+  discountPrice: 0,
+};

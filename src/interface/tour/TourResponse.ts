@@ -1,4 +1,10 @@
 import type { GenericStatus } from '../../enums/GenericStatus';
+import type { CountrySummary } from './CountrySummary';
+import type { CitySummary } from './CitySummary';
+import type { AgencySummary } from './AgencySummary';
+import type { BranchSummary } from './BranchSummary';
+import type { TransportationSummary } from './TransportationSummary';
+import type { UserSummary } from './UserSummary';
 
 export interface TourResponse {
   id: number;
@@ -15,13 +21,27 @@ export interface TourResponse {
   availableSlots: number;
   status: GenericStatus;
   hasTransportation: boolean;
-  startCountry?: { id: number; famousName: string };
-  endCountry?: { id: number; famousName: string };
-  startCity?: { id: number; name: string };
-  endCity?: { id: number; name: string };
-  agency?: { id: number; agencyName: string };
-  agencyBranch?: { id: number; branchName: string };
-  transportation?: { id: number; transportationNumber: string; type?: string };
-  createdBy?: { id: number; name: string };
+  startCountry?: CountrySummary;
+  endCountry?: CountrySummary;
+  startCity?: CitySummary;
+  endCity?: CitySummary;
+  agency?: AgencySummary;
+  agencyBranch?: BranchSummary;
+  transportation?: TransportationSummary;
+  createdBy?: UserSummary;
   createdAt?: string;
 }
+
+export const DEFAULT_TOUR_RESPONSE: Partial<TourResponse> = {
+  tourNumber: "",
+  title: "",
+  description: "",
+  basePrice: 0,
+  numberOfDays: 0,
+  startDate: "",
+  endDate: "",
+  maxCapacity: 0,
+  availableSlots: 0,
+  status: "PENDING",
+  hasTransportation: false,
+};

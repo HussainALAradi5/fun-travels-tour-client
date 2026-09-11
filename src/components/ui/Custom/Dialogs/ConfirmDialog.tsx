@@ -1,21 +1,7 @@
 import { useState } from "react";
 import { Button, DialogFooter, DialogActionTrigger, Text, VStack } from "@chakra-ui/react";
 import { GenericDialog } from "./GenericDialog";
-import type { LucideIcon } from "lucide-react";
-
-interface ConfirmDialogProps {
-  open: boolean;
-  onClose: () => void;
-  onConfirm: () => Promise<any>;
-  title: string;
-  description?: string;
-  message: string; 
-  icon: LucideIcon;
-  confirmText?: string;
-  cancelText?: string;
-  colorPalette?: string;
-  placement?: "center" | "top" | "bottom";
-}
+import type { ConfirmDialogProps } from "@/interface/props/ui/ConfirmDialogProps";
 
 export function ConfirmDialog({
   open,
@@ -78,3 +64,4 @@ export function ConfirmDialog({
     </GenericDialog>
   );
 }
+

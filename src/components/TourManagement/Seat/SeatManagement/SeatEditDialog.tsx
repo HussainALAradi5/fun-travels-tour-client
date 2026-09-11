@@ -6,7 +6,7 @@ import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
 import { ChairType } from "@/enums/tourmanagement/ChirType";
 import { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
 import { ChairTypeColors } from "@/constants/roles/Colors";
-import type { Seat } from "@/interface";
+import type { Seat } from "@/interface/tour/Seat";
 
 interface Props {
   open: boolean;
@@ -114,3 +114,4 @@ export const SeatEditDialog = ({ open, onClose, seat, onSave, loading }: Props) 
     </GenericDialog>
   );
 };
+

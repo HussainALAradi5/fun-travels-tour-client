@@ -1,9 +1,10 @@
 import type { NotificationType } from '../../enums/notification/NotificationType';
 import type { ReferenceType } from '../../enums/notification/ReferenceType';
+import type { User } from '../user/User';
 
 export interface Notification {
   id: number;
-  recipient?: { id?: number; name?: string };
+  recipient?: Partial<User>;
   title: string;
   message: string;
   type: NotificationType;
@@ -13,3 +14,9 @@ export interface Notification {
   createdAt: string;
   readAt?: string;
 }
+
+export const DEFAULT_NOTIFICATION: Partial<Notification> = {
+  title: "",
+  message: "",
+  isRead: false,
+};

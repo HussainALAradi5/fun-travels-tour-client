@@ -3,13 +3,7 @@ import { Download, FileSpreadsheet, FileText, ChevronRight } from "lucide-react"
 import { GenericDialog } from "./GenericDialog";
 import { ExportUtils } from "@/utilities/ExportUtility";
 
-interface ExportOptionProps {
-  title: string;
-  desc: string;
-  icon: any;
-  scheme: string;
-  onSelect: () => void;
-}
+import type { ExportOptionProps } from "@/interface/props/ui/ExportOptionProps";
 
 const ExportOption = ({ title, desc, icon: Icon, scheme, onSelect }: ExportOptionProps) => (
   <Box

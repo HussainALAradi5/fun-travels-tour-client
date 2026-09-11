@@ -1,32 +1,12 @@
-import React from "react"; // Added React import for ReactNode
+import type { LucideIcon } from 'lucide-react';
+import React from "react";
 import { VStack, HStack, Text, Box } from "@chakra-ui/react";
 import { Info } from "lucide-react";
 import { GenericDialog } from "./GenericDialog";
-import type { LucideIcon } from "lucide-react";
-import type { FieldConfig } from "@/utilities/FormTypes";
 import { GenericForm } from "@/components/ui/Custom/GenericForm";
+import type { GenericFormDialogProps } from "@/interface/props/ui/GenericFormDialogProps";
 
-interface GenericFormDialogProps<T> {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: (data: T) => Promise<void>;
-  loading: boolean;
-  title: string;
-  description?: string;
-  icon: LucideIcon;
-  fields: FieldConfig<T>[];
-  initialValues: T;
-  onFieldChange?: (name: keyof T, value: any) => void;
-  submitLabel?: string;
-  // CHANGED: string to ReactNode to allow JSX
-  infoMessage?: string; 
-  // NEW: Dedicated prop for extra UI components like SeatMaps
-  extraContent?: React.ReactNode; 
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
-  columns?: number;
-}
-
-export function GenericFormDialog<T extends Record<string, any>>({
+export function GenericFormDialog<T extends Record<string, unknown>>({
   open,
   onClose,
   onSubmit,

@@ -12,14 +12,15 @@ import {
   SelectItem,
   SelectPositioner,
 } from "@chakra-ui/react";
+import type { FormSelectProps } from "@/interface/props/ui/FormSelectProps";
 
-export function FormSelect({ field, value, onChange }: any) {
+export function FormSelect({ field, value, onChange }: FormSelectProps) {
   const rawOptions = useMemo(() => field.options || [], [field.options]);
 
-  const getInternalValue = (val: any) => {
+  const getInternalValue = (val: string | number | boolean | null | undefined): string => {
     if (val === null || val === undefined) return "";
     return typeof val === "object"
-      ? String(val.id || JSON.stringify(val))
+      ? String((val as unknown as Record<string, unknown>).id || JSON.stringify(val))
       : String(val);
   };
 

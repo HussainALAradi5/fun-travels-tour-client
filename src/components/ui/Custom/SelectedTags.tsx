@@ -1,11 +1,6 @@
 import { HStack, Badge, Box } from "@chakra-ui/react";
 import { X } from "lucide-react";
-
-interface SelectedTagsProps {
-  values: string[];
-  options: { label: string; value: string | number }[];
-  onRemove: (value: string) => void;
-}
+import type { SelectedTagsProps } from "@/interface/props/ui/SelectedTagsProps";
 
 export const SelectedTags = ({ values, options, onRemove }: SelectedTagsProps) => {
   if (values.length === 0) return null;

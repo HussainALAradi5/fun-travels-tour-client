@@ -1,15 +1,9 @@
 import { Box, VStack, HStack, Text, Heading, Button, Separator, Circle, Icon, Spinner } from "@chakra-ui/react";
 import { ShoppingBag, CheckCircle2, Armchair, Utensils, Users } from "lucide-react";
 import { glowPulse, floatIn } from "@/utilities/Animations";
-import type { Tour } from "@/interface";
+import type { Tour } from "@/interface/tour/Tour";
 import type { GuestConfig } from "./GuestConfigCard";
-
-interface BookingCheckoutCardProps {
-  tour: Tour | null;
-  guests: GuestConfig[];
-  onConfirm: () => void;
-  loading: boolean;
-}
+import type { BookingCheckoutCardProps } from "@/interface/props/booking/BookingCheckoutCardProps";
 
 export const BookingCheckoutCard = ({ tour, guests, onConfirm, loading }: BookingCheckoutCardProps) => {
   // --- Group Calculations ---
@@ -111,3 +105,7 @@ export const BookingCheckoutCard = ({ tour, guests, onConfirm, loading }: Bookin
     </Box>
   );
 };
+
+
+
+

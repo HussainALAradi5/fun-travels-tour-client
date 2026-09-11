@@ -3,9 +3,7 @@ import { MapPinHouse } from "lucide-react";
 import { countryService } from "@/Api/Country";
 import { cityService } from "@/Api/City";
 import { userService } from "@/Api/User";
-import {
-  type AgencyBranch,
-} from "@/interface";
+import type { AgencyBranch } from "@/interface/agency/AgencyBranch";
 
 const DEFAULT_BRANCH: Partial<AgencyBranch> = {
   branchName: "",
@@ -13,22 +11,20 @@ const DEFAULT_BRANCH: Partial<AgencyBranch> = {
   contactNumber: "",
   active: true,
 };
-import type { FieldConfig } from "@/utilities/FormTypes";
-import type { Country } from "@/interface";
-import type { City } from "@/interface";
-import type { User } from "@/interface";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
+import type { Country } from "@/interface/geography/Country";
+import type { City } from "@/interface/geography/City";
+import type { User } from "@/interface/user/User";
 import { GenericFormDialog } from "../ui/Custom/Dialogs/GenericFormDialog";
+
+import type { BranchFormData } from "@/interface/agency/BranchFormData";
+import type { SelectOption } from "@/interface/common/SelectOption";
 
 interface Props {
   open: boolean;
   onClose: () => void;
   onSubmit: (data: AgencyBranch) => Promise<void>;
   loading: boolean;
-}
-
-interface SelectOption {
-  label: string;
-  value: string;
 }
 
 export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
@@ -67,7 +63,7 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
             })),
           );
         }
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("Failed to load branch form data:", error);
       }
     };
@@ -98,7 +94,7 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
             })),
           );
         }
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("Failed to fetch cities:", error);
       }
     };
@@ -106,10 +102,14 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
     fetchCities();
   }, [selectedCountryId]);
 
-  const handleInterceptSubmit = async (data: any) => {
+  const handleInterceptSubmit = async (data: BranchFormData) => {
     // Reconstructing the object to match AgencyBranch interface (nesting the IDs)
-    const formattedData: any = {
-      ...data,
+    const formattedData: AgencyBranch = {
+      branchName: data.branchName,
+      branchAddress: data.branchAddress,
+      contactNumber: data.contactNumber,
+      ownerMobileNumber: data.ownerMobileNumber,
+      active: true,
       country: data.country ? { id: Number(data.country) } : undefined,
       city: data.city ? { id: Number(data.city) } : undefined,
       branchManager: data.branchManager
@@ -140,7 +140,7 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
         gridSpan: 1,
       },
       {
-        name: "country" as any,
+        name: "country" as keyof AgencyBranch,
         label: "Country",
         type: "search-select", // Changed to search-select
         options: countries,
@@ -148,7 +148,7 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
         gridSpan: 1,
       },
       {
-        name: "city" as any,
+        name: "city" as keyof AgencyBranch,
         label: "City",
         type: "search-select", // Changed to search-select
         options: cities,
@@ -160,7 +160,7 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
         gridSpan: 1,
       },
       {
-        name: "branchManager" as any,
+        name: "branchManager" as keyof AgencyBranch,
         label: "Manager",
         type: "search-select", // Changed to search-select
         options: users,
@@ -194,7 +194,3 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
     />
   );
 }
-
-
-
-

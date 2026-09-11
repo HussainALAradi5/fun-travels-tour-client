@@ -10,7 +10,7 @@ import apiClient from "@/config/BaseApi";
 
 import { Hero } from "@/components/ui/Custom/Hero";
 import { UnifiedFilterBar, type FilterGroup } from "@/components/ui/Custom/UnifiedFilterBar";
-import type { Country } from "@/interface";
+import type { Country } from "@/interface/geography/Country";
 import { CustomerTourCatalogCard } from "./CustomerTourCatalog/CustomerTourCatalogCard";
 import { CustomerTourCatalogTable } from "./CustomerTourCatalog/CustomerTourCatalogTable";
 
@@ -213,3 +213,4 @@ export const CustomerTourCatalog = () => {
     </Box>
   );
 };
+

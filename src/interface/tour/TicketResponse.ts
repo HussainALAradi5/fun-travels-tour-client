@@ -1,11 +1,13 @@
-import type { TicketStatus } from '../../enums/tourmanagement/TicketStatus';
+import type { User } from '../user/User';
 import type { GenericStatus } from '../../enums/GenericStatus';
+import type { TicketStatus } from '../../enums/tourmanagement/TicketStatus';
+import type { TourSummary } from './TourSummary';
 
 export interface TicketResponse {
   id: number;
   ticketNumber: string;
-  customer?: { id: number; name: string };
-  tour?: { id: number; tourNumber: string; title: string };
+  customer?: Partial<User>;
+  tour?: TourSummary;
   assignedSeat?: { id: number; seatCode: string };
   basePrice?: number;
   discountPrice?: number;
@@ -20,3 +22,12 @@ export interface TicketResponse {
   barcode?: string;
   createdAt?: string;
 }
+
+export const DEFAULT_TICKET_RESPONSE: Partial<TicketResponse> = {
+  ticketNumber: "",
+  isPaid: false,
+  ticketStatus: "PENDING",
+  approvalStatus: "PENDING",
+  hasMealPlan: false,
+};
+

@@ -6,7 +6,7 @@ import { TransportationHeader } from "./Transportation/TransportationHeader";
 import { TransportationTable } from "./Transportation/TransportationTable";
 import { TransportationEditDialog } from "./Transportation/TransportationEditDialog";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
-import type { Transportation } from "@/interface";
+import type { Transportation } from "@/interface/tour/Transportation";
 
 export const TransportationManager = () => {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ export const TransportationManager = () => {
 
   const handleUpdate = async (values: Transportation) => {
     if (selectedItem?.id) {
-      await handleUpdateTransportStatus(selectedItem.id, values as any);
+      await handleUpdateTransportStatus(selectedItem.id, values);
       loadData();
       onClose();
     }

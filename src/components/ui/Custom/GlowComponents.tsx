@@ -1,15 +1,6 @@
 import { glowPulse } from "@/utilities/Animations";
 import { Box, HStack, VStack, Circle, Text, Icon } from "@chakra-ui/react";
-import type { LucideIcon } from "lucide-react";
-
-interface TrackingStepProps {
-  icon: LucideIcon;
-  bg: string;
-  title: string;
-  location?: string;
-  glowColor: string;
-  animate?: boolean;
-}
+import type { TrackingStepProps, MetricBoxProps } from "@/interface/props/ui/GlowComponentsProps";
 
 export const TrackingStep = ({ icon: I, bg, title, location, glowColor, animate = true }: TrackingStepProps) => (
   <HStack gap={4} align="start">
@@ -30,14 +21,6 @@ export const TrackingStep = ({ icon: I, bg, title, location, glowColor, animate 
     </VStack>
   </HStack>
 );
-
-interface MetricBoxProps {
-  icon: LucideIcon;
-  color: string;
-  label: string;
-  children: React.ReactNode;
-  bg?: string;
-}
 
 export const MetricBox = ({ icon: I, color, label, children, bg }: MetricBoxProps) => (
   <Box 

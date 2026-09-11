@@ -1,10 +1,6 @@
 // src/components/ui/Custom/StatusLegend.tsx
 import { HStack, Circle, Text, Stack } from "@chakra-ui/react";
-
-interface StatusLegendProps {
-  colorMap: Record<string, any>;
-  title?: string;
-}
+import type { StatusLegendProps } from "@/interface/props/ui/StatusLegendProps";
 
 export const StatusLegend = ({ colorMap, title }: StatusLegendProps) => (
   <Stack gap={3}>

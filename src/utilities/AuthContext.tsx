@@ -1,14 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 import { authUtils } from "@/utilities/AuthUtils";
-
-interface AuthContextType {
-  user: any;
-  isAdmin: boolean;
-  isAuthenticated: boolean;
-  loading: boolean;
-  refreshAuth: () => void;
-  logout: () => void;
-}
+import type { AuthContextType } from "@/interface/common/AuthContextType";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

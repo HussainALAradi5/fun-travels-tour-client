@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { paymentService } from "@/Api/Payment";
-import type { Payment } from "@/interface";
+import type { Payment } from "@/interface/payment/Payment";
 
 export function usePayment(param?: string | number) {
   const [payments, setPayments] = useState<Payment[]>([]);
@@ -31,3 +31,4 @@ export function usePayment(param?: string | number) {
 
   return { payments, payment, isLoading, fetchPayments };
 }
+

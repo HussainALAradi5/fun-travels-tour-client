@@ -1,12 +1,13 @@
 import { Tabs, Text, Icon, Badge, Box, Circle, Float } from "@chakra-ui/react";
 import {
   Globe, Building2, Users, Map, Ticket, Bus, UtensilsCrossed, BellRing, Bell,
-  MessageSquare, ReceiptText, Wallet
+  MessageSquare, ReceiptText, Wallet, type LucideIcon
 } from "lucide-react";
 import { useLocation } from "react-router-dom"; 
 import { useAuth } from "@/utilities/AuthContext";
 import { useNotificationContext } from "@/utilities/NotificationContext";
 import { SmartLink } from "../SmartLink";
+import type { TabItem } from "@/interface/props/common/TabsManagerProps";
 
 export const TabsManager = () => {
   const { isAdmin, isAuthenticated, loading } = useAuth();
@@ -25,7 +26,7 @@ export const TabsManager = () => {
     : (pathSegments.includes("tours") || pathSegments.includes("reserve")) ? "tours"
     : "";
 
-  const userTabs = [
+  const userTabs: TabItem[] = [
     { value: "tours", label: "Explore Tours", icon: Map, path: "/tours" },
     { value: "bookings", label: "My Bookings", icon: Ticket, path: "/my-bookings" },
     { value: "requests", label: "My Requests", icon: MessageSquare, path: "/my-requests" },
@@ -39,7 +40,7 @@ export const TabsManager = () => {
     },
   ];
 
-  const adminOnlyTabs = [
+  const adminOnlyTabs: TabItem[] = [
     { value: "tours", label: "Tours", icon: Map, path: "/admin/tours" },
     { value: "requests", label: "Requests", icon: MessageSquare, path: "/admin/requests" },
     { value: "transactions", label: "Ledger", icon: ReceiptText, path: "/admin/transactions" },
@@ -55,7 +56,7 @@ export const TabsManager = () => {
   return (
     <Tabs.Root value={currentTab} variant="line" colorPalette="blue" size="sm" lazyMount>
       <Tabs.List borderBottom="none" gap={1} alignItems="center">
-        {visibleTabs.map((tab: any) => {
+        {visibleTabs.map((tab: TabItem) => {
           const isNotifyTab = tab.isNotification;
           const hasUnread = isNotifyTab && unreadCount > 0;
           return (

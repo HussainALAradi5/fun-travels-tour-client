@@ -12,29 +12,16 @@ import {
   Box,
   Text,
   VStack,
+  Icon,
 } from "@chakra-ui/react";
-import type { LucideIcon } from "lucide-react";
-import React from "react";
-
-interface GenericDialogProps {
-  open: boolean;
-  onClose: () => void;
-  title: string;
-  description?: string;
-  icon: LucideIcon;
-  children: React.ReactNode;
-  colorPalette?: string;
-  size?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
-  placement?: "center" | "top" | "bottom";
-  scrollBehavior?: "inside" | "outside";
-}
+import type { GenericDialogProps } from "@/interface/props/ui/GenericDialogProps";
 
 export function GenericDialog({
   open,
   onClose,
   title,
   description,
-  icon: Icon,
+  icon: DialogIcon,
   children,
   colorPalette = "blue",
   size = "md",
@@ -74,7 +61,7 @@ export function GenericDialog({
             >
               <HStack gap={3} align="center">
                 <Box p={2} bg="white/20" borderRadius="lg" backdropFilter="blur(8px)">
-                  <Icon size={20} color="white" />
+                  <Icon as={DialogIcon} size={20} color="white" />
                 </Box>
                 <VStack align="start" gap={0}>
                   <DialogTitle fontSize="lg" fontWeight="bold" color="white">

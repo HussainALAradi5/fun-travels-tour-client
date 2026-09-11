@@ -1,13 +1,13 @@
-// src/components/ui/Custom/GenericFormComponents/FormFile.tsx
 import { Input, Button, HStack, Text, Icon, Box, VStack, Avatar } from "@chakra-ui/react";
 import { Upload, X, FileImage } from "lucide-react";
 import { useRef } from "react";
+import type { FormFileProps } from "@/interface/props/ui/FormFileProps";
 
-export const FormFile = ({ field, value, onChange }: any) => {
+export const FormFile = ({ field, value, onChange }: FormFileProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Checks if the value is a valid base64 image string
-  const hasImage = value && value.startsWith("data:image");
+  const hasImage = typeof value === "string" && value.startsWith("data:image");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -16,14 +16,14 @@ export const FormFile = ({ field, value, onChange }: any) => {
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64String = reader.result as string;
-      onChange(field.name, base64String);
+      onChange(field.name as string, base64String);
     };
     reader.readAsDataURL(file);
   };
 
   const handleClear = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onChange(field.name, ""); 
+    onChange(field.name as string, ""); 
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -58,7 +58,7 @@ export const FormFile = ({ field, value, onChange }: any) => {
           {/* V3 FIX: Using Avatar.Root instead of Image fallback */}
           <Avatar.Root size="sm" shape="rounded">
              {hasImage ? (
-               <Avatar.Image src={value} objectFit="cover" />
+               <Avatar.Image src={value as string} objectFit="cover" />
              ) : (
                <Avatar.Fallback bg="gray.100" color="gray.500">
                  <FileImage size={16} />

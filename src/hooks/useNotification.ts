@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { notify } from "@/components/ui/Custom/GenericNotification";
 import { notificationService } from "@/Api/Notification";
-import type { Notification as AppNotification } from "@/interface";
+import type { Notification as AppNotification } from "@/interface/notification/Notification";
 import { useNotificationContext } from "@/utilities/NotificationContext";
 
 export const useNotification = (userId?: number, filters?: Record<string, string | number | boolean>) => {

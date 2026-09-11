@@ -3,7 +3,7 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import { Box, Badge, Text, HStack, VStack, Image, Circle } from "@chakra-ui/react";
 import { GenericTable } from "@/components/ui/Custom/GenericTable";
 import { Users, ShieldCheck } from "lucide-react";
-import type { User } from "@/interface";
+import type { User } from "@/interface/user/User";
 import { userService } from "@/Api/User";
 import { RoleColors } from "@/constants/roles/Colors";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
@@ -154,3 +154,4 @@ export default function UserManagement() {
     </PageWrapper>
   );
 }
+

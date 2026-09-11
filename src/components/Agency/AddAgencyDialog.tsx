@@ -4,12 +4,10 @@ import { countryService } from "@/Api/Country";
 import { cityService } from "@/Api/City";
 import { userService } from "@/Api/User";
 import { UserType } from "@/enums/UserType";
-import {
-  type Agency,
-} from "@/interface";
-import type { User } from "@/interface";
-import type { Country } from "@/interface";
-import type { City } from "@/interface";
+import type { Agency } from "@/interface/agency/Agency";
+import type { User } from "@/interface/user/User";
+import type { Country } from "@/interface/geography/Country";
+import type { City } from "@/interface/geography/City";
 
 const DEFAULT_AGENCY: Partial<Agency> = {
   agencyName: "",
@@ -18,19 +16,17 @@ const DEFAULT_AGENCY: Partial<Agency> = {
   ownerMobileNumber: "",
   active: true,
 };
-import type { FieldConfig } from "@/utilities/FormTypes";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
 import { GenericFormDialog } from "../ui/Custom/Dialogs/GenericFormDialog";
+
+import type { AgencyPayload } from "@/interface/agency/AgencyPayload";
+import type { SelectOption } from "@/interface/common/SelectOption";
 
 interface Props {
   open: boolean;
   onClose: () => void;
   onSubmit: (data: Agency) => Promise<void>;
   loading: boolean;
-}
-
-interface SelectOption {
-  label: string;
-  value: string;
 }
 
 export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
@@ -69,7 +65,7 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
             })),
           );
         }
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("Failed to fetch initial form data:", error);
       }
     };
@@ -100,7 +96,7 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
             })),
           );
         }
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("Failed to fetch cities:", error);
       }
     };
@@ -164,18 +160,21 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
 
   const handleLocalSubmit = async (formData: Agency) => {
     // Transform IDs to proper number types before sending to backend
-    const payload: any = {
-      ...formData,
+    const payload: AgencyPayload = {
+      agencyName: formData.agencyName,
+      address: formData.address,
+      contactNumber: formData.contactNumber,
+      ownerMobileNumber: formData.ownerMobileNumber,
+      active: true,
+      userType: UserType.OWNER,
       countryId: formData.countryId ? Number(formData.countryId) : undefined,
       cityId: formData.cityId ? Number(formData.cityId) : undefined,
       agencyOwnerId: formData.agencyOwnerId
         ? Number(formData.agencyOwnerId)
         : undefined,
-      active: true,
-      userType: UserType.OWNER,
     };
 
-    await onSubmit(payload);
+    await onSubmit(payload as Agency);
   };
 
   return (
@@ -197,7 +196,3 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
     />
   );
 }
-
-
-
-

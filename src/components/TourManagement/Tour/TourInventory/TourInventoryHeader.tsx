@@ -6,7 +6,7 @@ import {
 } from "@chakra-ui/react";
 import { Plus, Filter } from "lucide-react";
 import { GenericStatus } from "@/enums/GenericStatus";
-import type { TourHeaderProps } from "@/interface";
+import type { TourHeaderProps } from "@/interface/tour/TourHeaderProps";
 
 export const TourInventoryHeader = ({ statusFilter, onFilterChange, onCreateClick }: TourHeaderProps) => {
   const statusCollection = useMemo(() => 
@@ -68,3 +68,10 @@ export const TourInventoryHeader = ({ statusFilter, onFilterChange, onCreateClic
     </Flex>
   );
 };
+
+
+
+
+
+
+

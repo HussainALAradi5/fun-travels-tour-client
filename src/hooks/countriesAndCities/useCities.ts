@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { cityService } from "@/Api/City";
-import type { City } from "@/interface";
+import type { City } from "@/interface/geography/City";
 
 export function useCities(countryId?: string | null) {
   const [cities, setCities] = useState<City[]>([]);
@@ -28,3 +28,4 @@ export function useCities(countryId?: string | null) {
 
   return { cities, loading, fetchCities };
 }
+

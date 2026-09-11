@@ -33,9 +33,11 @@ import {
 import { StatusLegend } from "@/components/ui/Custom/StatusLegend";
 import { transportationService } from "@/Api/tourmanagement/Transportation";
 import { toaster } from "@/components/ui/toaster";
-import type { Transportation } from "@/interface";
+import type { Transportation } from "@/interface/tour/Transportation";
 import type { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
 import { TransportationStatusSidebar } from "./TransportationStatusSidebar";
+
+import type { AxiosError } from "@/interface/common/AxiosError";
 
 export const TransportationDetails = () => {
   const { id } = useParams();
@@ -50,7 +52,7 @@ export const TransportationDetails = () => {
     try {
       const data = await transportationService.getById(Number(id));
       setTransport(data);
-    } catch (error) {
+    } catch (error: unknown) {
       toaster.create({
         title: "Error fetching unit details",
         type: "error",
@@ -74,10 +76,11 @@ export const TransportationDetails = () => {
         type: "success",
       });
       await loadTransport(); // Refresh data to update sidebar and badges
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
       toaster.create({
         title: "Update failed",
-        description: error.response?.data?.message || "Check business rules.",
+        description: axiosError.response?.data?.message || "Check business rules.",
         type: "error",
       });
     }
@@ -259,4 +262,3 @@ export const TransportationDetails = () => {
     </Box>
   );
 };
-

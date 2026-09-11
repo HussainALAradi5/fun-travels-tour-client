@@ -5,6 +5,9 @@ import type { TourReservation } from './TourReservation';
 import type { MealPlan } from './MealPlan';
 import type { Country } from '../geography/Country';
 import type { City } from '../geography/City';
+import type { Agency } from '../agency/Agency';
+import type { AgencyBranch } from '../agency/AgencyBranch';
+import type { User } from '../user/User';
 
 export interface Tour {
   id?: number;
@@ -25,34 +28,18 @@ export interface Tour {
   startCity?: Partial<City>;
   endCity?: Partial<City>;
   destinationCountries?: Partial<Country>[];
-  agency?: { id?: number; agencyName?: string };
-  agencyBranch?: { id?: number; branchName?: string };
+  agency?: Partial<Agency>;
+  agencyBranch?: Partial<AgencyBranch>;
   tickets?: Ticket[];
   reservations?: TourReservation[];
-  createdBy?: { id?: number; name?: string };
-  updatedBy?: { id?: number; name?: string };
+  createdBy?: Partial<User>;
+  updatedBy?: Partial<User>;
   createdAt?: string;
   updatedAt?: string;
   basePrice: number;
   discountPrice: number;
   totalPrice?: number;
   availableMeals?: MealPlan[];
-}
-
-export interface TourStatsProps {
-  tours: Tour[];
-}
-
-export interface TourHeaderProps {
-  statusFilter: string[];
-  onFilterChange: (values: string[]) => void;
-  onCreateClick: () => void;
-}
-
-export interface TourTableProps {
-  data: Tour[];
-  isLoading: boolean;
-  onViewDetails: (id: string) => void;
 }
 
 export const DEFAULT_TOUR: Partial<Tour> = {

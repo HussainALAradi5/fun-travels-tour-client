@@ -1,4 +1,4 @@
-import type { User } from "@/interface";
+import type { User } from "@/interface/user/User";
 import * as XLSX from "xlsx";
 
 const DEFAULT_USER: Partial<User> = {
@@ -48,3 +48,4 @@ export const mapExcelToUsers = (file: File): Promise<User[]> => {
     reader.readAsArrayBuffer(file);
   });
 };
+

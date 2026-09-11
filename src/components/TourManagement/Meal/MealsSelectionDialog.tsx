@@ -2,15 +2,7 @@ import { VStack, Button } from "@chakra-ui/react";
 import { Utensils } from "lucide-react";
 import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
 import { MealSelectionList } from "./MealSelectionList";
-import type { MealPlan } from "@/interface";
-
-interface MealsSelectionDialogProps {
-  open: boolean;
-  onClose: () => void;
-  availableMeals: MealPlan[];
-  selectedMeals: MealPlan[];
-  onToggleMeal: (meal: MealPlan) => void;
-}
+import type { MealsSelectionDialogProps } from "@/interface/props/tour/MealsSelectionDialogProps";
 
 export const MealsSelectionDialog = ({ 
   open, 
@@ -47,3 +39,4 @@ export const MealsSelectionDialog = ({
     </GenericDialog>
   );
 };
+

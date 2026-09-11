@@ -1,4 +1,8 @@
 import type { UserType } from '../../enums/UserType';
+import type { Country } from '../geography/Country';
+import type { City } from '../geography/City';
+import type { User } from '../user/User';
+import type { AgencyBranch } from './AgencyBranch';
 
 export interface Agency {
   id?: number;
@@ -9,18 +13,18 @@ export interface Agency {
   countryId?: number;
   cityId?: number;
   agencyOwnerId?: number;
-  country?: { id?: number; famousName?: string };
-  city?: { id?: number; name?: string };
-  agencyOwner?: { id?: number; name?: string; email?: string };
+  country?: Partial<Country>;
+  city?: Partial<City>;
+  agencyOwner?: Partial<User>;
   branches?: AgencyBranch[];
   userType: UserType;
   active: boolean;
 }
 
-interface AgencyBranch {
-  id?: number;
-  branchName: string;
-  branchAddress: string;
-  contactNumber: string;
-  active: boolean;
-}
+export const DEFAULT_AGENCY: Partial<Agency> = {
+  agencyName: "",
+  address: "",
+  contactNumber: "",
+  ownerMobileNumber: "",
+  active: true,
+};

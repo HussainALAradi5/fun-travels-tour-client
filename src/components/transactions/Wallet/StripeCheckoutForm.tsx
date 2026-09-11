@@ -4,13 +4,8 @@ import { ChevronRight } from "lucide-react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { toaster } from "@/components/ui/toaster";
 import { useWallet } from "@/hooks/useWallet";
-
-interface StripeCheckoutFormProps {
-  amount: string;
-  method: string;
-  onSuccess: () => void;
-  onClose: () => void;
-}
+import type { StripeCheckoutFormProps } from "@/interface/props/booking/StripeCheckoutFormProps";
+import type { PaymentMethod } from "@/enums/payment/PaymentMethod";
 
 export const StripeCheckoutForm = ({ amount, method, onSuccess, onClose }: StripeCheckoutFormProps) => {
   const stripe = useStripe();
@@ -66,11 +61,11 @@ export const StripeCheckoutForm = ({ amount, method, onSuccess, onClose }: Strip
 
     try {
       console.log("Calling Backend API via useWallet hook...");
-      await handleTopUp(val, method as any, gatewayToken);
+      await handleTopUp(val, method as PaymentMethod, gatewayToken);
       console.log("✅ Full Flow Completed. Closing Modal & Triggering Success Callback.");
       onSuccess();
       onClose();
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("❌ Full Flow Failed at Backend Stage.");
     } finally {
       console.groupEnd(); // End the visual grouping

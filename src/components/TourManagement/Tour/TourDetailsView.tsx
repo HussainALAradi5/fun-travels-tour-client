@@ -3,7 +3,8 @@ import { Box, SimpleGrid, useDisclosure, Grid } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { MapPin, Navigation } from "lucide-react"; 
 
-import type { Tour, Ticket } from "@/interface";
+import type { Tour } from "@/interface/tour/Tour";
+import type { Ticket } from "@/interface/tour/Ticket";
 import { GenericStatus } from "@/enums/GenericStatus";
 import { floatIn } from "@/utilities/Animations";
 
@@ -17,10 +18,7 @@ import { TourEventLogDetailView } from "./TourDetails/TourEventLogDetailView";
 
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import { ticketService } from "@/Api/tourmanagement/Ticket";
-
-interface TourDetailViewProps {
-  tour: Tour;
-}
+import type { TourDetailViewProps } from "@/interface/props/tour/TourDetailViewProps";
 
 export const TourDetailView = ({ tour: initialTour }: TourDetailViewProps) => {
   const navigate = useNavigate();
@@ -136,3 +134,7 @@ export const TourDetailView = ({ tour: initialTour }: TourDetailViewProps) => {
     </Box>
   );
 };
+
+
+
+
