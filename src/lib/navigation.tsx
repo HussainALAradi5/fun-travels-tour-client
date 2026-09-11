@@ -2,21 +2,24 @@
 
 import NextLink from "next/link";
 import { useParams as useNextParams, usePathname, useRouter } from "next/navigation";
-import type { ComponentProps } from "react";
+import { useCallback, type ComponentProps } from "react";
 
 export function useNavigate() {
   const router = useRouter();
 
-  return (destination: string | number, options?: { replace?: boolean }) => {
-    if (typeof destination === "number") {
-      if (destination < 0) router.back();
-      else if (destination > 0) router.forward();
-      return;
-    }
+  return useCallback(
+    (destination: string | number, options?: { replace?: boolean }) => {
+      if (typeof destination === "number") {
+        if (destination < 0) router.back();
+        else if (destination > 0) router.forward();
+        return;
+      }
 
-    if (options?.replace) router.replace(destination);
-    else router.push(destination);
-  };
+      if (options?.replace) router.replace(destination);
+      else router.push(destination);
+    },
+    [router],
+  );
 }
 
 export function useLocation() {

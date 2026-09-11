@@ -26,7 +26,9 @@ const COLUMNS: Column<User>[] = [
     render: (emp) => (
       <HStack gap={3}>
         <Avatar.Root size="sm">
-          <Avatar.Image src={userService.getProfileImageUrl(emp.profileImageUrl)} />
+          {emp.profileImageUrl && (
+            <Avatar.Image src={userService.getProfileImageUrl(emp.profileImageUrl)} />
+          )}
           <Avatar.Fallback name={emp.name} />
         </Avatar.Root>
         <VStack align="start" gap={0}>

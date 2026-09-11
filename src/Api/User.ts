@@ -126,8 +126,8 @@ export const userService = {
     return response.data.data;
   },
 
-  getProfileImageUrl: (imagePath: string | null): string => {
-    if (!imagePath) return "/default-avatar.png";
+  getProfileImageUrl: (imagePath: string | null): string | undefined => {
+    if (!imagePath?.trim()) return undefined;
     if (imagePath.startsWith("http")) return imagePath;
     const backendBase = "http://localhost:8080";
     return `${backendBase}${imagePath}`;

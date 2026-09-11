@@ -73,7 +73,9 @@ export const ProfileView = () => {
         <HStack justify="space-between" align="flex-end" wrap="wrap" gap={6}>
           <HStack gap={6} align="center">
             <Avatar.Root size="2xl" shape="rounded" borderWidth="4px" borderColor="bg.panel" boxShadow="xl">
-              <Avatar.Image src={userService.getProfileImageUrl(user.profileImageUrl)} />
+              {user.profileImageUrl && (
+                <Avatar.Image src={userService.getProfileImageUrl(user.profileImageUrl)} />
+              )}
               <Avatar.Fallback name={user.name} />
             </Avatar.Root>
             <VStack align="start" gap={1}>
