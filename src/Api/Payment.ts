@@ -4,6 +4,8 @@ import type { Payment } from "@/interface/payment/Payment";
 import type { TourReservation } from "@/interface/tour/TourReservation";
 import type { PaymentMethod } from "@/enums/payment/PaymentMethod";
 import type { PaymentFilterParams } from "@/interface/payment/PaymentFilterParams";
+import type { PageResponse } from "@/interface/common/PageResponse";
+import { extractData } from "@/utilities/apiHelper";
 
 export const paymentService = {
   execute: async (reservationId: number, method: PaymentMethod): Promise<TourReservation> => {
@@ -15,11 +17,11 @@ export const paymentService = {
     return response.data.data;
   },
 
-  filter: async (params: PaymentFilterParams = {}): Promise<Payment[]> => {
-    const response = await apiClient.get<ApiResponse<Payment[]>>("/payments/filter", {
+  getAll: async (params: PaymentFilterParams = {}): Promise<PageResponse<Payment>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<Payment>>>("/payments", {
       params,
     });
-    return response.data.data;
+    return extractData(response.data);
   },
 
   getById: async (id: number): Promise<Payment> => {

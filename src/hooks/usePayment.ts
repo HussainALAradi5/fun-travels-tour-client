@@ -13,8 +13,8 @@ export function usePayment(paymentId?: number) {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await paymentService.filter(params);
-      setPayments(res);
+      const res = await paymentService.getAll(params);
+      setPayments(res.content);
     } catch (cause) {
       setError(cause instanceof Error ? cause : new Error("Unable to load payments"));
     } finally {

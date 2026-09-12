@@ -23,8 +23,8 @@ export function useTransaction(param?: string | number) {
   const fetchTransactions = useCallback(async (params = {}) => {
     setIsLoading(true);
     try {
-      const res = await transactionService.filter(params);
-      setTransactions(res);
+      const res = await transactionService.getAll(params);
+      setTransactions(res.content);
     } finally {
       setIsLoading(false);
     }
@@ -36,9 +36,8 @@ export function useTransaction(param?: string | number) {
   useEffect(() => {
     if (param) {
       setIsLoading(true);
-      transactionService
-        .getById(Number(param))
-        .then(setTransaction)
+      transactionService.getAll({ search: String(param), size: 100 })
+        .then((page) => setTransaction(page.content.find((item) => item.id === Number(param)) ?? null))
         .finally(() => setIsLoading(false));
     } else {
       fetchTransactions();

@@ -2,14 +2,17 @@ import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interface/common/ApiResponse";
 import type { Transportation } from "@/interface/tour/Transportation";
 import type { TransportationFilterParams } from "@/interface/tour/TransportationFilterParams";
+import type { PageResponse } from "@/interface/common/PageResponse";
+import type { PaginationParams } from "@/interface/common/PaginationParams";
+import { extractData } from "@/utilities/apiHelper";
 
 export const transportationService = {
-  getAll: async (): Promise<Transportation[]> => {
+  getAll: async (params: PaginationParams = {}): Promise<PageResponse<Transportation>> => {
     const response =
-      await apiClient.get<ApiResponse<Transportation[]>>(
-        "/transportations",
+      await apiClient.get<ApiResponse<PageResponse<Transportation>>>(
+        "/transportations", { params },
       );
-    return response.data.data as unknown as Transportation[];
+    return extractData(response.data);
   },
 
   getById: async (id: number): Promise<Transportation> => {
@@ -51,11 +54,11 @@ export const transportationService = {
     return response.data.data as unknown as Transportation;
   },
 
-  filter: async (params: TransportationFilterParams): Promise<Transportation[]> => {
-    const response = await apiClient.get<ApiResponse<Transportation[]>>(
-      "/transportations/filter",
+  search: async (params: TransportationFilterParams = {}): Promise<PageResponse<Transportation>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<Transportation>>>(
+      "/transportations/search",
       { params },
     );
-    return response.data.data as unknown as Transportation[];
+    return extractData(response.data);
   },
 };

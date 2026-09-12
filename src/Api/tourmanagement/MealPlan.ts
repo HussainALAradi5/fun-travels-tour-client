@@ -1,19 +1,22 @@
 import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interface/common/ApiResponse";
 import type { MealPlan } from "@/interface/tour/MealPlan";
+import type { PageResponse } from "@/interface/common/PageResponse";
+import type { PaginationParams } from "@/interface/common/PaginationParams";
+import { extractData } from "@/utilities/apiHelper";
 
 export const mealPlanService = {
-  getAll: async (): Promise<MealPlan[]> => {
+  getAll: async (params: PaginationParams = {}): Promise<PageResponse<MealPlan>> => {
     const response =
-      await apiClient.get<ApiResponse<MealPlan[]>>("/meals");
-    return response.data.data as unknown as MealPlan[];
+      await apiClient.get<ApiResponse<PageResponse<MealPlan>>>("/meals", { params });
+    return extractData(response.data);
   },
 
-  getAgencyCatalog: async (agencyId: number): Promise<MealPlan[]> => {
-    const response = await apiClient.get<ApiResponse<MealPlan[]>>(
-      `/meals/agency/${agencyId}`,
+  getAgencyCatalog: async (agencyId: number, params: PaginationParams = {}): Promise<PageResponse<MealPlan>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<MealPlan>>>(
+      `/meals/agency/${agencyId}`, { params },
     );
-    return response.data.data as unknown as MealPlan[];
+    return extractData(response.data);
   },
 
   create: async (mealPlan: Partial<MealPlan>): Promise<MealPlan> => {

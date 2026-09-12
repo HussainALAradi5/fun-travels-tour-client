@@ -3,12 +3,15 @@ import type { ApiResponse } from "@/interface/common/ApiResponse";
 import type { TourReservation } from "@/interface/tour/TourReservation";
 import type { GenericStatus } from "@/enums/GenericStatus";
 import type { ReservationFilterParams } from "@/interface/tour/ReservationFilterParams";
+import type { PageResponse } from "@/interface/common/PageResponse";
+import type { PaginationParams } from "@/interface/common/PaginationParams";
+import { extractData } from "@/utilities/apiHelper";
 
 export const reservationService = {
-  getAll: async (): Promise<TourReservation[]> => {
+  getAll: async (params: PaginationParams = {}): Promise<PageResponse<TourReservation>> => {
     const response =
-      await apiClient.get<ApiResponse<TourReservation[]>>("/reservations");
-    return response.data.data as unknown as TourReservation[];
+      await apiClient.get<ApiResponse<PageResponse<TourReservation>>>("/reservations", { params });
+    return extractData(response.data);
   },
 
   getById: async (id: number): Promise<TourReservation> => {
@@ -47,11 +50,11 @@ export const reservationService = {
     return response.data.data as unknown as TourReservation;
   },
 
-  filter: async (params: ReservationFilterParams): Promise<TourReservation[]> => {
-    const response = await apiClient.get<ApiResponse<TourReservation[]>>(
-      "/reservations/filter",
+  search: async (params: ReservationFilterParams = {}): Promise<PageResponse<TourReservation>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<TourReservation>>>(
+      "/reservations/search",
       { params },
     );
-    return response.data.data as unknown as TourReservation[];
+    return extractData(response.data);
   },
 };

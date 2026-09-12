@@ -38,16 +38,14 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
 
   useEffect(() => {
     if (tour?.transportation?.id) {
-      seatService.filter({ transportId: tour.transportation.id })
-        .then((res: Seat[] | { data: Seat[] }) => {
-           const responseArray = Array.isArray(res) ? res : ((res as { data: Seat[] }).data || []);
-           setSeats(responseArray.flat());
+      seatService.search({ transportId: tour.transportation.id, size: 100 })
+        .then((res) => {
+           setSeats(res.content);
         })
         .finally(() => setSeatsLoading(false));
     }
-    mealPlanService.getAll().then((res: MealPlan[] | { data: MealPlan[] }) => {
-      const meals = Array.isArray(res) ? res : ((res as { data: MealPlan[] }).data || []);
-      setAvailableMeals(meals);
+    mealPlanService.getAll({ size: 100 }).then((res) => {
+      setAvailableMeals(res.content);
     });
   }, [tour?.transportation?.id]);
   const handleAddGuest = () => {

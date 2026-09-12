@@ -50,7 +50,7 @@ export const EditTour = () => {
         const [tour, countriesResponse, transportsResponse] = await Promise.all([
           tourService.getById(Number(id)),
           countryService.getAllCountries(),
-          transportationService.filter({})
+          transportationService.search({ size: 100 })
         ]);
 
         if (tour.status !== GenericStatus.PENDING) {
@@ -58,7 +58,7 @@ export const EditTour = () => {
           return;
         }
         setCountries(mapToOptions(countriesResponse));
-        const rawTransports = Array.isArray(transportsResponse) ? transportsResponse : ((transportsResponse as { data: Transportation[] })?.data || []);
+        const rawTransports = transportsResponse.content;
         setTransports(rawTransports.map((t: Transportation) => ({
           label: `${t.providerName} (${t.type})`,
           value: String(t.id)

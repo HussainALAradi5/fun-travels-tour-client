@@ -5,11 +5,14 @@ import type { TourCreateRequest } from "@/interface/tour/TourCreateRequest";
 import type { GenericStatus } from "@/enums/GenericStatus";
 import type { TourFilterParams } from "@/interface/tour/TourFilterParams";
 import type { TourCatalogParams } from "@/interface/tour/TourCatalogParams";
+import type { PageResponse } from "@/interface/common/PageResponse";
+import type { PaginationParams } from "@/interface/common/PaginationParams";
+import { extractData } from "@/utilities/apiHelper";
 
 export const tourService = {
-  getAll: async (): Promise<Tour[]> => {
-    const response = await apiClient.get<ApiResponse<Tour[]>>("/tours");
-    return response.data.data as unknown as Tour[];
+  getAll: async (params: PaginationParams = {}): Promise<PageResponse<Tour>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<Tour>>>("/tours", { params });
+    return extractData(response.data);
   },
 
   getById: async (id: number): Promise<Tour> => {
@@ -49,19 +52,19 @@ export const tourService = {
     return response.data.data as unknown as Tour;
   },
 
-  filter: async (params: TourFilterParams): Promise<Tour[]> => {
-    const response = await apiClient.get<ApiResponse<Tour[]>>(
-      "/tours/filter",
+  search: async (params: TourFilterParams = {}): Promise<PageResponse<Tour>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<Tour>>>(
+      "/tours/search",
       { params },
     );
-    return response.data.data as unknown as Tour[];
+    return extractData(response.data);
   },
 
-  getCatalog: async (params: TourCatalogParams): Promise<Tour[]> => {
-    const response = await apiClient.get<ApiResponse<Tour[]>>(
+  getCatalog: async (params: TourCatalogParams = {}): Promise<PageResponse<Tour>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<Tour>>>(
       "/tours/catalog",
       { params },
     );
-    return response.data.data as unknown as Tour[];
+    return extractData(response.data);
   },
 };

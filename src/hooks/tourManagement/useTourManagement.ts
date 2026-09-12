@@ -50,8 +50,8 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
   const fetchTours = useCallback(async (params: Record<string, string | number | boolean> = {}) => {
     setIsLoading(true);
     try {
-      const res = await tourService.filter(params);
-      setTours(res || []);
+      const res = await tourService.search(params);
+      setTours(res.content);
     } finally {
       setIsLoading(false);
     }
@@ -61,7 +61,7 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
     setIsLoading(true);
     try {
       const res = await tourService.getCatalog(params);
-      setTours(res || []);
+      setTours(res.content);
     } finally {
       setIsLoading(false);
     }
@@ -70,9 +70,9 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
   const fetchMeals = useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await mealPlanService.getAll();
-      setMeals(res || []);
-      if (!param) setData((res as unknown as Tour[]) || []);
+      const res = await mealPlanService.getAll({ size: 100 });
+      setMeals(res.content);
+      if (!param) setData(res.content as unknown as Tour[]);
     } finally {
       setIsLoading(false);
     }
@@ -82,8 +82,8 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
     if (!transportId) return;
     setIsLoading(true);
     try {
-      const res = await seatService.filter({ transportId });
-      setSeats(res || []);
+      const res = await seatService.search({ transportId, size: 100 });
+      setSeats(res.content);
     } finally {
       setIsLoading(false);
     }
@@ -92,8 +92,8 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
   const fetchTransportation = useCallback(async (params: Record<string, string | number | boolean> = {}) => {
     setIsLoading(true);
     try {
-      const res = await transportationService.filter(params);
-      setTransportation(res || []);
+      const res = await transportationService.search(params);
+      setTransportation(res.content);
     } finally {
       setIsLoading(false);
     }
@@ -104,8 +104,9 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
       setLoading(true);
       try {
         const res = await param();
-        if (Array.isArray(res)) {
-          setData(res as Tour[]);
+        if (Array.isArray(res)) setData(res as Tour[]);
+        else if (res && typeof res === "object" && "content" in res) {
+          setData((res as { content: Tour[] }).content);
         }
       } catch (err) {
         console.error("Resource fetch error:", err);
@@ -177,12 +178,6 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
   const handleConfirmTicket = (id: number) =>
     execute(ticketService.confirm(id), "Ticket Confirmed", "The ticket is now officially confirmed.");
 
-  const handleBookTour = async (ticketData: Partial<Ticket>) => {
-    if (!currentUser?.id) throw new Error("No authenticated user found.");
-    const payload = { ...ticketData, customer: ticketData.customer || ({ id: currentUser.id } as User) };
-    return execute(ticketService.create(payload as never), "Booking Confirmed!", "Ticket issued successfully.");
-  };
-
   const handleCreateReservation = async (reservationData: Partial<TourReservation>) => {
     if (!currentUser?.id) throw new Error("No authenticated user found.");
     const payload = { ...reservationData, user: reservationData.user || ({ id: currentUser.id } as User) };
@@ -228,7 +223,6 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
     handleUpdateTransportStatus,
     handleUpdateTransportation,
     handleUpdateSeat,
-    handleBookTour,
     handleCreateReservation,
     calculateEndDate,
     handleUpdateTicketStatus,

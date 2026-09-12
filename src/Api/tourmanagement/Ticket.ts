@@ -3,12 +3,15 @@ import type { ApiResponse } from "@/interface/common/ApiResponse";
 import type { Ticket } from "@/interface/tour/Ticket";
 import type { GenericStatus } from "@/enums/GenericStatus";
 import type { TicketFilterParams } from "@/interface/tour/TicketFilterParams";
+import type { PageResponse } from "@/interface/common/PageResponse";
+import type { PaginationParams } from "@/interface/common/PaginationParams";
+import { extractData } from "@/utilities/apiHelper";
 
 export const ticketService = {
-  getAll: async (): Promise<Ticket[]> => {
+  getAll: async (params: PaginationParams = {}): Promise<PageResponse<Ticket>> => {
     const response =
-      await apiClient.get<ApiResponse<Ticket[]>>("/tickets");
-    return response.data.data as unknown as Ticket[];
+      await apiClient.get<ApiResponse<PageResponse<Ticket>>>("/tickets", { params });
+    return extractData(response.data);
   },
 
   getById: async (id: number): Promise<Ticket> => {
@@ -18,20 +21,12 @@ export const ticketService = {
     return response.data.data as unknown as Ticket;
   },
 
-  create: async (ticket: Partial<Ticket>): Promise<Ticket> => {
-    const response = await apiClient.post<ApiResponse<Ticket>>(
-      "/tickets",
-      ticket,
-    );
-    return response.data.data as unknown as Ticket;
-  },
-
-  filter: async (params: TicketFilterParams): Promise<Ticket[]> => {
-    const response = await apiClient.get<ApiResponse<Ticket[]>>(
-      "/tickets/filter",
+  search: async (params: TicketFilterParams = {}): Promise<PageResponse<Ticket>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<Ticket>>>(
+      "/tickets/search",
       { params },
     );
-    return response.data.data as unknown as Ticket[];
+    return extractData(response.data);
   },
 
   updateStatus: async (id: number, status: GenericStatus): Promise<Ticket> => {

@@ -34,8 +34,8 @@ export const TourDetailView = ({ tour: initialTour }: TourDetailViewProps) => {
 
   useEffect(() => {
     if (initialTour?.id) {
-      ticketService.filter({ tourId: initialTour.id })
-        .then((res: Ticket[]) => setTourTickets(res || []))
+      ticketService.search({ tourId: initialTour.id, size: 100 })
+        .then((res) => setTourTickets(res.content))
         .catch((err) => console.error("Failed to load passenger tickets:", err));
     }
   }, [initialTour.id]);

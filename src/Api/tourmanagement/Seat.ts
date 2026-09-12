@@ -2,11 +2,14 @@ import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interface/common/ApiResponse";
 import type { Seat } from "@/interface/tour/Seat";
 import type { SeatFilterParams } from "@/interface/tour/SeatFilterParams";
+import type { PageResponse } from "@/interface/common/PageResponse";
+import type { PaginationParams } from "@/interface/common/PaginationParams";
+import { extractData } from "@/utilities/apiHelper";
 
 export const seatService = {
-  getAll: async (): Promise<Seat[]> => {
-    const response = await apiClient.get<ApiResponse<Seat[]>>("/seats");
-    return response.data.data as unknown as Seat[];
+  getAll: async (params: PaginationParams = {}): Promise<PageResponse<Seat>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<Seat>>>("/seats", { params });
+    return extractData(response.data);
   },
 
   getById: async (id: number): Promise<Seat> => {
@@ -16,12 +19,12 @@ export const seatService = {
     return response.data.data as unknown as Seat;
   },
 
-  filter: async (params: SeatFilterParams): Promise<Seat[]> => {
-    const response = await apiClient.get<ApiResponse<Seat[]>>(
-      "/seats/filter",
+  search: async (params: SeatFilterParams): Promise<PageResponse<Seat>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<Seat>>>(
+      "/seats/search",
       { params },
     );
-    return response.data.data as unknown as Seat[];
+    return extractData(response.data);
   },
 
   update: async (id: number, data: Partial<Seat>): Promise<Seat> => {

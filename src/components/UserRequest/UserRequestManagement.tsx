@@ -29,7 +29,7 @@ export const UserRequestManager = () => {
         type: filters.type as UserRequestType,
         status: filters.status as UserRequestStatus
       });
-      setData(res || []);
+      setData(res.content);
     } finally {
       setLoading(false);
     }
