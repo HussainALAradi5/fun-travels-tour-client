@@ -36,8 +36,8 @@ export function useTransaction(param?: string | number) {
   useEffect(() => {
     if (param) {
       setIsLoading(true);
-      transactionService.getAll({ search: String(param), size: 100 })
-        .then((page) => setTransaction(page.content.find((item) => item.id === Number(param)) ?? null))
+      transactionService.getById(Number(param))
+        .then(setTransaction)
         .finally(() => setIsLoading(false));
     } else {
       fetchTransactions();

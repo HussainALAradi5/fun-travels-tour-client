@@ -6,6 +6,7 @@ import type { ReservationFilterParams } from "@/interface/tour/ReservationFilter
 import type { PageResponse } from "@/interface/common/PageResponse";
 import type { PaginationParams } from "@/interface/common/PaginationParams";
 import { extractData } from "@/utilities/apiHelper";
+import type { ReservationPayload } from "@/interface/tour/ReservationPayload";
 
 export const reservationService = {
   getAll: async (params: PaginationParams = {}): Promise<PageResponse<TourReservation>> => {
@@ -22,7 +23,7 @@ export const reservationService = {
   },
 
   create: async (
-    reservation: Partial<TourReservation>,
+    reservation: ReservationPayload,
   ): Promise<TourReservation> => {
     const response = await apiClient.post<ApiResponse<TourReservation>>(
       "/reservations",

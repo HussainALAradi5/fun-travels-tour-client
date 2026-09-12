@@ -17,6 +17,7 @@ export interface TourReservation {
   status: GenericStatus;
   tickets?: Ticket[];
   bookingDate?: string;
+  holdExpiresAt?: string | null;
 }
 
 export const DEFAULT_RESERVATION: Partial<TourReservation> = {

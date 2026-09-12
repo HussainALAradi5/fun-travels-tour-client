@@ -23,7 +23,7 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 || error.response?.status === 403) {
+    if (error.response?.status === 401) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     }
@@ -32,7 +32,7 @@ apiClient.interceptors.response.use(
     if (!isAuthEndpoint) {
       const cleanMessage = reflectApiError(error);
       toaster.create({
-        title: "Operation Failed",
+        title: error.response?.status === 403 ? "Permission Denied" : "Unable to Complete Request",
         description: cleanMessage,
         type: "error",
       });

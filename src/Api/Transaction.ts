@@ -11,6 +11,11 @@ export const transactionService = {
     return extractData(response.data);
   },
 
+  getById: async (id: number): Promise<Transaction> => {
+    const response = await apiClient.get<ApiResponse<Transaction>>(`/transactions/${id}`);
+    return extractData(response.data);
+  },
+
   manualCredit: async (userId: number, amount: number, description: string): Promise<Transaction> => {
     const response = await apiClient.post<ApiResponse<Transaction>>(
       `/transactions/manual-credit/${userId}`,

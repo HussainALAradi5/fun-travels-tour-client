@@ -4,6 +4,8 @@ import type { Tour } from "@/interface/tour/Tour";
 import type { Guest } from "@/interface/common/Guest";
 import { useNavigate } from "@/lib/navigation";
 import { toaster } from "@/components/ui/toaster";
+import { reservationService } from "@/Api/tourmanagement/TourReservation";
+import { reflectApiError } from "@/utilities/apiErrorHandler";
 
 export function useBookingCheckout(tour: Tour | null) {
   const navigate = useNavigate();
@@ -11,7 +13,7 @@ export function useBookingCheckout(tour: Tour | null) {
   const [loading, setLoading] = useState(false);
 
   const buildReservationPayload = useCallback((guests: Guest[]) => {
-    if (!tour || !currentUser) return null;
+    if (!tour?.id || !currentUser?.id) return null;
     return {
       tour: { id: tour.id },
       user: { id: currentUser.id },
@@ -26,21 +28,12 @@ export function useBookingCheckout(tour: Tour | null) {
       const payload = buildReservationPayload(guests);
       if (!payload) throw new Error("Invalid booking data");
 
-      const response = await fetch(`http://localhost:8080/api/reservations`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) throw new Error("Booking failed");
+      await reservationService.create(payload);
 
       toaster.create({ title: "Booking Confirmed!", description: "Your reservation has been created.", type: "success" });
       navigate("/my-bookings");
     } catch (error) {
-      toaster.create({ title: "Booking Failed", description: error instanceof Error ? error.message : "Unknown error", type: "error" });
+      toaster.create({ title: "Booking Failed", description: reflectApiError(error), type: "error" });
     } finally {
       setLoading(false);
     }
