@@ -34,8 +34,6 @@ export function usePayment(paymentId?: number) {
           setError(cause instanceof Error ? cause : new Error("Unable to load payment"));
         })
         .finally(() => setIsLoading(false));
-    } else {
-      fetchPayments();
     }
   }, [paymentId, fetchPayments]);
 

@@ -1,9 +1,19 @@
 import type { GenericStatus } from "@/enums/GenericStatus";
 import type { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
 import type { TransportationType } from "@/enums/tourmanagement/TransportationType";
-import type { GenericFilterParams } from "@/interface/common/GenericFilterParams";
+import type { FilterInterface } from "@/interface/common/FilterInterface";
 
-export interface TransportationFilterParams extends GenericFilterParams<string, GenericStatus> {
+export type TransportationSortField =
+  | "id"
+  | "transportationNumber"
+  | "code"
+  | "providerName"
+  | "type"
+  | "unitStatus";
+
+export interface TransportationFilterParams extends FilterInterface {
+  sortBy?: TransportationSortField;
+  status?: GenericStatus;
   type?: TransportationType;
   unitStatus?: TransportationStatus;
   keyword?: string;

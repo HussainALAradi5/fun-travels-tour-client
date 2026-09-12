@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Badge, Box, Button, Code, Heading, HStack, Text, VStack } from "@chakra-ui/react";
-import { ArrowLeft, CalendarDays, Check, CircleDollarSign, Inbox, Plane } from "lucide-react";
+import { Badge, Box, Button, Code, Heading, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import { ArrowLeft, CalendarDays, Check, CircleDollarSign, ClipboardCheck, Inbox, MapPin, Plane, QrCode } from "lucide-react";
 import { AlertComponent } from "@/components/ui/Custom/AlertComponent";
 import { CapacityProgress } from "@/components/ui/Custom/CapacityProgress";
 import { ContentCard } from "@/components/ui/Custom/ContentCard";
@@ -24,6 +24,8 @@ import type { ProgressVariant } from "@/enums/ProgressVariant";
 import { ProgressType } from "@/enums/ProgressType";
 import type { ComponentShowcaseDetailPageProps } from "@/interface/props/showcase/ComponentShowcaseDetailPageProps";
 import type { DateRange } from "@/interface/common/DateRange";
+import { GuidedStepsDialog } from "@/components/ui/Custom/Dialogs/GuidedStepsDialog";
+import { DarkMode, LightMode } from "@/components/ui/color-mode";
 
 export default function ComponentShowcaseDetailPage({ item }: ComponentShowcaseDetailPageProps) {
   const [alertVisible, setAlertVisible] = useState(true);
@@ -39,7 +41,7 @@ export default function ComponentShowcaseDetailPage({ item }: ComponentShowcaseD
       case "alert": return alertVisible ? <AlertComponent variant={variant as ComponentVariant} status="success" title="Saved successfully" description="This alert can include actions and can be dismissed." isClosable onClose={() => setAlertVisible(false)} /> : <Button onClick={() => setAlertVisible(true)}>Show alert</Button>;
       case "capacity-progress": return <VStack align="stretch" gap={8}><Box><Text fontSize="sm" fontWeight="semibold" mb={3}>Selected preview</Text><CapacityProgress variant={variant as ProgressVariant} type={progressType} value={34} total={50} unit="seats" showPercentage showStatusText /></Box>{item.progressTypes && <Box><Text fontSize="sm" fontWeight="semibold" mb={3}>All progress types</Text><ProgressTypeGallery types={item.progressTypes} variant={variant as ProgressVariant} /></Box>}</VStack>;
       case "content-card": return <ContentCard variant={variant as ComponentVariant} header={<Heading size="md">Tour summary</Heading>} footer={<Text fontSize="sm">Updated just now</Text>}><InfoItem icon={Plane} label="Destination" value="Bahrain" /></ContentCard>;
-      case "date-picker": return <VStack align="stretch"><DatePicker label="Travel dates" range={dateRange} onRangeChange={setDateRange} minDate={new Date()} /><Text fontSize="sm" color="fg.muted">From: {dateRange.from || "not selected"} · To: {dateRange.to || "not selected"}</Text></VStack>;
+      case "date-picker": return <VStack align="stretch" gap={5}><SimpleGrid columns={{ base: 1, md: 2 }} gap={4}><LightMode><Box p={4} bg="white" borderRadius="xl"><Text mb={3} fontWeight="bold">Light preview</Text><DatePicker label="Travel dates" range={dateRange} onRangeChange={setDateRange} minDate={new Date()} /></Box></LightMode><DarkMode><Box p={4} bg="gray.950" borderRadius="xl"><Text mb={3} fontWeight="bold">Dark preview</Text><DatePicker label="Travel dates" range={dateRange} onRangeChange={setDateRange} minDate={new Date()} /></Box></DarkMode></SimpleGrid><Text fontSize="sm" color="fg.muted">From: {dateRange.from || "not selected"} · To: {dateRange.to || "not selected"}</Text></VStack>;
       case "empty-state": return <EmptyState variant={variant as ComponentVariant} icon={Inbox} title="No tours found" description="Adjust the filters or create the first tour." action={<Button size="sm">Create tour</Button>} />;
       case "hero": return <Hero title="Explore Bahrain" subtitle="A reusable responsive hero demonstration." buttonText="Explore" onActionClick={() => undefined} />;
       case "metric-card": return <MetricCard variant={variant as ComponentVariant} icon={CircleDollarSign} label="Revenue" value="BHD 12,480" helperText="12% above last month" colorPalette="green" />;
@@ -47,6 +49,7 @@ export default function ComponentShowcaseDetailPage({ item }: ComponentShowcaseD
       case "status-legend": return <StatusLegend title="Tour status" colorMap={{ ACTIVE: "green", PENDING: "orange", CANCELLED: "red" }} />;
       case "status-workflow": return <StatusWorkflow currentStatus={status} steps={[ShowcaseDemoStatus.PENDING, ShowcaseDemoStatus.CONFIRMED, ShowcaseDemoStatus.COMPLETED]} statusMap={{ pending: { label: "Pending", colorPalette: "orange", icon: CalendarDays }, confirmed: { label: "Confirmed", colorPalette: "blue", icon: Check }, completed: { label: "Completed", colorPalette: "green", icon: Check } }} onStatusChange={async (next) => setStatus(next)} />;
       case "unified-filter-bar": return <UnifiedFilterBar searchLabel="Search tours" searchValue={search} onSearchTrigger={setSearch} options={[{ label: "All statuses", value: "" }, { label: "Active", value: "active" }]} onReset={() => setSearch("")} count={8} />;
+      case "guided-steps-dialog": return <GuidedStepsDialog title="Before your tour" description="A generic guide rendered from configuration." triggerLabel="Open instructions" steps={[{ id: "review", title: "Review details", description: "Confirm the date, traveler, and meeting point.", icon: ClipboardCheck }, { id: "arrive", title: "Arrive early", description: "Reach the meeting point before the boarding deadline.", icon: MapPin }, { id: "scan", title: "Show your code", description: "Present the QR code to the representative.", icon: QrCode }]} finalMessage="You are ready to travel." />;
       default: return <EmptyState title="Demo unavailable" description="This component demo is being prepared." />;
     }
   };

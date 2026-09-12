@@ -22,7 +22,7 @@ export const DatePicker = ({
   onChangeEnd,
   range,
   onRangeChange,
-  minDate = new Date()
+  minDate
 }: DatePickerProps) => {
   const [open, setOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("days");
@@ -35,7 +35,7 @@ export const DatePicker = ({
   const from = useMemo(() => fromValue ? parseISO(fromValue) : undefined, [fromValue]);
   const to = useMemo(() => toValue ? parseISO(toValue) : undefined, [toValue]);
   const isDateDisabled = (day: Date) => {
-    return isBefore(startOfDay(day), startOfDay(minDate));
+    return minDate ? isBefore(startOfDay(day), startOfDay(minDate)) : false;
   };
 
   const days = useMemo(() => {
@@ -140,7 +140,7 @@ export const DatePicker = ({
 
       <Portal>
         <PopoverPositioner zIndex="3000">
-          <PopoverContent animation={`${calendarPopIn} 180ms ease-out`} transformOrigin="top left" bg="white" _dark={{ bg: "gray.900" }} boxShadow="2xl" width="340px" borderRadius="2xl" border="1px solid" borderColor="border.muted">
+          <PopoverContent animation={`${calendarPopIn} 180ms ease-out`} transformOrigin="top left" bg="bg.panel" color="fg" boxShadow="2xl" width="340px" borderRadius="2xl" border="1px solid" borderColor="border.muted">
             <PopoverBody p={6}>
               <VStack gap={4}>
 <HStack width="full" justifyContent="space-between">
@@ -247,7 +247,7 @@ export const DatePicker = ({
                               outlineColor={isPreviewEnd ? "blue.400" : undefined}
                               animation={isSel ? `${dateSelectPulse} 240ms ease-out` : isHighlighted ? `${rangeHighlightIn} 180ms ease-out` : undefined}
                               transition="background-color 140ms ease, color 140ms ease, transform 140ms ease"
-                              _hover={!disabled ? { bg: isSel ? "blue.700" : "gray.100", _dark: { bg: isSel ? "blue.400" : "white/5" } } : {}}
+                              _hover={!disabled ? { bg: isSel ? "blue.700" : "bg.muted", _dark: { bg: isSel ? "blue.400" : "whiteAlpha.100" } } : {}}
                             >
                               {format(day, "d")}
                             </Center>

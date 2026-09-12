@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Badge, IconButton, Icon, HStack, Text, VStack } from "@chakra-ui/react";
 import { Eye, Calendar, CreditCard, Landmark, CheckCircle, XCircle, Clock } from "lucide-react";
 import { DataTable } from "@/components/ui/Custom/DataTable";
@@ -8,10 +8,21 @@ import type { Payment } from "@/interface/payment/Payment";
 import { PaymentStatusColors, PaymentMethodColors } from "@/constants/roles/Colors";
 import { useNavigate } from "@/lib/navigation";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
+import { DateSortFilter } from "@/components/ui/Custom/DateSortFilter";
+import type { DateSortFilterValue } from "@/interface/props/ui/DateSortFilterProps";
+import type { PaymentSortField } from "@/interface/payment/PaymentFilterParams";
 
 export const PaymentTable = () => {
-  const { payments, isLoading } = usePayment();
+  const { payments, isLoading, fetchPayments } = usePayment();
   const navigate = useNavigate();
+  const [filter, setFilter] = useState<DateSortFilterValue<PaymentSortField>>({
+    sortBy: "paymentDate",
+    sortDir: "desc",
+  });
+
+  useEffect(() => {
+    void fetchPayments({ ...filter, size: 100 });
+  }, [fetchPayments, filter]);
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "COMPLETED": return CheckCircle;
@@ -101,6 +112,17 @@ export const PaymentTable = () => {
       title="Payment Gateway History"
       subtitle="View all external Stripe and PayPal processing attempts."
     >
+      <DateSortFilter
+        value={filter}
+        onChange={setFilter}
+        dateLabel="payment date"
+        sortOptions={[
+          { label: "Payment date", value: "paymentDate" },
+          { label: "Amount", value: "amount" },
+          { label: "Status", value: "status" },
+          { label: "Payment method", value: "method" },
+        ]}
+      />
       <DataTable
         columns={columns}
         data={payments || []}

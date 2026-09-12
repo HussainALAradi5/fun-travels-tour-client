@@ -20,6 +20,7 @@ export const componentCatalog: ComponentShowcaseItem[] = [
   { id: 9, slug: "date-picker", name: "Date Picker", category: ComponentCategory.FORM, description: "Single-date and date-range selection with highlighted dates between from and to.", importPath: "@/components/ui/Custom/DatePicker", features: ["From/to range", "Range shading", "Minimum date", "Month/year navigation"] },
   { id: 10, slug: "unified-filter-bar", name: "Unified Filter Bar", category: ComponentCategory.FORM, description: "Search, filters, result count, and reset in one toolbar.", importPath: "@/components/ui/Custom/UnifiedFilterBar", features: ["Explicit search", "Multiple filters", "Reset"] },
   { id: 11, slug: "status-workflow", name: "Status Workflow", category: ComponentCategory.NAVIGATION, description: "Interactive visualization for ordered status transitions.", importPath: "@/components/ui/Custom/StatusWorkflow", features: ["Generic statuses", "Async changes", "Read-only mode"] },
+  { id: 12, slug: "guided-steps-dialog", name: "Guided Steps Dialog", category: ComponentCategory.NAVIGATION, description: "Reusable dialog for onboarding, instructions, and step-by-step customer guidance.", importPath: "@/components/ui/Custom/Dialogs/GuidedStepsDialog", features: ["Configurable steps", "Accessible dialog", "Light and dark themes", "Feature-independent"] },
 ];
 
 export const getComponentShowcaseItem = (slug: string) => componentCatalog.find((item) => item.slug === slug);

@@ -9,6 +9,9 @@ import { ConfirmDialog } from "@/components/ui/Custom/Dialogs/ConfirmDialog";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import type { GenericStatus } from "@/enums/GenericStatus";
 import type { TicketManagementSidebarProps } from "@/interface/props/tour/TicketManagementSidebarProps";
+import { GuidedStepsDialog } from "@/components/ui/Custom/Dialogs/GuidedStepsDialog";
+import { customerTicketGuide } from "@/constants/ticket/customerTicketGuide";
+import { BookOpen } from "lucide-react";
 
 const TICKET_STATUS_MAP: Partial<Record<string, StatusConfig>> = {
   "PENDING": { label: "Pending", colorPalette: "gray", icon: FileText },
@@ -93,6 +96,16 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
           )}
         </VStack>
       </ContentCard>
+
+      <GuidedStepsDialog
+        title="How to use your ticket"
+        description="Follow these steps for a smooth check-in and boarding experience."
+        triggerLabel="Ticket instructions"
+        triggerIcon={BookOpen}
+        steps={customerTicketGuide}
+        finalMessage="Keep this ticket available until the tour is completed. If anything changes, check your notifications for the latest instructions."
+        buttonVariant="solid"
+      />
 
       <ConfirmDialog
         open={isCancelDialogOpen}

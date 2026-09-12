@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { transactionService } from "@/Api/Transaction";
 import { toaster } from "@/components/ui/toaster";
 import type { Transaction } from "@/interface/payment/Transaction";
+import type { TransactionFilterParams } from "@/interface/payment/TransactionFilterParams";
 
 export function useTransaction(param?: string | number) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -20,7 +21,7 @@ export function useTransaction(param?: string | number) {
     }
   };
 
-  const fetchTransactions = useCallback(async (params = {}) => {
+  const fetchTransactions = useCallback(async (params: TransactionFilterParams = {}) => {
     setIsLoading(true);
     try {
       const res = await transactionService.getAll(params);
@@ -39,8 +40,6 @@ export function useTransaction(param?: string | number) {
       transactionService.getById(Number(param))
         .then(setTransaction)
         .finally(() => setIsLoading(false));
-    } else {
-      fetchTransactions();
     }
   }, [param, fetchTransactions]);
 
