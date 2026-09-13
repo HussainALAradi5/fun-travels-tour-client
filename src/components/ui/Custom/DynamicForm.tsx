@@ -26,7 +26,7 @@ export function DynamicForm<T extends Record<string, unknown>>({
 
   const handleInputChange = useCallback(
     (name: keyof T, value: string | number | string[] | boolean | null) => {
-      if (errorMessage) setErrorMessage(null);
+      setErrorMessage((current) => current === null ? current : null);
       const changedField = fields.find((field) => field.name === name);
       setFormData((prev) => {
         let next = setValueAtPath(prev, String(name), value);
@@ -37,7 +37,7 @@ export function DynamicForm<T extends Record<string, unknown>>({
       });
       if (onFieldChange) onFieldChange(name, value);
     },
-    [errorMessage, fields, onFieldChange],
+    [fields, onFieldChange],
   );
 
   const isFormValid = useMemo(() => {
@@ -92,7 +92,7 @@ const handleFormSubmit = async (e: React.FormEvent) => {
         <FormFieldWrapper
           key={String(field.name)}
           field={field as FieldConfig<Record<string, unknown>>}
-          formData={formData as Record<string, unknown>}
+          value={getValueAtPath(formData, String(field.name))}
           onChange={handleInputChange}
         />
       )),

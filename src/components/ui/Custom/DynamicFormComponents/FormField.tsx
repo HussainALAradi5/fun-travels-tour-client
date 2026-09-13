@@ -1,5 +1,5 @@
 import { Box, Field, Text, Badge, HStack } from "@chakra-ui/react";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Check } from "lucide-react";
 import {
   TextInput,
@@ -13,13 +13,10 @@ import { FormFile } from "./FormFile";
 import { EmailField, MobileField } from "./ContactFields";
 import type { FormFieldWrapperProps } from "@/interface/props/ui/FormFieldProps";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
-import { getValueAtPath } from "@/utilities/ObjectPathUtils";
 
-export function FormFieldWrapper({ field, formData, onChange }: FormFieldWrapperProps) {
+export const FormFieldWrapper = memo(function FormFieldWrapper({ field, value: rawValue, onChange }: FormFieldWrapperProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
-  const rawValue = getValueAtPath(formData, String(field.name));
-
   const hasValue =
     rawValue !== null && typeof rawValue === "object"
       ? Object.keys(rawValue as object).length > 0
@@ -134,4 +131,4 @@ export function FormFieldWrapper({ field, formData, onChange }: FormFieldWrapper
       </Field.Root>
     </Box>
   );
-}
+});
