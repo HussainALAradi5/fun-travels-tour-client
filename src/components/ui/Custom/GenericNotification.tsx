@@ -1,29 +1,27 @@
+"use client";
+
+import { useEffect } from "react";
 import { toaster } from "@/components/ui/toaster";
+import type { NotifyProps } from "@/interface/props/ui/NotifyProps";
 
-export type NotificationVariant = "success" | "error" | "warning" | "info" | "alert";
+export function NotificationEscapeListener() {
+  useEffect(() => {
+    const dismissOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") toaster.dismiss();
+    };
+    window.addEventListener("keydown", dismissOnEscape);
+    return () => window.removeEventListener("keydown", dismissOnEscape);
+  }, []);
 
-interface NotifyProps {
-  title: string;
-  description?: string;
-  type?: NotificationVariant;
-}
-
-// === GLOBAL ESCAPE KEY LISTENER ===
-// Instantly clears any toast blocking the screen when you press 'Esc'
-if (typeof window !== "undefined") {
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      toaster.dismiss(); 
-    }
-  });
+  return null;
 }
 
 export const notify = ({ title, description, type = "info" }: NotifyProps) => {
   toaster.create({
     title: title,
     description: description,
-    type: type === "alert" ? "warning" : type, 
+    type: type === "alert" ? "warning" : type,
     duration: 5000,
-    closable: true, 
+    closable: true,
   });
 };

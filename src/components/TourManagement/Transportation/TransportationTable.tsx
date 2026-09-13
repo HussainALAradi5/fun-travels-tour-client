@@ -1,44 +1,29 @@
-// src/components/TourManagement/Transportation/TransportationTable.tsx
-import React from "react";
 import { Box, HStack, Text, Badge, Button, Icon, VStack, Float } from "@chakra-ui/react";
-import { 
-  Bus, 
-  Plane, 
-  Ship, 
-  Car, 
-  Fingerprint, 
-  Hash, 
-  Settings2, 
-  Eye, 
-  CheckCircle2, 
-  AlertTriangle, 
-  Wrench, 
-  Gauge, 
-  CircleSlash, 
-  Activity, 
-  Building2 
+import {
+  Bus,
+  Plane,
+  Ship,
+  Car,
+  Fingerprint,
+  Hash,
+  Settings2,
+  Eye,
+  CheckCircle2,
+  AlertTriangle,
+  Wrench,
+  Gauge,
+  CircleSlash,
+  Activity,
+  Building2
 } from "lucide-react";
-import { GenericTable } from "../../ui/Custom/GenericTable";
+import { DataTable } from "../../ui/Custom/DataTable";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
 import { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
-import type { Transportation } from "@/interface/tourmanagement/TransportationInterface";
+import type { Transportation } from "@/interface/tour/Transportation";
 import { TransportationColors } from "@/constants/roles/Colors";
 
-/**
- * Strictly typed column definition for GenericTable
- */
-interface TransportationColumn {
-  header: string;
-  key: keyof Transportation | "actions";
-  render: (t: Transportation) => React.ReactNode;
-}
-
-interface Props {
-  data: Transportation[];
-  loading: boolean;
-  onEdit: (item: Transportation) => void;
-  onView: (id: string) => void;
-}
+import type { Column } from "@/interface/common/Column";
+import type { TransportationTableProps } from "@/interface/props/tour/TransportationTableProps";
 
 const STATUS_CONFIG: Record<TransportationStatus, { color: string; icon: typeof CheckCircle2; label: string }> = {
   [TransportationStatus.AVAILABLE]: { color: "green", icon: CheckCircle2, label: "Available" },
@@ -58,18 +43,18 @@ const VehicleIcon = ({ type, size = 16 }: { type: TransportationType; size?: num
   }
 };
 
-export const TransportationTable = ({ data, loading, onEdit, onView }: Props) => {
-  const columns: TransportationColumn[] = [
+export const TransportationTable = ({ data, loading, onEdit, onView }: TransportationTableProps) => {
+  const columns: Column<Transportation>[] = [
     {
       header: "Internal Code",
       key: "code",
       render: (t) => (
         <HStack gap={3}>
           <Box position="relative">
-            <Box 
-              p={2.5} 
-              bg={`${TransportationColors[t.type] || "blue"}.500/10`} 
-              color={`${TransportationColors[t.type] || "blue"}.600`} 
+            <Box
+              p={2.5}
+              bg={`${TransportationColors[t.type] || "blue"}.500/10`}
+              color={`${TransportationColors[t.type] || "blue"}.600`}
               borderRadius="2xl"
             >
               <VehicleIcon type={t.type} size={20} />
@@ -90,11 +75,11 @@ export const TransportationTable = ({ data, loading, onEdit, onView }: Props) =>
       header: "Category",
       key: "type",
       render: (t) => (
-        <Badge 
-          variant="surface" 
-          colorPalette={TransportationColors[t.type] || "blue"} 
-          size="md" 
-          borderRadius="full" 
+        <Badge
+          variant="surface"
+          colorPalette={TransportationColors[t.type] || "blue"}
+          size="md"
+          borderRadius="full"
           px={3}
         >
           <HStack gap={1.5}>
@@ -130,7 +115,7 @@ export const TransportationTable = ({ data, loading, onEdit, onView }: Props) =>
             <Text fontSize="sm" fontWeight="bold" color="fg.emphasized">
               {t.providerName || "none"}
             </Text>
-            
+
           </VStack>
         </HStack>
       ),
@@ -179,21 +164,21 @@ export const TransportationTable = ({ data, loading, onEdit, onView }: Props) =>
       key: "actions",
       render: (t) => (
         <HStack gap={2}>
-          <Button 
-            size="sm" 
-            variant="subtle" 
-            colorPalette="blue" 
-            borderRadius="xl" 
+          <Button
+            size="sm"
+            variant="subtle"
+            colorPalette="blue"
+            borderRadius="xl"
             onClick={() => onView(String(t.id))}
             _hover={{ transform: "translateY(-1px)", shadow: "md" }}
           >
             <Eye size={14} /> <Text fontSize="xs" fontWeight="bold" ml={1}>View</Text>
           </Button>
-          <Button 
-            size="sm" 
-            variant="ghost" 
-            colorPalette="gray" 
-            borderRadius="xl" 
+          <Button
+            size="sm"
+            variant="ghost"
+            colorPalette="gray"
+            borderRadius="xl"
             onClick={() => onEdit(t)}
           >
             <Settings2 size={14} /> <Text fontSize="xs" fontWeight="bold" ml={1}>Manage</Text>
@@ -205,7 +190,7 @@ export const TransportationTable = ({ data, loading, onEdit, onView }: Props) =>
 
   return (
     <Box p={1} bg="bg.panel" borderRadius="3xl" border="1px solid" borderColor="border.subtle" shadow="xl" overflow="hidden">
-      <GenericTable<Transportation>
+      <DataTable<Transportation>
         data={data}
         loading={loading}
         enableExport
@@ -215,3 +200,4 @@ export const TransportationTable = ({ data, loading, onEdit, onView }: Props) =>
     </Box>
   );
 };
+

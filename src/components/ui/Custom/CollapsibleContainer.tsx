@@ -1,21 +1,12 @@
-import { slideDown } from "@/utilities/Animations";
-import { Box, type BoxProps } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import type { CollapsibleContainerProps } from "@/interface/props/ui/CollapsibleContainerProps";
 
-interface Props extends BoxProps {
-  isOpen: boolean;
-  children: React.ReactNode;
-}
-
-export const CollapsibleContainer = ({ isOpen, children, ...props }: Props) => {
-  // We return null when closed to keep the DOM clean
+export const CollapsibleContainer = ({ isOpen, children, ...props }: CollapsibleContainerProps) => {
   if (!isOpen) return null;
 
   return (
     <Box
-      animationName={slideDown}
-      animationDuration="0.3s"
-      animationTimingFunction="ease-out"
-      animationFillMode="forwards"
+      animation="expand-height 0.3s ease-out forwards"
       overflow="hidden"
       {...props}
     >

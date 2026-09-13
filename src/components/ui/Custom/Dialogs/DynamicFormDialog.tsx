@@ -1,0 +1,80 @@
+import { VStack, HStack, Text, Box } from "@chakra-ui/react";
+import { Info } from "lucide-react";
+import { AppDialog } from "./AppDialog";
+import { DynamicForm } from "@/components/ui/Custom/DynamicForm";
+import type { DynamicFormDialogProps } from "@/interface/props/ui/DynamicFormDialogProps";
+
+export function DynamicFormDialog<T extends Record<string, unknown>>({
+  open,
+  onClose,
+  onSubmit,
+  loading,
+  title,
+  description,
+  icon,
+  fields,
+  initialValues,
+  onFieldChange,
+  submitLabel = "Submit",
+  infoMessage,
+  extraContent,
+  size = "md",
+  columns = 2,
+}: DynamicFormDialogProps<T>) {
+  return (
+    <AppDialog
+      open={open}
+      onClose={onClose}
+      title={title}
+      description={description}
+      icon={icon}
+      size={size}
+    >
+      <VStack gap={4} align="stretch">
+{infoMessage && (
+          <HStack
+            bg="blue.50"
+            _dark={{ bg: "blue.950/30" }}
+            p={3}
+            borderRadius="lg"
+            borderWidth="1px"
+            borderColor="blue.100"
+            align="start"
+          >
+            <Box mt={0.5}>
+              <Info size={16} color="var(--chakra-colors-blue-500)" />
+            </Box>
+
+            {typeof infoMessage === "string" ? (
+              <Text
+                fontSize="xs"
+                fontWeight="medium"
+                color="blue.700"
+                _dark={{ color: "blue.200" }}
+              >
+                {infoMessage}
+              </Text>
+            ) : (
+              <Box width="full">{infoMessage}</Box>
+            )}
+          </HStack>
+        )}
+{extraContent && (
+          <Box width="full">
+            {extraContent}
+          </Box>
+        )}
+<DynamicForm<T>
+          fields={fields}
+          initialValues={initialValues}
+          onFieldChange={onFieldChange}
+          onSubmit={onSubmit}
+          onCancel={onClose}
+          isLoading={loading}
+          submitLabel={submitLabel}
+          columns={columns}
+        />
+      </VStack>
+    </AppDialog>
+  );
+}

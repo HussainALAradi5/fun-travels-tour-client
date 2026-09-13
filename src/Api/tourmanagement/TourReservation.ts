@@ -1,52 +1,61 @@
 import apiClient from "@/config/BaseApi";
+import type { ApiResponse } from "@/interface/common/ApiResponse";
+import type { TourReservation } from "@/interface/tour/TourReservation";
 import type { GenericStatus } from "@/enums/GenericStatus";
-import type { TourReservation } from "@/interface/tourmanagement/TourReservationInterface";
+import type { ReservationFilterParams } from "@/interface/tour/ReservationFilterParams";
+import type { PageResponse } from "@/interface/common/PageResponse";
+import type { PaginationParams } from "@/interface/common/PaginationParams";
+import { extractData } from "@/utilities/apiHelper";
+import type { ReservationPayload } from "@/interface/tour/ReservationPayload";
 
 export const reservationService = {
-  getAll: async () => {
-    const response = await apiClient.get<TourReservation[]>("/reservations");
-    return response.data;
+  getAll: async (params: PaginationParams = {}): Promise<PageResponse<TourReservation>> => {
+    const response =
+      await apiClient.get<ApiResponse<PageResponse<TourReservation>>>("/reservations", { params });
+    return extractData(response.data);
   },
 
-  getById: async (id: number) => {
-    const response = await apiClient.get<TourReservation>(
+  getById: async (id: number): Promise<TourReservation> => {
+    const response = await apiClient.get<ApiResponse<TourReservation>>(
       `/reservations/${id}`,
     );
-    return response.data;
+    return response.data.data as unknown as TourReservation;
   },
 
-  create: async (reservation: Partial<TourReservation>) => {
-    const response = await apiClient.post<TourReservation>(
+  create: async (
+    reservation: ReservationPayload,
+  ): Promise<TourReservation> => {
+    const response = await apiClient.post<ApiResponse<TourReservation>>(
       "/reservations",
       reservation,
     );
-    return response.data;
+    return response.data.data as unknown as TourReservation;
   },
 
-  updateStatus: async (id: number, status: GenericStatus) => {
-    const response = await apiClient.patch<TourReservation>(
+  updateStatus: async (
+    id: number,
+    status: GenericStatus,
+  ): Promise<TourReservation> => {
+    const response = await apiClient.patch<ApiResponse<TourReservation>>(
       `/reservations/${id}/status`,
       null,
       { params: { status } },
     );
-    return response.data;
-  },
-  cancel: async (id: number) => {
-    const response = await apiClient.patch<TourReservation>(
-      `/reservations/${id}/cancel`,
-    );
-    return response.data;
+    return response.data.data as unknown as TourReservation;
   },
 
-  filter: async (params: {
-    status?: GenericStatus;
-    customerId?: number;
-    agencyId?: number;
-  }) => {
-    const response = await apiClient.get<TourReservation[]>(
-      "/reservations/filter",
+  cancel: async (id: number): Promise<TourReservation> => {
+    const response = await apiClient.patch<ApiResponse<TourReservation>>(
+      `/reservations/${id}/cancel`,
+    );
+    return response.data.data as unknown as TourReservation;
+  },
+
+  search: async (params: ReservationFilterParams = {}): Promise<PageResponse<TourReservation>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<TourReservation>>>(
+      "/reservations/search",
       { params },
     );
-    return response.data;
+    return extractData(response.data);
   },
 };

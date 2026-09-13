@@ -1,11 +1,6 @@
-// src/components/TourManagement/Tour/TourDetails/TourHead.tsx
 import { Box, Heading, Text, HStack, Icon, Badge, Stack } from "@chakra-ui/react";
 import { MapPin, Calendar, Users } from "lucide-react";
-import type { Tour } from "@/interface/tourmanagement/TourInterface";
-
-interface TourHeaderProps {
-  tour: Tour | null;
-}
+import type { TourHeaderProps } from "@/interface/props/tour/TourHeadProps";
 
 export const TourHeader = ({ tour }: TourHeaderProps) => {
   return (
@@ -19,9 +14,7 @@ export const TourHeader = ({ tour }: TourHeaderProps) => {
             Step 1: Choose your comfort
           </Text>
         </HStack>
-
-        {/* Property 'tracking' fixed to 'letterSpacing' for V3 */}
-        <Heading size="3xl" letterSpacing="tight">
+<Heading size="3xl" letterSpacing="tight">
           {tour?.title || "Loading Tour..."}
         </Heading>
 
@@ -45,3 +38,4 @@ export const TourHeader = ({ tour }: TourHeaderProps) => {
     </Box>
   );
 };
+

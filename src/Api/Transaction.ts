@@ -1,41 +1,29 @@
 import apiClient from "@/config/BaseApi";
-import type { Transaction } from "@/interface/TransactionInterface";
+import type { ApiResponse } from "@/interface/common/ApiResponse";
+import type { Transaction } from "@/interface/payment/Transaction";
+import type { TransactionFilterParams } from "@/interface/payment/TransactionFilterParams";
+import type { PageResponse } from "@/interface/common/PageResponse";
+import { extractData } from "@/utilities/apiHelper";
 
 export const transactionService = {
-  // Uses the filter endpoint with no params to get all authorized records
-  getAll: async () => {
-    const response = await apiClient.get<Transaction[]>("/transactions/filter");
-    return response.data;
+  getAll: async (params: TransactionFilterParams = {}): Promise<PageResponse<Transaction>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<Transaction>>>("/transactions", { params });
+    return extractData(response.data);
   },
 
-  // Efficiently reuses the filter logic to find a specific ID
-  getById: async (id: number) => {
-    const response = await apiClient.get<Transaction[]>("/transactions/filter");
-    return response.data.find(t => t.id === id) || null;
+  getById: async (id: number): Promise<Transaction> => {
+    const response = await apiClient.get<ApiResponse<Transaction>>(`/transactions/${id}`);
+    return extractData(response.data);
   },
 
-  filter: async (params: { 
-    userId?: number; 
-    type?: string; 
-    startDate?: string; 
-    endDate?: string;
-    agencyId?: number;
-    branchId?: number;
-    sortBy?: string;
-    sortDir?: string;
-  }) => {
-    const response = await apiClient.get<Transaction[]>("/transactions/filter", { params });
-    return response.data;
-  },
-
-  manualCredit: async (userId: number, amount: number, description: string) => {
-    const response = await apiClient.post<Transaction>(
-      `/transactions/manual-credit/${userId}`, 
-      null, 
+  manualCredit: async (userId: number, amount: number, description: string): Promise<Transaction> => {
+    const response = await apiClient.post<ApiResponse<Transaction>>(
+      `/transactions/manual-credit/${userId}`,
+      null,
       {
         params: { amount, description },
       }
     );
-    return response.data;
-  }
+    return response.data.data as unknown as Transaction;
+  },
 };

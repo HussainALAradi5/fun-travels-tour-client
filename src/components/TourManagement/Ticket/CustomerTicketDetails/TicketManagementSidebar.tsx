@@ -2,31 +2,28 @@ import { useState } from "react";
 import { VStack, HStack, Box, Text, Button, Icon } from "@chakra-ui/react";
 import { ShieldAlert, XCircle, AlertTriangle, Ban, FileText, ShieldCheck, CheckCircle } from "lucide-react";
 
-import { GenericCard } from "@/components/ui/Custom/GenericCard";
-import { GenericStatusWorkflow, type StatusConfig } from "@/components/ui/Custom/GenericStatusWorkflow";
-import type { Ticket } from "@/interface/tourmanagement/TicketInterface";
+import { ContentCard } from "@/components/ui/Custom/ContentCard";
+import { StatusWorkflow } from "@/components/ui/Custom/StatusWorkflow";
+import type { StatusConfig } from "@/interface/common/StatusConfig";
 import { ConfirmDialog } from "@/components/ui/Custom/Dialogs/ConfirmDialog";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import type { GenericStatus } from "@/enums/GenericStatus";
+import type { TicketManagementSidebarProps } from "@/interface/props/tour/TicketManagementSidebarProps";
+import { GuidedStepsDialog } from "@/components/ui/Custom/Dialogs/GuidedStepsDialog";
+import { customerTicketGuide } from "@/constants/ticket/customerTicketGuide";
+import { BookOpen } from "lucide-react";
 
 const TICKET_STATUS_MAP: Partial<Record<string, StatusConfig>> = {
   "PENDING": { label: "Pending", colorPalette: "gray", icon: FileText },
-  "APPROVED": { label: "Approved", colorPalette: "yellow", icon: ShieldCheck }, // Added Approved
+  "APPROVED": { label: "Approved", colorPalette: "yellow", icon: ShieldCheck },
   "CONFIRMED": { label: "Confirmed", colorPalette: "blue", icon: ShieldCheck },
   "COMPLETED": { label: "Completed", colorPalette: "green", icon: CheckCircle },
   "CANCELLED": { label: "Cancelled", colorPalette: "red", icon: Ban },
 };
 
-const STEPS = ["PENDING", "APPROVED", "CONFIRMED", "COMPLETED"];
+const STEPS = ["PENDING", "APPROVED", "CONFIRMED", "COMPLETED"] as const;
 
-interface Props {
-  ticket: Ticket;
-  isCancelled: boolean;
-  isCompleted: boolean;
-  onRefresh: () => void;
-}
-
-export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRefresh }: Props) => {
+export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRefresh }: TicketManagementSidebarProps) => {
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const { handleCancelTicket, handleUpdateTicketStatus, isMutating } = useTourManagement();
 
@@ -45,25 +42,23 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
 
   return (
     <VStack gap={6} align="stretch" position="sticky" top="24px" hideFrom="print">
-      <GenericCard 
-        w="full" 
+      <ContentCard
+        w="full"
         header={
           <Text fontSize="xs" fontWeight="bold" color="fg.muted" letterSpacing="widest" textTransform="uppercase">
             Ticket Lifecycle
           </Text>
-        } 
+        }
       >
         <VStack gap={6} align="stretch">
-          
-          <GenericStatusWorkflow
-            currentStatus={ticket.ticketStatus as any}
-            statusMap={TICKET_STATUS_MAP as any}
-            steps={STEPS as any[]}
+
+          <StatusWorkflow
+            currentStatus={ticket.ticketStatus}
+            statusMap={TICKET_STATUS_MAP}
+            steps={STEPS as unknown as string[]}
             onStatusChange={onWorkflowStatusChange}
           />
-
-          {/* DANGER ZONE - Only show if active */}
-          {!isCancelled && !isCompleted && (
+{!isCancelled && !isCompleted && (
             <Box pt={5} borderTop="1px dashed" borderColor="border.subtle">
               <VStack align="stretch" gap={4}>
                 <VStack align="start" gap={1}>
@@ -78,11 +73,11 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
                   </Text>
                 </VStack>
 
-                <Button 
+                <Button
                   w="full"
-                  size="sm" 
-                  colorPalette="red" 
-                  variant="outline" 
+                  size="sm"
+                  colorPalette="red"
+                  variant="outline"
                   loading={isMutating}
                   onClick={() => setIsCancelDialogOpen(true)}
                 >
@@ -91,9 +86,7 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
               </VStack>
             </Box>
           )}
-
-          {/* CANCELLED STATE UI */}
-          {isCancelled && (
+{isCancelled && (
             <Box pt={5} borderTop="1px dashed" borderColor="red.200" color="red.500">
               <HStack>
                 <Icon as={Ban} boxSize="5" />
@@ -102,7 +95,17 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
             </Box>
           )}
         </VStack>
-      </GenericCard>
+      </ContentCard>
+
+      <GuidedStepsDialog
+        title="How to use your ticket"
+        description="Follow these steps for a smooth check-in and boarding experience."
+        triggerLabel="Ticket instructions"
+        triggerIcon={BookOpen}
+        steps={customerTicketGuide}
+        finalMessage="Keep this ticket available until the tour is completed. If anything changes, check your notifications for the latest instructions."
+        buttonVariant="solid"
+      />
 
       <ConfirmDialog
         open={isCancelDialogOpen}

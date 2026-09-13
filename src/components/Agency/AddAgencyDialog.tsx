@@ -1,40 +1,25 @@
 import { useEffect, useState, useMemo } from "react";
-import { Building2 } from "lucide-react";
 import { countryService } from "@/Api/Country";
 import { cityService } from "@/Api/City";
 import { userService } from "@/Api/User";
 import { UserType } from "@/enums/UserType";
-import {
-  DEFAULT_AGENCY,
-  type Agency,
-} from "@/interface/Agency/AgencyInterface";
-import type { User } from "@/interface/UserInterface";
-import type { Country } from "@/interface/CountryInterface";
-import type { City } from "@/interface/CityInterface";
-import type { FieldConfig } from "@/utilities/FormTypes";
-import { GenericFormDialog } from "../ui/Custom/Dialogs/GenericFormDialog";
+import type { Agency } from "@/interface/agency/Agency";
+import type { User } from "@/interface/user/User";
+import type { Country } from "@/interface/geography/Country";
+import type { City } from "@/interface/geography/City";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
+import { DynamicFormDialog } from "../ui/Custom/Dialogs/DynamicFormDialog";
 
-interface Props {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: (data: Agency) => Promise<void>;
-  loading: boolean;
-}
+import type { SelectOption } from "@/interface/common/SelectOption";
+import type { AddAgencyDialogProps } from "@/interface/props/agency/AddAgencyDialogProps";
 
-interface SelectOption {
-  label: string;
-  value: string;
-}
-
-export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
+export function AddAgencyDialog({ open, onClose, onSubmit, loading }: AddAgencyDialogProps) {
   const [users, setUsers] = useState<SelectOption[]>([]);
   const [countries, setCountries] = useState<SelectOption[]>([]);
   const [cities, setCities] = useState<SelectOption[]>([]);
   const [selectedCountryId, setSelectedCountryId] = useState<string | null>(
     null,
   );
-
-  // 1. Fetch Countries and Users (Potential Owners)
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
@@ -43,9 +28,7 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
           userService.getAllUsers(),
         ]);
 
-        const countryData = Array.isArray(countriesRes)
-          ? countriesRes
-          : countriesRes?.data;
+        const countryData = countriesRes || [];
         if (countryData) {
           setCountries(
             countryData.map((c: Country) => ({
@@ -55,7 +38,7 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
           );
         }
 
-        const userData = Array.isArray(usersRes) ? usersRes : usersRes?.data;
+        const userData = usersRes || [];
         if (userData) {
           setUsers(
             userData.map((u: User) => ({
@@ -64,7 +47,7 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
             })),
           );
         }
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("Failed to fetch initial form data:", error);
       }
     };
@@ -73,8 +56,6 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
       fetchInitialData();
     }
   }, [open]);
-
-  // 2. Fetch Cities whenever the Country selection changes
   useEffect(() => {
     const fetchCities = async () => {
       if (!selectedCountryId) {
@@ -86,7 +67,7 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
         const res = await cityService.getCitiesByCountry(
           Number(selectedCountryId),
         );
-        const cityData = Array.isArray(res) ? res : res?.data;
+        const cityData = res || [];
         if (cityData) {
           setCities(
             cityData.map((c: City) => ({
@@ -95,7 +76,7 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
             })),
           );
         }
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("Failed to fetch cities:", error);
       }
     };
@@ -103,7 +84,7 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
     fetchCities();
   }, [selectedCountryId]);
 
-  const formFields = useMemo<FieldConfig<Agency>[]>(
+  const formFields = useMemo<FieldConfig<Record<string, unknown>>[]>(
     () => [
       {
         name: "agencyName",
@@ -157,33 +138,30 @@ export function AddAgencyDialog({ open, onClose, onSubmit, loading }: Props) {
     [countries, cities, users, selectedCountryId],
   );
 
-  const handleLocalSubmit = async (formData: Agency) => {
-    // Transform IDs to proper number types before sending to backend
-    const payload: any = {
-      ...formData,
-      countryId: formData.countryId ? Number(formData.countryId) : undefined,
-      cityId: formData.cityId ? Number(formData.cityId) : undefined,
-      agencyOwnerId: formData.agencyOwnerId
-        ? Number(formData.agencyOwnerId)
-        : undefined,
-      active: true,
-      userType: UserType.OWNER,
-    };
-
-    await onSubmit(payload);
-  };
-
   return (
-    <GenericFormDialog<Agency>
+    <DynamicFormDialog<Record<string, unknown>>
       open={open}
       onClose={onClose}
-      onSubmit={handleLocalSubmit}
+      onSubmit={async (formData) => {
+        const payload = {
+          agencyName: formData.agencyName as string,
+          address: formData.address as string,
+          contactNumber: formData.contactNumber as string,
+          ownerMobileNumber: formData.ownerMobileNumber as string,
+          active: true,
+          userType: UserType.OWNER,
+          countryId: Number(formData.countryId) || null,
+          cityId: Number(formData.cityId) || null,
+          agencyOwnerId: Number(formData.agencyOwnerId) || null,
+        };
+
+        await onSubmit(payload as unknown as Agency);
+      }}
       loading={loading}
       title="Register New Agency"
       description="Create a new headquarters and assign an owner to manage the network."
-      icon={Building2}
       fields={formFields}
-      initialValues={DEFAULT_AGENCY}
+      initialValues={{ agencyName: "", address: "", contactNumber: "", ownerMobileNumber: "", active: true } as Record<string, unknown>}
       onFieldChange={(name, value) => {
         if (name === "countryId") {
           setSelectedCountryId(value ? String(value) : null);

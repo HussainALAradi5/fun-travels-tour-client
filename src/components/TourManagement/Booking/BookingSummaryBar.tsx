@@ -1,25 +1,17 @@
 import { Box, HStack, VStack, Text, Heading, Button, Icon } from "@chakra-ui/react";
 import { CheckCircle2 } from "lucide-react";
-import type { Seat } from "@/interface/tourmanagement/SeatInterface";
-import type { MealPlan } from "@/interface/tourmanagement/MealPlanInterface";
 import { floatIn } from "@/utilities/Animations";
-
-interface BookingSummaryBarProps {
-  selectedSeat: Seat | null;
-  selectedMeals: MealPlan[];
-  onConfirm: () => void;
-  isBooking: boolean;
-}
+import type { BookingSummaryBarProps } from "@/interface/props/booking/BookingSummaryBarProps";
 
 export const BookingSummaryBar = ({ selectedSeat, selectedMeals, onConfirm, isBooking }: BookingSummaryBarProps) => {
   if (!selectedSeat) return null;
 
   return (
-    <Box 
-      p={6} 
-      bg="blue.600" 
-      color="white" 
-      borderRadius="2xl" 
+    <Box
+      p={6}
+      bg="blue.600"
+      color="white"
+      borderRadius="2xl"
       shadow="2xl"
       animation={`${floatIn} 0.4s ease-out`}
     >
@@ -29,7 +21,7 @@ export const BookingSummaryBar = ({ selectedSeat, selectedMeals, onConfirm, isBo
             FINALIZING RESERVATION
           </Text>
           <Heading size="lg">
-            Seat {selectedSeat.seatCode} 
+            Seat {selectedSeat.seatCode}
             {selectedMeals.length > 0 && ` + ${selectedMeals.length} Meal Plan(s)`}
           </Heading>
         </VStack>
@@ -50,3 +42,4 @@ export const BookingSummaryBar = ({ selectedSeat, selectedMeals, onConfirm, isBo
     </Box>
   );
 };
+

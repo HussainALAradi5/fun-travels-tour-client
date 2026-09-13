@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-// ADDED Badge, Grid, Flex, IconButton HERE
-import { 
-  Box, Center, Flex, HStack, IconButton, Spinner, VStack, Text, 
-  Button, Icon, Heading, Badge, Grid 
+import { useEffect, useState, useCallback } from "react";
+import { useNavigate, useParams } from "@/lib/navigation";
+import {
+  Box, Center, Flex, HStack, IconButton, Spinner, VStack, Text,
+  Button, Icon, Heading, Badge, Grid
 } from "@chakra-ui/react";
-// REMOVED Badge and Grid FROM HERE
-import { 
-  ArrowLeft, Briefcase, Calendar, CheckCircle, FileText, 
-  Power, User, UserPlus, XCircle 
+import {
+  ArrowLeft, Briefcase, Calendar, CheckCircle, FileText,
+  Power, User, UserPlus, XCircle
 } from "lucide-react";
 
 import { genericTrackingService } from "@/Api/genericTracking";
 import { userRequestService } from "@/Api/UserRequest";
 import { useUser } from "@/hooks/User/useUser";
-import type { GenericComment, GenericEventLog } from "@/interface/GenericTrackingInterface";
-import type { UserRequest } from "@/interface/UserRequestInterface";
-import { GenericAuditLog, type AuditEventItem } from "../ui/Custom/GenericAuditLog";
-import { GenericCommentSection, type CommentItem } from "../ui/Custom/GenericCommentSection";
+import type { GenericComment } from "@/interface/support/GenericComment"; import type { GenericEventLog } from "@/interface/support/GenericEventLog";
+import type { UserRequest } from "@/interface/support/UserRequest";
+import { AuditLog } from "../ui/Custom/AuditLog";
+import { CommentSection } from "../ui/Custom/CommentSection";
+import type { AuditEventItem } from "@/interface/common/AuditEventItem";
+import type { CommentItem } from "@/interface/common/CommentItem";
 import { notify } from "../ui/Custom/GenericNotification";
 import { UserRequestStatus } from "@/enums/UserRequest/UserRequestStatus";
 import { RequestStatusColors, RequestTypeColors } from "@/constants/roles/Colors";
@@ -26,7 +26,7 @@ export const UserRequestDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user, isAdmin } = useUser();
-  
+
   const [request, setRequest] = useState<UserRequest | null>(null);
   const [events, setEvents] = useState<GenericEventLog[]>([]);
   const [comments, setComments] = useState<GenericComment[]>([]);
@@ -36,32 +36,32 @@ export const UserRequestDetails = () => {
   const isSupport = user?.userType?.toUpperCase() === "SUPPORT_AGENT" || isAdmin;
   const isOwner = user?.id === request?.user?.id;
 
-  const fetchData = async (showGlobalLoader = true) => {
+  const fetchData = useCallback(async (showGlobalLoader = true) => {
     if (!id) return;
     try {
       if (showGlobalLoader) setLoading(true);
       const reqRes = await userRequestService.getById(Number(id));
-      if (reqRes.success && reqRes.data) setRequest(reqRes.data);
+      if (reqRes) setRequest(reqRes);
 
       const trackRes = await genericTrackingService.getTimeline("USER_REQUEST", Number(id));
-      if (trackRes.success && trackRes.data) {
-        setEvents((trackRes.data.events || []).sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()));
-        setComments((trackRes.data.comments || []).sort((a, b) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime()));
+      if (trackRes) {
+        setEvents((trackRes.events || []).sort((a: { createdAt?: string }, b: { createdAt?: string }) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()) as never);
+        setComments((trackRes.comments || []).sort((a: { createdAt?: string }, b: { createdAt?: string }) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime()) as never);
       }
-    } catch (error) {
+    } catch {
       notify({ title: "Error", description: "Failed to load request data", type: "error" });
     } finally {
       if (showGlobalLoader) setLoading(false);
     }
-  };
+  }, [id]);
 
-  useEffect(() => { fetchData(true); }, [id]);
+  useEffect(() => { fetchData(true); }, [fetchData]);
 
-  const formattedAuditEvents: AuditEventItem[] = events.map(event => ({
-    id: event.id || Math.random(),
+  const formattedAuditEvents: AuditEventItem[] = events.map((event, index) => ({
+    id: event.id ?? -(index + 1),
     actorName: event.actor?.name || "System",
     action: event.action || "UPDATE",
-    description: event.description ?? undefined, 
+    description: event.description ?? undefined,
     createdAt: event.createdAt!
   }));
 
@@ -83,8 +83,8 @@ export const UserRequestDetails = () => {
       if (action === 'solve') res = await userRequestService.solveRequest(request.id, user.id);
       if (action === 'reject') res = await userRequestService.rejectRequest(request.id, user.id);
 
-      if (res?.success) {
-        notify({ title: "Success", description: res.message, type: "success" });
+      if (res) {
+        notify({ title: "Success", description: "Action completed", type: "success" });
         await fetchData(false);
       }
     } finally {
@@ -108,18 +108,17 @@ export const UserRequestDetails = () => {
 
   return (
     <Box p={6} maxW="7xl" mx="auto" w="full">
-      {/* HEADER SECTION */}
-      <Flex justify="space-between" align="center" mb={10} flexWrap="wrap" gap={6}>
+<Flex justify="space-between" align="center" mb={10} flexWrap="wrap" gap={6}>
         <HStack gap={5}>
-          <IconButton 
-            variant="subtle" 
-            rounded="full" 
-            aria-label="Back" 
+          <IconButton
+            variant="subtle"
+            rounded="full"
+            aria-label="Back"
             onClick={() => navigate(-1)}
           >
             <ArrowLeft size={18} />
           </IconButton>
-          
+
           <VStack align="start" gap={1}>
             <HStack gap={3}>
               <Heading size="lg" color="fg.emphasized">{request.title}</Heading>
@@ -147,12 +146,8 @@ export const UserRequestDetails = () => {
           </Badge>
         </HStack>
       </Flex>
-
-      {/* CONTENT GRID */}
-      <Grid templateColumns={{ base: "1fr", lg: "1.2fr 0.8fr" }} gap={10} alignItems="start">
-        
-        {/* LEFT COLUMN */}
-        <VStack align="stretch" gap={8}>
+<Grid templateColumns={{ base: "1fr", lg: "1.2fr 0.8fr" }} gap={10} alignItems="start">
+<VStack align="stretch" gap={8}>
           <Box bg="bg.panel" p={8} borderRadius="3xl" borderWidth="1px" shadow="sm" position="relative">
             <HStack mb={5} color="blue.500">
               <Icon size="sm"><FileText/></Icon>
@@ -203,14 +198,14 @@ export const UserRequestDetails = () => {
             </Box>
           )}
 
-          <GenericAuditLog 
-            events={formattedAuditEvents} 
-            title="Activity Timeline" 
+          <AuditLog
+            events={formattedAuditEvents}
+            title="Activity Timeline"
           />
         </VStack>
 
         <Box position="sticky" top="24px">
-          <GenericCommentSection 
+          <CommentSection
             comments={formattedComments}
             currentUserId={user?.id || 0}
             onAddComment={handleAddComment}
@@ -223,3 +218,7 @@ export const UserRequestDetails = () => {
     </Box>
   );
 };
+
+
+
+

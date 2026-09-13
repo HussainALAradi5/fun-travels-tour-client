@@ -1,57 +1,54 @@
 import apiClient from "@/config/BaseApi";
-import type { Agency } from "@/interface/Agency/AgencyInterface";
-import type { User } from "@/interface/UserInterface";
-import type { ApiResponse } from "@/utilities/ApiUtility";
+import type { ApiResponse } from "@/interface/common/ApiResponse";
+import type { Agency } from "@/interface/agency/Agency";
+import type { AgencyCreateRequest } from "@/interface/agency/AgencyCreateRequest";
+import type { User } from "@/interface/user/User";
 import { authUtils } from "@/utilities/AuthUtils";
+import type { PageResponse } from "@/interface/common/PageResponse";
 
 export const agencyService = {
-  // Get all agencies (Admin level)
-  getAllAgencies: async () => {
-    // Added /api prefix to match @RequestMapping in AgencyController.java
-    const response =
-      await apiClient.get<ApiResponse<Agency[]>>("agencies");
-    return response.data;
+  searchAgencies: async (query: string, page = 0, size = 20): Promise<PageResponse<Agency>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<Agency>>>("agencies/search", {
+      params: { query, page, size },
+    });
+    return response.data.data;
   },
 
-  getAgencyById: async (id: string | number) => {
+  getAllAgencies: async (): Promise<Agency[]> => {
+    const response = await apiClient.get<ApiResponse<Agency[]>>("agencies");
+    return response.data.data as unknown as Agency[];
+  },
+
+  getAgencyById: async (id: string | number): Promise<Agency> => {
     const response = await apiClient.get<ApiResponse<Agency>>(
       `agencies/${id}`,
     );
-    return response.data;
+    return response.data.data as unknown as Agency;
   },
 
-  /**
-   * Creates a new agency.
-   * Logic matches AgencyController.java: payload.get("agencyName"), payload.get("countryId"), etc.
-   */
-  createAgency: async (agencyData: any) => {
+  createAgency: async (agencyData: AgencyCreateRequest): Promise<Agency> => {
     const response = await apiClient.post<ApiResponse<Agency>>(
       "agencies",
       agencyData,
     );
-    return response.data;
+    return response.data.data as unknown as Agency;
   },
 
-  /**
-   * Role-based staff view.
-   * Uses the requesterId to let the backend filter if you are an OWNER (your agency)
-   * or a MANAGER (your branch).
-   */
-  getVisibleStaff: async () => {
+  getVisibleStaff: async (): Promise<User[]> => {
     const user = authUtils.getUser();
     if (!user || !user.id) throw new Error("User not authenticated");
 
     const response = await apiClient.get<ApiResponse<User[]>>(
       `agencies/staff-view/${user.id}`,
     );
-    return response.data;
+    return response.data.data as unknown as User[];
   },
 
-  // Direct fetch for specific agency employees
-  getEmployeesByAgency: async (agencyId: number) => {
+  getEmployeesByAgency: async (agencyId: number): Promise<User[]> => {
     const response = await apiClient.get<ApiResponse<User[]>>(
       `agencies/${agencyId}/employees`,
     );
-    return response.data;
+    return response.data.data as unknown as User[];
   },
 };
+

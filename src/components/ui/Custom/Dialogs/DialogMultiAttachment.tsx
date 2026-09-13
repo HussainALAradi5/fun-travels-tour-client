@@ -1,22 +1,10 @@
-import { useState } from "react"; // Removed useMemo as it wasn't used
+import { useState } from "react";
 import { VStack, HStack, Text, Box, Separator, Icon } from "@chakra-ui/react";
-import { UploadCloud, Info } from "lucide-react"; // FileSpreadsheet now used below
-import { GenericDialog } from "./GenericDialog";
+import { UploadCloud, Info } from "lucide-react";
+import { AppDialog } from "./AppDialog";
 import MultiAttachmentUpload from "../MultiAttachmentUpload";
-import { GenericExportDialog } from "./GenericExportDialog";
-
-interface DialogMultiAttachmentProps {
-  open: boolean;
-  onClose: () => void;
-  onUpload: (file: File) => Promise<any>;
-  onSuccess?: () => void;
-  title: string;
-  description: string;
-  templateData: any[];
-  templateFileName: string;
-  instructions: string;
-  colorPalette?: string;
-}
+import { ExportDialog } from "./ExportDialog";
+import type { DialogMultiAttachmentProps } from "@/interface/props/ui/DialogMultiAttachmentProps";
 
 export function DialogMultiAttachment({
   open,
@@ -39,7 +27,7 @@ export function DialogMultiAttachment({
 
   return (
     <>
-      <GenericDialog
+      <AppDialog
         open={open}
         onClose={onClose}
         title={title}
@@ -49,8 +37,7 @@ export function DialogMultiAttachment({
         size="lg"
       >
         <VStack gap={6} align="stretch">
-          {/* Instructions Area */}
-          <Box
+<Box
             p={4}
             bg="bg.muted"
             borderRadius="xl"
@@ -78,18 +65,16 @@ export function DialogMultiAttachment({
           </Box>
 
           <Separator />
-
-          {/* Upload Component Area */}
-          <Box p={2} borderRadius="2xl" className="modern-upload-container">
+<Box p={2} borderRadius="2xl" className="modern-upload-container">
             <MultiAttachmentUpload
               onUpload={onUpload}
               onSuccess={handleUploadComplete}
             />
           </Box>
         </VStack>
-      </GenericDialog>
+      </AppDialog>
 
-      <GenericExportDialog
+      <ExportDialog
         open={isTemplateOpen}
         onClose={() => setIsTemplateOpen(false)}
         data={templateData}

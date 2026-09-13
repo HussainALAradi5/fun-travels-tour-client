@@ -4,13 +4,8 @@ import { ChevronRight } from "lucide-react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { toaster } from "@/components/ui/toaster";
 import { useWallet } from "@/hooks/useWallet";
-
-interface StripeCheckoutFormProps {
-  amount: string;
-  method: string;
-  onSuccess: () => void;
-  onClose: () => void;
-}
+import type { StripeCheckoutFormProps } from "@/interface/props/booking/StripeCheckoutFormProps";
+import type { PaymentMethod } from "@/enums/payment/PaymentMethod";
 
 export const StripeCheckoutForm = ({ amount, method, onSuccess, onClose }: StripeCheckoutFormProps) => {
   const stripe = useStripe();
@@ -36,12 +31,12 @@ export const StripeCheckoutForm = ({ amount, method, onSuccess, onClose }: Strip
       return;
     }
 
-    let gatewayToken = "OFFLINE_PAYMENT"; 
+    let gatewayToken = "OFFLINE_PAYMENT";
 
     if (method === "CREDIT_CARD") {
       console.log("Retrieving CardElement data...");
       const cardElement = elements.getElement(CardElement);
-      
+
       if (!cardElement) {
         console.error("❌ CardElement not found in DOM");
         console.groupEnd();
@@ -57,7 +52,7 @@ export const StripeCheckoutForm = ({ amount, method, onSuccess, onClose }: Strip
         console.groupEnd();
         return;
       }
-      
+
       console.log("✅ Stripe Tokenization Success! Token ID:", token.id);
       gatewayToken = token.id;
     } else {
@@ -66,30 +61,30 @@ export const StripeCheckoutForm = ({ amount, method, onSuccess, onClose }: Strip
 
     try {
       console.log("Calling Backend API via useWallet hook...");
-      await handleTopUp(val, method as any, gatewayToken);
+      await handleTopUp(val, method as PaymentMethod, gatewayToken);
       console.log("✅ Full Flow Completed. Closing Modal & Triggering Success Callback.");
       onSuccess();
       onClose();
-    } catch (err) {
+    } catch {
       console.error("❌ Full Flow Failed at Backend Stage.");
     } finally {
-      console.groupEnd(); // End the visual grouping
+      console.groupEnd();
     }
   };
 
   return (
     <form onSubmit={handleSubmit} style={{ width: '100%' }}>
       <VStack align="stretch" gap={4}>
-        
+
         {method === "CREDIT_CARD" ? (
           <Box p={4} bg="bg.panel" borderRadius="xl" border="1px solid" borderColor="border.subtle" shadow="sm">
-            <CardElement 
+            <CardElement
               options={{
                 style: {
                   base: { fontSize: '16px', color: '#424770', fontFamily: 'Inter, sans-serif', '::placeholder': { color: '#aab7c4' } },
                   invalid: { color: '#e53e3e' },
                 },
-              }} 
+              }}
             />
           </Box>
         ) : (

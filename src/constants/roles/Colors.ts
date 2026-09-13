@@ -1,7 +1,7 @@
 import type { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
 
 export const RoleColors: Record<string, string> = {
-  ADMIN: "purple", 
+  ADMIN: "purple",
   MANAGER: "green",
   OWNER: "teal",
   EMPLOYEE: "cyan",
@@ -21,18 +21,18 @@ export const SeatStatusColors: Record<SeatStatus, { light: string, dark: string,
   AVAILABLE: { light: "gray.100", dark: "whiteAlpha.200", text: "gray.500" },
   BOOKED: { light: "red.500", dark: "red.400", text: "white" },
   RESERVED: { light: "orange.500", dark: "orange.400", text: "white" },
-  MAINTENANCE: { light: "yellow.500", dark: "yellow.400", text: "gray.900" }, 
+  MAINTENANCE: { light: "yellow.500", dark: "yellow.400", text: "gray.900" },
 };
 
 export const StatusColors: Record<string, string> = {
-  PENDING: "blue",      
-  APPROVED: "teal",     // Teal looks great as a subtle badge
-  REJECTED: "red",      
-  CONFIRMED: "purple",  
-  CANCELLED: "orange",  
-  COMPLETED: "green",   // Swapped to Green so it looks like a success badge, completely avoiding black!
-  ACTIVE: "cyan",      
-  INACTIVE: "pink",     
+  PENDING: "blue",
+  APPROVED: "teal",
+  REJECTED: "red",
+  CONFIRMED: "purple",
+  CANCELLED: "orange",
+  COMPLETED: "green",
+  ACTIVE: "cyan",
+  INACTIVE: "pink",
 };
 
 export const TransportationUnitStatusColors: Record<string, string> = {
@@ -87,7 +87,7 @@ export const RequestTypeColors: Record<string, string> = {
 };
 
 export const RequestStatusColors: Record<string, string> = {
-  ...StatusColors, 
+  ...StatusColors,
   SOLVED: "teal",
   UNSOLVED: "red",
   ACTIVE: "blue",

@@ -1,12 +1,8 @@
 import { HStack, VStack, Center, Icon, Heading, Text, Box } from "@chakra-ui/react";
 import { MessageSquare } from "lucide-react";
+import type { CommentHeaderProps } from "@/interface/props/ui/CommentHeaderProps";
 
-interface Props {
-  title: string;
-  count: number;
-}
-
-export const CommentHeader = ({ title, count }: Props) => (
+export const CommentHeader = ({ title, count }: CommentHeaderProps) => (
   <HStack mb={6} pb={4} borderBottomWidth="1px" justify="space-between" borderColor="border.subtle">
     <HStack gap={3}>
       <Center w={10} h={10} bg="blue.500" color="white" borderRadius="xl" shadow="0 4px 12px rgba(49, 130, 206, 0.3)">

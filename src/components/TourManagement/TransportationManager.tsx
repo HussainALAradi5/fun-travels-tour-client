@@ -1,50 +1,49 @@
-// src/components/TourManagement/TransportationManager.tsx
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import { Stack, useDisclosure } from "@chakra-ui/react";
 import { TransportationHeader } from "./Transportation/TransportationHeader";
 import { TransportationTable } from "./Transportation/TransportationTable";
 import { TransportationEditDialog } from "./Transportation/TransportationEditDialog";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
-import type { Transportation } from "@/interface/tourmanagement/TransportationInterface";
+import type { Transportation } from "@/interface/tour/Transportation";
+import { ExcelImportDialog } from "@/components/ui/Custom/Dialogs/ExcelImportDialog";
+import { transportationService } from "@/Api/tourmanagement/Transportation";
 
 export const TransportationManager = () => {
   const navigate = useNavigate();
   const { open, onOpen, onClose } = useDisclosure();
-  
-  const { 
-    transportation: list, 
-    isLoading, 
-    isMutating, 
-    fetchTransportation, 
-    handleUpdateTransportStatus 
+  const importDialog = useDisclosure();
+
+  const {
+    transportation: list,
+    isLoading,
+    isMutating,
+    fetchTransportation,
+    handleUpdateTransportation
   } = useTourManagement();
 
   const [selectedItem, setSelectedItem] = useState<Transportation | null>(null);
-  
-  // Single global search state
-  const [filters, setFilters] = useState({ 
-    type: "ALL", 
-    status: "ALL", 
-    globalSearch: "" 
+  const [filters, setFilters] = useState({
+    type: "ALL",
+    status: "ALL",
+    globalSearch: ""
   });
 
   const filteredList = useMemo(() => (list || []).filter(t => t?.id), [list]);
 
   const loadData = useCallback(() => {
     fetchTransportation({
-      type: filters.type === "ALL" ? undefined : filters.type,
-      unitStatus: filters.status === "ALL" ? undefined : filters.status,
-      // Pass the global search to the backend 'keyword' param
-      keyword: filters.globalSearch || undefined, 
-    });
+      type: filters.type === "ALL" ? undefined : filters.type as string,
+      unitStatus: filters.status === "ALL" ? undefined : filters.status as string,
+      keyword: filters.globalSearch || undefined,
+    } as Record<string, string | number | boolean>);
   }, [filters, fetchTransportation]);
 
   useEffect(() => { loadData(); }, [loadData]);
 
-  const handleUpdate = async (values: Transportation) => {
+  const handleUpdate = async (values: Transportation | Record<string, unknown>) => {
     if (selectedItem?.id) {
-      await handleUpdateTransportStatus(selectedItem.id, values as any);
+      await handleUpdateTransportation(selectedItem.id, values as Transportation);
       loadData();
       onClose();
     }
@@ -56,14 +55,28 @@ export const TransportationManager = () => {
         count={filteredList.length}
         searchValue={filters.globalSearch}
         onSearch={(val) => setFilters(p => ({ ...p, globalSearch: val }))}
-        
+
         typeFilterValue={filters.type}
         statusFilterValue={filters.status}
         onTypeFilterChange={(val) => setFilters(p => ({ ...p, type: val }))}
         onStatusFilterChange={(val) => setFilters(p => ({ ...p, status: val }))}
-        
+
         onAdd={() => navigate("/admin/transports/create")}
+        onImport={importDialog.onOpen}
         onReset={() => setFilters({ type: "ALL", status: "ALL", globalSearch: "" })}
+      />
+
+      <ExcelImportDialog
+        open={importDialog.open}
+        onClose={importDialog.onClose}
+        title="Import transportation units"
+        description="Each valid row creates one unit and its complete seat inventory on the server."
+        columns={[
+          "transportationNumber", "code", "type", "providerName", "totalCapacity",
+          "agencyId", "branchId (optional)", "premiumSeats", "accessibleSeats", "kidsSeats",
+        ]}
+        onImport={transportationService.importExcel}
+        onCompleted={loadData}
       />
 
       <TransportationTable
@@ -73,7 +86,7 @@ export const TransportationManager = () => {
         onView={(id) => navigate(`/admin/transports/${id}`)}
       />
 
-      <TransportationEditDialog 
+      <TransportationEditDialog
         open={open}
         onClose={onClose}
         transport={selectedItem}

@@ -1,21 +1,7 @@
 import { useState } from "react";
 import { Button, DialogFooter, DialogActionTrigger, Text, VStack } from "@chakra-ui/react";
-import { GenericDialog } from "./GenericDialog";
-import type { LucideIcon } from "lucide-react";
-
-interface ConfirmDialogProps {
-  open: boolean;
-  onClose: () => void;
-  onConfirm: () => Promise<any>;
-  title: string;
-  description?: string;
-  message: string; 
-  icon: LucideIcon;
-  confirmText?: string;
-  cancelText?: string;
-  colorPalette?: string;
-  placement?: "center" | "top" | "bottom";
-}
+import { AppDialog } from "./AppDialog";
+import type { ConfirmDialogProps } from "@/interface/props/ui/ConfirmDialogProps";
 
 export function ConfirmDialog({
   open,
@@ -36,18 +22,16 @@ export function ConfirmDialog({
     setLoading(true);
     try {
       await onConfirm();
-      onClose(); // Only close the dialog if the promise actually succeeds
-    } catch (error) {
-      // Do nothing here! 
-      // Your useTourManagement hook is already catching this and firing the exact backend error toast.
-      // We just catch it here so the dialog stays open, allowing the user to see the error.
+      onClose();
+    } catch {
+      return;
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <GenericDialog
+    <AppDialog
       open={open}
       onClose={onClose}
       title={title}
@@ -59,7 +43,7 @@ export function ConfirmDialog({
     >
       <VStack align="stretch" gap={6}>
         <Text color="fg.muted">{message}</Text>
-        
+
         <DialogFooter p={0} pt={4}>
           <DialogActionTrigger asChild>
             <Button variant="ghost" disabled={loading} onClick={onClose}>
@@ -75,6 +59,6 @@ export function ConfirmDialog({
           </Button>
         </DialogFooter>
       </VStack>
-    </GenericDialog>
+    </AppDialog>
   );
 }

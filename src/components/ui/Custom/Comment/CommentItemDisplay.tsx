@@ -1,16 +1,9 @@
 import { useState } from "react";
 import { Flex, VStack, HStack, Box, Text, Center, Icon, IconButton, Textarea, Button } from "@chakra-ui/react";
 import { User, Pencil, X, Check } from "lucide-react";
-import type { CommentItem } from "../GenericCommentSection";
+import type { CommentItemDisplayProps } from "@/interface/props/ui/CommentItemDisplayProps";
 
-interface Props {
-  comment: CommentItem;
-  isMe: boolean;
-  isReadOnly: boolean;
-  onEdit?: (id: string | number, text: string) => Promise<void>;
-}
-
-export const CommentItemDisplay = ({ comment, isMe, isReadOnly, onEdit }: Props) => {
+export const CommentItemDisplay = ({ comment, isMe, isReadOnly, onEdit }: CommentItemDisplayProps) => {
   const [isEditingLocal, setIsEditingLocal] = useState(false);
   const [editValue, setEditValue] = useState(comment.content);
   const [loading, setLoading] = useState(false);
@@ -24,8 +17,8 @@ export const CommentItemDisplay = ({ comment, isMe, isReadOnly, onEdit }: Props)
   };
 
   return (
-    <Flex 
-      direction={isMe ? "row-reverse" : "row"} 
+    <Flex
+      direction={isMe ? "row-reverse" : "row"}
       gap={3} align="flex-end"
       transition="transform 0.2s ease"
       _hover={{ transform: "translateY(-2px)" }}
@@ -35,7 +28,7 @@ export const CommentItemDisplay = ({ comment, isMe, isReadOnly, onEdit }: Props)
           <Icon size="xs" as={User}/>
         </Center>
       )}
-      
+
       <VStack align={isMe ? "flex-end" : "flex-start"} gap={1} maxW="85%">
         <HStack fontSize="11px" color="fg.muted" gap={2} px={1}>
           {!isMe && <Text fontWeight="bold" color="blue.600">{comment.authorName}</Text>}
@@ -56,9 +49,9 @@ export const CommentItemDisplay = ({ comment, isMe, isReadOnly, onEdit }: Props)
             </HStack>
           </Box>
         ) : (
-          <Box 
+          <Box
             bg={isMe ? "blue.500" : "white"} _dark={{ bg: isMe ? "blue.600" : "whiteAlpha.100" }}
-            color={isMe ? "white" : "fg.emphasized"} p={4} borderRadius="2xl" borderWidth={isMe ? "0" : "1px"} 
+            color={isMe ? "white" : "fg.emphasized"} p={4} borderRadius="2xl" borderWidth={isMe ? "0" : "1px"}
             borderColor="border.subtle" shadow="sm" borderTopRightRadius={isMe ? "4px" : "2xl"} borderTopLeftRadius={!isMe ? "4px" : "2xl"}
             _hover={{ shadow: "md", borderColor: isMe ? "transparent" : "blue.300", bg: isMe ? "blue.600" : "blue.50/30" }}
           >

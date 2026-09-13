@@ -1,15 +1,9 @@
 import { Box, Flex, HStack, VStack, Heading, Text, Icon, Separator, Circle, Button } from "@chakra-ui/react";
 import { Navigation, ArrowRight, Bus, LayoutDashboard } from "lucide-react";
-import { GenericCard } from "@/components/ui/Custom/GenericCard";
-import { GenericTracking, type TrackingItem } from "@/components/ui/Custom/GenericTracking";
+import { ContentCard } from "@/components/ui/Custom/ContentCard";
+import { ActivityTimeline } from "@/components/ui/Custom/ActivityTimeline";
 import { glowPulse } from "@/utilities/Animations";
-import type { Tour } from "@/interface/tourmanagement/TourInterface";
-
-interface TourItineraryCardProps {
-  tour: Tour;
-  itinerarySteps: TrackingItem[];
-  onSeatOpen: () => void;
-}
+import type { TourItineraryCardProps } from "@/interface/props/tour/TourItineraryCardProps";
 
 export const TourItineraryCard = ({ tour, itinerarySteps, onSeatOpen }: TourItineraryCardProps) => {
   const formatDate = (dateString?: string) => {
@@ -18,7 +12,7 @@ export const TourItineraryCard = ({ tour, itinerarySteps, onSeatOpen }: TourItin
   };
 
   return (
-    <GenericCard 
+    <ContentCard
       header={
         <HStack gap="3">
           <Icon as={Navigation} color="blue.500" animation={`${glowPulse} 2s infinite`} />
@@ -31,7 +25,7 @@ export const TourItineraryCard = ({ tour, itinerarySteps, onSeatOpen }: TourItin
     >
       <Flex direction={{ base: "column", md: "row" }} gap="10">
         <Box flex="1.2">
-          <GenericTracking items={itinerarySteps} initialVisibleMiddle={2} animate={true} />
+          <ActivityTimeline items={itinerarySteps} initialVisibleMiddle={2} animate={true} />
         </Box>
         <Separator orientation="vertical" display={{ base: "none", md: "block" }} />
         <VStack align="start" gap="6" flex="1">
@@ -59,7 +53,7 @@ export const TourItineraryCard = ({ tour, itinerarySteps, onSeatOpen }: TourItin
               </VStack>
             </HStack>
             {tour.transportation?.id && (
-              <GenericCard border="1px dashed" borderColor="blue.500/30" p="3" _hover={{ bg: "blue.500/5", cursor: "pointer" }} onClick={onSeatOpen}>
+              <ContentCard border="1px dashed" borderColor="blue.500/30" p="3" _hover={{ bg: "blue.500/5", cursor: "pointer" }} onClick={onSeatOpen}>
                 <HStack justify="space-between">
                   <VStack align="start" gap="0">
                     <Text fontSize="2xs" fontWeight="black" color="blue.600">INVENTORY</Text>
@@ -67,11 +61,11 @@ export const TourItineraryCard = ({ tour, itinerarySteps, onSeatOpen }: TourItin
                   </VStack>
                   <Button size="xs" colorPalette="blue" variant="ghost"><Icon as={LayoutDashboard} /></Button>
                 </HStack>
-              </GenericCard>
+              </ContentCard>
             )}
           </Box>
         </VStack>
       </Flex>
-    </GenericCard>
+    </ContentCard>
   );
 };

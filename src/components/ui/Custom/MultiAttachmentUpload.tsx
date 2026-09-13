@@ -15,14 +15,7 @@ import { useDropzone } from "react-dropzone";
 import { FiUploadCloud, FiFile, FiX, FiCheck, FiInfo } from "react-icons/fi";
 import { toaster } from "@/components/ui/toaster";
 import { floatIn, glowPulse } from "@/utilities/Animations";
-
-interface Props {
-  onUpload: (file: File) => Promise<any>;
-  onSuccess?: (data: any) => void;
-  allowedTypesLabel?: string;
-  instructions?: string;
-  accept?: Record<string, string[]>;
-}
+import type { MultiAttachmentUploadProps } from "@/interface/props/ui/MultiAttachmentUploadProps";
 
 const MultiAttachmentUpload = ({
   onUpload,
@@ -33,7 +26,7 @@ const MultiAttachmentUpload = ({
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
     "application/vnd.ms-excel": [".xls"],
   },
-}: Props) => {
+}: MultiAttachmentUploadProps) => {
   const [files, setFiles] = useState<File[]>([]);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -56,10 +49,10 @@ const MultiAttachmentUpload = ({
         type: "success",
       });
       setFiles([]);
-    } catch (error: any) {
+    } catch (error: unknown) {
       toaster.create({
         title: "Upload Failed",
-        description: error.message || "An error occurred",
+        description: error instanceof Error ? error.message : "An error occurred",
         type: "error",
       });
     } finally {
@@ -69,8 +62,7 @@ const MultiAttachmentUpload = ({
 
   return (
     <VStack w="full" gap={5} align="stretch" animation={`${floatIn} 0.5s ease-out`}>
-      {/* --- DROPZONE AREA --- */}
-      <Box
+<Box
         {...getRootProps()}
         position="relative"
         p={10}
@@ -107,9 +99,7 @@ const MultiAttachmentUpload = ({
           </VStack>
         </VStack>
       </Box>
-
-      {/* --- PENDING FILES LIST --- */}
-      {files.length > 0 && (
+{files.length > 0 && (
         <VStack
           align="stretch"
           gap={0}
@@ -193,9 +183,7 @@ const MultiAttachmentUpload = ({
           </Box>
         </VStack>
       )}
-
-      {/* --- DYNAMIC INSTRUCTIONS --- */}
-      <HStack color="fg.muted" gap={3} px={4} py={2} bg="bg.muted/30" borderRadius="lg" borderWidth="1px">
+<HStack color="fg.muted" gap={3} px={4} py={2} bg="bg.muted/30" borderRadius="lg" borderWidth="1px">
         <Icon as={FiInfo} boxSize={3.5} />
         <Text fontSize="xs" fontWeight="medium">
           {instructions}

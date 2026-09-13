@@ -1,18 +1,28 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Badge, IconButton, Icon, HStack, Text, VStack } from "@chakra-ui/react";
 import { Eye, Calendar, CreditCard, Landmark, CheckCircle, XCircle, Clock } from "lucide-react";
-import { GenericTable, type Column } from "@/components/ui/Custom/GenericTable";
+import { DataTable } from "@/components/ui/Custom/DataTable";
+import type { Column } from "@/interface/common/Column";
 import { usePayment } from "@/hooks/usePayment";
-import type { Payment } from "@/interface/PaymentInterface";
+import type { Payment } from "@/interface/payment/Payment";
 import { PaymentStatusColors, PaymentMethodColors } from "@/constants/roles/Colors";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
+import { DateSortFilter } from "@/components/ui/Custom/DateSortFilter";
+import type { DateSortFilterValue } from "@/interface/props/ui/DateSortFilterProps";
+import type { PaymentSortField } from "@/interface/payment/PaymentFilterParams";
 
 export const PaymentTable = () => {
-  const { payments, isLoading } = usePayment();
+  const { payments, isLoading, fetchPayments } = usePayment();
   const navigate = useNavigate();
+  const [filter, setFilter] = useState<DateSortFilterValue<PaymentSortField>>({
+    sortBy: "paymentDate",
+    sortDir: "desc",
+  });
 
-  // Helper to add nice icons next to the status text
+  useEffect(() => {
+    void fetchPayments({ ...filter, size: 100 });
+  }, [fetchPayments, filter]);
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "COMPLETED": return CheckCircle;
@@ -45,24 +55,24 @@ export const PaymentTable = () => {
       key: "method",
       render: (p) => (
         <HStack color="fg.muted" fontSize="sm">
-          <Icon 
-            as={p.method === "CREDIT_CARD" ? CreditCard : Landmark} 
-            size="xs" 
-            color={PaymentMethodColors[p.method] || "gray"} 
+          <Icon
+            as={p.method === "CREDIT_CARD" ? CreditCard : Landmark}
+            size="xs"
+            color={PaymentMethodColors[p.method] || "gray"}
           />
           <Text fontWeight="medium">{p.method?.replace("_", " ") || "UNKNOWN"}</Text>
         </HStack>
-      ),AC
+      ),
     },
     {
       header: "Status",
       key: "status",
       render: (p) => (
-        <Badge 
-          colorPalette={PaymentStatusColors[p.status] || "gray"} 
-          variant="subtle" 
-          px={3} 
-          py={1} 
+        <Badge
+          colorPalette={PaymentStatusColors[p.status] || "gray"}
+          variant="subtle"
+          px={3}
+          py={1}
           borderRadius="full"
         >
           <Icon as={getStatusIcon(p.status)} mr={1} size="xs" />
@@ -84,10 +94,10 @@ export const PaymentTable = () => {
       header: "View",
       key: "actions",
       render: (p) => (
-        <IconButton 
-          size="sm" 
-          variant="ghost" 
-          colorPalette="blue" 
+        <IconButton
+          size="sm"
+          variant="ghost"
+          colorPalette="blue"
           borderRadius="full"
           onClick={() => navigate(`/payments/${p.id}`)}
         >
@@ -98,18 +108,30 @@ export const PaymentTable = () => {
   ], [navigate]);
 
   return (
-    <PageWrapper 
-      title="Payment Gateway History" 
+    <PageWrapper
+      title="Payment Gateway History"
       subtitle="View all external Stripe and PayPal processing attempts."
     >
-      <GenericTable 
-        columns={columns} 
-        data={payments || []} 
-        loading={isLoading} 
-        searchPlaceholder="Search by Ref ID..." 
+      <DateSortFilter
+        value={filter}
+        onChange={setFilter}
+        dateLabel="payment date"
+        sortOptions={[
+          { label: "Payment date", value: "paymentDate" },
+          { label: "Amount", value: "amount" },
+          { label: "Status", value: "status" },
+          { label: "Payment method", value: "method" },
+        ]}
+      />
+      <DataTable
+        columns={columns}
+        data={payments || []}
+        loading={isLoading}
+        searchPlaceholder="Search by Ref ID..."
       />
     </PageWrapper>
   );
 };
 
 export default PaymentTable;
+

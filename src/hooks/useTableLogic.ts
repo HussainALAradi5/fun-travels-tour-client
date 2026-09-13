@@ -17,7 +17,11 @@ export function useTableLogic<T extends { id?: number | string | null }>(
 
   const toggleOne = (id: string | number) => {
     const next = new Set(selectedIds);
-    next.has(id) ? next.delete(id) : next.add(id);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
     setSelectedIds(next);
     onSelectionChange?.(Array.from(next));
   };

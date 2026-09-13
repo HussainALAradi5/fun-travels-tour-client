@@ -1,54 +1,46 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { 
-  Box, Heading, Text, VStack, Button, Center, 
-  Spinner, Alert, Icon, HStack, Separator 
+import {
+  Box, Heading, Text, VStack, Button, Center,
+  Spinner, Alert, Icon, HStack, Separator
 } from "@chakra-ui/react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "@/lib/navigation";
 import { ChevronLeft, Globe, MapPin, LayoutDashboard } from "lucide-react";
 
-import { GenericForm } from "@/components/ui/Custom/GenericForm";
+import { DynamicForm } from "@/components/ui/Custom/DynamicForm";
 import { tourService } from "@/Api/tourmanagement/Tour";
 import { countryService } from "@/Api/Country";
 import { cityService } from "@/Api/City";
 import { transportationService } from "@/Api/tourmanagement/Transportation";
 
-import { type Tour } from "@/interface/tourmanagement/TourInterface";
+import type { Tour } from "@/interface/tour/Tour";
 import { GenericStatus } from "@/enums/GenericStatus";
-import type { FieldConfig } from "@/utilities/FormTypes";
-import type { Country } from "@/interface/CountryInterface";
-import type { City } from "@/interface/CityInterface";
-import type { Transportation } from "@/interface/tourmanagement/TransportationInterface";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
+import type { Country } from "@/interface/geography/Country";
+import type { City } from "@/interface/geography/City";
+import type { Transportation } from "@/interface/tour/Transportation";
 
-type TourFormValues = Omit<Tour, 'startCountry' | 'endCountry' | 'startCity' | 'endCity' | 'destinationCountries' | 'transportation'> & {
-  startCountry: string;
-  endCountry: string;
-  startCity: string;
-  endCity: string;
-  destinationCountries: string[];
-  transportation: string;
-};
+import type { TourFormValues } from "@/types/tour/TourFormValues";
+import type { SelectOption } from "@/interface/common/SelectOption";
 
 export const EditTour = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const [countries, setCountries] = useState<{ label: string; value: string }[]>([]);
-  const [transports, setTransports] = useState<{ label: string; value: string }[]>([]);
-  const [startCities, setStartCities] = useState<{ label: string; value: string }[]>([]);
-  const [endCities, setEndCities] = useState<{ label: string; value: string }[]>([]);
-  
+  const [countries, setCountries] = useState<SelectOption[]>([]);
+  const [transports, setTransports] = useState<SelectOption[]>([]);
+  const [startCities, setStartCities] = useState<SelectOption[]>([]);
+  const [endCities, setEndCities] = useState<SelectOption[]>([]);
+
   const [initialValues, setInitialValues] = useState<TourFormValues | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const returnToDetail = useCallback(() => navigate(`/admin/tours/${id}`), [id, navigate]);
-
-  // --- BULLETPROOF MAPPING UTILITY ---
-  const mapToOptions = useCallback((payload: any, labelKey: string = 'name') => {
-    const items = Array.isArray(payload) ? payload : (payload?.data || []);
-    return items.map((item: any) => ({ 
-      label: item[labelKey] || item.officialName || item.commonName || `Unknown (ID: ${item.id})`, 
-      value: String(item.id) 
+  const mapToOptions = useCallback((payload: Country[] | City[] | { data: Country[] | City[] } | unknown, labelKey: string = 'name') => {
+    const items = Array.isArray(payload) ? payload : ((payload as { data: Country[] | City[] })?.data || []);
+    return items.map((item: Country | City) => ({
+      label: String((item as unknown as Record<string, unknown>)[labelKey as string] || (item as Country).officialName || (item as Country).famousName || `Unknown (ID: ${item.id})`),
+      value: String(item.id)
     }));
   }, []);
 
@@ -58,22 +50,18 @@ export const EditTour = () => {
         const [tour, countriesResponse, transportsResponse] = await Promise.all([
           tourService.getById(Number(id)),
           countryService.getAllCountries(),
-          transportationService.filter({})
+          transportationService.search({ size: 100 })
         ]);
 
         if (tour.status !== GenericStatus.PENDING) {
           setError(`Editing is restricted. Tour is currently ${tour.status}.`);
           return;
         }
-
-        // Apply bulletproof mapping to our options
         setCountries(mapToOptions(countriesResponse));
-
-        // FIXED: Used a custom mapper for transports to avoid the 'never' type issue
-        const rawTransports = Array.isArray(transportsResponse) ? transportsResponse : (transportsResponse as any)?.data || [];
-        setTransports(rawTransports.map((t: Transportation) => ({ 
-          label: `${t.providerName} (${t.type})`, 
-          value: String(t.id) 
+        const rawTransports = transportsResponse.content;
+        setTransports(rawTransports.map((t: Transportation) => ({
+          label: `${t.providerName} (${t.type})`,
+          value: String(t.id)
         })));
 
         const fetchCities = async (countryId: number | null | undefined) => {
@@ -86,7 +74,7 @@ export const EditTour = () => {
           fetchCities(tour.startCountry?.id),
           fetchCities(tour.endCountry?.id)
         ]);
-        
+
         setStartCities(sCities);
         setEndCities(eCities);
 
@@ -100,7 +88,7 @@ export const EditTour = () => {
           destinationCountries: tour.destinationCountries?.map(c => String(c.id)) ?? [],
         } as TourFormValues);
 
-      } catch (err) {
+      } catch {
         setError("Synchronization Error: Failed to load logistics data.");
       } finally {
         setIsLoading(false);
@@ -131,8 +119,8 @@ export const EditTour = () => {
       ...formData,
       startCountry: { id: Number(formData.startCountry) } as Country,
       endCountry: { id: Number(formData.endCountry) } as Country,
-      startCity: { id: Number(formData.startCity) } as City,
-      endCity: { id: Number(formData.endCity) } as City,
+      startCity: { id: Number(formData.startCity) } as Partial<City>,
+      endCity: { id: Number(formData.endCity) } as Partial<City>,
       transportation: { id: Number(formData.transportation) } as Transportation,
       destinationCountries: (formData.destinationCountries ?? []).map(cid => ({ id: Number(cid) } as Country)),
     };
@@ -179,16 +167,20 @@ export const EditTour = () => {
 
       {!error && initialValues && (
         <Box w="full" bg="bg.panel" p={{ base: 4, md: 8 }} borderRadius="3xl" borderWidth="1px" borderColor="border.subtle" shadow="sm">
-          <GenericForm<TourFormValues>
+          <DynamicForm<TourFormValues>
             fields={fields}
             initialValues={initialValues}
             onSubmit={handleUpdate}
-            onCancel={returnToDetail} 
+            onCancel={returnToDetail}
             onFieldChange={async (name, value) => {
               if (name === "startCountry" || name === "endCountry") {
                 const res = await cityService.getCitiesByCountry(Number(value));
                 const cityOptions = mapToOptions(res);
-                name === "startCountry" ? setStartCities(cityOptions) : setEndCities(cityOptions);
+                if (name === "startCountry") {
+                  setStartCities(cityOptions);
+                } else {
+                  setEndCities(cityOptions);
+                }
               }
             }}
             submitLabel="Commit Changes"
@@ -198,3 +190,7 @@ export const EditTour = () => {
     </VStack>
   );
 };
+
+
+
+

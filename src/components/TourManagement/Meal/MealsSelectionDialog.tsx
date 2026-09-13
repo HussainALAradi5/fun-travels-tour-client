@@ -1,49 +1,41 @@
 import { VStack, Button } from "@chakra-ui/react";
 import { Utensils } from "lucide-react";
-import { GenericDialog } from "@/components/ui/Custom/Dialogs/GenericDialog";
+import { AppDialog } from "@/components/ui/Custom/Dialogs/AppDialog";
 import { MealSelectionList } from "./MealSelectionList";
-import type { MealPlan } from "@/interface/tourmanagement/MealPlanInterface";
+import type { MealsSelectionDialogProps } from "@/interface/props/tour/MealsSelectionDialogProps";
 
-interface MealsSelectionDialogProps {
-  open: boolean;
-  onClose: () => void;
-  availableMeals: MealPlan[];
-  selectedMeals: MealPlan[];
-  onToggleMeal: (meal: MealPlan) => void;
-}
-
-export const MealsSelectionDialog = ({ 
-  open, 
-  onClose, 
-  availableMeals, 
-  selectedMeals, 
-  onToggleMeal 
+export const MealsSelectionDialog = ({
+  open,
+  onClose,
+  availableMeals,
+  selectedMeals,
+  onToggleMeal
 }: MealsSelectionDialogProps) => {
   return (
-    <GenericDialog
+    <AppDialog
       open={open}
       onClose={onClose}
       title="Dietary Preferences & Meals"
       description="Select add-on meals for this passenger during the tour."
       icon={Utensils}
-      colorPalette="green" // Using green to differentiate from the blue seat picker
+      colorPalette="green"
       size="lg"
     >
       <VStack align="stretch" gap={6}>
-        <MealSelectionList 
-          availableMeals={availableMeals} 
-          selectedMeals={selectedMeals} 
-          onToggleMeal={onToggleMeal} 
+        <MealSelectionList
+          availableMeals={availableMeals}
+          selectedMeals={selectedMeals}
+          onToggleMeal={onToggleMeal}
         />
-        <Button 
-          size="lg" 
-          colorPalette="green" 
+        <Button
+          size="lg"
+          colorPalette="green"
           onClick={onClose}
           borderRadius="xl"
         >
           Done
         </Button>
       </VStack>
-    </GenericDialog>
+    </AppDialog>
   );
 };

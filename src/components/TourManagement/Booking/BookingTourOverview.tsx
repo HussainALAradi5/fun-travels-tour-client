@@ -1,7 +1,8 @@
 import { Box, VStack, Text, Heading, Icon, Circle, Separator, HStack } from "@chakra-ui/react";
 import { MapPin, Navigation, Clock } from "lucide-react";
+import type { BookingTourOverviewProps } from "@/interface/props/booking/BookingTourOverviewProps";
 
-export const BookingTourOverview = ({ tour }: any) => (
+export const BookingTourOverview = ({ tour }: BookingTourOverviewProps) => (
   <Box p={6} borderRadius="3xl" bg="blue.600" color="white" h="full">
     <VStack align="start" gap={8}>
       <VStack align="start" gap={1}>
@@ -45,3 +46,7 @@ export const BookingTourOverview = ({ tour }: any) => (
     </VStack>
   </Box>
 );
+
+
+
+

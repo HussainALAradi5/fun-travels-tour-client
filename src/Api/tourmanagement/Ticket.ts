@@ -1,62 +1,63 @@
 import apiClient from "@/config/BaseApi";
+import type { ApiResponse } from "@/interface/common/ApiResponse";
+import type { Ticket } from "@/interface/tour/Ticket";
 import type { GenericStatus } from "@/enums/GenericStatus";
-import type { Ticket } from "@/interface/tourmanagement/TicketInterface";
+import type { TicketFilterParams } from "@/interface/tour/TicketFilterParams";
+import type { PageResponse } from "@/interface/common/PageResponse";
+import type { PaginationParams } from "@/interface/common/PaginationParams";
+import { extractData } from "@/utilities/apiHelper";
 
 export const ticketService = {
-  getAll: async () => {
-    const response = await apiClient.get<Ticket[]>("/tickets");
-    return response.data;
+  getAll: async (params: PaginationParams = {}): Promise<PageResponse<Ticket>> => {
+    const response =
+      await apiClient.get<ApiResponse<PageResponse<Ticket>>>("/tickets", { params });
+    return extractData(response.data);
   },
 
-  getById: async (id: number) => {
-    const response = await apiClient.get<Ticket>(`/tickets/${id}`);
-    return response.data;
+  getById: async (id: number): Promise<Ticket> => {
+    const response = await apiClient.get<ApiResponse<Ticket>>(
+      `/tickets/${id}`,
+    );
+    return response.data.data as unknown as Ticket;
   },
 
-  create: async (ticket: Ticket) => {
-    const response = await apiClient.post<Ticket>("/tickets", ticket);
-    return response.data;
+  search: async (params: TicketFilterParams = {}): Promise<PageResponse<Ticket>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<Ticket>>>(
+      "/tickets/search",
+      { params },
+    );
+    return extractData(response.data);
   },
 
-
-  filter: async (params: { 
-    status?: string; 
-    customerId?: number; 
-    tourId?: number;
-    sortBy?: 'startDate' | 'endDate' | 'bookingDate' | 'totalPrice';
-    sortDir?: 'asc' | 'desc';
-  }) => {
-    const response = await apiClient.get<Ticket[]>("/tickets/filter", { params });
-    return response.data;
+  updateStatus: async (id: number, status: GenericStatus): Promise<Ticket> => {
+    const response = await apiClient.put<ApiResponse<Ticket>>(
+      `/tickets/${id}/status`,
+      null,
+      {
+        params: { status },
+      },
+    );
+    return response.data.data as unknown as Ticket;
   },
 
-  /**
-   * General status update via query param.
-   * Path: PUT /api/tickets/{id}/status?status=...
-   */
-  updateStatus: async (id: number, status: GenericStatus) => {
-    const response = await apiClient.put<Ticket>(`/tickets/${id}/status`, null, {
-      params: { status }
-    });
-    return response.data;
+  approve: async (id: number): Promise<Ticket> => {
+    const response = await apiClient.put<ApiResponse<Ticket>>(
+      `/tickets/${id}/approve`,
+    );
+    return response.data.data as unknown as Ticket;
   },
 
-  /**
-   * Specialized endpoints matching your TicketController.
-   * Note: These don't need 'params' because the status is hardcoded in the Java Controller.
-   */
-  approve: async (id: number) => {
-    const response = await apiClient.put<Ticket>(`/tickets/${id}/approve`);
-    return response.data;
+  confirm: async (id: number): Promise<Ticket> => {
+    const response = await apiClient.put<ApiResponse<Ticket>>(
+      `/tickets/${id}/confirm`,
+    );
+    return response.data.data as unknown as Ticket;
   },
 
-  confirm: async (id: number) => {
-    const response = await apiClient.put<Ticket>(`/tickets/${id}/confirm`);
-    return response.data;
-  },
-
-  cancel: async (id: number) => {
-    const response = await apiClient.put<Ticket>(`/tickets/${id}/cancel`);
-    return response.data;
+  cancel: async (id: number): Promise<Ticket> => {
+    const response = await apiClient.put<ApiResponse<Ticket>>(
+      `/tickets/${id}/cancel`,
+    );
+    return response.data.data as unknown as Ticket;
   },
 };

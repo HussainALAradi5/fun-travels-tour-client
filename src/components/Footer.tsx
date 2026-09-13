@@ -1,7 +1,11 @@
 import { Box, Container, Stack, Text, Link, Flex } from "@chakra-ui/react";
 import { useColorModeValue } from "../components/ui/color-mode";
 
-export const Footer = () => {
+interface FooterProps {
+  currentYear: number;
+}
+
+export const Footer = ({ currentYear }: FooterProps) => {
   const bgColor = useColorModeValue("gray.50", "gray.950");
   const borderColor = useColorModeValue("gray.200", "gray.800");
 
@@ -51,7 +55,7 @@ export const Footer = () => {
           </Stack>
 
           <Text fontSize="sm" color="gray.400">
-            &copy; {new Date().getFullYear()} FunTravel Tour.
+            &copy; {currentYear} FunTravel Tour.
           </Text>
         </Flex>
       </Container>

@@ -1,16 +1,28 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Badge, IconButton, Icon, HStack, Text, VStack } from "@chakra-ui/react";
 import { Eye, ReceiptText, Calendar, ArrowUpRight, ArrowDownRight } from "lucide-react";
-import { GenericTable, type Column } from "@/components/ui/Custom/GenericTable";
+import { DataTable } from "@/components/ui/Custom/DataTable";
+import type { Column } from "@/interface/common/Column";
 import { useTransaction } from "@/hooks/useTransaction";
-import type { Transaction } from "@/interface/TransactionInterface";
+import type { Transaction } from "@/interface/payment/Transaction";
 import { TransactionTypeColors } from "@/constants/roles/Colors";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
+import { DateSortFilter } from "@/components/ui/Custom/DateSortFilter";
+import type { DateSortFilterValue } from "@/interface/props/ui/DateSortFilterProps";
+import type { TransactionSortField } from "@/interface/payment/TransactionFilterParams";
 
 export const TransactionTable = () => {
-  const { transactions, isLoading } = useTransaction();
+  const { transactions, isLoading, fetchTransactions } = useTransaction();
   const navigate = useNavigate();
+  const [filter, setFilter] = useState<DateSortFilterValue<TransactionSortField>>({
+    sortBy: "timestamp",
+    sortDir: "desc",
+  });
+
+  useEffect(() => {
+    void fetchTransactions({ ...filter, size: 100 });
+  }, [fetchTransactions, filter]);
 
   const columns = useMemo<Column<Transaction>[]>(() => [
     {
@@ -62,7 +74,7 @@ export const TransactionTable = () => {
       header: "View",
       key: "actions",
       render: (t) => (
-        <IconButton 
+        <IconButton
           size="sm" variant="ghost" colorPalette="blue" borderRadius="full"
           onClick={() => navigate(`/transactions/${t.id}`)}
         >
@@ -74,7 +86,21 @@ export const TransactionTable = () => {
 
   return (
     <PageWrapper title="Financial Ledger" subtitle="Overview of all transactions">
-      <GenericTable data={transactions} columns={columns} loading={isLoading} colorPalette="blue" enableExport />
+      <DateSortFilter
+        value={filter}
+        onChange={setFilter}
+        dateLabel="transaction date"
+        sortOptions={[
+          { label: "Transaction date", value: "timestamp" },
+          { label: "Amount", value: "amount" },
+          { label: "Type", value: "type" },
+          { label: "Reference", value: "id" },
+        ]}
+      />
+      <DataTable data={transactions} columns={columns} loading={isLoading} colorPalette="blue" enableExport />
     </PageWrapper>
   );
 };
+
+
+

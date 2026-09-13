@@ -1,12 +1,5 @@
 import { Box, HStack, Text, VStack } from "@chakra-ui/react";
-import type { ElementType } from "react";
-
-interface InfoItemProps {
-  icon: ElementType;
-  label: string;
-  value: string | number | React.ReactNode;
-  iconColor?: string;
-}
+import type { InfoItemProps } from "@/interface/props/ui/InfoItemProps";
 
 export const InfoItem = ({
   icon: Icon,
@@ -15,8 +8,7 @@ export const InfoItem = ({
   iconColor = "blue.500",
 }: InfoItemProps) => {
   return (
-    // Use VStack to ensure the label and value are perfectly aligned vertically
-    <VStack align="start" gap={1}> 
+    <VStack align="start" gap={1}>
       <HStack gap={2}>
         <Icon size={16} color={iconColor} />
         <Text
@@ -29,8 +21,7 @@ export const InfoItem = ({
           {label}
         </Text>
       </HStack>
-      {/* Indent the value slightly to align with the text rather than the icon */}
-      <Box fontSize="md" fontWeight="medium" pl={6}>
+<Box fontSize="md" fontWeight="medium" pl={6}>
         {value}
       </Box>
     </VStack>

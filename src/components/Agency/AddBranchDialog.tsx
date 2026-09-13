@@ -1,39 +1,24 @@
 import { useEffect, useState, useMemo } from "react";
-import { MapPinHouse } from "lucide-react";
 import { countryService } from "@/Api/Country";
 import { cityService } from "@/Api/City";
 import { userService } from "@/Api/User";
-import {
-  DEFAULT_BRANCH,
-  type AgencyBranch,
-} from "@/interface/Agency/AgencyBranchInterface";
-import type { FieldConfig } from "@/utilities/FormTypes";
-import type { Country } from "@/interface/CountryInterface";
-import type { City } from "@/interface/CityInterface";
-import type { User } from "@/interface/UserInterface";
-import { GenericFormDialog } from "../ui/Custom/Dialogs/GenericFormDialog";
+import type { AgencyBranch } from "@/interface/agency/AgencyBranch";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
+import type { Country } from "@/interface/geography/Country";
+import type { City } from "@/interface/geography/City";
+import type { User } from "@/interface/user/User";
+import { DynamicFormDialog } from "../ui/Custom/Dialogs/DynamicFormDialog";
 
-interface Props {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: (data: AgencyBranch) => Promise<void>;
-  loading: boolean;
-}
+import type { SelectOption } from "@/interface/common/SelectOption";
+import type { AddBranchDialogProps } from "@/interface/props/agency/AddBranchDialogProps";
 
-interface SelectOption {
-  label: string;
-  value: string;
-}
-
-export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
+export function AddBranchDialog({ open, onClose, onSubmit, loading }: AddBranchDialogProps) {
   const [users, setUsers] = useState<SelectOption[]>([]);
   const [countries, setCountries] = useState<SelectOption[]>([]);
   const [cities, setCities] = useState<SelectOption[]>([]);
   const [selectedCountryId, setSelectedCountryId] = useState<string | null>(
     null,
   );
-
-  // 1. Load Initial Data (Users and Countries)
   useEffect(() => {
     const loadInitialData = async () => {
       try {
@@ -42,8 +27,7 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
           countryService.getAllCountries(),
         ]);
 
-        // Use the same robust check as AddAgencyDialog
-        const userData = Array.isArray(uRes) ? uRes : uRes?.data;
+        const userData = uRes || [];
         if (userData) {
           setUsers(
             userData.map((u: User) => ({
@@ -53,7 +37,7 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
           );
         }
 
-        const countryData = Array.isArray(cRes) ? cRes : cRes?.data;
+        const countryData = cRes || [];
         if (countryData) {
           setCountries(
             countryData.map((c: Country) => ({
@@ -62,7 +46,7 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
             })),
           );
         }
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("Failed to load branch form data:", error);
       }
     };
@@ -71,8 +55,6 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
       loadInitialData();
     }
   }, [open]);
-
-  // 2. Load Cities when country changes
   useEffect(() => {
     const fetchCities = async () => {
       if (!selectedCountryId) {
@@ -84,7 +66,7 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
         const res = await cityService.getCitiesByCountry(
           Number(selectedCountryId),
         );
-        const cityData = Array.isArray(res) ? res : res?.data;
+        const cityData = res || [];
         if (cityData) {
           setCities(
             cityData.map((city: City) => ({
@@ -93,7 +75,7 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
             })),
           );
         }
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("Failed to fetch cities:", error);
       }
     };
@@ -101,21 +83,7 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
     fetchCities();
   }, [selectedCountryId]);
 
-  const handleInterceptSubmit = async (data: any) => {
-    // Reconstructing the object to match AgencyBranch interface (nesting the IDs)
-    const formattedData: any = {
-      ...data,
-      country: data.country ? { id: Number(data.country) } : undefined,
-      city: data.city ? { id: Number(data.city) } : undefined,
-      branchManager: data.branchManager
-        ? { id: Number(data.branchManager) }
-        : undefined,
-    };
-
-    await onSubmit(formattedData);
-  };
-
-  const formFields = useMemo<FieldConfig<AgencyBranch>[]>(
+  const formFields = useMemo<FieldConfig<Record<string, unknown>>[]>(
     () => [
       {
         name: "branchName",
@@ -135,17 +103,17 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
         gridSpan: 1,
       },
       {
-        name: "country" as any,
+        name: "country",
         label: "Country",
-        type: "search-select", // Changed to search-select
+        type: "search-select",
         options: countries,
         isRequired: true,
         gridSpan: 1,
       },
       {
-        name: "city" as any,
+        name: "city",
         label: "City",
-        type: "search-select", // Changed to search-select
+        type: "search-select",
         options: cities,
         isRequired: true,
         disabled: !selectedCountryId || cities.length === 0,
@@ -155,9 +123,9 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
         gridSpan: 1,
       },
       {
-        name: "branchManager" as any,
+        name: "branchManager",
         label: "Manager",
-        type: "search-select", // Changed to search-select
+        type: "search-select",
         options: users,
         placeholder: "Select a manager",
         gridSpan: 1,
@@ -167,18 +135,29 @@ export function AddBranchDialog({ open, onClose, onSubmit, loading }: Props) {
   );
 
   return (
-    <GenericFormDialog<AgencyBranch>
+    <DynamicFormDialog<Record<string, unknown>>
       open={open}
       onClose={onClose}
-      onSubmit={handleInterceptSubmit}
+      onSubmit={async (data) => {
+        const formattedData: AgencyBranch = {
+          branchName: data.branchName as string,
+          branchAddress: data.branchAddress as string,
+          contactNumber: data.contactNumber as string,
+          ownerMobileNumber: data.ownerMobileNumber as string,
+          active: true,
+          country: data.country as AgencyBranch["country"],
+          city: data.city as AgencyBranch["city"],
+          branchManager: data.branchManager as AgencyBranch["branchManager"],
+        };
+
+        await onSubmit(formattedData);
+      }}
       loading={loading}
       title="Add New Branch"
       description="Register a physical location and assign management."
-      icon={MapPinHouse}
       fields={formFields}
-      initialValues={DEFAULT_BRANCH as AgencyBranch}
+      initialValues={{ branchName: "", branchAddress: "", contactNumber: "", active: true } as Record<string, unknown>}
       onFieldChange={(name, value) => {
-        // Match the field name 'country' used in formFields
         if (name === "country") {
           setSelectedCountryId(value ? String(value) : null);
         }

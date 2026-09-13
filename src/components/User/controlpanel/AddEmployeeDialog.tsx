@@ -1,17 +1,11 @@
 import { UserPlus } from "lucide-react";
-import type { User } from "@/interface/UserInterface";
-import { DEFAULT_USER } from "@/interface/UserInterface";
+import type { User } from "@/interface/user/User";
+import { DEFAULT_USER } from "@/interface/user/User";
 import { UserType } from "@/enums/UserType";
-import type { FieldConfig } from "@/utilities/FormTypes";
-import { GenericFormDialog } from "@/components/ui/Custom/Dialogs/GenericFormDialog";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
+import { DynamicFormDialog } from "@/components/ui/Custom/Dialogs/DynamicFormDialog";
 
-interface AddEmployeeDialogProps {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: (data: User) => Promise<void>;
-  loading: boolean;
-  agencyName?: string;
-}
+import type { AddEmployeeDialogProps } from "@/interface/props/agency/AddEmployeeDialogProps";
 
 export function AddEmployeeDialog({
   open,
@@ -36,7 +30,7 @@ export function AddEmployeeDialog({
   };
 
   return (
-    <GenericFormDialog<User>
+    <DynamicFormDialog<User>
       open={open}
       onClose={onClose}
       onSubmit={onSubmit}
@@ -53,3 +47,5 @@ export function AddEmployeeDialog({
     />
   );
 }
+
+

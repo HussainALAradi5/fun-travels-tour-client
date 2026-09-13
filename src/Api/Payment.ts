@@ -1,38 +1,31 @@
 import apiClient from "@/config/BaseApi";
+import type { ApiResponse } from "@/interface/common/ApiResponse";
+import type { Payment } from "@/interface/payment/Payment";
+import type { TourReservation } from "@/interface/tour/TourReservation";
 import type { PaymentMethod } from "@/enums/payment/PaymentMethod";
-import type { PaymentStatus } from "@/enums/payment/PaymentStatus";
-import type { Payment } from "@/interface/PaymentInterface";
-import type { TourReservation } from "@/interface/tourmanagement/TourReservationInterface";
+import type { PaymentFilterParams } from "@/interface/payment/PaymentFilterParams";
+import type { PageResponse } from "@/interface/common/PageResponse";
+import { extractData } from "@/utilities/apiHelper";
 
 export const paymentService = {
-  /**
-   * Triggers the full payment flow.
-   * Path: POST /api/payments/execute/{reservationId}?method=...
-   * Returns: The updated TourReservation (Approved/Confirmed)
-   */
-  execute: async (reservationId: number, method: PaymentMethod) => {
-    const response = await apiClient.post<TourReservation>(
+  execute: async (reservationId: number, method: PaymentMethod): Promise<TourReservation> => {
+    const response = await apiClient.post<ApiResponse<TourReservation>>(
       `/payments/execute/${reservationId}`,
       null,
       { params: { method } },
     );
-    return response.data;
+    return response.data.data;
   },
 
-  filter: async (params: {
-    userId?: number;
-    status?: PaymentStatus;
-    method?: PaymentMethod;
-    date?: string;
-  }) => {
-    const response = await apiClient.get<Payment[]>("/payments/filter", {
+  getAll: async (params: PaymentFilterParams = {}): Promise<PageResponse<Payment>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<Payment>>>("/payments", {
       params,
     });
-    return response.data;
+    return extractData(response.data);
   },
 
-  getById: async (id: number) => {
-    const response = await apiClient.get<Payment>(`/payments/${id}`);
-    return response.data;
+  getById: async (id: number): Promise<Payment> => {
+    const response = await apiClient.get<ApiResponse<Payment>>(`/payments/${id}`);
+    return response.data.data;
   },
 };
