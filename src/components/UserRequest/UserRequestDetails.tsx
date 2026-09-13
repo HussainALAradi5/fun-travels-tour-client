@@ -57,8 +57,8 @@ export const UserRequestDetails = () => {
 
   useEffect(() => { fetchData(true); }, [fetchData]);
 
-  const formattedAuditEvents: AuditEventItem[] = events.map(event => ({
-    id: event.id || Math.random(),
+  const formattedAuditEvents: AuditEventItem[] = events.map((event, index) => ({
+    id: event.id ?? -(index + 1),
     actorName: event.actor?.name || "System",
     action: event.action || "UPDATE",
     description: event.description ?? undefined,

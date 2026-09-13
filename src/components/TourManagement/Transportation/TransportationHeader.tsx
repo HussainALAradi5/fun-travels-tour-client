@@ -1,5 +1,5 @@
 import { HStack, VStack, Heading, Text, Button, Box } from "@chakra-ui/react";
-import { Plus } from "lucide-react";
+import { FileUp, Plus } from "lucide-react";
 import { UnifiedFilterBar } from "../../ui/Custom/UnifiedFilterBar";
 import { ContentCard } from "../../ui/Custom/ContentCard";
 import { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
@@ -15,6 +15,7 @@ export const TransportationHeader = ({
   statusFilterValue,
   onStatusFilterChange,
   onAdd,
+  onImport,
   onReset,
 }: TransportationHeaderProps) => {
 
@@ -36,6 +37,10 @@ export const TransportationHeader = ({
             <Heading size="md" letterSpacing="tight" fontWeight="black">Fleet Inventory</Heading>
             <Text color="fg.muted" fontSize="xs">Advanced Resource Search & Management</Text>
           </VStack>
+          <HStack>
+          <Button variant="outline" size="sm" onClick={onImport} borderRadius="full">
+            <FileUp size={16} /> Import Excel
+          </Button>
           <Button
             colorPalette="blue"
             size="sm"
@@ -47,6 +52,7 @@ export const TransportationHeader = ({
           >
             <Plus size={16} /> Register Unit
           </Button>
+          </HStack>
         </HStack>
       }
     >

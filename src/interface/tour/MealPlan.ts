@@ -1,5 +1,5 @@
 import type { GenericStatus } from '../../enums/GenericStatus';
-import type { AgencySummary } from './AgencySummary';
+import type { Agency } from '../agency/Agency';
 
 export interface MealPlan {
   id?: number;
@@ -10,5 +10,5 @@ export interface MealPlan {
   isVegan: boolean;
   isGlutenFree: boolean;
   status: GenericStatus;
-  agency?: Partial<AgencySummary>;
+  agency?: Partial<Agency>;
 }

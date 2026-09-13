@@ -5,7 +5,6 @@ import { DynamicForm } from "@/components/ui/Custom/DynamicForm";
 import { SeatManager } from "../Seat/SeatManagement/SeatManager";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
-import type { TransportationFormValues } from "@/types/tour/TransportationFormValues";
 import type { Transportation } from "@/interface/tour/Transportation";
 import type { TransportationEditDialogProps } from "@/interface/props/tour/TransportationEditDialogProps";
 
@@ -18,7 +17,7 @@ export const TransportationEditDialog = ({
 }: TransportationEditDialogProps) => {
   if (!transport) return null;
 
-  const editFields: FieldConfig<TransportationFormValues>[] = [
+  const editFields: FieldConfig<Transportation>[] = [
     {
       name: "code",
       label: "Serial Code",
@@ -64,21 +63,21 @@ export const TransportationEditDialog = ({
       disabled: true,
     },
     {
-      name: "seatConfig.PREMIUM_RECLINER" as keyof TransportationFormValues,
+      name: "seatConfig.PREMIUM_RECLINER" as keyof Transportation,
       label: "Premium Seats",
       type: "number",
       icon: Star,
       gridSpan: 1,
     },
     {
-      name: "seatConfig.WHEELCHAIR_ACCESSIBLE" as keyof TransportationFormValues,
+      name: "seatConfig.WHEELCHAIR_ACCESSIBLE" as keyof Transportation,
       label: "Accessible Spaces",
       type: "number",
       icon: Accessibility,
       gridSpan: 1,
     },
     {
-      name: "seatConfig.KIDS_CHAIR" as keyof TransportationFormValues,
+      name: "seatConfig.KIDS_CHAIR" as keyof Transportation,
       label: "Child Safety Seats",
       type: "number",
       icon: Baby,
@@ -111,10 +110,10 @@ export const TransportationEditDialog = ({
                 UPDATE REGISTRY & CAPACITY INFO
               </Text>
 
-              <DynamicForm<TransportationFormValues>
+              <DynamicForm<Transportation>
                 disableToast={true}
                 fields={editFields}
-                initialValues={transport as TransportationFormValues}
+                initialValues={transport}
                 onSubmit={async (values) => { await onUpdate(values as unknown as Transportation); }}
                 onCancel={onClose}
                 isLoading={loading}

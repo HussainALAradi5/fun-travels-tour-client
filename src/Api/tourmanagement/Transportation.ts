@@ -5,6 +5,8 @@ import type { TransportationFilterParams } from "@/interface/tour/Transportation
 import type { PageResponse } from "@/interface/common/PageResponse";
 import type { PaginationParams } from "@/interface/common/PaginationParams";
 import { extractData } from "@/utilities/apiHelper";
+import type { ImportResult } from "@/interface/common/ImportResult";
+import type { TransportationCreateRequest } from "@/interface/tour/TransportationCreateRequest";
 
 export const transportationService = {
   getAll: async (params: PaginationParams = {}): Promise<PageResponse<Transportation>> => {
@@ -23,13 +25,23 @@ export const transportationService = {
   },
 
   create: async (
-    data: Partial<Transportation>,
+    data: TransportationCreateRequest,
   ): Promise<Transportation> => {
     const response = await apiClient.post<ApiResponse<Transportation>>(
       "/transportations",
       data,
     );
     return response.data.data as unknown as Transportation;
+  },
+
+  importExcel: async (file: File): Promise<ImportResult> => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await apiClient.post<ApiResponse<ImportResult>>(
+      "/transportations/imports",
+      formData,
+    );
+    return extractData(response.data);
   },
 
   update: async (

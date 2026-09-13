@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Badge, Box, Button, Code, Heading, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import { ArrowLeft, CalendarDays, Check, CircleDollarSign, ClipboardCheck, Inbox, MapPin, Plane, QrCode } from "lucide-react";
 import { AlertComponent } from "@/components/ui/Custom/AlertComponent";
@@ -35,13 +35,14 @@ export default function ComponentShowcaseDetailPage({ item }: ComponentShowcaseD
   const [status, setStatus] = useState<ShowcaseDemoStatus>(ShowcaseDemoStatus.PENDING);
   const [variant, setVariant] = useState<ComponentVariant | ProgressVariant>(item.variants?.[0] ?? ComponentVariant.OUTLINE);
   const [progressType, setProgressType] = useState<ProgressType>(ProgressType.AUTO);
+  const showcaseMinDate = useMemo(() => new Date(2026, 0, 1), []);
 
   const demo = () => {
     switch (item.slug) {
       case "alert": return alertVisible ? <AlertComponent variant={variant as ComponentVariant} status="success" title="Saved successfully" description="This alert can include actions and can be dismissed." isClosable onClose={() => setAlertVisible(false)} /> : <Button onClick={() => setAlertVisible(true)}>Show alert</Button>;
       case "capacity-progress": return <VStack align="stretch" gap={8}><Box><Text fontSize="sm" fontWeight="semibold" mb={3}>Selected preview</Text><CapacityProgress variant={variant as ProgressVariant} type={progressType} value={34} total={50} unit="seats" showPercentage showStatusText /></Box>{item.progressTypes && <Box><Text fontSize="sm" fontWeight="semibold" mb={3}>All progress types</Text><ProgressTypeGallery types={item.progressTypes} variant={variant as ProgressVariant} /></Box>}</VStack>;
       case "content-card": return <ContentCard variant={variant as ComponentVariant} header={<Heading size="md">Tour summary</Heading>} footer={<Text fontSize="sm">Updated just now</Text>}><InfoItem icon={Plane} label="Destination" value="Bahrain" /></ContentCard>;
-      case "date-picker": return <VStack align="stretch" gap={5}><SimpleGrid columns={{ base: 1, md: 2 }} gap={4}><LightMode><Box p={4} bg="white" borderRadius="xl"><Text mb={3} fontWeight="bold">Light preview</Text><DatePicker label="Travel dates" range={dateRange} onRangeChange={setDateRange} minDate={new Date()} /></Box></LightMode><DarkMode><Box p={4} bg="gray.950" borderRadius="xl"><Text mb={3} fontWeight="bold">Dark preview</Text><DatePicker label="Travel dates" range={dateRange} onRangeChange={setDateRange} minDate={new Date()} /></Box></DarkMode></SimpleGrid><Text fontSize="sm" color="fg.muted">From: {dateRange.from || "not selected"} · To: {dateRange.to || "not selected"}</Text></VStack>;
+      case "date-picker": return <VStack align="stretch" gap={5}><SimpleGrid columns={{ base: 1, md: 2 }} gap={4}><LightMode><Box p={4} bg="white" borderRadius="xl"><Text mb={3} fontWeight="bold">Light preview</Text><DatePicker label="Travel dates" range={dateRange} onRangeChange={setDateRange} minDate={showcaseMinDate} /></Box></LightMode><DarkMode><Box p={4} bg="gray.950" borderRadius="xl"><Text mb={3} fontWeight="bold">Dark preview</Text><DatePicker label="Travel dates" range={dateRange} onRangeChange={setDateRange} minDate={showcaseMinDate} /></Box></DarkMode></SimpleGrid><Text fontSize="sm" color="fg.muted">From: {dateRange.from || "not selected"} · To: {dateRange.to || "not selected"}</Text></VStack>;
       case "empty-state": return <EmptyState variant={variant as ComponentVariant} icon={Inbox} title="No tours found" description="Adjust the filters or create the first tour." action={<Button size="sm">Create tour</Button>} />;
       case "hero": return <Hero title="Explore Bahrain" subtitle="A reusable responsive hero demonstration." buttonText="Explore" onActionClick={() => undefined} />;
       case "metric-card": return <MetricCard variant={variant as ComponentVariant} icon={CircleDollarSign} label="Revenue" value="BHD 12,480" helperText="12% above last month" colorPalette="green" />;

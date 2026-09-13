@@ -8,10 +8,12 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const currentYear = new Date().getUTCFullYear();
+
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
-        <Providers><ClientShell>{children}</ClientShell></Providers>
+      <body suppressHydrationWarning>
+        <Providers><ClientShell currentYear={currentYear}>{children}</ClientShell></Providers>
       </body>
     </html>
   );

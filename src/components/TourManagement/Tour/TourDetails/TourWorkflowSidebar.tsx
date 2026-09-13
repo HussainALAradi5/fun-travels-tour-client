@@ -6,6 +6,7 @@ import { StatusWorkflow } from "@/components/ui/Custom/StatusWorkflow";
 import type { StatusConfig } from "@/interface/common/StatusConfig";
 import { GenericStatus } from "@/enums/GenericStatus";
 import type { TourWorkflowSidebarProps } from "@/interface/props/tour/TourWorkflowSidebarProps";
+import { useIsHydrated } from "@/hooks/useIsHydrated";
 
 const TOUR_STATUS_MAP: Partial<Record<GenericStatus, StatusConfig>> = {
   [GenericStatus.PENDING]: { label: "Pending", colorPalette: "gray", icon: FileText },
@@ -22,6 +23,7 @@ const STEPS = [
 ];
 
 export const TourWorkflowSidebar = ({ tour, onStatusChange, onEdit, onCancel }: TourWorkflowSidebarProps) => {
+  const isHydrated = useIsHydrated();
   const [isRestoring, setIsRestoring] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const { isCancelAllowed, isEditable, isCancelled } = useMemo(() => {
@@ -30,7 +32,7 @@ export const TourWorkflowSidebar = ({ tour, onStatusChange, onEdit, onCancel }: 
 
     let cancelAllowed = false;
 
-    if (tour.startDate && tour.maxCapacity) {
+    if (isHydrated && tour.startDate && tour.maxCapacity) {
       const today = new Date().getTime();
       const start = new Date(tour.startDate).getTime();
       const daysUntilStart = Math.ceil((start - today) / (1000 * 3600 * 24));
@@ -46,7 +48,7 @@ export const TourWorkflowSidebar = ({ tour, onStatusChange, onEdit, onCancel }: 
       isEditable: editableState,
       isCancelled: cancelledState
     };
-  }, [tour.startDate, tour.maxCapacity, tour.availableSlots, tour.status]);
+  }, [isHydrated, tour.startDate, tour.maxCapacity, tour.availableSlots, tour.status]);
 
   const handleRestore = async () => {
     setIsRestoring(true);

@@ -7,9 +7,9 @@ import { mealPlanService } from "@/Api/tourmanagement/MealPlan";
 import { ticketService } from "@/Api/tourmanagement/Ticket";
 import { reservationService } from "@/Api/tourmanagement/TourReservation";
 import type { Tour } from "@/interface/tour/Tour";
-import type { Ticket } from "@/interface/tour/Ticket";
 import type { TourReservation } from "@/interface/tour/TourReservation";
 import type { Transportation } from "@/interface/tour/Transportation";
+import type { TransportationCreateRequest } from "@/interface/tour/TransportationCreateRequest";
 import type { MealPlan } from "@/interface/tour/MealPlan";
 import type { Seat } from "@/interface/tour/Seat";
 import type { User } from "@/interface/user/User";
@@ -140,8 +140,8 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
       `Tour is now ${status}.`
     );
 
-  const handleCreateTransportation = (data: Transportation) =>
-    execute(transportationService.create(data as never), "Unit Registered", "Vehicle added to fleet.");
+  const handleCreateTransportation = (data: TransportationCreateRequest) =>
+    execute(transportationService.create(data), "Unit Registered", "Vehicle added to fleet.");
 
   const handleUpdateTransportation = (id: number, values: Transportation) =>
     execute(

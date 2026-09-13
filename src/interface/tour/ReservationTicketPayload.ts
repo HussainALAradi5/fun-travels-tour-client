@@ -1,6 +1,7 @@
-import type { EntityReference } from "../common/EntityReference";
+import type { Seat } from "./Seat";
+import type { MealPlan } from "./MealPlan";
 
 export interface ReservationTicketPayload {
-  assignedSeat?: EntityReference | null;
-  selectedMeals?: EntityReference[];
+  assignedSeat?: Partial<Seat> | null;
+  selectedMeals?: Partial<MealPlan>[];
 }

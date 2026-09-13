@@ -1,13 +1,13 @@
 import type { TransactionType } from '../../enums/TransactionType';
 import type { Payment } from './Payment';
 import type { TourReservation } from '../tour/TourReservation';
-import type { AccountSummary } from './AccountSummary';
+import type { Account } from './Account';
 
 export interface Transaction {
   id?: number;
   type: TransactionType;
   amount: number;
-  account?: AccountSummary;
+  account?: Partial<Account>;
   payment?: Partial<Payment>;
   reservation?: Partial<TourReservation>;
   description?: string;

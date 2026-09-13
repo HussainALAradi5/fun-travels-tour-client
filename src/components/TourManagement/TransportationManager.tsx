@@ -6,10 +6,13 @@ import { TransportationTable } from "./Transportation/TransportationTable";
 import { TransportationEditDialog } from "./Transportation/TransportationEditDialog";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import type { Transportation } from "@/interface/tour/Transportation";
+import { ExcelImportDialog } from "@/components/ui/Custom/Dialogs/ExcelImportDialog";
+import { transportationService } from "@/Api/tourmanagement/Transportation";
 
 export const TransportationManager = () => {
   const navigate = useNavigate();
   const { open, onOpen, onClose } = useDisclosure();
+  const importDialog = useDisclosure();
 
   const {
     transportation: list,
@@ -59,7 +62,21 @@ export const TransportationManager = () => {
         onStatusFilterChange={(val) => setFilters(p => ({ ...p, status: val }))}
 
         onAdd={() => navigate("/admin/transports/create")}
+        onImport={importDialog.onOpen}
         onReset={() => setFilters({ type: "ALL", status: "ALL", globalSearch: "" })}
+      />
+
+      <ExcelImportDialog
+        open={importDialog.open}
+        onClose={importDialog.onClose}
+        title="Import transportation units"
+        description="Each valid row creates one unit and its complete seat inventory on the server."
+        columns={[
+          "transportationNumber", "code", "type", "providerName", "totalCapacity",
+          "agencyId", "branchId (optional)", "premiumSeats", "accessibleSeats", "kidsSeats",
+        ]}
+        onImport={transportationService.importExcel}
+        onCompleted={loadData}
       />
 
       <TransportationTable

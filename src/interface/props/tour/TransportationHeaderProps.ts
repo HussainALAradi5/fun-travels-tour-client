@@ -7,5 +7,6 @@ export interface TransportationHeaderProps {
   onTypeFilterChange: (val: string) => void;
   onStatusFilterChange: (val: string) => void;
   onAdd: () => void;
+  onImport: () => void;
   onReset: () => void;
 }

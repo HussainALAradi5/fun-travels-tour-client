@@ -1,9 +1,3 @@
-import type { Transportation } from "@/interface/tour/Transportation";
+import type { TransportationCreateRequest } from "@/interface/tour/TransportationCreateRequest";
 
-export type TransportationFormValues = Transportation & {
-  transportationName: string;
-  transportationCapacity: number;
-  transportationType: string;
-  transportationDescription: string;
-  [key: string]: unknown;
-};
+export type TransportationFormValues = TransportationCreateRequest;

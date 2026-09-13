@@ -26,7 +26,8 @@ export const DatePicker = ({
 }: DatePickerProps) => {
   const [open, setOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("days");
-  const [viewDate, setViewDate] = useState(new Date());
+  // A fixed initial value keeps the server and first browser render identical.
+  const [viewDate, setViewDate] = useState(() => new Date(2000, 0, 1));
   const [hoveredDay, setHoveredDay] = useState<Date>();
 
   const fromValue = range?.from ?? value;
@@ -99,6 +100,7 @@ export const DatePicker = ({
       open={open}
       onOpenChange={(e) => {
         setOpen(e.open);
+        if (e.open) setViewDate(from ?? new Date());
         if (!e.open) {
           setViewMode("days");
           setHoveredDay(undefined);

@@ -1,6 +1,6 @@
-import type { EntityReference } from "../common/EntityReference";
+import type { Country } from "./Country";
 
 export interface CityCreateRequest {
   name: string;
-  country: EntityReference;
+  country: Partial<Country>;
 }

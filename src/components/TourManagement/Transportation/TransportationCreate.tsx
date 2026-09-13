@@ -1,18 +1,39 @@
+import { useMemo, useState } from "react";
 import { Box, Heading, Text, VStack, Button, HStack, Icon, Separator, Badge } from "@chakra-ui/react";
 import { useNavigate } from "@/lib/navigation";
 import { Star, Accessibility, Baby, ChevronLeft, Rocket, Info } from "lucide-react";
 import { DynamicForm } from "@/components/ui/Custom/DynamicForm";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
-import type { Transportation } from "@/interface/tour/Transportation";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
 
 import type { TransportationFormValues } from "@/types/tour/TransportationFormValues";
+import { useAgencies } from "@/hooks/agency/useAgencies";
 
 export const TransportationCreate = () => {
   const navigate = useNavigate();
   const { handleCreateTransportation, isMutating } = useTourManagement();
-  const fields: FieldConfig<TransportationFormValues>[] = [
+  const { agencies, loading: agenciesLoading } = useAgencies();
+  const [selectedAgencyId, setSelectedAgencyId] = useState<number>();
+  const selectedAgency = agencies.find((agency) => agency.id === selectedAgencyId);
+  const fields = useMemo<FieldConfig<TransportationFormValues>[]>(() => [
+    {
+      name: "agencyId",
+      label: "Owning Agency",
+      type: "select",
+      options: agencies.flatMap((agency) => agency.id ? [{ label: agency.agencyName, value: agency.id }] : []),
+      isRequired: true,
+      gridSpan: 1,
+    },
+    {
+      name: "branchId",
+      label: "Operating Branch",
+      type: "select",
+      options: (selectedAgency?.branches ?? []).flatMap((branch) =>
+        branch.id ? [{ label: branch.branchName, value: branch.id }] : []),
+      gridSpan: 1,
+      disabled: !selectedAgencyId,
+    },
     { name: "code", label: "Internal Serial", type: "text", isRequired: true, gridSpan: 1, placeholder: "e.g. BUS-2026-001" },
     { name: "transportationNumber", label: "Plate / Registration", type: "text", isRequired: true, gridSpan: 1, placeholder: "Plate Number" },
     { name: "providerName", label: "Operating Provider", type: "text", isRequired: true, gridSpan: 1, placeholder: "Agency Name" },
@@ -28,11 +49,11 @@ export const TransportationCreate = () => {
     { name: "seatConfig.PREMIUM_RECLINER" as keyof TransportationFormValues, label: "Premium Seats", type: "number", icon: Star, gridSpan: 1 },
     { name: "seatConfig.WHEELCHAIR_ACCESSIBLE" as keyof TransportationFormValues, label: "Accessible Spaces", type: "number", icon: Accessibility, gridSpan: 1 },
     { name: "seatConfig.KIDS_CHAIR" as keyof TransportationFormValues, label: "Child Safety Seats", type: "number", icon: Baby, gridSpan: 1 },
-  ];
+  ], [agencies, selectedAgency?.branches, selectedAgencyId]);
 
   const handleSubmit = async (values: TransportationFormValues) => {
     console.group("🚀 Initializing Logistics Unit");
-    await handleCreateTransportation(values as Transportation);
+    await handleCreateTransportation(values);
     console.groupEnd();
     navigate("/admin/transports");
   };
@@ -93,10 +114,20 @@ export const TransportationCreate = () => {
         <DynamicForm<TransportationFormValues>
           disableToast={true}
           fields={fields}
-          initialValues={{ code: "", transportationNumber: "", providerName: "", type: "" as TransportationFormValues["type"], totalCapacity: 0, seats: [] } as unknown as TransportationFormValues}
+          initialValues={{
+            code: "",
+            transportationNumber: "",
+            providerName: "",
+            type: "" as TransportationFormValues["type"],
+            totalCapacity: 0,
+            agencyId: 0,
+          }}
           onSubmit={handleSubmit}
+          onFieldChange={(name, value) => {
+            if (name === "agencyId") setSelectedAgencyId(typeof value === "number" ? value : Number(value));
+          }}
           onCancel={() => navigate("/admin/transports")}
-          isLoading={isMutating}
+          isLoading={isMutating || agenciesLoading}
           submitLabel="Initialize Unit & Generate Seats"
           columns={2}
         />

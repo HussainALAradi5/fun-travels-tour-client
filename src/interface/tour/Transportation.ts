@@ -4,8 +4,9 @@ import type { GenericStatus } from '../../enums/GenericStatus';
 import type { Seat } from './Seat';
 import type { Tour } from './Tour';
 import type { Agency } from '../agency/Agency';
+import type { AgencyBranch } from '../agency/AgencyBranch';
 
-export interface Transportation {
+export interface Transportation extends Record<string, unknown> {
   id?: number;
   transportationNumber: string;
   code: string;
@@ -16,6 +17,7 @@ export interface Transportation {
   remainingSeats?: number;
   calculatedAvailable?: number;
   agency?: Partial<Agency>;
+  agencyBranch?: Partial<AgencyBranch>;
   tours?: Tour[];
   seats: Seat[];
   unitStatus?: TransportationStatus;
