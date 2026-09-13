@@ -3,10 +3,10 @@ import { Settings2, Armchair, Star, Accessibility, Baby } from "lucide-react";
 import { AppDialog } from "@/components/ui/Custom/Dialogs/AppDialog";
 import { DynamicForm } from "@/components/ui/Custom/DynamicForm";
 import { SeatManager } from "../Seat/SeatManagement/SeatManager";
-import { TransportationType } from "@/enums/tourmanagement/TransportationType";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
 import type { Transportation } from "@/interface/tour/Transportation";
 import type { TransportationEditDialogProps } from "@/interface/props/tour/TransportationEditDialogProps";
+import { transportationTypeOptions } from "@/constants/tour/transportationTypeOptions";
 
 export const TransportationEditDialog = ({
   open,
@@ -46,10 +46,7 @@ export const TransportationEditDialog = ({
       name: "type",
       label: "Class",
       type: "select",
-      options: Object.values(TransportationType).map((v) => ({
-        label: v,
-        value: v,
-      })),
+      options: transportationTypeOptions,
       isRequired: true,
       gridSpan: 1,
       disabled: true,

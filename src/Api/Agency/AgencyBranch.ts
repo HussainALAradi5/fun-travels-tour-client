@@ -3,8 +3,17 @@ import type { ApiResponse } from "@/interface/common/ApiResponse";
 import type { AgencyBranch } from "@/interface/agency/AgencyBranch";
 import type { AgencyBranchCreateRequest } from "@/interface/agency/AgencyBranchCreateRequest";
 import type { User } from "@/interface/user/User";
+import type { PageResponse } from "@/interface/common/PageResponse";
 
 export const branchService = {
+  searchBranches: async (agencyId: number, query: string, page = 0, size = 20): Promise<PageResponse<AgencyBranch>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<AgencyBranch>>>(
+      `/branches/agency/${agencyId}/search`,
+      { params: { query, page, size } },
+    );
+    return response.data.data;
+  },
+
   createBranch: async (agencyId: number, branch: AgencyBranchCreateRequest): Promise<AgencyBranch> => {
     const response = await apiClient.post<ApiResponse<AgencyBranch>>(
       `/branches/agency/${agencyId}`,

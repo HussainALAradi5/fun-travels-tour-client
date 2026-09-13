@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import {
   Box, Text, Container, Center, Spinner, Stack, SimpleGrid, IconButton, HStack, Separator, Input, VStack, Button, Image
 } from "@chakra-ui/react";
-import { LayoutGrid, List } from "lucide-react";
+import { BookOpen, LayoutGrid, List } from "lucide-react";
 
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import { useAuth } from "@/utilities/AuthContext";
@@ -14,6 +14,8 @@ import type { FilterGroup } from "@/interface/common/FilterGroup";
 import type { Country } from "@/interface/geography/Country";
 import { CustomerTourCatalogCard } from "./CustomerTourCatalog/CustomerTourCatalogCard";
 import { CustomerTourCatalogTable } from "./CustomerTourCatalog/CustomerTourCatalogTable";
+import { GuidedStepsDialog } from "@/components/ui/Custom/Dialogs/GuidedStepsDialog";
+import { customerTourGuide } from "@/constants/tour/customerTourGuide";
 
 export const CustomerTourCatalog = () => {
   const { tours, isLoading, fetchCatalog } = useTourManagement();
@@ -120,6 +122,14 @@ export const CustomerTourCatalog = () => {
 <HStack justify="space-between" mb={viewMode === "grid" ? 8 : 4} bg="bg.panel" p={4} borderRadius="xl" shadow="sm" borderWidth="1px">
           <Text fontWeight="bold" fontSize="lg">Available Tours ({filteredTours.length})</Text>
           <HStack gap={2}>
+            <GuidedStepsDialog
+              title="How to book a tour"
+              description="Follow these steps to choose a tour and complete your reservation safely."
+              triggerLabel="Booking guide"
+              triggerIcon={BookOpen}
+              steps={customerTourGuide}
+              finalMessage="Your confirmed reservation and boarding details will be available under My Expeditions."
+            />
             <IconButton
               aria-label="Grid view"
               variant={viewMode === "grid" ? "solid" : "ghost"}

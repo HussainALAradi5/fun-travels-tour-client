@@ -57,6 +57,17 @@ export const SeatManager = ({ transportId }: { transportId: number }) => {
     if (!updatedSeat.id) return;
     await handleUpdateSeat(updatedSeat.id, updatedSeat, transportId);
     setEditingSeat(null);
+    setIsTableOpen(true);
+  };
+
+  const handleEdit = (seat: Seat) => {
+    setIsTableOpen(false);
+    setEditingSeat(seat);
+  };
+
+  const handleCloseEditor = () => {
+    setEditingSeat(null);
+    setIsTableOpen(true);
   };
 
   const handleResetFilters = () => {
@@ -176,14 +187,14 @@ export const SeatManager = ({ transportId }: { transportId: number }) => {
             <SeatManagerTable
               data={filteredSeats}
               loading={isLoading}
-              onEdit={setEditingSeat}
+              onEdit={handleEdit}
             />
           </Box>
         </VStack>
       </AppDialog>
-<SeatEditDialog
+      <SeatEditDialog
         open={!!editingSeat}
-        onClose={() => setEditingSeat(null)}
+        onClose={handleCloseEditor}
         seat={editingSeat}
         onSave={handleSave}
         loading={isMutating}

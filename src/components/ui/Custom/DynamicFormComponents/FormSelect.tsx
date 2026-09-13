@@ -2,6 +2,8 @@ import { useMemo } from "react";
 import {
   createListCollection,
   Box,
+  HStack,
+  Icon,
   Text
 } from "@chakra-ui/react";
 import {
@@ -29,12 +31,17 @@ export function FormSelect({ field, value, onChange }: FormSelectProps) {
     return [getInternalValue(value)];
   }, [value]);
 
+  const selectedOption = rawOptions.find(
+    (option) => getInternalValue(option.value) === selectedValue[0],
+  );
+
   const collection = useMemo(() => {
     return createListCollection({
-      items: rawOptions.map((item: { label: string | number | boolean; value: string | number | boolean | null | undefined }) => ({
+      items: rawOptions.map((item) => ({
         label: String(item.label),
         value: getInternalValue(item.value),
         original: item.value,
+        icon: item.icon,
       })),
     });
   }, [rawOptions]);
@@ -69,6 +76,7 @@ positioning={{
           _hover={{ borderColor: "blue.500/50" }}
           cursor="pointer"
         >
+          {selectedOption?.icon && <Icon as={selectedOption.icon} boxSize="4" flexShrink={0} />}
           <SelectValueText
             placeholder={field.placeholder || `Select ${field.label}...`}
           />
@@ -92,9 +100,10 @@ positioning={{
                 _hover={{ bg: "blue.50", color: "blue.700" }}
                 _selected={{ bg: "blue.600", color: "white" }}
               >
-                <Text fontSize="xs" fontWeight="medium">
-                  {item.label}
-                </Text>
+                <HStack gap={2}>
+                  {item.icon && <Icon as={item.icon} boxSize="4" flexShrink={0} />}
+                  <Text fontSize="xs" fontWeight="medium">{item.label}</Text>
+                </HStack>
               </SelectItem>
             ))}
           </SelectContent>

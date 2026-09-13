@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
+import { BookOpen } from "lucide-react";
 import { useNavigate } from "@/lib/navigation";
 import { ticketService } from "@/Api/tourmanagement/Ticket";
 import type { Ticket } from "@/interface/tour/Ticket";
@@ -9,6 +10,8 @@ import { notify } from "@/components/ui/Custom/GenericNotification";
 import { DateSortFilter } from "@/components/ui/Custom/DateSortFilter";
 import type { DateSortFilterValue } from "@/interface/props/ui/DateSortFilterProps";
 import type { TicketSortField } from "@/interface/tour/TicketFilterParams";
+import { GuidedStepsDialog } from "@/components/ui/Custom/Dialogs/GuidedStepsDialog";
+import { customerTicketGuide } from "@/constants/ticket/customerTicketGuide";
 
 export const CustomerTicketsManager = () => {
   const { user } = useUser();
@@ -30,6 +33,16 @@ export const CustomerTicketsManager = () => {
 
   return (
     <Box>
+      <Flex justify="flex-end" mb={4}>
+        <GuidedStepsDialog
+          title="How to use your ticket"
+          description="Follow these steps for a smooth check-in and boarding experience."
+          triggerLabel="Ticket guide"
+          triggerIcon={BookOpen}
+          steps={customerTicketGuide}
+          finalMessage="Open a booking to view its current status, boarding details, and available actions."
+        />
+      </Flex>
       <DateSortFilter
         value={filter}
         onChange={(nextFilter) => {

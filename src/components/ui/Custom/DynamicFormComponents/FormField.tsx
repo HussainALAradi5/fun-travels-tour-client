@@ -54,7 +54,7 @@ export function FormFieldWrapper({ field, formData, onChange }: FormFieldWrapper
         return <FormSelect field={field} value={rawValue as string | number | boolean | null | undefined} onChange={commonProps.onChange} onBlur={commonProps.onBlur} onFocus={commonProps.onFocus} />;
       case "search-select":
       case "multi-select":
-        return <FormCombobox field={field} value={rawValue as string | string[] | null} onChange={commonProps.onChange} multiple={field.type === "multi-select"} />;
+        return <FormCombobox field={field} value={rawValue as string | number | boolean | string[] | null} onChange={commonProps.onChange} multiple={field.type === "multi-select"} />;
       case "boolean":
       case "checkbox":
         return <BooleanInput field={field} value={rawValue as string | number | boolean | null | undefined} onChange={commonProps.onChange} onBlur={commonProps.onBlur} onFocus={commonProps.onFocus} />;

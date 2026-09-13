@@ -4,8 +4,16 @@ import type { Agency } from "@/interface/agency/Agency";
 import type { AgencyCreateRequest } from "@/interface/agency/AgencyCreateRequest";
 import type { User } from "@/interface/user/User";
 import { authUtils } from "@/utilities/AuthUtils";
+import type { PageResponse } from "@/interface/common/PageResponse";
 
 export const agencyService = {
+  searchAgencies: async (query: string, page = 0, size = 20): Promise<PageResponse<Agency>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<Agency>>>("agencies/search", {
+      params: { query, page, size },
+    });
+    return response.data.data;
+  },
+
   getAllAgencies: async (): Promise<Agency[]> => {
     const response = await apiClient.get<ApiResponse<Agency[]>>("agencies");
     return response.data.data as unknown as Agency[];

@@ -1,38 +1,61 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Box, Heading, Text, VStack, Button, HStack, Icon, Separator, Badge } from "@chakra-ui/react";
 import { useNavigate } from "@/lib/navigation";
 import { Star, Accessibility, Baby, ChevronLeft, Rocket, Info } from "lucide-react";
 import { DynamicForm } from "@/components/ui/Custom/DynamicForm";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
-import { TransportationType } from "@/enums/tourmanagement/TransportationType";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
 
 import type { TransportationFormValues } from "@/types/tour/TransportationFormValues";
-import { useAgencies } from "@/hooks/agency/useAgencies";
+import { transportationTypeOptions } from "@/constants/tour/transportationTypeOptions";
+import { agencyService } from "@/Api/Agency/Agency";
+import { branchService } from "@/Api/Agency/AgencyBranch";
 
 export const TransportationCreate = () => {
   const navigate = useNavigate();
   const { handleCreateTransportation, isMutating } = useTourManagement();
-  const { agencies, loading: agenciesLoading } = useAgencies();
   const [selectedAgencyId, setSelectedAgencyId] = useState<number>();
-  const selectedAgency = agencies.find((agency) => agency.id === selectedAgencyId);
+
+  const searchAgencies = useCallback(async (query: string, pageNumber: number) => {
+    const page = await agencyService.searchAgencies(query, pageNumber);
+    return {
+      ...page,
+      content: page.content.flatMap((agency) =>
+        agency.id ? [{ label: agency.agencyName, value: agency.id }] : [],
+      ),
+    };
+  }, []);
+
+  const searchBranches = useCallback(async (query: string, pageNumber: number) => {
+    if (!selectedAgencyId) return { content: [], page: 0, size: 20, totalElements: 0, totalPages: 0 };
+    const page = await branchService.searchBranches(selectedAgencyId, query, pageNumber);
+    return {
+      ...page,
+      content: page.content.flatMap((branch) =>
+        branch.id ? [{ label: branch.branchName, value: branch.id }] : [],
+      ),
+    };
+  }, [selectedAgencyId]);
+
   const fields = useMemo<FieldConfig<TransportationFormValues>[]>(() => [
     {
       name: "agencyId",
       label: "Owning Agency",
-      type: "select",
-      options: agencies.flatMap((agency) => agency.id ? [{ label: agency.agencyName, value: agency.id }] : []),
+      type: "search-select",
+      searchOptions: searchAgencies,
+      placeholder: "Search agencies...",
       isRequired: true,
       gridSpan: 1,
+      clearFieldsOnChange: ["branchId"],
     },
     {
       name: "branchId",
       label: "Operating Branch",
-      type: "select",
-      options: (selectedAgency?.branches ?? []).flatMap((branch) =>
-        branch.id ? [{ label: branch.branchName, value: branch.id }] : []),
+      type: "search-select",
+      searchOptions: searchBranches,
       gridSpan: 1,
       disabled: !selectedAgencyId,
+      placeholder: selectedAgencyId ? "Search branches..." : "Select an agency first",
     },
     { name: "code", label: "Internal Serial", type: "text", isRequired: true, gridSpan: 1, placeholder: "e.g. BUS-2026-001" },
     { name: "transportationNumber", label: "Plate / Registration", type: "text", isRequired: true, gridSpan: 1, placeholder: "Plate Number" },
@@ -41,7 +64,7 @@ export const TransportationCreate = () => {
       name: "type",
       label: "Vehicle Class",
       type: "select",
-      options: Object.values(TransportationType).map(v => ({ label: v, value: v })),
+      options: transportationTypeOptions,
       isRequired: true,
       gridSpan: 1
     },
@@ -49,7 +72,7 @@ export const TransportationCreate = () => {
     { name: "seatConfig.PREMIUM_RECLINER" as keyof TransportationFormValues, label: "Premium Seats", type: "number", icon: Star, gridSpan: 1 },
     { name: "seatConfig.WHEELCHAIR_ACCESSIBLE" as keyof TransportationFormValues, label: "Accessible Spaces", type: "number", icon: Accessibility, gridSpan: 1 },
     { name: "seatConfig.KIDS_CHAIR" as keyof TransportationFormValues, label: "Child Safety Seats", type: "number", icon: Baby, gridSpan: 1 },
-  ], [agencies, selectedAgency?.branches, selectedAgencyId]);
+  ], [searchAgencies, searchBranches, selectedAgencyId]);
 
   const handleSubmit = async (values: TransportationFormValues) => {
     console.group("🚀 Initializing Logistics Unit");
@@ -127,7 +150,7 @@ export const TransportationCreate = () => {
             if (name === "agencyId") setSelectedAgencyId(typeof value === "number" ? value : Number(value));
           }}
           onCancel={() => navigate("/admin/transports")}
-          isLoading={isMutating || agenciesLoading}
+          isLoading={isMutating}
           submitLabel="Initialize Unit & Generate Seats"
           columns={2}
         />

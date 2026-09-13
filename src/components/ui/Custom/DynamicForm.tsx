@@ -26,10 +26,17 @@ export function DynamicForm<T extends Record<string, unknown>>({
   const handleInputChange = useCallback(
     (name: keyof T, value: string | number | string[] | boolean | null) => {
       if (errorMessage) setErrorMessage(null);
-      setFormData((prev) => ({ ...prev, [name]: value }));
+      const changedField = fields.find((field) => field.name === name);
+      setFormData((prev) => {
+        const next = { ...prev, [name]: value };
+        changedField?.clearFieldsOnChange?.forEach((fieldName) => {
+          Object.assign(next, { [fieldName]: null });
+        });
+        return next;
+      });
       if (onFieldChange) onFieldChange(name, value);
     },
-    [errorMessage, onFieldChange],
+    [errorMessage, fields, onFieldChange],
   );
 
   const isFormValid = useMemo(() => {
