@@ -1,6 +1,6 @@
-import { 
-  HStack, 
-  Icon, 
+import {
+  HStack,
+  Icon,
   createListCollection,
   Select,
   VStack,
@@ -9,33 +9,18 @@ import {
 } from "@chakra-ui/react";
 import { Filter as FilterIcon, Search } from "lucide-react";
 import { useState, useEffect } from "react";
+import type { ModernFilterBarProps } from "@/interface/props/ui/ModernFilterBarProps";
 
-interface FilterOption {
-  label: string;
-  value: string;
-}
-
-interface ModernFilterBarProps {
-  filterLabel: string;
-  filterPlaceholder?: string;
-  filterValue: string;
-  onFilterChange: (val: string) => void;
-  options: FilterOption[];
-  useSearchButton?: boolean; // New Optional Logic
-}
-
-export const ModernFilterBar = ({ 
+export const ModernFilterBar = ({
   filterLabel,
   filterPlaceholder = "Select Status",
-  filterValue, 
-  onFilterChange, 
+  filterValue,
+  onFilterChange,
   options,
   useSearchButton = false
 }: ModernFilterBarProps) => {
-  
-  const [localValue, setLocalValue] = useState(filterValue);
 
-  // Sync with external resets
+  const [localValue, setLocalValue] = useState(filterValue);
   useEffect(() => {
     setLocalValue(filterValue);
   }, [filterValue]);
@@ -50,20 +35,20 @@ export const ModernFilterBar = ({
 
   return (
     <VStack align="start" gap={1.5} width="full">
-      <Select.Label 
-        fontSize="2xs" 
-        fontWeight="bold" 
-        color="fg.muted" 
-        ml={1} 
-        textTransform="uppercase" 
+      <Select.Label
+        fontSize="2xs"
+        fontWeight="bold"
+        color="fg.muted"
+        ml={1}
+        textTransform="uppercase"
         letterSpacing="wider"
       >
         {filterLabel}
       </Select.Label>
-      
+
       <HStack gap={2} width="full">
-        <Select.Root 
-          collection={collection} 
+        <Select.Root
+          collection={collection}
           value={[localValue]}
           onValueChange={(e) => {
             const val = e.value[0];
@@ -84,20 +69,20 @@ export const ModernFilterBar = ({
 
           <Portal>
             <Select.Positioner zIndex="popover">
-              <Select.Content 
-                borderRadius="xl" 
-                boxShadow="lg" 
+              <Select.Content
+                borderRadius="xl"
+                boxShadow="lg"
                 bg="bg.panel"
                 borderWidth="1px"
                 borderColor="border.subtle"
                 minW="200px"
               >
                 {collection.items.map((opt) => (
-                  <Select.Item 
-                    item={opt} 
-                    key={opt.value} 
-                    cursor="pointer" 
-                    borderRadius="lg" 
+                  <Select.Item
+                    item={opt}
+                    key={opt.value}
+                    cursor="pointer"
+                    borderRadius="lg"
                     m={1}
                     _hover={{ bg: "bg.muted" }}
                   >
@@ -110,11 +95,11 @@ export const ModernFilterBar = ({
         </Select.Root>
 
         {useSearchButton && (
-          <Button 
-            size="sm" 
-            h="10" 
-            variant="solid" 
-            colorPalette="blue" 
+          <Button
+            size="sm"
+            h="10"
+            variant="solid"
+            colorPalette="blue"
             borderRadius="xl"
             onClick={handleApply}
           >

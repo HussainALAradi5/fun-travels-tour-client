@@ -1,16 +1,7 @@
 import { Alert, IconButton, Box } from "@chakra-ui/react";
 import { AlertTriangle, Info, CheckCircle, XCircle, X } from "lucide-react";
-import type { ReactNode } from "react";
-
-interface AlertComponentProps {
-  status: "info" | "warning" | "success" | "error";
-  title?: string;
-  description: string;
-  icon?: ReactNode;
-  isClosable?: boolean;
-  onClose?: () => void;
-  actions?: ReactNode; // For adding buttons like "Undo" or "Retry"
-}
+import type { AlertComponentProps } from "@/interface/props/ui/AlertComponentProps";
+import { ComponentVariant } from "@/enums/ComponentVariant";
 
 const defaultIcons = {
   info: <Info size={18} />,
@@ -27,9 +18,11 @@ export function AlertComponent({
   isClosable,
   onClose,
   actions,
+  variant = ComponentVariant.SUBTLE,
 }: AlertComponentProps) {
+  const alertVariant = variant === "elevated" ? "surface" : variant;
   return (
-    <Alert.Root status={status} variant="subtle" borderRadius="lg" borderStartWidth="4px">
+    <Alert.Root status={status} variant={alertVariant} borderRadius="lg" borderStartWidth="4px" shadow={variant === "elevated" ? "md" : undefined}>
       <Alert.Indicator>{icon || defaultIcons[status]}</Alert.Indicator>
       <Alert.Content>
         {title && <Alert.Title fontWeight="bold">{title}</Alert.Title>}
@@ -53,3 +46,4 @@ export function AlertComponent({
     </Alert.Root>
   );
 }
+

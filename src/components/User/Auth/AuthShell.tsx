@@ -1,12 +1,7 @@
 import { Box, Container, VStack, Heading, Text } from "@chakra-ui/react";
 import { useColorModeValue } from "@/components/ui/color-mode";
 
-interface AuthShellProps {
-  children: React.ReactNode;
-  title: string;
-  subtitle: string;
-  maxWidth?: string;
-}
+import type { AuthShellProps } from "@/interface/props/ui/AuthShellProps";
 
 export const AuthShell = ({
   children,

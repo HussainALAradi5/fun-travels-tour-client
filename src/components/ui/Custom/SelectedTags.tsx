@@ -1,11 +1,6 @@
 import { HStack, Badge, Box } from "@chakra-ui/react";
 import { X } from "lucide-react";
-
-interface SelectedTagsProps {
-  values: string[];
-  options: { label: string; value: string | number }[];
-  onRemove: (value: string) => void;
-}
+import type { SelectedTagsProps } from "@/interface/props/ui/SelectedTagsProps";
 
 export const SelectedTags = ({ values, options, onRemove }: SelectedTagsProps) => {
   if (values.length === 0) return null;
@@ -13,27 +8,25 @@ export const SelectedTags = ({ values, options, onRemove }: SelectedTagsProps) =
   return (
     <HStack wrap="wrap" gap={2} mb={2}>
       {values.map((val) => {
-        // Find the label from the options list based on the ID
         const item = options.find((i) => String(i.value) === String(val));
-        
+
         return (
-          <Badge 
-            key={val} 
-            colorPalette="blue" 
-            variant="subtle" 
-            px={2} 
-            py={1} 
+          <Badge
+            key={val}
+            colorPalette="blue"
+            variant="subtle"
+            px={2}
+            py={1}
             borderRadius="md"
             display="flex"
             alignItems="center"
             gap={1.5}
-            // Chakra v3 uses standard CSS for animations or their new animation system
             animation="fade-in 0.2s ease-out"
           >
             {item?.label || val}
-            
+
             <Box
-              as="span" // Change to span to avoid 'type' attribute conflicts on Box
+              as="span"
               role="button"
               tabIndex={0}
               onClick={(e) => {
@@ -52,10 +45,10 @@ export const SelectedTags = ({ values, options, onRemove }: SelectedTagsProps) =
               cursor="pointer"
               borderRadius="full"
               transition="all 0.2s"
-              _hover={{ 
-                color: "red.500", 
+              _hover={{
+                color: "red.500",
                 bg: "blackAlpha.100",
-                transform: "scale(1.1)" 
+                transform: "scale(1.1)"
               }}
             >
               <X size={12} strokeWidth={2.5} />

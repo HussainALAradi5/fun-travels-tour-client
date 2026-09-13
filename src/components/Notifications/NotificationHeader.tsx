@@ -1,30 +1,27 @@
 import { Flex, HStack, VStack, Text, Icon, Badge, Box } from "@chakra-ui/react";
 import { Bell, BellRing } from "lucide-react";
+import type { NotificationHeaderProps } from "@/interface/props/notification/NotificationHeaderProps";
 
-interface Props {
-  unreadCount: number;
-}
-
-export const NotificationHeader = ({ unreadCount }: Props) => (
+export const NotificationHeader = ({ unreadCount }: NotificationHeaderProps) => (
   <Flex justify="space-between" align="center" px={1} mb={2}>
     <HStack gap={4}>
-      <Box 
-        p={3} 
-        borderRadius="xl" 
+      <Box
+        p={3}
+        borderRadius="xl"
         bg={unreadCount > 0 ? "blue.50" : "bg.subtle"}
         _dark={{ bg: unreadCount > 0 ? "blue.900/30" : "bg.subtle" }}
         position="relative"
       >
-         <Icon 
-           as={unreadCount > 0 ? BellRing : Bell} 
-           size="xl" 
-           color={unreadCount > 0 ? "blue.600" : "fg.muted"} 
+         <Icon
+           as={unreadCount > 0 ? BellRing : Bell}
+           size="xl"
+           color={unreadCount > 0 ? "blue.600" : "fg.muted"}
            _dark={{ color: unreadCount > 0 ? "blue.400" : "fg.muted" }}
          />
          {unreadCount > 0 && (
-           <Box 
-             position="absolute" top="2px" right="2px" 
-             w="12px" h="12px" bg="red.500" 
+           <Box
+             position="absolute" top="2px" right="2px"
+             w="12px" h="12px" bg="red.500"
              borderRadius="full" border="2px solid" borderColor="bg.panel"
            />
          )}

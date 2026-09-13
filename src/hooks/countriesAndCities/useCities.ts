@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { cityService } from "@/Api/City";
-import type { City } from "@/interface/CityInterface";
+import type { City } from "@/interface/geography/City";
 
 export function useCities(countryId?: string | null) {
   const [cities, setCities] = useState<City[]>([]);
@@ -10,8 +10,7 @@ export function useCities(countryId?: string | null) {
     setLoading(true);
     try {
       const res = await cityService.getCitiesByCountry(id);
-      const data = Array.isArray(res) ? res : res?.data;
-      if (data) setCities(data);
+      setCities(res || []);
     } catch (err) {
       console.error(`Failed to fetch cities for country ${id}`, err);
     } finally {
@@ -19,14 +18,14 @@ export function useCities(countryId?: string | null) {
     }
   }, []);
 
-  // Automatically fetch when the countryId dependency changes
   useEffect(() => {
     if (countryId) {
       fetchCities(Number(countryId));
     } else {
-      setCities([]); // Clear cities if no country is selected
+      setCities([]);
     }
   }, [countryId, fetchCities]);
 
   return { cities, loading, fetchCities };
 }
+

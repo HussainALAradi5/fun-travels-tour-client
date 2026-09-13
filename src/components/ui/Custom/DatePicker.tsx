@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
-import { 
-  format, addMonths, subMonths, startOfMonth, 
-  startOfWeek, isSameMonth, isSameDay, addDays, 
+import {
+  format, addMonths, subMonths, startOfMonth,
+  startOfWeek, isSameMonth, isSameDay, addDays,
   isAfter, isBefore, parseISO, setYear, setMonth, getYear,
   addYears, subYears, startOfDay
 } from "date-fns";
@@ -10,36 +10,33 @@ import {
   Button, PopoverRoot, PopoverTrigger, PopoverContent, PopoverBody, PopoverPositioner,
   Portal, Text, HStack, Box, IconButton, SimpleGrid, VStack, Center
 } from "@chakra-ui/react";
+import type { DatePickerProps } from "@/interface/props/ui/DatePickerProps";
+import type { ViewMode } from "@/types/ui/ViewMode";
+import { calendarPopIn, dateSelectPulse, rangeHighlightIn } from "@/utilities/Animations";
 
-interface DatePickerProps {
-  label: string;
-  value?: string;
-  onChange: (date: string) => void;
-  valueEnd?: string;
-  onChangeEnd?: (date: string) => void;
-  minDate?: Date; // New prop for validation
-}
-
-type ViewMode = "days" | "months" | "years";
-
-export const DatePicker = ({ 
-  label, 
-  value, 
-  onChange, 
-  valueEnd, 
+export const DatePicker = ({
+  label,
+  value,
+  onChange,
+  valueEnd,
   onChangeEnd,
-  minDate = new Date() // Defaults to today
+  range,
+  onRangeChange,
+  minDate
 }: DatePickerProps) => {
   const [open, setOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("days");
-  const [viewDate, setViewDate] = useState(new Date());
+  // A fixed initial value keeps the server and first browser render identical.
+  const [viewDate, setViewDate] = useState(() => new Date(2000, 0, 1));
+  const [hoveredDay, setHoveredDay] = useState<Date>();
 
-  const from = useMemo(() => value ? parseISO(value) : undefined, [value]);
-  const to = useMemo(() => valueEnd ? parseISO(valueEnd) : undefined, [valueEnd]);
-
-  // Validates if a specific day should be disabled
+  const fromValue = range?.from ?? value;
+  const toValue = range?.to ?? valueEnd;
+  const isRangePicker = Boolean(onRangeChange || onChangeEnd);
+  const from = useMemo(() => fromValue ? parseISO(fromValue) : undefined, [fromValue]);
+  const to = useMemo(() => toValue ? parseISO(toValue) : undefined, [toValue]);
   const isDateDisabled = (day: Date) => {
-    return isBefore(startOfDay(day), startOfDay(minDate));
+    return minDate ? isBefore(startOfDay(day), startOfDay(minDate)) : false;
   };
 
   const days = useMemo(() => {
@@ -48,7 +45,7 @@ export const DatePicker = ({
   }, [viewDate]);
 
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  
+
   const years = useMemo(() => {
     const currentYear = getYear(viewDate);
     const startYear = currentYear - (currentYear % 12);
@@ -56,22 +53,27 @@ export const DatePicker = ({
   }, [viewDate]);
 
   const handleDayClick = (day: Date) => {
-    // If date is in the past, do nothing
     if (isDateDisabled(day)) return;
 
     const dateStr = format(day, "yyyy-MM-dd");
-    if (onChangeEnd) {
+    if (isRangePicker) {
       if (!from || (from && to)) {
-        onChange(dateStr);
-        onChangeEnd("");
+        onChange?.(dateStr);
+        onChangeEnd?.("");
+        onRangeChange?.({ from: dateStr, to: "" });
       } else if (isBefore(day, from)) {
-        onChange(dateStr);
+        const previousFrom = format(from, "yyyy-MM-dd");
+        onChange?.(dateStr);
+        onChangeEnd?.(previousFrom);
+        onRangeChange?.({ from: dateStr, to: previousFrom });
+        setOpen(false);
       } else {
-        onChangeEnd(dateStr);
-        setOpen(false); 
+        onChangeEnd?.(dateStr);
+        onRangeChange?.({ from: format(from, "yyyy-MM-dd"), to: dateStr });
+        setOpen(false);
       }
     } else {
-      onChange(dateStr);
+      onChange?.(dateStr);
       setOpen(false);
     }
   };
@@ -86,14 +88,25 @@ export const DatePicker = ({
     }
   };
 
+  const handleDayKeyDown = (event: React.KeyboardEvent, day: Date) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleDayClick(day);
+    }
+  };
+
   return (
-    <PopoverRoot 
-      open={open} 
+    <PopoverRoot
+      open={open}
       onOpenChange={(e) => {
         setOpen(e.open);
-        if (!e.open) setViewMode("days"); 
-      }} 
-      portalled={true} 
+        if (e.open) setViewDate(from ?? new Date());
+        if (!e.open) {
+          setViewMode("days");
+          setHoveredDay(undefined);
+        }
+      }}
+      portalled={true}
       positioning={{ strategy: "fixed", placement: "bottom-start", gutter: 12 }}
     >
       <PopoverTrigger asChild>
@@ -108,15 +121,16 @@ export const DatePicker = ({
                 {from ? (to ? `${format(from, "MMM d")} - ${format(to, "MMM d")}` : format(from, "PPP")) : `Select Date`}
               </Text>
             </VStack>
-            {value && (
-              <IconButton 
-                aria-label="Clear" 
-                size="xl" 
-                variant="ghost" 
-                onClick={(e) => { 
-                  e.stopPropagation(); 
-                  onChange(""); 
-                  if(onChangeEnd) onChangeEnd(""); 
+            {fromValue && (
+              <IconButton
+                aria-label="Clear"
+                size="xl"
+                variant="ghost"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onChange?.("");
+                  onChangeEnd?.("");
+                  onRangeChange?.({ from: "", to: "" });
                 }}
               >
                 <ClearIcon size={14} />
@@ -125,16 +139,15 @@ export const DatePicker = ({
           </HStack>
         </Button>
       </PopoverTrigger>
-      
+
       <Portal>
-        <PopoverPositioner zIndex="3000"> 
-          <PopoverContent bg="white" _dark={{ bg: "gray.900" }} boxShadow="2xl" width="340px" borderRadius="2xl" border="1px solid" borderColor="border.muted">
+        <PopoverPositioner zIndex="3000">
+          <PopoverContent animation={`${calendarPopIn} 180ms ease-out`} transformOrigin="top left" bg="bg.panel" color="fg" boxShadow="2xl" width="340px" borderRadius="2xl" border="1px solid" borderColor="border.muted">
             <PopoverBody p={6}>
               <VStack gap={4}>
-                {/* HEADER */}
-                <HStack width="full" justifyContent="space-between">
+<HStack width="full" justifyContent="space-between">
                   <HStack gap={1}>
-                    <Button 
+                    <Button
                       variant="ghost" size="sm" px={2} borderRadius="md"
                       onClick={() => setViewMode(viewMode === "months" ? "days" : "months")}
                       bg={viewMode === "months" ? "blue.50" : "transparent"}
@@ -143,7 +156,7 @@ export const DatePicker = ({
                       <Text fontWeight="bold" fontSize="md">{format(viewDate, "MMMM")}</Text>
                       <Box as="span" ml={1} opacity={0.5}><ChevronDown size={14} /></Box>
                     </Button>
-                    <Button 
+                    <Button
                       variant="ghost" size="sm" px={2} borderRadius="md"
                       onClick={() => setViewMode(viewMode === "years" ? "days" : "years")}
                       bg={viewMode === "years" ? "blue.50" : "transparent"}
@@ -160,14 +173,13 @@ export const DatePicker = ({
                 </HStack>
 
                 <Box width="full" minHeight="240px">
-                  {/* MONTH VIEW */}
-                  {viewMode === "months" && (
+{viewMode === "months" && (
                     <SimpleGrid columns={3} gap={3} pt={2}>
                       {months.map((m, i) => (
-                        <Button 
-                          key={m} 
+                        <Button
+                          key={m}
                           height="60px"
-                          variant={viewDate.getMonth() === i ? "solid" : "ghost"} 
+                          variant={viewDate.getMonth() === i ? "solid" : "ghost"}
                           colorPalette="blue"
                           onClick={() => { setViewDate(setMonth(viewDate, i)); setViewMode("days"); }}
                         >
@@ -176,15 +188,13 @@ export const DatePicker = ({
                       ))}
                     </SimpleGrid>
                   )}
-
-                  {/* YEAR VIEW */}
-                  {viewMode === "years" && (
+{viewMode === "years" && (
                     <SimpleGrid columns={3} gap={3} pt={2}>
                       {years.map((y) => (
-                        <Button 
-                          key={y} 
+                        <Button
+                          key={y}
                           height="60px"
-                          variant={viewDate.getFullYear() === y ? "solid" : "ghost"} 
+                          variant={viewDate.getFullYear() === y ? "solid" : "ghost"}
                           colorPalette="blue"
                           onClick={() => { setViewDate(setYear(viewDate, y)); setViewMode("days"); }}
                         >
@@ -193,35 +203,53 @@ export const DatePicker = ({
                       ))}
                     </SimpleGrid>
                   )}
-
-                  {/* DAYS VIEW */}
-                  {viewMode === "days" && (
+{viewMode === "days" && (
                     <VStack gap={4}>
+                      {isRangePicker && (
+                        <Text width="full" fontSize="xs" color="fg.muted" textAlign="center">
+                          {!from || to ? "Choose a start date" : "Hover to preview, then choose an end date"}
+                        </Text>
+                      )}
                       <SimpleGrid columns={7} width="full" textAlign="center">
                         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
                           <Text key={d} fontSize="xs" fontWeight="bold" color="blue.500" opacity={0.8}>{d}</Text>
                         ))}
                       </SimpleGrid>
-                      <SimpleGrid columns={7} width="full" gap={1}>
+                      <SimpleGrid columns={7} width="full" gap={1} onMouseLeave={() => setHoveredDay(undefined)}>
                         {days.map((day, i) => {
                           const disabled = isDateDisabled(day);
                           const isSel = (from && isSameDay(day, from)) || (to && isSameDay(day, to));
                           const isRange = from && to && isAfter(day, from) && isBefore(day, to);
+                          const previewStart = from && hoveredDay && isBefore(hoveredDay, from) ? hoveredDay : from;
+                          const previewEnd = from && hoveredDay && isBefore(hoveredDay, from) ? from : hoveredDay;
+                          const isPreviewRange = Boolean(isRangePicker && from && !to && previewStart && previewEnd && isAfter(day, previewStart) && isBefore(day, previewEnd));
+                          const isPreviewEnd = Boolean(isRangePicker && from && !to && hoveredDay && isSameDay(day, hoveredDay));
+                          const isHighlighted = Boolean(isRange || isPreviewRange);
                           const isCurMonth = isSameMonth(day, viewDate);
 
                           return (
-                            <Center 
-                              key={i} 
-                              onClick={() => handleDayClick(day)} 
-                              cursor={disabled ? "not-allowed" : "pointer"} 
-                              height="38px" fontSize="sm" 
+                            <Center
+                              key={i}
+                              onClick={() => handleDayClick(day)}
+                              onMouseEnter={() => !disabled && setHoveredDay(day)}
+                              onKeyDown={(event) => handleDayKeyDown(event, day)}
+                              role="button"
+                              aria-label={format(day, "PPP")}
+                              aria-selected={Boolean(isSel)}
+                              tabIndex={disabled ? -1 : 0}
+                              cursor={disabled ? "not-allowed" : "pointer"}
+                              height="38px" fontSize="sm"
                               opacity={disabled ? 0.3 : 1}
-                              fontWeight={isSel ? "bold" : "medium"} 
-                              borderRadius="lg" 
-                              bg={isSel ? "blue.600" : isRange ? "blue.50" : "transparent"} 
-                              _dark={{ bg: isSel ? "blue.500" : isRange ? "blue.900/30" : "transparent" }}
-                              color={isSel ? "white" : isCurMonth ? "fg" : "fg.subtle"} 
-                              _hover={!disabled ? { bg: isSel ? "blue.700" : "gray.100", _dark: { bg: isSel ? "blue.400" : "white/5" } } : {}}
+                              fontWeight={isSel || isPreviewEnd ? "bold" : "medium"}
+                              borderRadius="lg"
+                              bg={isSel ? "blue.600" : isPreviewEnd ? "blue.100" : isHighlighted ? "blue.50" : "transparent"}
+                              _dark={{ bg: isSel ? "blue.500" : isPreviewEnd ? "blue.800" : isHighlighted ? "blue.900/30" : "transparent" }}
+                              color={isSel ? "white" : isCurMonth ? "fg" : "fg.subtle"}
+                              outline={isPreviewEnd ? "2px solid" : undefined}
+                              outlineColor={isPreviewEnd ? "blue.400" : undefined}
+                              animation={isSel ? `${dateSelectPulse} 240ms ease-out` : isHighlighted ? `${rangeHighlightIn} 180ms ease-out` : undefined}
+                              transition="background-color 140ms ease, color 140ms ease, transform 140ms ease"
+                              _hover={!disabled ? { bg: isSel ? "blue.700" : "bg.muted", _dark: { bg: isSel ? "blue.400" : "whiteAlpha.100" } } : {}}
                             >
                               {format(day, "d")}
                             </Center>

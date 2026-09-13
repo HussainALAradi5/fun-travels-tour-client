@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   HStack,
   Input,
@@ -13,7 +13,7 @@ import {
   Portal,
 } from "@chakra-ui/react";
 import { Plus, Trash2, AlertTriangle } from "lucide-react";
-import type { City } from "@/interface/CityInterface";
+import type { City } from "@/interface/geography/City";
 import { cityService } from "@/Api/City";
 import { toaster } from "@/components/ui/toaster";
 import { useAuth } from "@/utilities/AuthContext";
@@ -35,38 +35,35 @@ export default function CityManagerRow({
 
   const { isAdmin } = useAuth();
 
-  useEffect(() => {
-    fetchCities();
-  }, [countryId]);
-
-  const fetchCities = async () => {
+  const fetchCities = useCallback(async () => {
     setFetching(true);
     try {
       const res = await cityService.getCitiesByCountry(countryId);
-      if (res.success) setCities(res.data);
+      setCities(res || []);
     } catch (err) {
       console.error(err);
     } finally {
       setFetching(false);
     }
-  };
+  }, [countryId]);
+
+  useEffect(() => {
+    fetchCities();
+  }, [fetchCities]);
 
   const handleAdd = async () => {
     if (!newCity.trim() || !isAdmin) return;
     setLoading(true);
     try {
-      const res = await cityService.createCity({
+      await cityService.createCity({
         name: newCity.trim(),
         country: { id: countryId },
       });
-      if (res.success) {
-        setNewCity("");
-        await fetchCities();
-        toaster.create({ title: "City added successfully", type: "success" });
-      }
-    } catch (error: any) {
-      const serverMessage =
-        error.response?.data?.message || "Internal Server Error";
+      setNewCity("");
+      await fetchCities();
+      toaster.create({ title: "City added successfully", type: "success" });
+    } catch (error: unknown) {
+      const serverMessage = error instanceof Error ? error.message : "Internal Server Error";
 
       toaster.create({
         title: "Cannot Add City",
@@ -81,13 +78,11 @@ export default function CityManagerRow({
   const handleDelete = async () => {
     if (!selectedCity?.id) return;
     try {
-      const res = await cityService.deleteCity(selectedCity.id);
-      if (res.success) {
-        setCities((prev) => prev.filter((c) => c.id !== selectedCity.id));
-        toaster.create({ title: "City removed", type: "info" });
-      }
-    } catch (error: any) {
-      const serverMessage = error.response?.data?.message || "Delete failed";
+      await cityService.deleteCity(selectedCity.id);
+      setCities((prev) => prev.filter((c) => c.id !== selectedCity.id));
+      toaster.create({ title: "City removed", type: "info" });
+    } catch (error: unknown) {
+      const serverMessage = error instanceof Error ? error.message : "Delete failed";
       toaster.create({ title: serverMessage, type: "error" });
     } finally {
       setIsDeleteDialogOpen(false);
@@ -182,8 +177,7 @@ export default function CityManagerRow({
                 </HStack>
               </Dialog.Header>
               <Dialog.Body>
-                {/* Are you sure you want to remove <b>{selectedCity?.name}</b>? */}
-              </Dialog.Body>
+</Dialog.Body>
               <Dialog.Footer>
                 <Dialog.ActionTrigger asChild>
                   <Button variant="outline">Cancel</Button>
@@ -199,3 +193,5 @@ export default function CityManagerRow({
     </Box>
   );
 }
+
+

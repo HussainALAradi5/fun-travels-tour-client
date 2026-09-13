@@ -1,27 +1,23 @@
 import { VStack, Box, Text, Heading,  Icon, Button } from "@chakra-ui/react";
 import { Wrench, CheckCircle2, AlertTriangle, Gauge, Info } from "lucide-react";
-import { GenericCard } from "@/components/ui/Custom/GenericCard";
-import { GenericStatusWorkflow, type StatusConfig } from "@/components/ui/Custom/GenericStatusWorkflow";
+import { ContentCard } from "@/components/ui/Custom/ContentCard";
+import { StatusWorkflow } from "@/components/ui/Custom/StatusWorkflow";
+import type { StatusConfig } from "@/interface/common/StatusConfig";
 import { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
-import type { Transportation } from "@/interface/tourmanagement/TransportationInterface";
-
-interface Props {
-  transport: Transportation;
-  onStatusChange: (status: TransportationStatus) => Promise<void>;
-}
+import type { TransportationStatusSidebarProps } from "@/interface/props/tour/TransportationStatusSidebarProps";
 
 const STATUS_MAP: Partial<Record<TransportationStatus, StatusConfig>> = {
-  [TransportationStatus.AVAILABLE]: { 
-    label: "Available", colorPalette: "green", icon: CheckCircle2 
+  [TransportationStatus.AVAILABLE]: {
+    label: "Available", colorPalette: "green", icon: CheckCircle2
   },
-  [TransportationStatus.PARTIAL]: { 
-    label: "Partial", colorPalette: "yellow", icon: Gauge 
+  [TransportationStatus.PARTIAL]: {
+    label: "Partial", colorPalette: "yellow", icon: Gauge
   },
-  [TransportationStatus.FULL]: { 
-    label: "Full Capacity", colorPalette: "orange", icon: AlertTriangle 
+  [TransportationStatus.FULL]: {
+    label: "Full Capacity", colorPalette: "orange", icon: AlertTriangle
   },
-  [TransportationStatus.MAINTENANCE]: { 
-    label: "Maintenance", colorPalette: "red", icon: Wrench 
+  [TransportationStatus.MAINTENANCE]: {
+    label: "Maintenance", colorPalette: "red", icon: Wrench
   },
 };
 
@@ -32,24 +28,23 @@ const STEPS = [
   TransportationStatus.MAINTENANCE
 ];
 
-export const TransportationStatusSidebar = ({ transport, onStatusChange }: Props) => {
-  
-  const isAutoManaged = 
-    transport.unitStatus === TransportationStatus.PARTIAL || 
+export const TransportationStatusSidebar = ({ transport, onStatusChange }: TransportationStatusSidebarProps) => {
+
+  const isAutoManaged =
+    transport.unitStatus === TransportationStatus.PARTIAL ||
     transport.unitStatus === TransportationStatus.FULL;
 
   return (
     <VStack gap="6">
-      <GenericCard w="full" header={<Heading size="xs">Unit Operations</Heading>}>
-        <GenericStatusWorkflow
+      <ContentCard w="full" header={<Heading size="xs">Unit Operations</Heading>}>
+        <StatusWorkflow
           currentStatus={transport.unitStatus as TransportationStatus}
           statusMap={STATUS_MAP}
           steps={STEPS}
           onStatusChange={onStatusChange}
-          // Disable clicking if the system is managing the status via bookings
           isReadOnly={isAutoManaged}
         />
-        
+
         {isAutoManaged && (
           <Box mt={2} p={2} bg="blue.500/10" borderRadius="md" border="1px solid" borderColor="blue.500/30">
             <VStack gap={1} align="start">
@@ -62,25 +57,23 @@ export const TransportationStatusSidebar = ({ transport, onStatusChange }: Props
             </VStack>
           </Box>
         )}
-      </GenericCard>
-
-      {/* Quick Actions */}
-      <GenericCard w="full">
+      </ContentCard>
+<ContentCard w="full">
         <VStack gap="3" align="stretch">
           <Text fontSize="xs" fontWeight="black" color="fg.muted">MANUAL OVERRIDE</Text>
-          
+
           {transport.unitStatus !== TransportationStatus.MAINTENANCE ? (
-            <Button 
-              size="sm" 
-              colorPalette="red" 
+            <Button
+              size="sm"
+              colorPalette="red"
               variant="subtle"
               onClick={() => onStatusChange(TransportationStatus.MAINTENANCE)}
             >
               <Icon as={Wrench} mr={2}/> Send to Maintenance
             </Button>
           ) : (
-            <Button 
-              size="sm" 
+            <Button
+              size="sm"
               colorPalette="green"
               onClick={() => onStatusChange(TransportationStatus.AVAILABLE)}
             >
@@ -88,7 +81,7 @@ export const TransportationStatusSidebar = ({ transport, onStatusChange }: Props
             </Button>
           )}
         </VStack>
-      </GenericCard>
+      </ContentCard>
     </VStack>
   );
 };

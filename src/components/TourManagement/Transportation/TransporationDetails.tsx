@@ -1,6 +1,5 @@
-// src/components/TourManagement/TransportationDetails.tsx
 import { useState, useEffect, useCallback } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "@/lib/navigation";
 import {
   Container,
   SimpleGrid,
@@ -33,9 +32,11 @@ import {
 import { StatusLegend } from "@/components/ui/Custom/StatusLegend";
 import { transportationService } from "@/Api/tourmanagement/Transportation";
 import { toaster } from "@/components/ui/toaster";
-import type { Transportation } from "@/interface/tourmanagement/TransportationInterface";
+import type { Transportation } from "@/interface/tour/Transportation";
 import type { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
 import { TransportationStatusSidebar } from "./TransportationStatusSidebar";
+
+import type { AxiosError } from "@/interface/common/AxiosError";
 
 export const TransportationDetails = () => {
   const { id } = useParams();
@@ -43,14 +44,12 @@ export const TransportationDetails = () => {
 
   const [transport, setTransport] = useState<Transportation | null>(null);
   const [loading, setLoading] = useState(true);
-
-  // Load Transport Data
   const loadTransport = useCallback(async () => {
     if (!id) return;
     try {
       const data = await transportationService.getById(Number(id));
       setTransport(data);
-    } catch (error) {
+    } catch {
       toaster.create({
         title: "Error fetching unit details",
         type: "error",
@@ -63,8 +62,6 @@ export const TransportationDetails = () => {
   useEffect(() => {
     loadTransport();
   }, [loadTransport]);
-
-  // Handle Status Change from Sidebar
   const handleStatusChange = async (newStatus: TransportationStatus) => {
     if (!id) return;
     try {
@@ -73,11 +70,12 @@ export const TransportationDetails = () => {
         title: `Status updated to ${newStatus}`,
         type: "success",
       });
-      await loadTransport(); // Refresh data to update sidebar and badges
-    } catch (error: any) {
+      await loadTransport();
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
       toaster.create({
         title: "Update failed",
-        description: error.response?.data?.message || "Check business rules.",
+        description: axiosError.response?.data?.message || "Check business rules.",
         type: "error",
       });
     }
@@ -90,8 +88,7 @@ export const TransportationDetails = () => {
   return (
     <Box bg="bg.canvas" minH="100vh" py={10}>
       <Container maxW="7xl">
-        {/* Navigation & Header */}
-        <VStack align="start" gap={6} mb={8}>
+<VStack align="start" gap={6} mb={8}>
           <Breadcrumb.Root color="fg.muted" fontSize="sm">
             <Breadcrumb.List>
               <Breadcrumb.Item>
@@ -146,8 +143,7 @@ export const TransportationDetails = () => {
         </VStack>
 
         <SimpleGrid columns={{ base: 1, lg: 3 }} gap={8} alignItems="start">
-          {/* Left Column: Metadata & Unit Health */}
-          <VStack align="stretch" gap={6}>
+<VStack align="stretch" gap={6}>
             <MetricBox
               icon={Activity}
               color={`${themeColor}.500`}
@@ -178,9 +174,7 @@ export const TransportationDetails = () => {
                 />
               </VStack>
             </MetricBox>
-
-            {/* INTEGRATION: The Status Sidebar */}
-            {transport && (
+{transport && (
               <TransportationStatusSidebar
                 transport={transport}
                 onStatusChange={handleStatusChange}
@@ -218,9 +212,7 @@ export const TransportationDetails = () => {
               </VStack>
             </MetricBox>
           </VStack>
-
-          {/* Right Column: Seating Map */}
-          <Box gridColumn={{ lg: "span 2" }}>
+<Box gridColumn={{ lg: "span 2" }}>
             <VStack align="stretch" gap={6}>
               <StatusLegend
                 title="Seat Status Guide"

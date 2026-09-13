@@ -1,54 +1,45 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { Client } from '@stomp/stompjs';
 import { useAuth } from './AuthContext';
 import { notificationService } from '@/Api/Notification';
-
-interface NotificationContextType {
-  unreadCount: number;
-  decrementCount: () => void;
-  refreshCount: () => void;
-}
+import type { NotificationContextType } from '@/interface/common/NotificationContextType';
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, user } = useAuth();
+  const userId = user?.id;
   const [unreadCount, setUnreadCount] = useState(0);
-
-  // Function to manually refresh count from API
   const refreshCount = useCallback(async () => {
-    if (isAuthenticated && user?.id) {
+    if (isAuthenticated && userId) {
       try {
-        const counts = await notificationService.getCounts(user.id);
-        setUnreadCount(counts.unread);
+        const counts = await notificationService.getCounts(userId);
+        setUnreadCount(counts.unreadCount);
       } catch (error) {
         console.error("Failed to fetch notification counts", error);
       }
     }
-  }, [isAuthenticated, user?.id]);
+  }, [isAuthenticated, userId]);
 
-  const decrementCount = () => setUnreadCount(prev => Math.max(0, prev - 1));
+  const decrementCount = useCallback(
+    () => setUnreadCount(prev => Math.max(0, prev - 1)),
+    [],
+  );
 
   useEffect(() => {
-    if (!isAuthenticated || !user?.id) {
-      setUnreadCount(0);
+    if (!isAuthenticated || !userId) {
       return;
     }
 
-    refreshCount();
-
     const stompClient = new Client({
-      brokerURL: 'ws://localhost:8080/ws-notifications', 
+      brokerURL: 'ws://localhost:8080/ws-notifications',
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
       onConnect: () => {
-        stompClient.subscribe(`/topic/notifications/${user.id}`, (message) => {
+        stompClient.subscribe(`/topic/notifications/${userId}`, (message) => {
           const data = JSON.parse(message.body);
-          // 1. Update global state count
           setUnreadCount(data.unread);
-          
-          // 2. We still use an event JUST to tell the specific list page to re-fetch its array
           window.dispatchEvent(new CustomEvent('newNotificationReceived'));
         });
       },
@@ -59,10 +50,15 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     return () => {
       stompClient.deactivate();
     };
-  }, [isAuthenticated, user?.id, refreshCount]);
+  }, [isAuthenticated, userId]);
+
+  const value = useMemo(
+    () => ({ unreadCount, decrementCount, refreshCount }),
+    [unreadCount, decrementCount, refreshCount],
+  );
 
   return (
-    <NotificationContext.Provider value={{ unreadCount, decrementCount, refreshCount }}>
+    <NotificationContext.Provider value={value}>
       {children}
     </NotificationContext.Provider>
   );

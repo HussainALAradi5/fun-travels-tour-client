@@ -1,66 +1,45 @@
-import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "@/lib/navigation";
 import { Text, Link as ChakraLink } from "@chakra-ui/react";
-import { userService } from "@/Api/User";
-import { GenericForm } from "@/components/ui/Custom/GenericForm";
-import { type User, DEFAULT_USER } from "@/interface/UserInterface";
-import type { FieldConfig } from "@/utilities/FormTypes";
+import { DynamicForm } from "@/components/ui/Custom/DynamicForm";
+import type { RegisterRequest } from "@/interface/auth/RegisterRequest";
+import { DEFAULT_USER } from "@/interface/user/User";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
+import { useRegister } from "@/hooks/auth/useRegister";
 
-const registerFields: FieldConfig<User>[] = [
-  {
-    name: "name",
-    label: "Full Name",
-    type: "text",
-    isRequired: true,
-    gridSpan: 1,
-  },
-  {
-    name: "userName",
-    label: "Username",
-    type: "text",
-    isRequired: true,
-    gridSpan: 1,
-  },
-  {
-    name: "email",
-    label: "Email Address",
-    type: "email",
-    isRequired: true,
-    gridSpan: 2,
-  },
-  {
-    name: "password",
-    label: "Password",
-    type: "password",
-    isRequired: true,
-    gridSpan: 2,
-  },
-  {
-    name: "mobileNumber",
-    label: "Mobile Number",
-    type: "mobile",
-    isRequired: true,
-    gridSpan: 2,
-  },
+const registerFields: FieldConfig<RegisterRequest>[] = [
+  { name: "name", label: "Full Name", type: "text", isRequired: true, gridSpan: 1 },
+  { name: "userName", label: "Username", type: "text", isRequired: true, gridSpan: 1 },
+  { name: "email", label: "Email", type: "email", isRequired: true, gridSpan: 2 },
+  { name: "password", label: "Password", type: "password", isRequired: true, gridSpan: 2 },
+  { name: "mobileNumber", label: "Mobile Number", type: "text", isRequired: true, gridSpan: 2 },
   { name: "age", label: "Age", type: "number", gridSpan: 1 },
 ];
 
-export const RegisterForm = () => {
-  const navigate = useNavigate();
+const defaultValues: RegisterRequest = {
+  userName: DEFAULT_USER.userName,
+  name: DEFAULT_USER.name,
+  email: DEFAULT_USER.email,
+  password: "",
+  mobileNumber: DEFAULT_USER.mobileNumber,
+  age: DEFAULT_USER.age,
+};
 
-  const handleRegister = async (values: User) => {
-    const result = await userService.register(values);
-    if (result.success) {
-      navigate("/login");
-    }
-  };
+export const RegisterForm = () => {
+  const { register, error, loading } = useRegister();
 
   return (
     <>
-      <GenericForm<User>
+      {error && (
+        <div style={{ marginBottom: 16, padding: 12, backgroundColor: "#fed7d7", borderRadius: 8 }}>
+          <Text color="red.800">{error}</Text>
+        </div>
+      )}
+
+      <DynamicForm<RegisterRequest>
         fields={registerFields}
-        initialValues={DEFAULT_USER}
-        onSubmit={handleRegister}
-        submitLabel="Create Account"
+        initialValues={defaultValues}
+        onSubmit={register}
+        submitLabel={loading ? "Creating Account..." : "Create Account"}
         columns={2}
       />
       <Text textAlign="center" fontSize="sm" mt={4}>
@@ -72,3 +51,5 @@ export const RegisterForm = () => {
     </>
   );
 };
+
+

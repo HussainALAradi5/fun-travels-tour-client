@@ -1,7 +1,7 @@
 import { VStack, HStack, Text, Box, Separator, Badge, Card, Heading, Icon, Button, Center, Spinner } from "@chakra-ui/react";
 import { ArrowLeft, CheckCircle2, Download, Info } from "lucide-react";
 import { useTransaction } from "@/hooks/useTransaction";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 
 export const TransactionDetails = ({ transactionId }: { transactionId: number }) => {
   const { transaction: tx, isLoading } = useTransaction(transactionId);

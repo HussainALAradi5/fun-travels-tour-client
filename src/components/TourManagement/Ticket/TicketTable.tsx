@@ -1,16 +1,11 @@
-// src/components/TourManagement/TicketTable.tsx
 import { useMemo } from "react";
 import { Badge, IconButton, Icon, HStack, Text, VStack } from "@chakra-ui/react";
 import { Eye, MapPin, Calendar } from "lucide-react";
-import { GenericTable, type Column } from "@/components/ui/Custom/GenericTable";
-import type { Ticket } from "@/interface/tourmanagement/TicketInterface";
+import { DataTable } from "@/components/ui/Custom/DataTable";
+import type { Column } from "@/interface/common/Column";
+import type { Ticket } from "@/interface/tour/Ticket";
 import { StatusColors } from "@/constants/roles/Colors";
-
-interface TicketTableProps {
-  tickets: Ticket[];
-  isLoading: boolean;
-  onView: (id: number) => void;
-}
+import type { TicketTableProps } from "@/interface/props/tour/TicketTableProps";
 
 export const TicketTable = ({ tickets, isLoading, onView }: TicketTableProps) => {
   const columns = useMemo<Column<Ticket>[]>(() => [
@@ -41,8 +36,8 @@ export const TicketTable = ({ tickets, isLoading, onView }: TicketTableProps) =>
       header: "Status",
       key: "ticketStatus",
       render: (t) => (
-        <Badge 
-          colorPalette={StatusColors[t.ticketStatus || "PENDING"] || "gray"} 
+        <Badge
+          colorPalette={StatusColors[t.ticketStatus || "PENDING"] || "gray"}
           variant="subtle"
           px={3} py={1} borderRadius="full"
         >
@@ -59,10 +54,10 @@ export const TicketTable = ({ tickets, isLoading, onView }: TicketTableProps) =>
       header: "Action",
       key: "actions",
       render: (t) => (
-        <IconButton 
-          size="sm" 
-          variant="ghost" 
-          colorPalette="blue" 
+        <IconButton
+          size="sm"
+          variant="ghost"
+          colorPalette="blue"
           onClick={() => t.id && onView(t.id)}
           aria-label="View Ticket Details"
           borderRadius="full"
@@ -74,7 +69,7 @@ export const TicketTable = ({ tickets, isLoading, onView }: TicketTableProps) =>
   ], [onView]);
 
   return (
-    <GenericTable<Ticket>
+    <DataTable<Ticket>
       data={tickets}
       exportFileName="My Tickets"
       enableExport

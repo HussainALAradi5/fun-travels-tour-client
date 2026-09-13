@@ -1,69 +1,61 @@
 import { useState, useEffect } from "react";
 import { SimpleGrid, Box, Center, Spinner, GridItem } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/navigation";
 
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import { seatService } from "@/Api/tourmanagement/Seat";
 import { mealPlanService } from "@/Api/tourmanagement/MealPlan";
 import { toaster } from "@/components/ui/toaster";
 import { useUser } from "@/hooks/User/useUser";
-
+import type { MealPlan } from "@/interface/tour/MealPlan";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
 import { floatIn } from "@/utilities/Animations";
-
-// Ensure imports point to your correct folder structure
 import { SeatPickerDialog } from "./Seat/CustomerSeat/SeatPickerDialog";
 import { MealsSelectionDialog } from "./Meal/MealsSelectionDialog";
 import { BookingTourOverview } from "./Booking/BookingTourOverview";
 import { GuestConfigList } from "./Booking/GuestConfigList";
 import { BookingCheckoutCard } from "./Booking/BookingCheckoutCard";
 
-import type { Seat } from "@/interface/tourmanagement/SeatInterface";
-import type { MealPlan } from "@/interface/tourmanagement/MealPlanInterface";
-import type { GuestConfig } from "./Booking/GuestConfigCard";
-import { SeatStatus } from "@/enums/tourmanagement/SeatStatus"; 
+import type { Seat } from "@/interface/tour/Seat";
+import { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
+import type { GuestConfig } from "@/interface/common/GuestConfig";
+import type { ReservationPayload } from "@/interface/tour/ReservationPayload";
 
 export const BookingManager = ({ tourId }: { tourId?: string }) => {
   const navigate = useNavigate();
   const { user: currentUser } = useUser();
-  
+
   const { tour, loading: tourLoading, handleCreateReservation, isBooking } = useTourManagement(tourId);
-  
+
   const [seats, setSeats] = useState<Seat[]>([]);
   const [seatsLoading, setSeatsLoading] = useState(false);
   const [availableMeals, setAvailableMeals] = useState<MealPlan[]>([]);
-  
-  // --- Group State ---
   const [guests, setGuests] = useState<GuestConfig[]>([
-    { id: crypto.randomUUID(), label: "Guest 1 (You)", assignedSeat: null, selectedMeals: [] }
+    { id: crypto.randomUUID(), label: "Guest 1 (You)", firstName: "", lastName: "", email: "", phone: "", nationality: "", passportNumber: "", dateOfBirth: "", gender: "", assignedSeat: null, selectedMeals: [] }
   ]);
-  
-  // --- Dialog Active States ---
   const [activeSeatPickerGuestId, setActiveSeatPickerGuestId] = useState<string | null>(null);
   const [activeMealPickerGuestId, setActiveMealPickerGuestId] = useState<string | null>(null);
 
   useEffect(() => {
     if (tour?.transportation?.id) {
-      setSeatsLoading(true);
-      seatService.filter({ transportId: tour.transportation.id })
-        .then((res: any) => {
-           const responseArray = Array.isArray(res) ? res : (res.data || []);
-           setSeats(responseArray.flat());
+      seatService.search({ transportId: tour.transportation.id, size: 100 })
+        .then((res) => {
+           setSeats(res.content);
         })
         .finally(() => setSeatsLoading(false));
     }
-    mealPlanService.getAll().then((res: any) => setAvailableMeals(res.data || []));
+    mealPlanService.getAll({ size: 100 }).then((res) => {
+      setAvailableMeals(res.content);
+    });
   }, [tour?.transportation?.id]);
-
-  // --- Handlers ---
   const handleAddGuest = () => {
     if (tour?.availableSlots && guests.length >= tour.availableSlots) {
       toaster.create({ title: "Capacity Reached", description: "No more available slots on this tour.", type: "warning" });
       return;
     }
     setGuests(prev => [
-      ...prev, 
-      { id: crypto.randomUUID(), label: `Guest ${prev.length + 1}`, assignedSeat: null, selectedMeals: [] }
+      ...prev,
+      { id: crypto.randomUUID(), label: `Guest ${prev.length + 1}`, firstName: "", lastName: "", email: "", phone: "", nationality: "", passportNumber: "", dateOfBirth: "", gender: "", assignedSeat: null, selectedMeals: [] }
     ]);
   };
 
@@ -76,13 +68,13 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
 
   const handleToggleMeal = (meal: MealPlan) => {
     if (!activeMealPickerGuestId) return;
-    
+
     setGuests(prev => prev.map(g => {
       if (g.id !== activeMealPickerGuestId) return g;
-      const hasMeal = g.selectedMeals.find(m => m.id === meal.id);
-      return { 
-        ...g, 
-        selectedMeals: hasMeal ? g.selectedMeals.filter(m => m.id !== meal.id) : [...g.selectedMeals, meal] 
+      const hasMeal = g.selectedMeals?.find((m: MealPlan) => m.id === meal.id);
+      return {
+        ...g,
+        selectedMeals: hasMeal ? g.selectedMeals?.filter((m: MealPlan) => m.id !== meal.id) ?? [] : [...(g.selectedMeals ?? []), meal]
       };
     }));
   };
@@ -100,22 +92,35 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
     }
 
     try {
-      const reservationPayload: any = {
-        tour: { id: Number(tourId) }, 
+      const reservationPayload: ReservationPayload = {
+        tour: { id: Number(tourId) },
         user: { id: currentUser.id },
+        guests: guests.map(g => ({
+          firstName: g.firstName ?? "",
+          lastName: g.lastName ?? "",
+          email: g.email ?? "",
+          phone: g.phone ?? "",
+          nationality: g.nationality ?? "",
+          passportNumber: g.passportNumber ?? "",
+          dateOfBirth: g.dateOfBirth ?? "",
+          gender: g.gender ?? "",
+          mealPlanId: g.mealPlanId,
+          seatId: typeof g.assignedSeat === 'object' && g.assignedSeat ? g.assignedSeat.id ?? undefined : undefined,
+          specialRequests: g.specialRequests,
+        })),
         requestedSlots: guests.length,
         tickets: guests.map(g => ({
-          assignedSeat: g.assignedSeat ? { id: g.assignedSeat.id } : null,
-          selectedMeals: g.selectedMeals.map(m => ({ id: m.id }))
+          assignedSeat: g.assignedSeat && typeof g.assignedSeat === 'object' ? { id: g.assignedSeat.id! } : null,
+          selectedMeals: (g.selectedMeals ?? []).map(m => ({ id: typeof m === 'number' ? m : (m as MealPlan).id ?? 0 }))
         }))
       };
-      
-      await handleCreateReservation(reservationPayload);
-      
+
+      await handleCreateReservation(reservationPayload as unknown as Record<string, unknown>);
+
       toaster.create({ title: "Booking Secured!", description: "Your group reservation is complete.", type: "success" });
       setTimeout(() => navigate("/my-bookings"), 1500);
-      
-    } catch (error) {
+
+    } catch (error: unknown) {
        console.error("Booking failed", error);
        toaster.create({ title: "Error", description: "Failed to process booking.", type: "error" });
     }
@@ -123,23 +128,23 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
 
   if (tourLoading) return <Center h="60vh"><Spinner color="blue.500" /></Center>;
 
-  const currentlySelectedSeats = guests.map(g => g.assignedSeat?.id).filter(Boolean) as number[];
+  const currentlySelectedSeats = guests.map(g => typeof g.assignedSeat === 'object' && g.assignedSeat ? g.assignedSeat.id : null).filter(Boolean) as number[];
   const activeMealGuest = guests.find(g => g.id === activeMealPickerGuestId);
 
   return (
-    <PageWrapper 
-      title={tour?.title || "Reservation"} 
+    <PageWrapper
+      title={tour?.title || "Reservation"}
       subtitle="Configure your group's details below"
       imageUrl="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1600"
     >
       <SimpleGrid columns={{ base: 1, lg: 12 }} gap={8} animation={`${floatIn} 0.5s ease-out`}>
-        
+
         <GridItem colSpan={{ lg: 3 }}>
-          <BookingTourOverview tour={tour} />
+          <BookingTourOverview tour={tour!} />
         </GridItem>
 
         <GridItem colSpan={{ lg: 5 }}>
-          <GuestConfigList 
+          <GuestConfigList
             guests={guests}
             maxCapacity={tour?.availableSlots || 0}
             onAddGuest={handleAddGuest}
@@ -151,20 +156,18 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
 
         <GridItem colSpan={{ lg: 4 }}>
           <Box position="sticky" top="100px">
-            <BookingCheckoutCard 
-              tour={tour} 
-              guests={guests} 
-              onConfirm={handleCheckoutClick} 
+            <BookingCheckoutCard
+              tour={tour!}
+              guests={guests}
+              onConfirm={handleCheckoutClick}
               loading={isBooking}
             />
           </Box>
         </GridItem>
       </SimpleGrid>
-
-      {/* Shared Seat Picker Dialog */}
-      <SeatPickerDialog 
-        open={!!activeSeatPickerGuestId} 
-        onClose={() => setActiveSeatPickerGuestId(null)} 
+<SeatPickerDialog
+        open={!!activeSeatPickerGuestId}
+        onClose={() => setActiveSeatPickerGuestId(null)}
         seats={seats.map(s => {
           const isSeatFree = s.status === SeatStatus.AVAILABLE;
           const isLocallySelected = currentlySelectedSeats.includes(s.id || 0);
@@ -173,17 +176,15 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
             status: (isSeatFree && !isLocallySelected) ? SeatStatus.AVAILABLE : SeatStatus.BOOKED
           };
         })}
-        selectedId={guests.find(g => g.id === activeSeatPickerGuestId)?.assignedSeat?.id || null}
+        selectedId={(() => { const g = guests.find(g => g.id === activeSeatPickerGuestId); return g?.assignedSeat && typeof g.assignedSeat === 'object' ? (g.assignedSeat as Seat).id ?? null : null; })()}
         onSelect={handleSeatSelected}
         loading={seatsLoading}
       />
-
-      {/* Shared Meal Picker Dialog */}
-      <MealsSelectionDialog 
+<MealsSelectionDialog
         open={!!activeMealPickerGuestId}
         onClose={() => setActiveMealPickerGuestId(null)}
         availableMeals={availableMeals}
-        selectedMeals={activeMealGuest?.selectedMeals || []}
+        selectedMeals={activeMealGuest?.selectedMeals ?? []}
         onToggleMeal={handleToggleMeal}
       />
 

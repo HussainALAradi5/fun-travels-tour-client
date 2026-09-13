@@ -1,18 +1,11 @@
-import { GenericFormDialog } from "@/components/ui/Custom/Dialogs/GenericFormDialog";
-import type { User } from "@/interface/UserInterface";
-import type { FieldConfig } from "@/utilities/FormTypes";
+import { DynamicFormDialog } from "@/components/ui/Custom/Dialogs/DynamicFormDialog";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
 import { UserCircle, Lock, Phone, Image as ImageIcon, Link, Trash2 } from "lucide-react";
 
-interface EditProfileProps {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: (data: any) => Promise<void>;
-  loading: boolean;
-  initialValues: User;
-}
+import type { EditProfileProps } from "@/interface/props/ui/EditProfileProps";
 
 export const EditProfile = ({ open, onClose, onSubmit, loading, initialValues }: EditProfileProps) => {
-  const fields: FieldConfig<any>[] = [
+  const fields: FieldConfig<Record<string, unknown>>[] = [
     { name: "userName", label: "Username", type: "text", disabled: true, gridSpan: 1 },
     { name: "email", label: "Email Address", type: "email", disabled: true, gridSpan: 1 },
     { name: "mobileNumber", label: "Mobile Number", type: "mobile", icon: Phone, isRequired: true, gridSpan: 1 },
@@ -30,7 +23,7 @@ export const EditProfile = ({ open, onClose, onSubmit, loading, initialValues }:
   };
 
   return (
-    <GenericFormDialog<any>
+    <DynamicFormDialog<Record<string, unknown>>
       open={open}
       onClose={onClose}
       onSubmit={onSubmit}
@@ -46,3 +39,4 @@ export const EditProfile = ({ open, onClose, onSubmit, loading, initialValues }:
     />
   );
 };
+

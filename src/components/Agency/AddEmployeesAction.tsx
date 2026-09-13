@@ -12,14 +12,8 @@ import { FileUp, ChevronUp, ChevronDown, Download } from "lucide-react";
 import MultiAttachmentUpload from "../ui/Custom/MultiAttachmentUpload";
 import { userService } from "@/Api/User";
 import { CollapsibleContainer } from "../ui/Custom/CollapsibleContainer";
-import { GenericExportDialog } from "../ui/Custom/Dialogs/GenericExportDialog";
-import { mapUsersToExportFormat } from "@/interface/UserInterface";
-
-interface AddEmployeesActionProps {
-  agencyId: number;
-  onRefresh?: () => void;
-  
-}
+import { ExportDialog } from "../ui/Custom/Dialogs/ExportDialog";
+import type { AddEmployeesActionProps } from "@/interface/props/agency/AddEmployeesActionProps";
 
 export const AddEmployeesAction = ({
   agencyId,
@@ -27,11 +21,16 @@ export const AddEmployeesAction = ({
 }: AddEmployeesActionProps) => {
   const { open, onToggle } = useDisclosure();
   const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
-
-  // MEMOIZE TEMPLATE: Generates headers dynamically from the interface mapper
-  const templateData = useMemo(() => mapUsersToExportFormat([]), []);
-
-  // DYNAMIC INSTRUCTIONS: Extracted from headers to avoid redundancy
+  const templateData = useMemo(() => [{
+    Name: "",
+    Username: "",
+    Email: "",
+    Password: "",
+    Age: "",
+    Mobile: "",
+    Role: "",
+    Branch: "",
+  }], []);
   const columnInstructions = useMemo(
     () => `Required Columns: ${Object.keys(templateData[0]).join(", ")}.`,
     [templateData],
@@ -95,9 +94,7 @@ export const AddEmployeesAction = ({
                 Get Template
               </Button>
             </HStack>
-
-            {/* MODERNIZED DYNAMIC UPLOAD */}
-            <MultiAttachmentUpload
+<MultiAttachmentUpload
               onUpload={handleBulkUpload}
               onSuccess={() => onRefresh?.()}
               instructions={columnInstructions}
@@ -105,9 +102,7 @@ export const AddEmployeesAction = ({
           </VStack>
         </Box>
       </CollapsibleContainer>
-
-      {/* THE UNIFIED DYNAMIC DIALOG */}
-      <GenericExportDialog
+<ExportDialog
         open={isTemplateDialogOpen}
         onClose={() => setIsTemplateDialogOpen(false)}
         data={templateData}

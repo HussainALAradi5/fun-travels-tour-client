@@ -1,17 +1,12 @@
 import { useMemo } from "react";
 import { Box, Image, Badge, HStack, Text, IconButton } from "@chakra-ui/react";
 import { MapPin, Trash2 } from "lucide-react";
-import { GenericTable } from "@/components/ui/Custom/GenericTable";
-import type { Country } from "@/interface/CountryInterface";
+import { DataTable } from "@/components/ui/Custom/DataTable";
+import type { Country } from "@/interface/geography/Country";
 import CityManagerRow from "../City/CityManagerRow";
+import type { CountryTableProps } from "@/interface/props/geography/CountryTableProps";
 
-interface Props {
-  data: Country[];
-  loading: boolean;
-  onDelete: (country: Country) => void;
-}
-
-export function CountryTable({ data, loading, onDelete }: Props) {
+export function CountryTable({ data, loading, onDelete }: CountryTableProps) {
   const columns = useMemo(
     () => [
       {
@@ -93,18 +88,22 @@ export function CountryTable({ data, loading, onDelete }: Props) {
       p={4}
       shadow="sm"
     >
-      <GenericTable<Country>
+      <DataTable<Country>
         data={data}
         columns={columns}
         loading={loading}
         searchKey="famousName"
-        renderExpansion={(country) => (
-          <CityManagerRow
-            countryId={country.id as number}
-            countryName={country.famousName}
-          />
-        )}
+        renderExpansion={(country) =>
+          country.id != null ? (
+            <CityManagerRow
+              countryId={country.id}
+              countryName={country.famousName}
+            />
+          ) : null
+        }
       />
     </Box>
   );
 }
+
+

@@ -1,37 +1,57 @@
+import type { User } from "@/interface/user/User";
+
+const getStorage = () => typeof window === "undefined" ? null : window.localStorage;
+
 export const authUtils = {
-    // Save session data after login
-    saveSession: (token: string, user: any) => {
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
+    saveSession: (token: string, user: User) => {
+        const storage = getStorage();
+        storage?.setItem("token", token);
+        storage?.setItem("user", JSON.stringify(user));
     },
 
-    // Retrieve user object from storage
-    getUser: () => {
-        const user = localStorage.getItem("user");
+    getUser: (): User | null => {
+        const user = getStorage()?.getItem("user");
+        if (!user) return null;
         try {
-            return user ? JSON.parse(user) : null;
-        } catch (e) {
-            console.error("Failed to parse user from localStorage", e);
+            return JSON.parse(user) as User;
+        } catch {
             return null;
         }
     },
 
-    getUserType: (): string => {
-        const user = authUtils.getUser();
-        return (user?.userType || "GUEST").toUpperCase();
+    getToken: (): string | null => {
+        return getStorage()?.getItem("token") ?? null;
     },
 
     isAdmin: (): boolean => {
-        return authUtils.getUserType() === "ADMIN";
+        const user = getStorage()?.getItem("user");
+        if (!user) return false;
+        try {
+            const parsed = JSON.parse(user) as User;
+            return parsed.userType === "ADMIN";
+        } catch {
+            return false;
+        }
     },
 
-    getToken: (): string | null => {
-        return localStorage.getItem("token");
+    getUserType: (): string => {
+        const user = getStorage()?.getItem("user");
+        if (!user) return "";
+        try {
+            const parsed = JSON.parse(user) as User;
+            return parsed.userType;
+        } catch {
+            return "";
+        }
     },
 
-    // Just clear data - the component/hook will handle the redirect
+    isAuthenticated: (): boolean => {
+        return !!getStorage()?.getItem("token");
+    },
+
     logout: () => {
-        localStorage.removeItem("user");
-        localStorage.removeItem("token");
-    },
+        const storage = getStorage();
+        storage?.removeItem("token");
+        storage?.removeItem("user");
+    }
 };

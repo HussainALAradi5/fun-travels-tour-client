@@ -1,39 +1,37 @@
 import { Box, VStack, HStack, Text, Heading, Button, Separator, Circle, Icon, Spinner } from "@chakra-ui/react";
 import { ShoppingBag, CheckCircle2, Armchair, Utensils, Users } from "lucide-react";
 import { glowPulse, floatIn } from "@/utilities/Animations";
-import type { Tour } from "@/interface/tourmanagement/TourInterface";
-import type { GuestConfig } from "./GuestConfigCard";
-
-interface BookingCheckoutCardProps {
-  tour: Tour | null;
-  guests: GuestConfig[];
-  onConfirm: () => void;
-  loading: boolean;
-}
+import type { BookingCheckoutCardProps } from "@/interface/props/booking/BookingCheckoutCardProps";
+import type { Seat } from "@/interface/tour/Seat";
 
 export const BookingCheckoutCard = ({ tour, guests, onConfirm, loading }: BookingCheckoutCardProps) => {
-  // --- Group Calculations ---
   const guestCount = guests.length;
   const baseTotal = (tour?.basePrice || 0) * guestCount;
-  
-  const seatModifierTotal = guests.reduce((acc, g) => acc + (g.assignedSeat?.seatPriceModifier || 0), 0);
+
+  const seatModifierTotal = guests.reduce((acc, g) => {
+    const seat = g.assignedSeat;
+    if (seat && typeof seat === 'object' && 'seatPriceModifier' in seat) {
+      return acc + ((seat as Seat).seatPriceModifier || 0);
+    }
+    return acc;
+  }, 0);
   const seatsAssignedCount = guests.filter(g => g.assignedSeat !== null).length;
   const isSeatMissing = (tour?.hasTransportation ?? true) && seatsAssignedCount < guestCount;
-  
-  const totalMealsCount = guests.reduce((acc, g) => acc + g.selectedMeals.length, 0);
-  const mealsTotal = guests.reduce((acc, g) => 
-    acc + g.selectedMeals.reduce((mAcc, m) => mAcc + (m.mealPrice || 0), 0), 0
+
+  const totalMealsCount = guests.reduce((acc, g) => acc + (g.selectedMeals?.length ?? 0), 0);
+  const mealsTotal = guests.reduce((acc, g) =>
+    acc + (g.selectedMeals ?? []).reduce((mAcc, m) => mAcc + (m.mealPrice || 0), 0), 0
   );
 
   const grandTotal = baseTotal + seatModifierTotal + mealsTotal;
 
   return (
-    <Box 
-      bg="bg.panel" 
-      p={8} 
-      borderRadius="3xl" 
-      shadow="2xl" 
-      borderWidth="1px" 
+    <Box
+      bg="bg.panel"
+      p={8}
+      borderRadius="3xl"
+      shadow="2xl"
+      borderWidth="1px"
       borderColor="blue.500/20"
       animation={!isSeatMissing ? `${glowPulse} 3s infinite` : "none"}
       backdropFilter="blur(20px)"
@@ -57,7 +55,7 @@ export const BookingCheckoutCard = ({ tour, guests, onConfirm, loading }: Bookin
             <Text color="fg.muted" fontSize="sm">Standard Fare (x{guestCount})</Text>
             <Text fontWeight="black" fontSize="md">${baseTotal.toFixed(2)}</Text>
           </HStack>
-          
+
           {seatModifierTotal > 0 && (
             <HStack justify="space-between" animation={`${floatIn} 0.3s ease`}>
               <HStack gap={2}>
@@ -80,7 +78,7 @@ export const BookingCheckoutCard = ({ tour, guests, onConfirm, loading }: Bookin
         </VStack>
 
         <Separator opacity={0.5} />
-        
+
         <HStack justify="space-between">
           <VStack align="start" gap={0}>
             <Text fontSize="2xs" fontWeight="black" color="fg.muted">GRAND TOTAL</Text>
@@ -89,11 +87,11 @@ export const BookingCheckoutCard = ({ tour, guests, onConfirm, loading }: Bookin
           {loading && <Spinner size="sm" color="blue.500" />}
         </HStack>
 
-        <Button 
-          size="xl" 
-          colorPalette="blue" 
-          borderRadius="2xl" 
-          disabled={isSeatMissing || loading} 
+        <Button
+          size="xl"
+          colorPalette="blue"
+          borderRadius="2xl"
+          disabled={isSeatMissing || loading}
           onClick={onConfirm}
           h="16"
           shadow="xl"

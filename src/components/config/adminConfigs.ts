@@ -1,7 +1,8 @@
-import type { FieldConfig } from "@/utilities/FormTypes";
+import type { FieldConfig } from "@/interface/common/FieldConfig";
+import type { Transportation } from "@/interface/tour/Transportation";
+import type { MealPlan } from "@/interface/tour/MealPlan";
 
-// Meal Plan Form Config
-export const mealPlanFields: FieldConfig<any>[] = [
+export const mealPlanFields: FieldConfig<MealPlan>[] = [
   { name: "mealName", label: "Meal Name", type: "text", isRequired: true },
   { name: "mealPrice", label: "Price ($)", type: "number", isRequired: true },
   { name: "mealDescription", label: "Description", type: "textarea" },
@@ -13,8 +14,7 @@ export const mealPlanFields: FieldConfig<any>[] = [
   ]}
 ];
 
-// Transportation Form Config
-export const transportFields: FieldConfig<any>[] = [
+export const transportFields: FieldConfig<Transportation>[] = [
   { name: "transportationNumber", label: "Tracking Number", type: "text", isRequired: true },
   { name: "providerName", label: "Provider (e.g. Qatar Airways)", type: "text", isRequired: true },
   { name: "type", label: "Type", type: "select", options: [

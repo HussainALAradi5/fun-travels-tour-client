@@ -1,8 +1,8 @@
-// src/components/TourManagement/Ticket/CustomerTicketDetails/TicketJourneyTracker.tsx
 import { Box, Heading } from "@chakra-ui/react";
 import { Flag, CheckCircle, Clock, Navigation, MapPin } from "lucide-react";
-import { GenericTracking, type TrackingItem } from "@/components/ui/Custom/GenericTracking";
-import type { Ticket } from "@/interface/tourmanagement/TicketInterface";
+import { ActivityTimeline } from "@/components/ui/Custom/ActivityTimeline";
+import type { TrackingItem } from "@/interface/common/TrackingItem";
+import type { Ticket } from "@/interface/tour/Ticket";
 
 export const TicketJourneyTracker = ({ ticket }: { ticket: Ticket }) => {
   const trackingItems: TrackingItem[] = [
@@ -46,12 +46,13 @@ export const TicketJourneyTracker = ({ ticket }: { ticket: Ticket }) => {
         <Flag size={24} color="blue.500" /> Journey Tracker
       </Heading>
       <Box px={{ base: 2, md: 6 }}>
-        <GenericTracking 
-          items={trackingItems} 
-          initialVisibleMiddle={3} 
-          animate={ticket.ticketStatus === "CONFIRMED"} 
+        <ActivityTimeline
+          items={trackingItems}
+          initialVisibleMiddle={3}
+          animate={ticket.ticketStatus === "CONFIRMED"}
         />
       </Box>
     </Box>
   );
 };
+

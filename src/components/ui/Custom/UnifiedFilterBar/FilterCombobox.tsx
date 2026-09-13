@@ -1,52 +1,36 @@
-// src/components/ui/Custom/UnifiedFilterBar/FilterCombobox.tsx
 import { useState, useMemo } from "react";
-import { 
-  HStack, Icon, Text, VStack, Box, 
-  createListCollection, Combobox, Select 
+import {
+  HStack, Icon, Text, VStack, Box,
+  createListCollection, Combobox, Select
 } from "@chakra-ui/react";
 import { Filter as FilterIcon } from "lucide-react";
-
-export interface FilterGroup {
-  label: React.ReactNode;
-  value: string;
-  searchText?: string;
-  variant?: "select" | "combobox"; // Toggle between UI types
-  options: { 
-    label: React.ReactNode; 
-    value: string; 
-    searchText?: string 
-  }[];
-  onChange: (val: string) => void;
-  placeholder?: string;
-  minWidth?: string;
-}
+import type { FilterGroup } from "@/interface/common/FilterGroup";
 
 export const FilterCombobox = ({ f }: { f: FilterGroup }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const isCombobox = f.variant === "combobox";
-
-  // Helper to get string for search/accessibility
-  const getStringValue = (item: any) => 
+  const getStringValue = (item: { searchText?: string; label: string | React.ReactNode; value: string }) =>
     item.searchText || (typeof item.label === "string" ? item.label : "") || item.value;
 
   const filteredItems = useMemo(() => {
-    if (!searchTerm || !isCombobox) return f.options;
-    return f.options.filter((opt) =>
+    const opts = f.options || [];
+    if (!searchTerm || !isCombobox) return opts;
+    return opts.filter((opt) =>
       getStringValue(opt).toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [f.options, searchTerm, isCombobox]);
 
   const collection = useMemo(() => createListCollection({
-    items: filteredItems,
+    items: filteredItems.map((item) => ({ ...item, value: String(item.value) })),
     itemToString: (item) => getStringValue(item),
-    itemToValue: (item) => item.value,
+    itemToValue: (item) => String(item.value),
   }), [filteredItems]);
 
   const commonProps = {
     collection,
     value: f.value ? [f.value] : [],
-    onValueChange: (details: any) => {
-      f.onChange(details.value[0] || "");
+    onValueChange: (details: { value: string[] }) => {
+      f.onChange?.(details.value[0] || "");
       setSearchTerm("");
     },
     size: "sm" as const,
@@ -60,16 +44,15 @@ export const FilterCombobox = ({ f }: { f: FilterGroup }) => {
       </Text>
 
       {isCombobox ? (
-        /* --- SEARCHABLE COMBOBOX VARIANT --- */
-        <Combobox.Root {...commonProps} onInputValueChange={(e) => setSearchTerm(e.inputValue)}>
+<Combobox.Root {...commonProps} onInputValueChange={(e) => setSearchTerm(e.inputValue)}>
           <Combobox.Control borderRadius="xl" bg="bg.panel" h="10" borderWidth="1px" borderColor="border.subtle">
             <HStack gap={2} px={3} w="full">
               <Icon size="xs" color="blue.fg"><FilterIcon size={14} /></Icon>
-              <Combobox.Input 
-                placeholder={f.placeholder || "Search..."} 
-                bg="transparent" 
+              <Combobox.Input
+                placeholder={f.placeholder || "Search..."}
+                bg="transparent"
                 fontSize="sm"
-                _focus={{ outline: "none" }} 
+                _focus={{ outline: "none" }}
               />
             </HStack>
             <Combobox.Trigger />
@@ -89,8 +72,7 @@ export const FilterCombobox = ({ f }: { f: FilterGroup }) => {
           </Combobox.Positioner>
         </Combobox.Root>
       ) : (
-        /* --- STANDARD SELECT VARIANT (DEFAULT) --- */
-        <Select.Root {...commonProps}>
+<Select.Root {...commonProps}>
           <Select.Trigger borderRadius="xl" bg="bg.panel" h="10" borderWidth="1px" borderColor="border.subtle">
             <HStack gap={2} px={3}>
               <Icon size="xs" color="blue.fg"><FilterIcon size={14} /></Icon>

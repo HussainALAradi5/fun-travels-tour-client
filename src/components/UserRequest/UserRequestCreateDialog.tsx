@@ -1,19 +1,11 @@
-import { DEFAULT_USER_REQUEST, type UserRequest } from "@/interface/UserRequestInterface";
+import { DynamicFormDialog } from "../ui/Custom/Dialogs/DynamicFormDialog";
 import { Plus } from "lucide-react";
-import { GenericFormDialog } from "../ui/Custom/Dialogs/GenericFormDialog";
-import { UserRequestType } from "@/enums/UserRequest/UserRequestType";
+import type { UserRequest } from "@/interface/support/UserRequest";
+import type { UserRequestCreateDialogProps } from "@/interface/props/user/UserRequestCreateDialogProps";
 
-interface Props {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: (data: UserRequest) => Promise<void>;
-  loading: boolean;
-  currentUserId: number;
-}
-
-export const UserRequestCreateDialog = ({ open, onClose, onSubmit, loading, currentUserId }: Props) => {
+export const UserRequestCreateDialog = ({ open, onClose, onSubmit, loading, currentUserId }: UserRequestCreateDialogProps) => {
   return (
-    <GenericFormDialog<UserRequest>
+    <DynamicFormDialog<UserRequest>
       open={open}
       onClose={onClose}
       onSubmit={onSubmit}
@@ -21,24 +13,24 @@ export const UserRequestCreateDialog = ({ open, onClose, onSubmit, loading, curr
       title="Create User Request"
       description="Submit a support ticket or a new suggestion for the platform."
       icon={Plus}
-      // Fixed: Explicitly cast to UserRequest and provided fallback for strings
-      initialValues={{ 
-        ...DEFAULT_USER_REQUEST, 
+      initialValues={{
         title: "",
         description: "",
-        user: { id: currentUserId } as any 
+        type: "SUPPORT" as UserRequest["type"],
+        status: "PENDING" as UserRequest["status"],
+        user: { id: currentUserId }
       } as UserRequest}
       fields={[
         { name: "title", label: "Subject / Title", type: "text", isRequired: true },
-        { 
-          name: "type", 
-          label: "Request Category", 
-          type: "select", 
+        {
+          name: "type",
+          label: "Request Category",
+          type: "select",
           options: [
-            { label: "Technical Support", value: UserRequestType.SUPPORT },
-            { label: "New Suggestion", value: UserRequestType.SUGGESTION }
-          ], 
-          isRequired: true 
+            { label: "Technical Support", value: "SUPPORT" },
+            { label: "New Suggestion", value: "SUGGESTION" }
+          ],
+          isRequired: true
         },
         { name: "description", label: "Detailed Information", type: "textarea", isRequired: true },
       ]}

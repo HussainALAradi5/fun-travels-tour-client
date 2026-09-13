@@ -1,24 +1,24 @@
 import { useState, useMemo } from "react";
-import { 
-  Box, HStack, useDisclosure, Text, Heading, 
-  Button, Separator, Avatar, Badge, VStack 
+import {
+  Box, HStack, useDisclosure, Text, Heading,
+  Button, Separator, Avatar, Badge, VStack
 } from "@chakra-ui/react";
 import { Download, UserPlus, Mail, Phone, Briefcase } from "lucide-react";
 
-// Components & Services
 import { userService } from "@/Api/User";
 import { UserType } from "@/enums/UserType";
-import { mapUsersToExportFormat, type User } from "@/interface/UserInterface";
+import { type User } from "@/interface/user/User";
 import { authUtils } from "@/utilities/AuthUtils";
 import { toaster } from "../ui/toaster";
 import { AddEmployeesAction } from "./AddEmployeesAction";
 import { UnifiedFilterBar } from "../ui/Custom/UnifiedFilterBar";
-import { GenericTable, type Column } from "../ui/Custom/GenericTable";
+import { DataTable } from "../ui/Custom/DataTable";
+import type { Column } from "@/interface/common/Column";
 import { AddEmployeeDialog } from "../User/controlpanel/AddEmployeeDialog";
-import { GenericExportDialog } from "../ui/Custom/Dialogs/GenericExportDialog";
+import { ExportDialog } from "../ui/Custom/Dialogs/ExportDialog";
 import { RoleColors } from "@/constants/roles/Colors";
+import type { EmployeeTabProps } from "@/interface/props/agency/EmployeeTabProps";
 
-// 1. DEFINE COLUMNS (This was missing)
 const COLUMNS: Column<User>[] = [
   {
     header: "Employee",
@@ -26,7 +26,9 @@ const COLUMNS: Column<User>[] = [
     render: (emp) => (
       <HStack gap={3}>
         <Avatar.Root size="sm">
-          <Avatar.Image src={userService.getProfileImageUrl(emp.profileImageUrl)} />
+          {emp.profileImageUrl && (
+            <Avatar.Image src={userService.getProfileImageUrl(emp.profileImageUrl)} />
+          )}
           <Avatar.Fallback name={emp.name} />
         </Avatar.Root>
         <VStack align="start" gap={0}>
@@ -60,18 +62,11 @@ const COLUMNS: Column<User>[] = [
   },
 ];
 
-interface EmployeeTabProps {
-  agencyName: string;
-  agencyId: number;
-  employees: User[];
-  onRefresh: () => void;
-}
-
-export function EmployeeTab({ 
-  agencyName, 
-  agencyId, 
-  employees, 
-  onRefresh 
+export function EmployeeTab({
+  agencyName,
+  agencyId,
+  employees,
+  onRefresh
 }: EmployeeTabProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("ALL");
@@ -84,16 +79,16 @@ export function EmployeeTab({
 
   const displayData = useMemo(() => {
     let filtered = employees;
-    
+
     if (roleFilter !== "ALL") {
       filtered = filtered.filter(e => e.userType === roleFilter);
     }
-    
+
     if (searchTerm) {
       const q = searchTerm.toLowerCase().trim();
-      filtered = filtered.filter(e => 
-        e.name.toLowerCase().includes(q) || 
-        e.email.toLowerCase().includes(q) || 
+      filtered = filtered.filter(e =>
+        e.name.toLowerCase().includes(q) ||
+        e.email.toLowerCase().includes(q) ||
         e.userName.toLowerCase().includes(q)
       );
     }
@@ -102,13 +97,16 @@ export function EmployeeTab({
 
   const handleAddSubmit = async (formData: User) => {
     setIsSubmitting(true);
-    const res = await userService.addEmployee(formData, currentUser?.userType || "OWNER", agencyId);
-    if (res.success) {
+    try {
+      await userService.addEmployee(formData, currentUser?.userType || "OWNER", agencyId);
       toaster.create({ title: "Added successfully", type: "success" });
       onClose();
-      onRefresh(); 
+      onRefresh();
+    } catch {
+      toaster.create({ title: "Failed to add employee", type: "error" });
+    } finally {
+      setIsSubmitting(false);
     }
-    setIsSubmitting(false);
   };
 
   const handleReset = () => {
@@ -162,27 +160,34 @@ export function EmployeeTab({
         }]}
       />
 
-      <GenericTable 
-        data={displayData} 
-        columns={COLUMNS} 
-        loading={false} 
-        colorPalette="blue" 
-        searchDisabled 
+      <DataTable
+        data={displayData}
+        columns={COLUMNS}
+        loading={false}
+        colorPalette="blue"
+        searchDisabled
       />
 
-      <AddEmployeeDialog 
-        open={open} 
-        onClose={onClose} 
-        onSubmit={handleAddSubmit} 
-        loading={isSubmitting} 
-        agencyName={agencyName} 
+      <AddEmployeeDialog
+        open={open}
+        onClose={onClose}
+        onSubmit={handleAddSubmit}
+        loading={isSubmitting}
+        agencyName={agencyName}
       />
-      
-      <GenericExportDialog 
-        open={isExportOpen} 
-        onClose={() => setIsExportOpen(false)} 
-        data={mapUsersToExportFormat(displayData)} 
-        fileName={`${agencyName}_Staff`} 
+
+      <ExportDialog
+        open={isExportOpen}
+        onClose={() => setIsExportOpen(false)}
+        data={displayData.map(u => ({
+          Name: u.name,
+          Username: u.userName,
+          Email: u.email,
+          Mobile: u.mobileNumber,
+          Role: u.userType,
+          Status: u.active ? "Active" : "Inactive",
+        }))}
+        fileName={`${agencyName}_Staff`}
       />
     </Box>
   );

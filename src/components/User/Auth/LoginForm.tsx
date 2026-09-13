@@ -1,25 +1,11 @@
-import { useState } from "react";
-import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "@/lib/navigation";
 import { Text, Link as ChakraLink, Alert, Flex, HStack } from "@chakra-ui/react";
-import { userService, type LoginRequest } from "@/Api/User";
-import { GenericForm } from "@/components/ui/Custom/GenericForm";
-import { useAuth } from "@/utilities/AuthContext";
+import type { LoginRequest } from "@/interface/auth/LoginRequest";
+import { DynamicForm } from "@/components/ui/Custom/DynamicForm";
+import { useLogin } from "@/hooks/auth/useLogin";
 
 export const LoginForm = () => {
-  const navigate = useNavigate();
-  const { refreshAuth } = useAuth();
-  const [error, setError] = useState<string | null>(null);
-
-  const handleLogin = async (values: LoginRequest) => {
-    setError(null);
-    const response = await userService.login(values);
-    if (response.success) {
-      refreshAuth();
-      navigate("/profile");
-    } else {
-      setError(response.message || "Login failed");
-    }
-  };
+  const { login, error, loading } = useLogin();
 
   return (
     <>
@@ -31,7 +17,7 @@ export const LoginForm = () => {
         </Alert.Root>
       )}
 
-      <GenericForm<LoginRequest>
+      <DynamicForm<LoginRequest>
         fields={[
           {
             name: "identifier",
@@ -47,11 +33,11 @@ export const LoginForm = () => {
           },
         ]}
         initialValues={{ identifier: "", password: "" }}
-        onSubmit={handleLogin}
-        submitLabel="Sign In"
+        onSubmit={login}
+        submitLabel={loading ? "Signing In..." : "Sign In"}
         columns={1}
       />
-     
+
       <Flex justify="space-between" align="center" mt={6} pt={4} borderTop="1px solid" borderColor="gray.100" _dark={{ borderColor: "gray.800" }}>
         <HStack gap={1}>
           <Text fontSize="sm" color="fg.muted">New?</Text>
@@ -67,3 +53,5 @@ export const LoginForm = () => {
     </>
   );
 };
+
+

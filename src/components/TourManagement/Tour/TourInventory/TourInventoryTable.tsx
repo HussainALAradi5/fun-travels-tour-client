@@ -1,27 +1,26 @@
 import { VStack, HStack, Text, Badge, Icon, Circle } from "@chakra-ui/react";
 import { Calendar, Clock } from "lucide-react";
-import { GenericTable } from "@/components/ui/Custom/GenericTable";
+import { DataTable } from "@/components/ui/Custom/DataTable";
 import { CapacityProgress } from "@/components/ui/Custom/CapacityProgress";
 import { StatusColors } from "@/constants/roles/Colors";
 import { formatTourRange } from "@/utilities/DateUtils";
-import type { Tour, TourTableProps } from "@/interface/tourmanagement/TourInterface";
+import type { Tour } from "@/interface/tour/Tour"; import type { TourTableProps } from "@/interface/tour/TourTableProps";
 
 export const TourInventoryTable = ({ data, isLoading, onViewDetails }: TourTableProps) => {
   return (
-    <GenericTable 
+    <DataTable
       data={data}
       loading={isLoading}
       searchDisabled
       columns={[
-        { 
-          header: "Tour Details", 
-          key: "title", 
+        {
+          header: "Tour Details",
+          key: "title",
           render: (row: Tour) => (
             <VStack align="start" gap={2} py={2}>
-              <Text 
-                fontWeight="bold" fontSize="sm" cursor="pointer" 
-                _hover={{ color: "blue.600" }} 
-                // FIXED: Wrapped row.id in String() to resolve TS2345
+              <Text
+                fontWeight="bold" fontSize="sm" cursor="pointer"
+                _hover={{ color: "blue.600" }}
                 onClick={() => onViewDetails(String(row.id))}
               >
                 {row.title}
@@ -30,11 +29,11 @@ export const TourInventoryTable = ({ data, isLoading, onViewDetails }: TourTable
                 {row.tourNumber || 'DRAFT'}
               </Badge>
             </VStack>
-          ) 
+          )
         },
-        { 
-          header: "Timeline", 
-          key: "startDate", 
+        {
+          header: "Timeline",
+          key: "startDate",
           render: (row: Tour) => (
             <VStack align="start" gap={1}>
               <HStack gap={1.5}>
@@ -48,15 +47,15 @@ export const TourInventoryTable = ({ data, isLoading, onViewDetails }: TourTable
             </VStack>
           )
         },
-        { 
-          header: "Capacity", 
+        {
+          header: "Capacity",
           key: "availableSlots",
           render: (row: Tour) => (
             <CapacityProgress value={row.availableSlots} total={row.maxCapacity} unit="Seats" />
           )
         },
-        { 
-          header: "Status", 
+        {
+          header: "Status",
           key: "status",
           render: (row: Tour) => {
             const color = StatusColors[row.status as keyof typeof StatusColors] || "gray";
@@ -76,3 +75,12 @@ export const TourInventoryTable = ({ data, isLoading, onViewDetails }: TourTable
     />
   );
 };
+
+
+
+
+
+
+
+
+

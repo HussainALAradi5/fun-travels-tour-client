@@ -1,16 +1,12 @@
 import { Badge, HStack, Text, IconButton, Box, Icon } from "@chakra-ui/react";
-import { GenericTable, type Column } from "@/components/ui/Custom/GenericTable";
-import type { UserRequest } from "@/interface/UserRequestInterface";
+import { DataTable } from "@/components/ui/Custom/DataTable";
+import type { Column } from "@/interface/common/Column";
+import type { UserRequest } from "@/interface/support/UserRequest";
 import { RequestStatusColors, RequestTypeColors } from "@/constants/roles/Colors";
 import { User, Eye } from "lucide-react";
+import type { UserRequestListProps } from "@/interface/props/user/UserRequestListProps";
 
-interface Props {
-  data: UserRequest[];
-  loading: boolean;
-  onView: (req: UserRequest) => void;
-}
-
-export const UserRequestList = ({ data, loading, onView }: Props) => {
+export const UserRequestList = ({ data, loading, onView }: UserRequestListProps) => {
   const columns: Column<UserRequest>[] = [
     {
       header: "Type",
@@ -45,13 +41,12 @@ export const UserRequestList = ({ data, loading, onView }: Props) => {
       header: "Requester",
       key: "user",
       render: (item) => (
-        /* Using HStack for perfect alignment of Icon and Text */
-        <HStack gap={2}>
-          <Badge 
-            variant="subtle" 
-            colorPalette="blue" // Changed to Blue for a nicer look
-            borderRadius="full" 
-            px={3} 
+<HStack gap={2}>
+          <Badge
+            variant="subtle"
+            colorPalette="blue"
+            borderRadius="full"
+            px={3}
             py={1}
             display="inline-flex"
             alignItems="center"
@@ -79,9 +74,9 @@ export const UserRequestList = ({ data, loading, onView }: Props) => {
       header: "Actions",
       key: "id",
       render: (item) => (
-        <IconButton 
-          variant="ghost" 
-          size="sm" 
+        <IconButton
+          variant="ghost"
+          size="sm"
           colorPalette="blue"
           onClick={() => onView(item)}
           aria-label="View Details"
@@ -94,11 +89,13 @@ export const UserRequestList = ({ data, loading, onView }: Props) => {
   ];
 
   return (
-    <GenericTable 
-      data={data} 
-      columns={columns} 
-      loading={loading} 
-      searchDisabled={true} 
+    <DataTable
+      data={data}
+      columns={columns}
+      loading={loading}
+      searchDisabled={true}
     />
   );
 };
+
+

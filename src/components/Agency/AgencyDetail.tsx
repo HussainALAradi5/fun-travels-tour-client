@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState, useCallback } from "react";
+import { useParams } from "@/lib/navigation";
 import {
   Box,
   Heading,
@@ -23,17 +23,14 @@ import {
 
 import { agencyService } from "@/Api/Agency/Agency";
 import { branchService } from "@/Api/Agency/AgencyBranch";
-import type { Agency } from "@/interface/Agency/AgencyInterface";
-import type { User } from "@/interface/UserInterface";
-import type { AgencyBranch } from "@/interface/Agency/AgencyBranchInterface";
+import type { Agency } from "@/interface/agency/Agency";
+import type { User } from "@/interface/user/User";
+import type { AgencyBranch } from "@/interface/agency/AgencyBranch";
 
 import { AddBranchDialog } from "@/components/Agency/AddBranchDialog";
 import { BranchTab } from "@/components/Agency/BranchTab";
 import { EmployeeTab } from "@/components/Agency/EmployeeTab";
-
-interface AgencyDetailProps {
-  forcedId?: number;
-}
+import type { AgencyDetailProps } from "@/interface/props/agency/AgencyDetailProps";
 
 export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
   const { id: routeId } = useParams<{ id: string }>();
@@ -45,7 +42,7 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
   const [isBranchDialogOpen, setIsBranchDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     if (!id) return;
     setLoading(true);
     try {
@@ -53,18 +50,18 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
         agencyService.getAgencyById(id),
         agencyService.getEmployeesByAgency(Number(id)),
       ]);
-      setAgency(agencyRes.data);
-      setEmployees(employeeRes.data || []);
-    } catch (error) {
+      setAgency(agencyRes);
+      setEmployees(employeeRes || []);
+    } catch (error: unknown) {
       console.error("Failed to load data", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     loadData();
-  }, [id]);
+  }, [loadData]);
 
   const handleCreateBranch = async (branchData: AgencyBranch) => {
     if (!id) return;
@@ -73,7 +70,7 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
       await branchService.createBranch(Number(id), branchData);
       setIsBranchDialogOpen(false);
       await loadData();
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Error creating branch", error);
     } finally {
       setIsSubmitting(false);
@@ -85,8 +82,7 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
 
   return (
     <VStack gap={8} align="stretch">
-      {/* Header */}
-      <HStack justify="space-between" align="center">
+<HStack justify="space-between" align="center">
         <HStack gap={5}>
           <Box p={4} bg="blue.600" color="white" borderRadius="2xl" shadow="lg">
             <Building2 size={32} />
@@ -118,9 +114,7 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
           <Plus size={18} /> Add New Branch
         </Button>
       </HStack>
-
-      {/* Info Cards */}
-      <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
+<SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
         <InfoCard
           icon={UserIcon}
           label="Agency Owner"
@@ -140,9 +134,7 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
           subValue="Main Headquarters"
         />
       </SimpleGrid>
-
-      {/* Tabs Section */}
-      <Box
+<Box
         bg="bg.panel"
         borderRadius="xl"
         border="1px solid"
@@ -174,10 +166,9 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
           </Tabs.Content>
 
           <Tabs.Content value="employees">
-            {/* FIXED: Passing required agencyId and onRefresh props */}
-            <EmployeeTab 
-              employees={employees} 
-              agencyName={agency.agencyName} 
+<EmployeeTab
+              employees={employees}
+              agencyName={agency.agencyName}
               agencyId={Number(id)}
               onRefresh={loadData}
             />
@@ -194,9 +185,9 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
     </VStack>
   );
 }
+import type { InfoCardProps } from "@/interface/props/agency/InfoCardProps";
 
-// Sub-components
-function InfoCard({ icon: Icon, label, value, subValue }: any) {
+function InfoCard({ icon: Icon, label, value, subValue }: InfoCardProps) {
   return (
     <HStack p={5} bg="bg.panel" borderRadius="xl" border="1px solid" borderColor="border.subtle" gap={4}>
       <Box p={2.5} bg="blue.50" _dark={{ bg: "blue.950" }} color="blue.600" borderRadius="xl">

@@ -2,15 +2,14 @@ import { useState, useEffect, useCallback } from "react";
 import { agencyService } from "@/Api/Agency/Agency";
 import { branchService } from "@/Api/Agency/AgencyBranch";
 import { toaster } from "@/components/ui/toaster";
-import type { Agency } from "@/interface/Agency/AgencyInterface";
-import type { AgencyBranch } from "@/interface/Agency/AgencyBranchInterface";
+import type { Agency } from "@/interface/agency/Agency";
+import type { AgencyBranch } from "@/interface/agency/AgencyBranch";
 
 export function useAgencies() {
   const [agencies, setAgencies] = useState<Agency[]>([]);
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Dialog States
   const [isAgencyDialogOpen, setIsAgencyDialogOpen] = useState(false);
   const [isBranchDialogOpen, setIsBranchDialogOpen] = useState(false);
   const [selectedAgencyId, setSelectedAgencyId] = useState<number | null>(null);
@@ -19,8 +18,8 @@ export function useAgencies() {
     setLoading(true);
     try {
       const res = await agencyService.getAllAgencies();
-      setAgencies(res.data || []);
-    } catch (error) {
+      setAgencies(res || []);
+    } catch {
       toaster.create({ title: "Failed to load agencies", type: "error" });
     } finally {
       setLoading(false);
@@ -31,25 +30,20 @@ export function useAgencies() {
     fetchAgencies();
   }, [fetchAgencies]);
 
-  // Handler for creating a new Agency
   const handleCreateAgency = async (data: Agency) => {
     setIsSubmitting(true);
     try {
       await agencyService.createAgency(data);
       setIsAgencyDialogOpen(false);
-      fetchAgencies(); // Refresh the list
-    } catch (error: any) {
-      toaster.create({
-        title: "Error",
-        description: error.response?.data?.message || "Could not create agency",
-        type: "error",
-      });
+      fetchAgencies();
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : "Could not create agency";
+      toaster.create({ title: "Error", description: msg, type: "error" });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Handler for creating a branch within a specific agency
   const handleCreateBranch = async (data: AgencyBranch) => {
     if (!selectedAgencyId) return;
     setIsSubmitting(true);
@@ -57,13 +51,10 @@ export function useAgencies() {
       await branchService.createBranch(selectedAgencyId, data);
       toaster.create({ title: "Branch created successfully", type: "success" });
       setIsBranchDialogOpen(false);
-      fetchAgencies(); // Refresh to show new branch counts/data
-    } catch (error: any) {
-      toaster.create({
-        title: "Error",
-        description: error.response?.data?.message || "Could not create branch",
-        type: "error",
-      });
+      fetchAgencies();
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : "Could not create branch";
+      toaster.create({ title: "Error", description: msg, type: "error" });
     } finally {
       setIsSubmitting(false);
     }
@@ -75,12 +66,14 @@ export function useAgencies() {
     isSubmitting,
     isAgencyDialogOpen,
     setIsAgencyDialogOpen,
-    handleCreateAgency,
     isBranchDialogOpen,
     setIsBranchDialogOpen,
     selectedAgencyId,
     setSelectedAgencyId,
+    fetchAgencies,
+    handleCreateAgency,
     handleCreateBranch,
-    refreshAgencies: fetchAgencies,
   };
 }
+
+

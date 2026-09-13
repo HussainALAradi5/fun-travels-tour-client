@@ -19,18 +19,13 @@ import {
 } from "@chakra-ui/react";
 import { Globe, RefreshCw } from "lucide-react";
 import { AlertComponent } from "@/components/ui/Custom/AlertComponent";
-
-interface Props {
-  onBulkSync: () => void;
-  onSingleSync: (name: string) => void;
-  isFetching: boolean;
-}
+import type { CountrySyncHeaderProps } from "@/interface/props/geography/CountrySyncHeaderProps";
 
 export function CountrySyncHeader({
   onBulkSync,
   onSingleSync,
   isFetching,
-}: Props) {
+}: CountrySyncHeaderProps) {
   const [syncSearchTerm, setSyncSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 

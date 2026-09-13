@@ -1,17 +1,12 @@
 import { useState, useMemo } from "react";
 import { VStack, Box, Text, Heading, Icon, Button, Center } from "@chakra-ui/react";
 import { XCircle, Edit3, ShieldCheck, Play, CheckCircle, FileText, RefreshCw, AlertTriangle } from "lucide-react";
-import { GenericCard } from "@/components/ui/Custom/GenericCard";
-import { GenericStatusWorkflow, type StatusConfig } from "@/components/ui/Custom/GenericStatusWorkflow";
+import { ContentCard } from "@/components/ui/Custom/ContentCard";
+import { StatusWorkflow } from "@/components/ui/Custom/StatusWorkflow";
+import type { StatusConfig } from "@/interface/common/StatusConfig";
 import { GenericStatus } from "@/enums/GenericStatus";
-import type { Tour } from "@/interface/tourmanagement/TourInterface";
-
-interface TourWorkflowSidebarProps {
-  tour: Tour;
-  onStatusChange: (status: GenericStatus) => Promise<void>; 
-  onEdit: () => void;
-  onCancel: () => Promise<void> | void;
-}
+import type { TourWorkflowSidebarProps } from "@/interface/props/tour/TourWorkflowSidebarProps";
+import { useIsHydrated } from "@/hooks/useIsHydrated";
 
 const TOUR_STATUS_MAP: Partial<Record<GenericStatus, StatusConfig>> = {
   [GenericStatus.PENDING]: { label: "Pending", colorPalette: "gray", icon: FileText },
@@ -21,33 +16,30 @@ const TOUR_STATUS_MAP: Partial<Record<GenericStatus, StatusConfig>> = {
 };
 
 const STEPS = [
-  GenericStatus.PENDING, 
-  GenericStatus.APPROVED, 
-  GenericStatus.ACTIVE, 
+  GenericStatus.PENDING,
+  GenericStatus.APPROVED,
+  GenericStatus.ACTIVE,
   GenericStatus.COMPLETED
 ];
 
 export const TourWorkflowSidebar = ({ tour, onStatusChange, onEdit, onCancel }: TourWorkflowSidebarProps) => {
+  const isHydrated = useIsHydrated();
   const [isRestoring, setIsRestoring] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
-
-  // --- OPTIMIZED BUSINESS LOGIC ---
   const { isCancelAllowed, isEditable, isCancelled } = useMemo(() => {
     const cancelledState = tour.status === GenericStatus.CANCELLED;
     const editableState = tour.status === GenericStatus.PENDING || tour.status === GenericStatus.APPROVED;
-    
+
     let cancelAllowed = false;
 
-    if (tour.startDate && tour.maxCapacity) {
+    if (isHydrated && tour.startDate && tour.maxCapacity) {
       const today = new Date().getTime();
       const start = new Date(tour.startDate).getTime();
       const daysUntilStart = Math.ceil((start - today) / (1000 * 3600 * 24));
-      
+
       const maxCap = tour.maxCapacity;
       const avail = tour.availableSlots ?? maxCap;
       const bookedSeats = maxCap - avail;
-      
-      // Rule: Must be >= 14 days away AND booked seats <= 33%
       cancelAllowed = daysUntilStart >= 14 && bookedSeats <= (maxCap / 3);
     }
 
@@ -56,7 +48,7 @@ export const TourWorkflowSidebar = ({ tour, onStatusChange, onEdit, onCancel }: 
       isEditable: editableState,
       isCancelled: cancelledState
     };
-  }, [tour.startDate, tour.maxCapacity, tour.availableSlots, tour.status]);
+  }, [isHydrated, tour.startDate, tour.maxCapacity, tour.availableSlots, tour.status]);
 
   const handleRestore = async () => {
     setIsRestoring(true);
@@ -78,21 +70,19 @@ export const TourWorkflowSidebar = ({ tour, onStatusChange, onEdit, onCancel }: 
 
   return (
     <VStack gap="6" w="full">
-      <GenericCard w="full" header={<Heading size="xs">Tour Process Lifecycle</Heading>}>
-        <GenericStatusWorkflow
+      <ContentCard w="full" header={<Heading size="xs">Tour Process Lifecycle</Heading>}>
+        <StatusWorkflow
           currentStatus={tour.status as GenericStatus}
           statusMap={TOUR_STATUS_MAP}
           steps={STEPS}
           onStatusChange={onStatusChange}
         />
-      </GenericCard>
-
-      {/* CANCELLED STATE RECOVERY */}
-      {isCancelled && (
-        <GenericCard 
-          w="full" 
-          border="2px dashed" 
-          borderColor="red.500/40" 
+      </ContentCard>
+{isCancelled && (
+        <ContentCard
+          w="full"
+          border="2px dashed"
+          borderColor="red.500/40"
           bg={{ base: "red.50", _dark: "red.900/10" }}
         >
           <VStack gap="4" align="stretch" textAlign="center" py={2}>
@@ -109,33 +99,31 @@ export const TourWorkflowSidebar = ({ tour, onStatusChange, onEdit, onCancel }: 
               <Icon as={RefreshCw} mr={2} boxSize="4" /> Restore to Pending
             </Button>
           </VStack>
-        </GenericCard>
+        </ContentCard>
       )}
-
-      {/* DRAFT & DANGEROUS ACTIONS (Hidden if completely illegal to cancel/edit) */}
-      {!isCancelled && (isEditable || isCancelAllowed) && (
-        <GenericCard 
-          w="full" 
-          border="2px dashed" 
-          borderColor="blue.500/30" 
+{!isCancelled && (isEditable || isCancelAllowed) && (
+        <ContentCard
+          w="full"
+          border="2px dashed"
+          borderColor="blue.500/30"
           bg={{ base: "blue.50", _dark: "blue.900/10" }}
         >
            <VStack gap="3" align="stretch">
               <Text fontSize="xs" fontWeight="black" color="blue.600" letterSpacing="wider">
                 MANAGEMENT ACTIONS
               </Text>
-              
+
               {isEditable && (
                 <Button size="sm" colorPalette="blue" onClick={onEdit} borderRadius="lg">
                   <Icon as={Edit3} mr={2} boxSize="4" /> Edit Tour Configuration
                 </Button>
               )}
-              
+
               {isCancelAllowed && (
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  colorPalette="red" 
+                <Button
+                  size="sm"
+                  variant="outline"
+                  colorPalette="red"
                   onClick={handleCancel}
                   loading={isCancelling}
                   borderRadius="lg"
@@ -144,7 +132,7 @@ export const TourWorkflowSidebar = ({ tour, onStatusChange, onEdit, onCancel }: 
                 </Button>
               )}
            </VStack>
-        </GenericCard>
+        </ContentCard>
       )}
 
       <Box w="full" p={5} borderRadius="2xl" border="1px solid" borderColor="border.subtle" bg="bg.panel">
@@ -156,3 +144,4 @@ export const TourWorkflowSidebar = ({ tour, onStatusChange, onEdit, onCancel }: 
     </VStack>
   );
 };
+

@@ -1,12 +1,12 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import ExcelJS from "exceljs";
+import type { ExportRecord } from "@/interface/common/ExportRecord";
 
 export const ExportUtils = {
-  // --- HELPER: Formats cell values & truncates long dates ---
-  formatValue: (value: any, isExcel: boolean = false): string => {
+  formatValue: (value: string | number | boolean | null | undefined | ExportRecord | ExportRecord[], isExcel: boolean = false): string => {
     if (value === null || value === undefined || value === "") return "-";
-    
+
     if (Array.isArray(value)) {
       if (value.length === 0) return "-";
       const joinChar = isExcel ? "\n" : ", ";
@@ -14,12 +14,12 @@ export const ExportUtils = {
     }
 
     if (typeof value === "object") {
-      return value.famousName || value.officialName || value.name || value.title || "-";
+      const obj = value as ExportRecord;
+      return (obj.famousName || obj.officialName || obj.name || obj.title || "-") as string;
     }
 
     const stringVal = String(value).trim();
 
-    // OPTIMIZATION: Detect ISO Date strings and shorten them to YYYY-MM-DD for space
     if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(stringVal)) {
         return isExcel ? stringVal.replace("T", " ").split(".")[0] : stringVal.split("T")[0];
     }
@@ -27,16 +27,15 @@ export const ExportUtils = {
     return stringVal;
   },
 
-  // --- HELPER: Converts camelCase to spaced UPPERCASE ---
   formatHeader: (key: string): string => {
     return key
-      .replace(/([a-z])([A-Z])/g, '$1 $2') // Splits camelCase
-      .replace(/_/g, ' ')                  // Replaces underscores
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/_/g, ' ')
       .toUpperCase()
       .trim();
   },
 
-  downloadAsExcel: async <T extends Record<string, any>>(
+  downloadAsExcel: async <T extends ExportRecord>(
     data: T[],
     fileName: string = "export"
   ) => {
@@ -49,23 +48,23 @@ export const ExportUtils = {
       "id", "password", "token", "secret", "updatedat", "createdat", "createdby", "updatedby",
       "flagpngurl", "flagsvgurl", "tickets", "reservations", "description", "agency", "agencybranch", "availablemeals"
     ];
-    
+
     const keys = Object.keys(data[0]).filter(k => !forbidden.includes(k.toLowerCase()));
 
     worksheet.columns = keys.map(key => ({
       header: ExportUtils.formatHeader(key),
       key: key,
-      width: 20 
+      width: 20
     }));
 
     data.forEach(item => {
-      const rowData: any = {};
+      const rowData: Record<string, string> = {};
       keys.forEach(k => {
         const val = item[k];
         if (typeof val === 'string' && val.startsWith('data:image')) {
-            rowData[k] = '[Image Data]'; 
+          rowData[k] = '[Image Data]';
         } else {
-            rowData[k] = ExportUtils.formatValue(val, true);
+          rowData[k] = ExportUtils.formatValue(val, true);
         }
       });
       worksheet.addRow(rowData);
@@ -85,7 +84,7 @@ export const ExportUtils = {
         const column = worksheet.getColumn(cell.col);
         const contentLen = cell.value ? cell.value.toString().length : 0;
         const currentWidth = column.width || 10;
-        
+
         if (contentLen + 5 > currentWidth) {
           column.width = Math.min(50, contentLen + 5);
         }
@@ -102,30 +101,30 @@ export const ExportUtils = {
     URL.revokeObjectURL(url);
   },
 
-  downloadAsPDF: <T extends Record<string, any>>(
+  downloadAsPDF: <T extends ExportRecord>(
     data: T[],
     fileName: string = "export",
     imageColumns: string[] = ["qrCode", "barcode"]
   ) => {
     if (!data.length) return;
     const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
-    
+
     const forbidden = [
       "id", "password", "token", "secret", "updatedat", "createdat", "createdby", "updatedby",
-      "flagpngurl", "flagsvgurl", "tickets", "reservations", "reservation", "description", "agency", "agencybranch", 
+      "flagpngurl", "flagsvgurl", "tickets", "reservations", "reservation", "description", "agency", "agencybranch",
       "availablemeals", "startcity", "endcity", "transportation", "baseprice", "discountprice",
       "seatpricemodifier", "hasmealplan", "selectedmeals"
     ];
 
     const keys = Object.keys(data[0]).filter(k => !forbidden.includes(k.toLowerCase()));
-    
+
     const columns = keys.map(k => ({ header: ExportUtils.formatHeader(k), dataKey: k }));
     const rows = data.map(item => {
-        const rowObj: any = {};
+        const rowObj: Record<string, string | null> = {};
         keys.forEach(k => {
             const val = item[k];
             if (imageColumns.includes(k) && typeof val === 'string' && val.startsWith('data:image')) {
-                rowObj[k] = val; 
+                rowObj[k] = val as string;
             } else {
                 rowObj[k] = ExportUtils.formatValue(val);
             }
@@ -135,36 +134,36 @@ export const ExportUtils = {
 
     doc.setFontSize(16);
     doc.setTextColor(30, 58, 138);
-    doc.text(ExportUtils.formatHeader(fileName), 5, 12); 
+    doc.text(ExportUtils.formatHeader(fileName), 5, 12);
 
     autoTable(doc, {
-      startY: 18, 
+      startY: 18,
       columns: columns,
       body: rows,
       theme: 'grid',
       tableWidth: 'auto',
-      styles: { 
-        fontSize: 6.5,     
-        cellPadding: 1.5,  
-        overflow: 'linebreak', 
-        valign: 'middle' 
+      styles: {
+        fontSize: 6.5,
+        cellPadding: 1.5,
+        overflow: 'linebreak',
+        valign: 'middle'
       },
-      headStyles: { 
-        fillColor: [30, 58, 138], 
-        fontSize: 6.5, 
-        fontStyle: 'bold', 
-        halign: 'center' 
+      headStyles: {
+        fillColor: [30, 58, 138],
+        fontSize: 6.5,
+        fontStyle: 'bold',
+        halign: 'center'
       },
       alternateRowStyles: { fillColor: [248, 250, 252] },
-      margin: { left: 5, right: 5, top: 15 }, 
-      
+      margin: { left: 5, right: 5, top: 15 },
+
       didParseCell: (hookData) => {
         if (imageColumns.includes(hookData.column.dataKey as string)) {
           const val = hookData.cell.raw;
           if (typeof val === 'string' && val.startsWith('data:image')) {
-            hookData.cell.text = ['']; 
+            hookData.cell.text = [''];
             const isBarcode = (hookData.column.dataKey as string).toLowerCase().includes("barcode");
-            hookData.cell.styles.minCellHeight = isBarcode ? 12 : 18; 
+            hookData.cell.styles.minCellHeight = isBarcode ? 12 : 18;
           }
         }
       },
@@ -174,33 +173,28 @@ export const ExportUtils = {
           const val = hookData.cell.raw;
           if (typeof val === 'string' && val.startsWith('data:image')) {
             const isBarcode = (hookData.column.dataKey as string).toLowerCase().includes("barcode");
-            
-            // 1. SAFELY DETERMINE IMAGE TYPE
+
             const mimePart = val.split(';')[0].toLowerCase();
             let imgType = 'JPEG';
             if (mimePart.includes('png')) imgType = 'PNG';
             else if (mimePart.includes('webp')) imgType = 'WEBP';
-            
-            // 2. BLOCK SVG CRASHES
-            // jsPDF cannot render SVGs natively via addImage. 
+
             if (mimePart.includes('svg')) {
               doc.setTextColor(200, 0, 0);
               doc.setFontSize(6);
               doc.text("[SVG Unsupported]", hookData.cell.x + 2, hookData.cell.y + Math.max(hookData.cell.height / 2, 5));
-              return; // Abort drawing to save the app from crashing
+              return;
             }
 
             const imgW = isBarcode ? 22 : 12;
             const imgH = isBarcode ? 7 : 12;
             const xPos = hookData.cell.x + (hookData.cell.width - imgW) / 2;
             const yPos = hookData.cell.y + (hookData.cell.height - imgH) / 2;
-            
+
             try {
-              // 3. SANITIZE BASE64 (Removes line breaks that break Unit8Array allocation)
               const cleanBase64 = val.replace(/[\r\n\s]+/g, "");
               doc.addImage(cleanBase64, imgType, xPos, yPos, imgW, imgH);
             } catch (error) {
-              // 4. THE SAFETY NET
               console.warn(`Failed to export image on column: ${hookData.column.dataKey}`, error);
               doc.setTextColor(200, 0, 0);
               doc.setFontSize(6);

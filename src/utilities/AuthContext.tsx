@@ -1,76 +1,82 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { authUtils } from "@/utilities/AuthUtils";
-
-interface AuthContextType {
-  user: any;
-  isAdmin: boolean;
-  isAuthenticated: boolean;
-  loading: boolean;
-  refreshAuth: () => void;
-  logout: () => void;
-}
+import { userService } from "@/Api/User";
+import type { AuthContextType } from "@/interface/common/AuthContextType";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<any>(null);
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<AuthContextType["user"]>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  /**
-   * Syncs the React state with the current data in localStorage.
-   * This ensures that even if a user manually edits localStorage, 
-   * the app can respond accordingly.
-   */
-  const refreshAuth = () => {
-    const updatedUser = authUtils.getUser();
-    const updatedAdmin = authUtils.isAdmin();
+  const refreshAuth = useCallback(() => {
+    const hasToken = Boolean(authUtils.getToken());
+    const updatedUser = hasToken ? authUtils.getUser() : null;
 
     setUser(updatedUser);
-    setIsAdmin(updatedAdmin);
+    setIsAdmin(updatedUser?.userType === "ADMIN");
     setLoading(false);
-  };
+  }, []);
 
-  /**
-   * Clears the user session from both localStorage and the React state.
-   */
-  const logout = () => {
+  const refreshUser = useCallback(async () => {
+    const storedUser = authUtils.getUser();
+    if (!authUtils.getToken() || !storedUser?.id) return;
+
+    try {
+      const updatedUser = await userService.getProfile(storedUser.id);
+      authUtils.saveSession(authUtils.getToken() ?? "", updatedUser);
+      setUser(updatedUser);
+      setIsAdmin(updatedUser.userType === "ADMIN");
+    } catch {
+      if (!authUtils.getToken()) {
+        setUser(null);
+        setIsAdmin(false);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      refreshAuth();
+      void refreshUser();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [refreshAuth, refreshUser]);
+
+  const logout = useCallback(() => {
     authUtils.logout();
     setUser(null);
     setIsAdmin(false);
-    // Note: We don't set loading back to true here as the operation is instant
-  };
-
-  /**
-   * Runs once when the application boots up.
-   * This is the bridge between the browser's storage and your React UI.
-   */
-  useEffect(() => {
-    refreshAuth();
   }, []);
 
-  // Derived state: If a user object exists, the user is authenticated.
-  const isAuthenticated = !!user;
+  const isAuthenticated = Boolean(user);
+  const value = useMemo(
+    () => ({
+      user,
+      isAdmin,
+      isAuthenticated,
+      loading,
+      refreshAuth,
+      refreshUser,
+      logout,
+    }),
+    [user, isAdmin, isAuthenticated, loading, refreshAuth, refreshUser, logout],
+  );
 
   return (
-    <AuthContext.Provider 
-      value={{ 
-        user, 
-        isAdmin, 
-        isAuthenticated, 
-        loading, 
-        refreshAuth, 
-        logout 
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
   );
 };
-
-/**
- * Custom hook to access auth state anywhere in the component tree.
- */
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

@@ -1,15 +1,15 @@
 import { useMemo } from "react";
-import { 
+import {
   Flex, VStack, Heading, Text, HStack, Button, Icon, Portal,
-  createListCollection, SelectRoot, SelectTrigger, SelectValueText, 
-  SelectContent, SelectItem, SelectPositioner 
+  createListCollection, SelectRoot, SelectTrigger, SelectValueText,
+  SelectContent, SelectItem, SelectPositioner
 } from "@chakra-ui/react";
 import { Plus, Filter } from "lucide-react";
 import { GenericStatus } from "@/enums/GenericStatus";
-import type { TourHeaderProps } from "@/interface/tourmanagement/TourInterface";
+import type { TourHeaderProps } from "@/interface/tour/TourHeaderProps";
 
 export const TourInventoryHeader = ({ statusFilter, onFilterChange, onCreateClick }: TourHeaderProps) => {
-  const statusCollection = useMemo(() => 
+  const statusCollection = useMemo(() =>
     createListCollection({
       items: [
         { label: "All Statuses", value: "ALL" },
@@ -58,7 +58,7 @@ export const TourInventoryHeader = ({ statusFilter, onFilterChange, onCreateClic
           </Portal>
         </SelectRoot>
 
-        <Button 
+        <Button
           colorPalette="blue" size="md" variant="solid" borderRadius="full" px={6}
           onClick={onCreateClick} _hover={{ transform: "translateY(-1px)" }}
         >
@@ -68,3 +68,10 @@ export const TourInventoryHeader = ({ statusFilter, onFilterChange, onCreateClic
     </Flex>
   );
 };
+
+
+
+
+
+
+
