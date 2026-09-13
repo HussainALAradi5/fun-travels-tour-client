@@ -13,11 +13,12 @@ import { FormFile } from "./FormFile";
 import { EmailField, MobileField } from "./ContactFields";
 import type { FormFieldWrapperProps } from "@/interface/props/ui/FormFieldProps";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
+import { getValueAtPath } from "@/utilities/ObjectPathUtils";
 
 export function FormFieldWrapper({ field, formData, onChange }: FormFieldWrapperProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
-  const rawValue = formData[field.name as string];
+  const rawValue = getValueAtPath(formData, String(field.name));
 
   const hasValue =
     rawValue !== null && typeof rawValue === "object"

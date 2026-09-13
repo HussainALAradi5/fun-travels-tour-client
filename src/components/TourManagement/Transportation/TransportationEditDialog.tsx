@@ -17,6 +17,18 @@ export const TransportationEditDialog = ({
 }: TransportationEditDialogProps) => {
   if (!transport) return null;
 
+  const seatConfig = {
+    PREMIUM_RECLINER: 0,
+    WHEELCHAIR_ACCESSIBLE: 0,
+    KIDS_CHAIR: 0,
+  };
+  transport.seats?.forEach((seat) => {
+    if (seat.chairType in seatConfig) {
+      const type = seat.chairType as keyof typeof seatConfig;
+      seatConfig[type] += 1;
+    }
+  });
+
   const editFields: FieldConfig<Transportation>[] = [
     {
       name: "code",
@@ -104,13 +116,16 @@ export const TransportationEditDialog = ({
           <Tabs.Content value="specs">
             <VStack align="stretch" gap={4}>
               <Text fontSize="xs" color="fg.muted" fontWeight="bold">
-                UPDATE REGISTRY & CAPACITY INFO
+                UPDATE REGISTRY AND BULK SEAT LAYOUT
+              </Text>
+              <Text fontSize="xs" color="fg.muted">
+                Enter the total number required for each specialized seat type. All remaining seats become standard seats.
               </Text>
 
               <DynamicForm<Transportation>
                 disableToast={true}
                 fields={editFields}
-                initialValues={transport}
+                initialValues={{ ...transport, seatConfig }}
                 onSubmit={async (values) => { await onUpdate(values as unknown as Transportation); }}
                 onCancel={onClose}
                 isLoading={loading}

@@ -144,6 +144,11 @@ export const TransportationCreate = () => {
             type: "" as TransportationFormValues["type"],
             totalCapacity: 0,
             agencyId: 0,
+            seatConfig: {
+              PREMIUM_RECLINER: 0,
+              WHEELCHAIR_ACCESSIBLE: 0,
+              KIDS_CHAIR: 0,
+            },
           }}
           onSubmit={handleSubmit}
           onFieldChange={(name, value) => {

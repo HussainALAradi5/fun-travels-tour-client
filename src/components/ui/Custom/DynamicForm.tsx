@@ -5,6 +5,7 @@ import { glowPulse } from "@/utilities/Animations";
 import { FormFieldWrapper } from "./DynamicFormComponents/FormField";
 import type { DynamicFormProps } from "@/interface/props/ui/DynamicFormProps";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
+import { getValueAtPath, setValueAtPath } from "@/utilities/ObjectPathUtils";
 
 export function DynamicForm<T extends Record<string, unknown>>({
   fields,
@@ -28,9 +29,9 @@ export function DynamicForm<T extends Record<string, unknown>>({
       if (errorMessage) setErrorMessage(null);
       const changedField = fields.find((field) => field.name === name);
       setFormData((prev) => {
-        const next = { ...prev, [name]: value };
+        let next = setValueAtPath(prev, String(name), value);
         changedField?.clearFieldsOnChange?.forEach((fieldName) => {
-          Object.assign(next, { [fieldName]: null });
+          next = setValueAtPath(next, String(fieldName), null);
         });
         return next;
       });
@@ -42,7 +43,7 @@ export function DynamicForm<T extends Record<string, unknown>>({
   const isFormValid = useMemo(() => {
     return fields.every((field) => {
       if (!field.isRequired) return true;
-      const val = formData[field.name];
+      const val = getValueAtPath(formData, String(field.name));
       return (
         val !== null &&
         val !== undefined &&
