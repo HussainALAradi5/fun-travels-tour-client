@@ -52,6 +52,8 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
     try {
       const res = await tourService.search(params);
       setTours(res.content);
+    } catch {
+      setTours([]);
     } finally {
       setIsLoading(false);
     }
@@ -62,6 +64,8 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
     try {
       const res = await tourService.getCatalog(params);
       setTours(res.content);
+    } catch {
+      setTours([]);
     } finally {
       setIsLoading(false);
     }
@@ -73,6 +77,8 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
       const res = await mealPlanService.getAll({ size: 100 });
       setMeals(res.content);
       if (!param) setData(res.content as unknown as Tour[]);
+    } catch {
+      setMeals([]);
     } finally {
       setIsLoading(false);
     }
@@ -84,6 +90,8 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
     try {
       const res = await seatService.search({ transportId, size: 100 });
       setSeats(res.content);
+    } catch {
+      setSeats([]);
     } finally {
       setIsLoading(false);
     }
@@ -94,6 +102,8 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
     try {
       const res = await transportationService.search(params);
       setTransportation(res.content);
+    } catch {
+      setTransportation([]);
     } finally {
       setIsLoading(false);
     }
