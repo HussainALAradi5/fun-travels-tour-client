@@ -8,3 +8,8 @@ export const PortType = {
 } as const;
 
 export type PortType = (typeof PortType)[keyof typeof PortType];
+
+export const PortTypeColor = {
+  AIRPORT: "blue", SEAPORT: "cyan", TRAIN_STATION: "orange",
+  BUS_TERMINAL: "yellow", HELIPORT: "purple", LANDING_ZONE: "gray",
+} as const;

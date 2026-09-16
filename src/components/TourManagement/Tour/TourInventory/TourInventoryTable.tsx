@@ -2,7 +2,7 @@ import { VStack, HStack, Text, Badge, Icon, Circle } from "@chakra-ui/react";
 import { Calendar, Clock } from "lucide-react";
 import { DataTable } from "@/components/ui/Custom/DataTable";
 import { CapacityProgress } from "@/components/ui/Custom/CapacityProgress";
-import { StatusColors } from "@/constants/roles/Colors";
+import { GenericStatusColor } from "@/enums/GenericStatus";
 import { formatTourRange } from "@/utilities/DateUtils";
 import type { Tour } from "@/interface/tour/Tour"; import type { TourTableProps } from "@/interface/tour/TourTableProps";
 
@@ -58,7 +58,7 @@ export const TourInventoryTable = ({ data, isLoading, onViewDetails }: TourTable
           header: "Status",
           key: "status",
           render: (row: Tour) => {
-            const color = StatusColors[row.status as keyof typeof StatusColors] || "gray";
+            const color = GenericStatusColor[row.status as keyof typeof GenericStatusColor] || "gray";
             return (
               <Badge variant="subtle" colorPalette={color} borderRadius="full" px={4} size="sm">
                 <HStack gap={2}>

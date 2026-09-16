@@ -8,3 +8,11 @@ export const TransportationStatus = {
 } as const;
 
 export type TransportationStatus = (typeof TransportationStatus)[keyof typeof TransportationStatus];
+
+export const TransportationStatusColor = {
+  AVAILABLE: "green",
+  PARTIAL: "blue",
+  FULL: "orange",
+  MAINTENANCE: "yellow",
+  INACTIVE: "red",
+} as const;

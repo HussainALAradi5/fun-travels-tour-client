@@ -3,7 +3,8 @@ import { Armchair, Star, Accessibility, Baby } from "lucide-react";
 import { AppDialog } from "@/components/ui/Custom/Dialogs/AppDialog";
 import type { Seat } from "@/interface/tour/Seat";
 import type { JSX } from "react";
-import { ChairTypeColors, SeatStatusColors } from "@/constants/roles/Colors";
+import { SeatStatusTheme } from "@/enums/tourmanagement/SeatStatus";
+import { ChairType, ChairTypeColor } from "@/enums/tourmanagement/ChairType";
 import type { SeatPickerDialogProps } from "@/interface/props/tour/SeatPickerDialogProps";
 
 export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, loading }: SeatPickerDialogProps) => {
@@ -19,7 +20,7 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
       };
     }
     if (!isAvailable) {
-      const statusTheme = SeatStatusColors[seat.status] || SeatStatusColors.MAINTENANCE;
+      const statusTheme = SeatStatusTheme[seat.status];
       return {
         bg: statusTheme.light,
         _dark: { bg: statusTheme.dark },
@@ -30,7 +31,7 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
         _hover: {},
       };
     }
-    const typePalette = ChairTypeColors[seat.chairType] || ChairTypeColors.STANDARD;
+    const typePalette = ChairTypeColor[seat.chairType];
     return {
       bg: "transparent",
       color: `${typePalette}.600`,
@@ -45,8 +46,8 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
       },
     };
   };
-  const renderChairIcon = (chairType: string) => {
-    const color = `${ChairTypeColors[chairType] || ChairTypeColors.STANDARD}.500`;
+  const renderChairIcon = (chairType: ChairType) => {
+    const color = `${ChairTypeColor[chairType]}.500`;
     const iconProps = { w: "12px", h: "12px", position: "absolute", top: "1.5", right: "1.5", color } as const;
 
     switch (chairType) {
@@ -111,13 +112,13 @@ export const SeatPickerDialog = ({ open, onClose, seats, selectedId, onSelect, l
         </Grid>
 <HStack gap={4} wrap="wrap" justify="center" pt={6} borderTopWidth="1px" borderColor="border.subtle" w="full">
           <LegendItem bg="blue.500" color="white" label="Selected" />
-<LegendItem colorPalette={ChairTypeColors.STANDARD} label="Standard" />
-          <LegendItem colorPalette={ChairTypeColors.PREMIUM_RECLINER} label="Premium" icon={Star} fill />
-          <LegendItem colorPalette={ChairTypeColors.WHEELCHAIR_ACCESSIBLE} label="Accessible" icon={Accessibility} />
-          <LegendItem colorPalette={ChairTypeColors.KIDS_CHAIR} label="Kids" icon={Baby} />
+<LegendItem colorPalette={ChairTypeColor.STANDARD} label="Standard" />
+          <LegendItem colorPalette={ChairTypeColor.PREMIUM_RECLINER} label="Premium" icon={Star} fill />
+          <LegendItem colorPalette={ChairTypeColor.WHEELCHAIR_ACCESSIBLE} label="Accessible" icon={Accessibility} />
+          <LegendItem colorPalette={ChairTypeColor.KIDS_CHAIR} label="Kids" icon={Baby} />
 <LegendItem
-            bg={SeatStatusColors.BOOKED.light}
-            color={SeatStatusColors.BOOKED.text}
+            bg={SeatStatusTheme.BOOKED.light}
+            color={SeatStatusTheme.BOOKED.text}
             label="Unavailable"
             opacity={0.6}
           />

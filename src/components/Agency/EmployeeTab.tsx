@@ -6,7 +6,7 @@ import {
 import { Download, UserPlus, Mail, Phone, Briefcase } from "lucide-react";
 
 import { userService } from "@/Api/User";
-import { UserType } from "@/enums/UserType";
+import { UserType, UserTypeColor } from "@/enums/UserType";
 import { type User } from "@/interface/user/User";
 import { authUtils } from "@/utilities/AuthUtils";
 import { toaster } from "../ui/toaster";
@@ -16,7 +16,6 @@ import { DataTable } from "../ui/Custom/DataTable";
 import type { Column } from "@/interface/common/Column";
 import { AddEmployeeDialog } from "../User/controlpanel/AddEmployeeDialog";
 import { ExportDialog } from "../ui/Custom/Dialogs/ExportDialog";
-import { RoleColors } from "@/constants/roles/Colors";
 import type { EmployeeTabProps } from "@/interface/props/agency/EmployeeTabProps";
 
 const COLUMNS: Column<User>[] = [
@@ -53,7 +52,7 @@ const COLUMNS: Column<User>[] = [
     key: "userType",
     render: (emp) => (
       <VStack align="start" gap={1}>
-        <Badge colorPalette={RoleColors[emp.userType]} variant="subtle" size="sm">
+        <Badge colorPalette={UserTypeColor[emp.userType]} variant="subtle" size="sm">
           <Briefcase size={10} style={{ marginRight: "4px" }} /> {emp.userType}
         </Badge>
         <Text fontSize="2xs" color="fg.muted">{emp.agencyBranch?.branchName || "Main"}</Text>
@@ -75,7 +74,12 @@ export function EmployeeTab({
 
   const { open, onOpen, onClose } = useDisclosure();
   const currentUser = authUtils.getUser();
-  const canManage = [UserType.ADMIN, UserType.OWNER, UserType.MANAGER].includes(currentUser?.userType as UserType);
+  const managementRoles: ReadonlySet<UserType> = new Set([
+    UserType.ADMIN,
+    UserType.OWNER,
+    UserType.MANAGER,
+  ]);
+  const canManage = Boolean(currentUser?.userType && managementRoles.has(currentUser.userType));
 
   const displayData = useMemo(() => {
     let filtered = employees;

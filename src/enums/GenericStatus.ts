@@ -10,3 +10,8 @@ export const GenericStatus = {
 } as const;
 
 export type GenericStatus = (typeof GenericStatus)[keyof typeof GenericStatus];
+
+export const GenericStatusColor = {
+  PENDING: "blue", APPROVED: "teal", REJECTED: "red", CONFIRMED: "purple",
+  CANCELLED: "orange", COMPLETED: "green", ACTIVE: "cyan", INACTIVE: "pink",
+} as const;

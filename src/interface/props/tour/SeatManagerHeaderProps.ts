@@ -1,3 +1,5 @@
+import type { ChairType } from "@/enums/tourmanagement/ChairType";
+
 export interface SeatManagerHeaderProps {
   count: number;
   searchValue: string;
@@ -7,6 +9,6 @@ export interface SeatManagerHeaderProps {
   statusFilterValue: string;
   onStatusFilterChange: (val: string) => void;
   onReset: () => void;
-  totals: Record<string, number>;
+  totals: Partial<Record<ChairType, number>>;
   totalSeats: number;
 }

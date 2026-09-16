@@ -10,6 +10,9 @@ import type { MealPlan } from "@/interface/tour/MealPlan";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
 
 import type { MealPlanFormValues } from "@/interface/tour/MealPlanFormValues";
+import { MealDietaryType, MealDietaryTypeColor } from "@/enums/tourmanagement/MealDietaryType";
+import type { MealPlanCreateRequest } from "@/interface/tour/MealPlanCreateRequest";
+import { SpiceLevel, SpiceLevelColor } from "@/enums/tourmanagement/SpiceLevel";
 
 export const MealPlanManager = () => {
   const { data, loading, refresh } = useTourManagement(mealPlanService.getAll);
@@ -20,22 +23,41 @@ export const MealPlanManager = () => {
     { name: "mealName", label: "Meal Name", type: "text", isRequired: true, gridSpan: 1},
     { name: "mealPrice", label: "Price", type: "number", isRequired: true, gridSpan: 1 },
     { name: "mealDescription", label: "Description", type: "textarea", gridSpan: 1 },
-    { name: "isVegetarian", label: "Vegetarian", type: "checkbox", gridSpan: 1 },
-    { name: "isVegan", label: "Vegan", type: "checkbox", gridSpan: 1 },
-    { name: "isGlutenFree", label: "Gluten Free", type: "checkbox", gridSpan: 1 },
+    {
+      name: "dietaryTypes",
+      label: "Dietary Classifications",
+      type: "multi-select",
+      gridSpan: 2,
+      options: Object.values(MealDietaryType).map((value) => ({
+        value,
+        label: value.replaceAll("_", " "),
+      })),
+    },
+    {
+      name: "spiceLevel",
+      label: "Spice Level",
+      type: "select",
+      gridSpan: 1,
+      isRequired: true,
+      options: Object.values(SpiceLevel).map((value) => ({
+        value,
+        label: value.replaceAll("_", " "),
+      })),
+    },
   ];
 
   const handleCreate = async (values: MealPlanFormValues) => {
     setSubmitting(true);
     try {
-      const payload: MealPlan = {
+      const selectedTypes = values.dietaryTypes.length > 0
+        ? values.dietaryTypes
+        : [MealDietaryType.STANDARD];
+      const payload: MealPlanCreateRequest = {
         mealName: values.mealName,
         mealPrice: values.mealPrice,
         mealDescription: values.mealDescription,
-        isVegetarian: values.isVegetarian,
-        isVegan: values.isVegan,
-        isGlutenFree: values.isGlutenFree,
-        status: "ACTIVE",
+        dietaryTypes: selectedTypes as MealPlanCreateRequest["dietaryTypes"],
+        spiceLevel: values.spiceLevel as MealPlanCreateRequest["spiceLevel"],
       };
       await mealPlanService.create(payload);
       await refresh();
@@ -68,19 +90,34 @@ export const MealPlanManager = () => {
             { header: "Meal Name", key: "mealName" },
             {
               header: "Dietary",
-              key: "isVegetarian",
+              key: "dietaryTypes",
               render: (m) => (
                 <Group gap={2}>
-                  {m.isVegetarian && <Badge colorPalette="green" variant="surface">Veg</Badge>}
-                  {m.isVegan && <Badge colorPalette="purple" variant="surface">Vegan</Badge>}
-                  {m.isGlutenFree && <Badge colorPalette="orange" variant="surface">Gluten Free</Badge>}
-                  {!m.isVegetarian && !m.isVegan && !m.isGlutenFree && (
-                    <Badge colorPalette="gray" variant="surface">Standard</Badge>
-                  )}
+                  {m.dietaryTypes.map((type) => (
+                    <Badge
+                      key={type}
+                      colorPalette={MealDietaryTypeColor[type]}
+                      variant="surface"
+                    >
+                      {type.replaceAll("_", " ")}
+                    </Badge>
+                  ))}
                 </Group>
               )
             },
             { header: "Price", key: "mealPrice", render: (m) => <Text fontWeight="bold">${m.mealPrice}</Text> },
+            {
+              header: "Spice",
+              key: "spiceLevel",
+              render: (m) => (
+                <Badge
+                  colorPalette={SpiceLevelColor[m.spiceLevel]}
+                  variant="surface"
+                >
+                  {m.spiceLevel.replaceAll("_", " ")}
+                </Badge>
+              ),
+            },
             {
               header: "Status",
               key: "status",
@@ -98,7 +135,7 @@ export const MealPlanManager = () => {
         title="New Meal Plan"
         icon={Utensils}
         fields={fields}
-        initialValues={{ isVegetarian: false, isVegan: false, isGlutenFree: false, mealName: "", mealPrice: 0, mealDescription: "" }}
+        initialValues={{ dietaryTypes: [MealDietaryType.STANDARD], spiceLevel: SpiceLevel.NONE, mealName: "", mealPrice: 0, mealDescription: "" }}
         onSubmit={handleCreate}
         loading={submitting}
       />

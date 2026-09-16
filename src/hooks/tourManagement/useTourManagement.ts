@@ -119,8 +119,8 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
         else if (res && typeof res === "object" && "content" in res) {
           setData((res as { content: Tour[] }).content);
         }
-      } catch (err) {
-        console.error("Resource fetch error:", err);
+      } catch {
+        setData([]);
       } finally {
         setLoading(false);
       }

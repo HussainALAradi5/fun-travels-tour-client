@@ -13,3 +13,10 @@ export const NotificationType = {
 } as const;
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType];
+
+export const NotificationTypeColor = {
+  BOOKING_CONFIRMED: "green", TOUR_APPROVAL_REQUIRED: "orange", TOUR_APPROVED: "teal",
+  CANCELLATION_ALERT: "red", ONE_WEEK_TRAVEL_REMINDER: "purple", SYSTEM_ALERT: "gray",
+  REQUEST_CREATED: "blue", REQUEST_ASSIGNED: "yellow", REQUEST_SOLVED: "teal",
+  REQUEST_REJECTED: "red", TOUR_COMPLETED: "green",
+} as const;

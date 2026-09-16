@@ -5,7 +5,7 @@ import { DataTable } from "@/components/ui/Custom/DataTable";
 import type { Column } from "@/interface/common/Column";
 import { useTransaction } from "@/hooks/useTransaction";
 import type { Transaction } from "@/interface/payment/Transaction";
-import { TransactionTypeColors } from "@/constants/roles/Colors";
+import { TransactionTypeColor } from "@/enums/TransactionType";
 import { useNavigate } from "@/lib/navigation";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
 import { DateSortFilter } from "@/components/ui/Custom/DateSortFilter";
@@ -55,7 +55,7 @@ export const TransactionTable = () => {
       header: "Category",
       key: "type",
       render: (t) => (
-        <Badge colorPalette={TransactionTypeColors[t.transactionType] || "gray"} variant="subtle" px={3} borderRadius="full">
+        <Badge colorPalette={TransactionTypeColor[t.transactionType] || "gray"} variant="subtle" px={3} borderRadius="full">
           {t.transactionType}
         </Badge>
       ),

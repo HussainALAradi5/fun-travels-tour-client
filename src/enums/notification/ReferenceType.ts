@@ -7,3 +7,7 @@ export const ReferenceType = {
 } as const;
 
 export type ReferenceType = (typeof ReferenceType)[keyof typeof ReferenceType];
+
+export const ReferenceTypeColor = {
+  TOUR: "blue", RESERVATION: "cyan", TICKET: "teal", USER: "purple", USER_REQUEST: "orange",
+} as const;

@@ -1,12 +1,13 @@
 import { Box, HStack, VStack, Text, Icon, Badge, IconButton } from "@chakra-ui/react";
 import { Check, CheckCheck, Mail, MailOpen, ArrowUpRight } from "lucide-react";
-import { NotificationTypeColors, ReferenceTypeColors } from "@/constants/roles/Colors";
+import { NotificationTypeColor } from "@/enums/notification/NotificationType";
+import { ReferenceTypeColor } from "@/enums/notification/ReferenceType";
 import type { NotificationItemProps } from "@/interface/props/notification/NotificationItemProps";
 
 export const NotificationItem = ({ notif, onMarkAsRead, onNavigate }: NotificationItemProps) => {
   const isRead = notif.isRead;
-  const typeColor = notif.type ? NotificationTypeColors[notif.type] || "gray" : "gray";
-  const refColor = notif.referenceType ? ReferenceTypeColors[notif.referenceType] || "blue" : "blue";
+  const typeColor = notif.type ? NotificationTypeColor[notif.type] : "gray";
+  const refColor = notif.referenceType ? ReferenceTypeColor[notif.referenceType] : "blue";
 
   const getActionText = (type?: string) => {
     if (type === "USER_REQUEST") return "View Request";

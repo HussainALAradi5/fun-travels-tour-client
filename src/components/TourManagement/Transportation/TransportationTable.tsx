@@ -20,7 +20,7 @@ import { DataTable } from "../../ui/Custom/DataTable";
 import { TransportationType } from "@/enums/tourmanagement/TransportationType";
 import { TransportationStatus } from "@/enums/tourmanagement/TransportationStatus";
 import type { Transportation } from "@/interface/tour/Transportation";
-import { TransportationColors } from "@/constants/roles/Colors";
+import { TransportationTypeColor } from "@/enums/tourmanagement/TransportationType";
 
 import type { Column } from "@/interface/common/Column";
 import type { TransportationTableProps } from "@/interface/props/tour/TransportationTableProps";
@@ -53,8 +53,8 @@ export const TransportationTable = ({ data, loading, onEdit, onView }: Transport
           <Box position="relative">
             <Box
               p={2.5}
-              bg={`${TransportationColors[t.type] || "blue"}.500/10`}
-              color={`${TransportationColors[t.type] || "blue"}.600`}
+              bg={`${TransportationTypeColor[t.type]}.500/10`}
+              color={`${TransportationTypeColor[t.type]}.600`}
               borderRadius="2xl"
             >
               <VehicleIcon type={t.type} size={20} />
@@ -77,7 +77,7 @@ export const TransportationTable = ({ data, loading, onEdit, onView }: Transport
       render: (t) => (
         <Badge
           variant="surface"
-          colorPalette={TransportationColors[t.type] || "blue"}
+          colorPalette={TransportationTypeColor[t.type]}
           size="md"
           borderRadius="full"
           px={3}

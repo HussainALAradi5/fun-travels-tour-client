@@ -6,3 +6,8 @@ export enum ProgressType {
   INFO = "info",
   NEUTRAL = "neutral",
 }
+
+export const ProgressTypeColor = {
+  [ProgressType.AUTO]: "blue", [ProgressType.DANGER]: "red", [ProgressType.WARNING]: "orange",
+  [ProgressType.SUCCESS]: "green", [ProgressType.INFO]: "cyan", [ProgressType.NEUTRAL]: "gray",
+} as const;

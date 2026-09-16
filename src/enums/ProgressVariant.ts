@@ -5,3 +5,9 @@ export enum ProgressVariant {
   STRIPED = "striped",
   MINIMAL = "minimal",
 }
+
+export const ProgressVariantColor = {
+  [ProgressVariant.SUBTLE]: "gray", [ProgressVariant.SOLID]: "blue",
+  [ProgressVariant.GRADIENT]: "purple", [ProgressVariant.STRIPED]: "orange",
+  [ProgressVariant.MINIMAL]: "teal",
+} as const;

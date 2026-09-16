@@ -5,7 +5,8 @@ import { DataTable } from "@/components/ui/Custom/DataTable";
 import type { Column } from "@/interface/common/Column";
 import { usePayment } from "@/hooks/usePayment";
 import type { Payment } from "@/interface/payment/Payment";
-import { PaymentStatusColors, PaymentMethodColors } from "@/constants/roles/Colors";
+import { PaymentMethodColor } from "@/enums/payment/PaymentMethod";
+import { PaymentStatusColor } from "@/enums/payment/PaymentStatus";
 import { useNavigate } from "@/lib/navigation";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
 import { DateSortFilter } from "@/components/ui/Custom/DateSortFilter";
@@ -58,7 +59,7 @@ export const PaymentTable = () => {
           <Icon
             as={p.method === "CREDIT_CARD" ? CreditCard : Landmark}
             size="xs"
-            color={PaymentMethodColors[p.method] || "gray"}
+            color={PaymentMethodColor[p.method] || "gray"}
           />
           <Text fontWeight="medium">{p.method?.replace("_", " ") || "UNKNOWN"}</Text>
         </HStack>
@@ -69,7 +70,7 @@ export const PaymentTable = () => {
       key: "status",
       render: (p) => (
         <Badge
-          colorPalette={PaymentStatusColors[p.status] || "gray"}
+          colorPalette={PaymentStatusColor[p.status] || "gray"}
           variant="subtle"
           px={3}
           py={1}

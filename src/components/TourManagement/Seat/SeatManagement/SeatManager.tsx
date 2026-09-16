@@ -12,7 +12,9 @@ import {
 import { Armchair, LayoutGrid } from "lucide-react";
 
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
-import { ChairTypeColors } from "@/constants/roles/Colors";
+import { ChairTypeColor } from "@/enums/tourmanagement/ChairType";
+import type { ChairType } from "@/enums/tourmanagement/ChairType";
+import { typedEntries } from "@/utilities/ObjectUtils";
 import type { Seat } from "@/interface/tour/Seat";
 
 import { AppDialog } from "@/components/ui/Custom/Dialogs/AppDialog";
@@ -38,7 +40,7 @@ export const SeatManager = ({ transportId }: { transportId: number }) => {
         acc[seat.chairType] = (acc[seat.chairType] || 0) + 1;
         return acc;
       },
-      {} as Record<string, number>,
+      {} as Partial<Record<ChairType, number>>,
     );
   }, [seats]);
   const filteredSeats = useMemo(() => {
@@ -124,7 +126,7 @@ export const SeatManager = ({ transportId }: { transportId: number }) => {
         </HStack>
 
         <SimpleGrid columns={{ base: 2, md: 4 }} gap={4} mt={6}>
-          {Object.entries(totals).map(([type, count]) => (
+          {typedEntries(totals).map(([type, count]) => (
             <Box
               key={type}
               p={3}
@@ -146,7 +148,7 @@ export const SeatManager = ({ transportId }: { transportId: number }) => {
               <Text
                 fontSize="xl"
                 fontWeight="black"
-                color={`${ChairTypeColors[type as keyof typeof ChairTypeColors] || "blue"}.500`}
+                color={`${ChairTypeColor[type]}.500`}
               >
                 {count}
               </Text>

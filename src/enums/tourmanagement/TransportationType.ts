@@ -9,3 +9,12 @@ export const TransportationType = {
 
 export type TransportationType =
   (typeof TransportationType)[keyof typeof TransportationType];
+
+export const TransportationTypeColor = {
+  BUS: "orange",
+  FLIGHT: "blue",
+  BOAT: "cyan",
+  TRAIN: "purple",
+  PRIVATE_CAR: "gray",
+  FERRY: "teal",
+} as const;

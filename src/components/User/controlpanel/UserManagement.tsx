@@ -4,9 +4,8 @@ import { DataTable } from "@/components/ui/Custom/DataTable";
 import { Users, ShieldCheck } from "lucide-react";
 import type { User } from "@/interface/user/User";
 import { userService } from "@/Api/User";
-import { RoleColors } from "@/constants/roles/Colors";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
-import { UserType } from "@/enums/UserType";
+import { UserType, UserTypeColor } from "@/enums/UserType";
 import { UnifiedFilterBar } from "@/components/ui/Custom/UnifiedFilterBar";
 import type { FilterGroup } from "@/interface/common/FilterGroup";
 
@@ -57,6 +56,8 @@ export default function UserManagement() {
         { label: "Manager", value: UserType.MANAGER },
         { label: "Employee", value: UserType.EMPLOYEE },
         { label: "Customer", value: UserType.CUSTOMER },
+        { label: "Support Agent", value: UserType.SUPPORT_AGENT },
+        { label: "Developer", value: UserType.DEVELOPER },
       ],
       placeholder: "Filter by Role",
     },
@@ -68,7 +69,7 @@ export default function UserManagement() {
         header: "User Details",
         key: "name",
         render: (u: User) => {
-          const roleColor = u.userType ? RoleColors[u.userType] : "blue";
+          const roleColor = u.userType ? UserTypeColor[u.userType] : "blue";
           const avatarUrl = userService.getProfileImageUrl(u.profileImageUrl);
           return (
             <HStack gap={3}>
@@ -93,7 +94,7 @@ export default function UserManagement() {
         header: "Role",
         key: "userType",
         render: (u: User) => (
-          <Badge colorPalette={u.userType ? RoleColors[u.userType] : "blue"} variant="surface" size="sm">
+          <Badge colorPalette={u.userType ? UserTypeColor[u.userType] : "blue"} variant="surface" size="sm">
             <HStack gap={1}><ShieldCheck size={12} />{u.userType}</HStack>
           </Badge>
         ),

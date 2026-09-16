@@ -1,8 +1,8 @@
 import { Box, HStack, Text, Badge, Button, Circle } from "@chakra-ui/react";
 import { Armchair, Settings2 } from "lucide-react";
 import type { Seat } from "@/interface/tour/Seat";
-import type { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
-import { SeatStatusColors, ChairTypeColors } from "@/constants/roles/Colors";
+import { SeatStatusTheme } from "@/enums/tourmanagement/SeatStatus";
+import { ChairTypeColor } from "@/enums/tourmanagement/ChairType";
 import { DataTable } from "@/components/ui/Custom/DataTable";
 
 import type { Column } from "@/interface/common/Column";
@@ -24,7 +24,7 @@ export const SeatManagerTable = ({ data, loading, onEdit }: SeatManagerTableProp
       header: "Seat Identity",
       key: "seatCode",
       render: (s) => {
-        const config = SeatStatusColors[s.status as SeatStatus] || { text: "gray.500", light: "gray.100" };
+        const config = SeatStatusTheme[s.status];
         return (
           <HStack gap={3}>
             <Box p={2} bg={config.light} _dark={{ bg: "white/5" }} borderRadius="xl">
@@ -39,7 +39,7 @@ export const SeatManagerTable = ({ data, loading, onEdit }: SeatManagerTableProp
       header: "Classification",
       key: "chairType",
       render: (s) => {
-        const colorPalette = ChairTypeColors[s.chairType as keyof typeof ChairTypeColors] || "gray";
+        const colorPalette = ChairTypeColor[s.chairType];
         return (
           <Badge
             variant="surface"
@@ -59,7 +59,7 @@ export const SeatManagerTable = ({ data, loading, onEdit }: SeatManagerTableProp
       key: "status",
       render: (s) => {
         const palette = getStatusPalette(s.status);
-        const config = SeatStatusColors[s.status as SeatStatus] || { text: "gray.500" };
+        const config = SeatStatusTheme[s.status];
 
         return (
           <Badge

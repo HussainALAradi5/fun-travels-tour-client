@@ -6,3 +6,10 @@ export const ChairType = {
 } as const;
 
 export type ChairType = (typeof ChairType)[keyof typeof ChairType];
+
+export const ChairTypeColor = {
+  STANDARD: "gray",
+  KIDS_CHAIR: "teal",
+  WHEELCHAIR_ACCESSIBLE: "blue",
+  PREMIUM_RECLINER: "purple",
+} as const;

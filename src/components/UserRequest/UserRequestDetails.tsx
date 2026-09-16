@@ -19,9 +19,9 @@ import { CommentSection } from "../ui/Custom/CommentSection";
 import type { AuditEventItem } from "@/interface/common/AuditEventItem";
 import type { CommentItem } from "@/interface/common/CommentItem";
 import { notify } from "../ui/Custom/GenericNotification";
-import { UserRequestStatus } from "@/enums/UserRequest/UserRequestStatus";
+import { UserRequestStatus, UserRequestStatusColor } from "@/enums/UserRequest/UserRequestStatus";
 import { UserRequestAction } from "@/enums/UserRequest/UserRequestAction";
-import { RequestStatusColors, RequestTypeColors } from "@/constants/roles/Colors";
+import { UserRequestTypeColor } from "@/enums/UserRequest/UserRequestType";
 
 export const UserRequestDetails = () => {
   const { id } = useParams();
@@ -139,10 +139,10 @@ export const UserRequestDetails = () => {
               <Power size={14} style={{marginRight: '6px'}}/> Close Request
             </Button>
           )}
-          <Badge colorPalette={RequestTypeColors[request.type] || "gray"} variant="subtle" borderRadius="full" px={4} py={1.5} textTransform="capitalize" fontWeight="bold">
+          <Badge colorPalette={UserRequestTypeColor[request.type]} variant="subtle" borderRadius="full" px={4} py={1.5} textTransform="capitalize" fontWeight="bold">
             {request.type.replace('_', ' ')}
           </Badge>
-          <Badge colorPalette={RequestStatusColors[request.status]} variant="solid" borderRadius="full" px={5} py={1.5} fontWeight="bold">
+          <Badge colorPalette={UserRequestStatusColor[request.status]} variant="solid" borderRadius="full" px={5} py={1.5} fontWeight="bold">
             {request.status}
           </Badge>
         </HStack>

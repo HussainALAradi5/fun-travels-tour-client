@@ -2,7 +2,8 @@ import { Badge, HStack, Text, IconButton, Box, Icon } from "@chakra-ui/react";
 import { DataTable } from "@/components/ui/Custom/DataTable";
 import type { Column } from "@/interface/common/Column";
 import type { UserRequest } from "@/interface/support/UserRequest";
-import { RequestStatusColors, RequestTypeColors } from "@/constants/roles/Colors";
+import { UserRequestStatusColor } from "@/enums/UserRequest/UserRequestStatus";
+import { UserRequestTypeColor } from "@/enums/UserRequest/UserRequestType";
 import { User, Eye } from "lucide-react";
 import type { UserRequestListProps } from "@/interface/props/user/UserRequestListProps";
 
@@ -12,7 +13,7 @@ export const UserRequestList = ({ data, loading, onView }: UserRequestListProps)
       header: "Type",
       key: "type",
       render: (item) => (
-        <Badge colorPalette={RequestTypeColors[item.type]} variant="subtle" borderRadius="full" px={3} py={1}>
+        <Badge colorPalette={UserRequestTypeColor[item.type]} variant="subtle" borderRadius="full" px={3} py={1}>
           {item.type}
         </Badge>
       )
@@ -65,7 +66,7 @@ export const UserRequestList = ({ data, loading, onView }: UserRequestListProps)
       header: "Status",
       key: "status",
       render: (item) => (
-        <Badge colorPalette={RequestStatusColors[item.status]} variant="subtle" borderRadius="full" px={3} py={1}>
+        <Badge colorPalette={UserRequestStatusColor[item.status]} variant="subtle" borderRadius="full" px={3} py={1}>
           {item.status}
         </Badge>
       )

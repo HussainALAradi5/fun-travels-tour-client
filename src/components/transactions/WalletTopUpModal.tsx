@@ -8,7 +8,7 @@ import { loadStripe, type Stripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
 import { AppDialog } from "@/components/ui/Custom/Dialogs/AppDialog";
-import { PaymentMethodColors } from "@/constants/roles/Colors";
+import { PaymentMethodColor } from "@/enums/payment/PaymentMethod";
 import { walletService } from "@/Api/Wallet";
 import { StripeCheckoutForm } from "./Wallet/StripeCheckoutForm";
 import type { WalletTopUpModalProps } from "@/interface/props/booking/WalletTopUpModalProps";
@@ -88,13 +88,13 @@ export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalP
             <PaymentOption
               icon={CreditCard} label="Credit Card"
               active={method === "CREDIT_CARD"}
-              colorScheme={PaymentMethodColors.CREDIT_CARD}
+              colorScheme={PaymentMethodColor.CREDIT_CARD}
               onClick={() => setMethod("CREDIT_CARD")}
             />
             <PaymentOption
               icon={Landmark} label="Bank Transfer"
               active={method === "BANK_TRANSFER"}
-              colorScheme={PaymentMethodColors.BANK_TRANSFER}
+              colorScheme={PaymentMethodColor.BANK_TRANSFER}
               onClick={() => setMethod("BANK_TRANSFER")}
             />
           </HStack>

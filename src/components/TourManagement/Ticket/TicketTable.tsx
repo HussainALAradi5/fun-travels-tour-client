@@ -4,7 +4,7 @@ import { Eye, MapPin, Calendar } from "lucide-react";
 import { DataTable } from "@/components/ui/Custom/DataTable";
 import type { Column } from "@/interface/common/Column";
 import type { Ticket } from "@/interface/tour/Ticket";
-import { StatusColors } from "@/constants/roles/Colors";
+import { TicketStatusColor } from "@/enums/tourmanagement/TicketStatus";
 import type { TicketTableProps } from "@/interface/props/tour/TicketTableProps";
 
 export const TicketTable = ({ tickets, isLoading, onView }: TicketTableProps) => {
@@ -37,7 +37,7 @@ export const TicketTable = ({ tickets, isLoading, onView }: TicketTableProps) =>
       key: "ticketStatus",
       render: (t) => (
         <Badge
-          colorPalette={StatusColors[t.ticketStatus || "PENDING"] || "gray"}
+          colorPalette={TicketStatusColor[t.ticketStatus || "PENDING"]}
           variant="subtle"
           px={3} py={1} borderRadius="full"
         >

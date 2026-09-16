@@ -7,7 +7,7 @@ import { Mail, Phone, Calendar, Edit, ShieldCheck, Wallet, ArrowUpRight, Plus } 
 
 import { useUser } from "@/hooks/User/useUser";
 import { useAccount } from "@/hooks/useAccount";
-import { RoleColors } from "@/constants/roles/Colors";
+import { UserTypeColor } from "@/enums/UserType";
 import { authUtils } from "@/utilities/AuthUtils";
 import { userService } from "@/Api/User";
 import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
@@ -24,7 +24,7 @@ export const ProfileView = () => {
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-  const roleColor = user?.userType ? RoleColors[user.userType] : "blue";
+  const roleColor = user?.userType ? UserTypeColor[user.userType] : "blue";
   const bannerImg = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2070&auto=format&fit=crop";
 
   const handleUpdate = async (formValues: Record<string, unknown>) => {

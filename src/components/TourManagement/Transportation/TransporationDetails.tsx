@@ -25,10 +25,8 @@ import {
 } from "lucide-react";
 import { MetricBox, TrackingStep } from "@/components/ui/Custom/GlowComponents";
 import { SeatManager } from "../Seat/SeatManagement/SeatManager";
-import {
-  SeatStatusColors,
-  TransportationColors,
-} from "@/constants/roles/Colors";
+import { SeatStatusColor } from "@/enums/tourmanagement/SeatStatus";
+import { TransportationTypeColor } from "@/enums/tourmanagement/TransportationType";
 import { StatusLegend } from "@/components/ui/Custom/StatusLegend";
 import { transportationService } from "@/Api/tourmanagement/Transportation";
 import { toaster } from "@/components/ui/toaster";
@@ -81,7 +79,7 @@ export const TransportationDetails = () => {
     }
   };
 
-  const themeColor = transport ? TransportationColors[transport.type] : "blue";
+  const themeColor = transport ? TransportationTypeColor[transport.type] : "blue";
 
   if (loading) return <Skeleton height="100vh" />;
 
@@ -216,7 +214,7 @@ export const TransportationDetails = () => {
             <VStack align="stretch" gap={6}>
               <StatusLegend
                 title="Seat Status Guide"
-                colorMap={SeatStatusColors as unknown as Record<string, string>}
+                colorMap={SeatStatusColor}
               />
 
               <Box

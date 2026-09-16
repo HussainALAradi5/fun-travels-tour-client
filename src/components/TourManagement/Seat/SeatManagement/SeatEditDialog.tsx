@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import { VStack, Text, Button, Grid, Box, Separator } from "@chakra-ui/react";
 import { Settings2, Save } from "lucide-react";
 import { AppDialog } from "@/components/ui/Custom/Dialogs/AppDialog";
-import { ChairType } from "@/enums/tourmanagement/ChairType";
+import { ChairType, ChairTypeColor } from "@/enums/tourmanagement/ChairType";
 import { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
-import { ChairTypeColors } from "@/constants/roles/Colors";
 import type { Seat } from "@/interface/tour/Seat";
 import type { SeatEditDialogProps } from "@/interface/props/tour/SeatEditDialogProps";
 const getStatusPalette = (status: string) => {
@@ -42,7 +41,7 @@ export const SeatEditDialog = ({ open, onClose, seat, onSave, loading }: SeatEdi
           </Text>
           <Grid templateColumns="1fr 1fr" gap={3}>
             {Object.values(ChairType).map((type) => {
-              const color = ChairTypeColors[type] || "gray";
+              const color = ChairTypeColor[type];
               const isSelected = localSeat.chairType === type;
               return (
                 <Button

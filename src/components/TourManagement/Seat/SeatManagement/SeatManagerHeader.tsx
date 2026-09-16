@@ -4,8 +4,9 @@ import { ChairType } from "@/enums/tourmanagement/ChairType";
 import { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
 import { ContentCard } from "@/components/ui/Custom/ContentCard";
 import { UnifiedFilterBar } from "@/components/ui/Custom/UnifiedFilterBar";
-import { ChairTypeColors } from "@/constants/roles/Colors";
+import { ChairTypeColor } from "@/enums/tourmanagement/ChairType";
 import type { SeatManagerHeaderProps } from "@/interface/props/tour/SeatManagerHeaderProps";
+import { typedEntries } from "@/utilities/ObjectUtils";
 
 export const SeatManagerHeader = ({
   count,
@@ -45,11 +46,11 @@ export const SeatManagerHeader = ({
             <Badge variant="solid" colorPalette="blue" px={3} py={1} borderRadius="full">
               TOTAL: {totalSeats}
             </Badge>
-            {Object.entries(totals).map(([type, amount]) => (
+            {typedEntries(totals).map(([type, amount]) => (
               <Badge
                 key={type}
                 variant="surface"
-                colorPalette={ChairTypeColors[type as keyof typeof ChairTypeColors] || "gray"}
+                colorPalette={ChairTypeColor[type]}
                 px={3} py={1} borderRadius="full"
               >
                 {type.replace("_", " ")}: {amount}

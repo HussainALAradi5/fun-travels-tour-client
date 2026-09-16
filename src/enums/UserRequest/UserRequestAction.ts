@@ -6,3 +6,7 @@ export const UserRequestAction = {
 
 export type UserRequestAction =
   (typeof UserRequestAction)[keyof typeof UserRequestAction];
+
+export const UserRequestActionColor = {
+  ASSIGN: "blue", SOLVE: "green", REJECT: "red",
+} as const;

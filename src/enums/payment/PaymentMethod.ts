@@ -6,3 +6,8 @@ export const PaymentMethod = {
   WALLET: "WALLET"
 } as const;
 export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod];
+
+export const PaymentMethodColor = {
+  CREDIT_CARD: "blue", PAYPAL: "orange", BANK_TRANSFER: "purple",
+  CASH_AT_OFFICE: "green", WALLET: "teal",
+} as const;
