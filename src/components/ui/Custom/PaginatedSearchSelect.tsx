@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Box, Button, Combobox, createListCollection, HStack, Icon, IconButton, Spinner, Text } from "@chakra-ui/react";
+import { Box, Button, Combobox, createListCollection, HStack, Icon, Spinner, Text } from "@chakra-ui/react";
 import { X } from "lucide-react";
 import { GenericFilter } from "@/utilities/GenericFilter";
 import { SelectedTags } from "./SelectedTags";
@@ -18,6 +18,7 @@ export function PaginatedSearchSelect({ label, value, onChange, options = [], lo
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (!loadOptions || disabled) return;
@@ -70,20 +71,56 @@ export function PaginatedSearchSelect({ label, value, onChange, options = [], lo
       {multiple && <SelectedTags values={selectedKeys} options={available.map((option) => ({ ...option, value: optionKey(option.value) }))}
         onRemove={(key) => Array.isArray(value) && onChange(value.filter((item) => optionKey(item) !== key))} />}
       <Combobox.Root collection={collection} value={selectedKeys} multiple={multiple} disabled={disabled} size="sm"
+        open={open} onOpenChange={(details) => setOpen(details.open)}
         positioning={{ sameWidth: true, gutter: 4, strategy: "fixed" }}
         onValueChange={(details) => {
           const selected = details.value.map((key) => collection.items.find((item) => item.value === key)?.original ?? key);
           onChange(multiple ? selected.map(String) : (selected[0] ?? null));
         }} onInputValueChange={(details) => setQuery(details.inputValue)}>
-        <Combobox.Control position="relative">
+        <Combobox.Control
+          position="relative"
+          cursor={disabled ? "not-allowed" : "text"}
+          onPointerDown={(event) => {
+            if (disabled) return;
+            const target = event.target as HTMLElement;
+            if (!target.closest("button")) setOpen(true);
+          }}
+        >
           {selectedOption?.icon && <Icon as={selectedOption.icon} boxSize="4" position="absolute" left="3" top="50%" transform="translateY(-50%)" zIndex="1" />}
-          <Combobox.Input placeholder={placeholder ?? `Search ${label}...`} autoComplete="off" pl={selectedOption?.icon ? 9 : undefined} pr="16" />
-          <Combobox.Trigger />
-          {!multiple && selectedKeys.length > 0 && !disabled && <IconButton type="button" aria-label={`Clear ${label}`} variant="ghost" size="xs"
-            position="absolute" right="8" onMouseDown={(event) => event.preventDefault()} onClick={() => { onChange(null); setQuery(""); }}><X size={14} /></IconButton>}
-          {loading && <Spinner size="xs" position="absolute" right={selectedKeys.length ? "14" : "9"} />}
+          <Combobox.Input
+            placeholder={placeholder ?? `Search ${label}...`}
+            autoComplete="off"
+            pl={selectedOption?.icon ? 9 : undefined}
+            pr={selectedKeys.length ? "20" : "12"}
+            minH="11"
+            borderRadius="md"
+            onFocus={() => !disabled && setOpen(true)}
+            onClick={() => !disabled && setOpen(true)}
+          />
+          <Combobox.Trigger position="absolute" right="2" top="50%" transform="translateY(-50%)" />
+          {!multiple && selectedKeys.length > 0 && !disabled && (
+            <Combobox.ClearTrigger
+              aria-label={`Clear ${label}`}
+              position="absolute"
+              right="9"
+              top="50%"
+              transform="translateY(-50%)"
+              display="inline-flex"
+              alignItems="center"
+              justifyContent="center"
+              boxSize="7"
+              borderRadius="md"
+              color="fg.muted"
+              _hover={{ bg: "bg.muted", color: "fg" }}
+              onPointerDown={(event) => event.stopPropagation()}
+              onClick={() => { onChange(null); setQuery(""); setOpen(true); }}
+            >
+              <X size={15} />
+            </Combobox.ClearTrigger>
+          )}
+          {loading && <Spinner size="xs" position="absolute" top="50%" transform="translateY(-50%)" right={selectedKeys.length ? "17" : "10"} />}
         </Combobox.Control>
-        <Combobox.Positioner zIndex="popover"><Combobox.Content bg="bg.panel" boxShadow="xl" borderRadius="md" borderWidth="1px" borderColor="border.subtle">
+        <Combobox.Positioner zIndex="popover"><Combobox.Content bg="bg.panel" boxShadow="xl" borderRadius="lg" borderWidth="1px" borderColor="border.subtle" maxH="72" overflowY="auto">
           {!loading && collection.items.length === 0 && <Box px={4} py={3}><Text fontSize="xs" color="fg.muted">No results found</Text></Box>}
           {collection.items.map((item) => <Combobox.Item key={item.value} item={item} px={3} py={2} cursor="pointer" _hover={{ bg: "blue.50", color: "blue.700" }}>
             <HStack gap={2} flex="1">{item.icon && <Icon as={item.icon} boxSize="4" />}<Combobox.ItemText fontSize="xs">{item.label}</Combobox.ItemText></HStack><Combobox.ItemIndicator />

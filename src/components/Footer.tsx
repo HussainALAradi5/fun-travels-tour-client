@@ -1,20 +1,16 @@
 import { Box, Container, Stack, Text, Link, Flex } from "@chakra-ui/react";
-import { useColorModeValue } from "../components/ui/color-mode";
 
 interface FooterProps {
   currentYear: number;
 }
 
 export const Footer = ({ currentYear }: FooterProps) => {
-  const bgColor = useColorModeValue("gray.50", "gray.950");
-  const borderColor = useColorModeValue("gray.200", "gray.800");
-
   return (
     <Box
       as="footer"
-      bg={bgColor}
+      bg={{ base: "gray.50", _dark: "gray.950" }}
       borderTop="1px"
-      borderColor={borderColor}
+      borderColor={{ base: "gray.200", _dark: "gray.800" }}
       py={10}
     >
       <Container maxW="container.xl">

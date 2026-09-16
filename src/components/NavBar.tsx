@@ -1,5 +1,5 @@
 import { Box, Flex, Button, Container, HStack, IconButton, Text } from "@chakra-ui/react";
-import { ColorModeButton, useColorModeValue } from "../components/ui/color-mode";
+import { ColorModeButton } from "../components/ui/color-mode";
 import { UserCircle, LogOut } from "lucide-react";
 import { useNavigate } from "@/lib/navigation";
 import { useAuth } from "@/utilities/AuthContext";
@@ -13,9 +13,9 @@ export const NavBar = () => {
   return (
     <Box
       px={3}
-      bg={useColorModeValue("white", "gray.950")}
+      bg={{ base: "white", _dark: "gray.950" }}
       borderBottom="1px solid"
-      borderColor={useColorModeValue("gray.100", "gray.800")}
+      borderColor={{ base: "gray.100", _dark: "gray.800" }}
       position="sticky" top="0" zIndex="sticky"
     >
       <Container maxW="7xl">

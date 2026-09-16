@@ -1,4 +1,4 @@
-import type { ChairType } from "@/enums/tourmanagement/ChirType";
+import type { ChairType } from "@/enums/tourmanagement/ChairType";
 import type { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
 import type { FilterInterface } from "@/interface/common/FilterInterface";
 

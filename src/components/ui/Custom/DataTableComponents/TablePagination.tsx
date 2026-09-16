@@ -2,7 +2,7 @@ import { HStack, Text, IconButton } from "@chakra-ui/react";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 
 export const TablePagination = ({
-  totalItems, startIndex, endIndex, currentPage, totalPages, setCurrentPage, headerBg
+  totalItems, startIndex, endIndex, currentPage, totalPages, setCurrentPage
 }: {
   totalItems: number;
   startIndex: number;
@@ -10,9 +10,8 @@ export const TablePagination = ({
   currentPage: number;
   totalPages: number;
   setCurrentPage: (page: number | ((p: number) => number)) => void;
-  headerBg: string;
 }) => (
-  <HStack justifyContent="space-between" p={4} bg={headerBg} borderTop="1px solid" borderColor="border.subtle">
+  <HStack justifyContent="space-between" p={4} bg={{ base: "gray.50/80", _dark: "gray.900/80" }} borderTop="1px solid" borderColor="border.subtle">
     <Text fontSize="xs" color="fg.muted" fontWeight="medium">
       Showing {totalItems === 0 ? 0 : startIndex + 1} to {Math.min(endIndex, totalItems)} of {totalItems} entries
     </Text>

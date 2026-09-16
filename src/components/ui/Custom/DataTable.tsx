@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Box, Stack, Table, Checkbox, VStack, Text } from "@chakra-ui/react";
-import { useColorModeValue } from "../color-mode";
 import { useTableLogic } from "@/hooks/useTableLogic";
 import { GenericFilter } from "@/utilities/GenericFilter";
 import { TableLoading } from "./DataTableComponents/TableLoading";
@@ -24,7 +23,7 @@ export function DataTable<T extends { id?: number | string | null }>(props: Data
 
   const [isExportOpen, setIsExportOpen] = useState(false);
   const { state, actions, selectedData } = useTableLogic(data, props.onSelectionChange);
-  const headerBg = useColorModeValue("gray.50/80", "gray.900/80");
+  const headerBg = { base: "gray.50/80", _dark: "gray.900/80" } as const;
   const { paginatedData, totalPages, totalItems, startIndex, endIndex } = GenericFilter.process(data, {
     ...state,
     searchKey: props.searchKey,
@@ -148,7 +147,6 @@ export function DataTable<T extends { id?: number | string | null }>(props: Data
             totalPages={totalPages}
             startIndex={startIndex}
             endIndex={endIndex}
-            headerBg={headerBg}
           />
         </Box>
       </Stack>

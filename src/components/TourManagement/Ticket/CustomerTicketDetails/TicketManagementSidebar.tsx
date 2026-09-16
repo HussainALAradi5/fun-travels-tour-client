@@ -7,7 +7,6 @@ import { StatusWorkflow } from "@/components/ui/Custom/StatusWorkflow";
 import type { StatusConfig } from "@/interface/common/StatusConfig";
 import { ConfirmDialog } from "@/components/ui/Custom/Dialogs/ConfirmDialog";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
-import type { GenericStatus } from "@/enums/GenericStatus";
 import type { TicketManagementSidebarProps } from "@/interface/props/tour/TicketManagementSidebarProps";
 import { GuidedStepsDialog } from "@/components/ui/Custom/Dialogs/GuidedStepsDialog";
 import { customerTicketGuide } from "@/constants/ticket/customerTicketGuide";
@@ -15,28 +14,21 @@ import { BookOpen } from "lucide-react";
 
 const TICKET_STATUS_MAP: Partial<Record<string, StatusConfig>> = {
   "PENDING": { label: "Pending", colorPalette: "gray", icon: FileText },
-  "APPROVED": { label: "Approved", colorPalette: "yellow", icon: ShieldCheck },
   "CONFIRMED": { label: "Confirmed", colorPalette: "blue", icon: ShieldCheck },
   "COMPLETED": { label: "Completed", colorPalette: "green", icon: CheckCircle },
   "CANCELLED": { label: "Cancelled", colorPalette: "red", icon: Ban },
 };
 
-const STEPS = ["PENDING", "APPROVED", "CONFIRMED", "COMPLETED"] as const;
+const STEPS = ["PENDING", "CONFIRMED", "COMPLETED"] as const;
 
 export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRefresh }: TicketManagementSidebarProps) => {
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
-  const { handleCancelTicket, handleUpdateTicketStatus, isMutating } = useTourManagement();
+  const { handleCancelTicket, isMutating } = useTourManagement();
 
   const onCancelConfirm = async () => {
     if (!ticket?.id) return;
     await handleCancelTicket(ticket.id);
     setIsCancelDialogOpen(false);
-    onRefresh();
-  };
-
-  const onWorkflowStatusChange = async (newStatus: string) => {
-    if (!ticket?.id) return;
-    await handleUpdateTicketStatus(ticket.id, newStatus as GenericStatus);
     onRefresh();
   };
 
@@ -56,7 +48,7 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
             currentStatus={ticket.ticketStatus}
             statusMap={TICKET_STATUS_MAP}
             steps={STEPS as unknown as string[]}
-            onStatusChange={onWorkflowStatusChange}
+            isReadOnly
           />
 {!isCancelled && !isCompleted && (
             <Box pt={5} borderTop="1px dashed" borderColor="border.subtle">
@@ -69,7 +61,7 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
                     </Text>
                   </HStack>
                   <Text fontSize="xs" color="fg.muted" lineHeight="tall">
-                    Cancel reservation. Subject to the 7-day policy window.
+                    Cancel this ticket. The refund depends on how many days remain before departure.
                   </Text>
                 </VStack>
 
@@ -113,7 +105,7 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
         onConfirm={onCancelConfirm}
         title="Cancel Ticket"
         description="This action cannot be undone."
-        message="Are you sure you want to cancel? This releases your seat and is only allowed if the tour end date is more than 7 days away."
+        message="Are you sure you want to cancel? Your seat will be released. More than 14 days receives a full refund, 7–14 days receives 50%, and less than 7 days receives no refund."
         icon={AlertTriangle}
         confirmText="Confirm Cancellation"
         colorPalette="red"

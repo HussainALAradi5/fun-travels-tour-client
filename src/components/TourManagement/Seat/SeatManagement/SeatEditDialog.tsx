@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { VStack, Text, Button, Grid, Box, Separator } from "@chakra-ui/react";
 import { Settings2, Save } from "lucide-react";
 import { AppDialog } from "@/components/ui/Custom/Dialogs/AppDialog";
-import { ChairType } from "@/enums/tourmanagement/ChirType";
+import { ChairType } from "@/enums/tourmanagement/ChairType";
 import { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
 import { ChairTypeColors } from "@/constants/roles/Colors";
 import type { Seat } from "@/interface/tour/Seat";

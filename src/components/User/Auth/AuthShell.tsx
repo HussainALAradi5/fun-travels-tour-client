@@ -1,5 +1,4 @@
 import { Box, Container, VStack, Heading, Text } from "@chakra-ui/react";
-import { useColorModeValue } from "@/components/ui/color-mode";
 
 import type { AuthShellProps } from "@/interface/props/ui/AuthShellProps";
 
@@ -9,17 +8,17 @@ export const AuthShell = ({
   subtitle,
   maxWidth = "md",
 }: AuthShellProps) => (
-  <Box bg={useColorModeValue("gray.50", "gray.950")} minH="100vh" py={20}>
+  <Box bg={{ base: "gray.50", _dark: "gray.950" }} minH="100vh" py={20}>
     <Container maxW={maxWidth}>
       <VStack
         gap={8}
         align="stretch"
         p={8}
-        bg={useColorModeValue("white", "gray.900")}
+        bg={{ base: "white", _dark: "gray.900" }}
         borderRadius="xl"
         boxShadow="xl"
         border="1px solid"
-        borderColor={useColorModeValue("gray.200", "gray.700")}
+        borderColor={{ base: "gray.200", _dark: "gray.700" }}
       >
         <VStack align="center" gap={2}>
           <Heading size="2xl">{title}</Heading>

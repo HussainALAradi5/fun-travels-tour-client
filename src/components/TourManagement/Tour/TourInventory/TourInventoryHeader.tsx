@@ -16,9 +16,7 @@ export const TourInventoryHeader = ({ statusFilter, onFilterChange, onCreateClic
         { label: "Active", value: GenericStatus.ACTIVE },
         { label: "Pending", value: GenericStatus.PENDING },
         { label: "Approved", value: GenericStatus.APPROVED },
-        { label: "Confirmed", value: GenericStatus.CONFIRMED },
         { label: "Completed", value: GenericStatus.COMPLETED },
-        { label: "Inactive", value: GenericStatus.INACTIVE },
         { label: "Cancelled", value: GenericStatus.CANCELLED },
       ],
     }), []

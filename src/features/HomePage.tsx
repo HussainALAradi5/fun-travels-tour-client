@@ -8,13 +8,12 @@ import {
   SimpleGrid,
   VStack,
 } from "@chakra-ui/react";
-import { useColorModeValue } from "../components/ui/color-mode";
 
 export const HomePage = () => {
   return (
     <Box
-      bg={useColorModeValue("white", "gray.950")}
-      color={useColorModeValue("gray.800", "white")}
+      bg={{ base: "white", _dark: "gray.950" }}
+      color={{ base: "gray.800", _dark: "white" }}
     >
       <Container maxW="container.xl" py={{ base: 12, md: 24 }}>
         <Stack
@@ -66,7 +65,7 @@ export const HomePage = () => {
         </Stack>
       </Container>
 
-      <Box bg={useColorModeValue("gray.50", "gray.900")} py={16}>
+      <Box bg={{ base: "gray.50", _dark: "gray.900" }} py={16}>
         <Container maxW="container.xl">
           <SimpleGrid columns={{ base: 1, md: 3 }} gap={10}>
             <FeatureCard
@@ -92,12 +91,12 @@ const FeatureCard = ({ title, desc }: { title: string; desc: string }) => (
   <VStack
     align="start"
     p={8}
-    bg={useColorModeValue("white", "gray.800")}
+    bg={{ base: "white", _dark: "gray.800" }}
     borderRadius="xl"
     boxShadow="sm"
     gap={3}
     border="1px solid"
-    borderColor={useColorModeValue("gray.100", "gray.700")}
+    borderColor={{ base: "gray.100", _dark: "gray.700" }}
   >
     <Heading size="md" color="blue.500">
       {title}

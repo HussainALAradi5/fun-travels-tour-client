@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { Box, Button, SimpleGrid, Alert, HStack } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
+import { reflectApiError } from "@/utilities/apiErrorHandler";
 import { glowPulse } from "@/utilities/Animations";
 import { FormFieldWrapper } from "./DynamicFormComponents/FormField";
 import type { DynamicFormProps } from "@/interface/props/ui/DynamicFormProps";
@@ -72,15 +73,8 @@ const handleFormSubmit = async (e: React.FormEvent) => {
       });
     }
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : "An unexpected error occurred.";
+    const msg = reflectApiError(error);
     setErrorMessage(msg);
-    if (!disableToast) {
-      toaster.create({
-        title: "Submission Failed",
-        description: msg,
-        type: "error",
-      });
-    }
   } finally {
     setInternalSubmitting(false);
   }

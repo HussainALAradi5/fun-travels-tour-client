@@ -40,8 +40,8 @@ export default function CityManagerRow({
     try {
       const res = await cityService.getCitiesByCountry(countryId);
       setCities(res || []);
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setCities([]);
     } finally {
       setFetching(false);
     }
@@ -62,14 +62,8 @@ export default function CityManagerRow({
       setNewCity("");
       await fetchCities();
       toaster.create({ title: "City added successfully", type: "success" });
-    } catch (error: unknown) {
-      const serverMessage = error instanceof Error ? error.message : "Internal Server Error";
-
-      toaster.create({
-        title: "Cannot Add City",
-        description: serverMessage,
-        type: "error",
-      });
+    } catch {
+      // The API interceptor displays the backend business error once.
     } finally {
       setLoading(false);
     }
@@ -80,10 +74,9 @@ export default function CityManagerRow({
     try {
       await cityService.deleteCity(selectedCity.id);
       setCities((prev) => prev.filter((c) => c.id !== selectedCity.id));
-      toaster.create({ title: "City removed", type: "info" });
-    } catch (error: unknown) {
-      const serverMessage = error instanceof Error ? error.message : "Delete failed";
-      toaster.create({ title: serverMessage, type: "error" });
+      toaster.create({ title: "City removed", type: "success" });
+    } catch {
+      // The API interceptor displays the backend business error once.
     } finally {
       setIsDeleteDialogOpen(false);
       setSelectedCity(null);

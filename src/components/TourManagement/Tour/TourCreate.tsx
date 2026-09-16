@@ -4,12 +4,8 @@ import { useNavigate } from "@/lib/navigation";
 import { DynamicForm } from "@/components/ui/Custom/DynamicForm";
 
 import { DEFAULT_TOUR } from "@/interface/tour/Tour";
-import type { Tour } from "@/interface/tour/Tour";
+import type { TourCreateRequest } from "@/interface/tour/TourCreateRequest";
 import type { FieldConfig } from "@/interface/common/FieldConfig";
-import type { Country } from "@/interface/geography/Country";
-import type { City } from "@/interface/geography/City";
-import type { Transportation } from "@/interface/tour/Transportation";
-import type { MealPlan } from "@/interface/tour/MealPlan";
 import { useTourManagement } from "@/hooks/tourManagement/useTourManagement";
 import { useCountries } from "@/hooks/countriesAndCities/useCountries";
 import { useCities } from "@/hooks/countriesAndCities/useCities";
@@ -63,7 +59,6 @@ export const TourCreate = () => {
       { name: "title", label: "Tour Title", type: "text", isRequired: true, gridSpan: 1 },
       { name: "tourNumber", label: "Tour Code", type: "text", isRequired: true, gridSpan: 1},
       { name: "basePrice", label: "Base Price ($)", type: "number", isRequired: true, gridSpan: 1 },
-      { name: "discountPrice", label: "Discount Amount ($)", type: "number", isRequired: false, gridSpan: 1 },
       { name: "maxCapacity", label: "Max Capacity", type: "number", isRequired: true, gridSpan: 1 },
       { name: "numberOfDays", label: "Duration (Days)", type: "number", isRequired: true, gridSpan: 1 },
       { name: "startDate", label: "Start Date", type: "date", isRequired: true, gridSpan: 1 },
@@ -82,32 +77,30 @@ export const TourCreate = () => {
   const handleSubmit = async (formData: TourCreateFormValues) => {
       const finalEndDate = calculateEndDate(formData.startDate, Number(formData.numberOfDays));
 
-      const payload: Tour = {
-        ...formData,
+      const payload: TourCreateRequest = {
+        tourNumber: formData.tourNumber,
+        title: formData.title,
+        description: formData.description,
         endDate: finalEndDate,
+        startDate: formData.startDate,
         numberOfDays: Number(formData.numberOfDays),
-        price: Number(formData.basePrice),
         basePrice: Number(formData.basePrice),
-        discountPrice: Number(formData.discountPrice || 0),
-        availableSlots: Number(formData.maxCapacity),
-        hasTransportation: Boolean(formData.transportation),
-        startCountry: formData.startCountry ? ({ id: Number(formData.startCountry) } as Country) : undefined,
-        endCountry: formData.endCountry ? ({ id: Number(formData.endCountry) } as Country) : undefined,
-        startCity: formData.startCity ? ({ id: Number(formData.startCity) } as Partial<City>) : undefined,
-        endCity: formData.endCity ? ({ id: Number(formData.endCity) } as Partial<City>) : undefined,
-        transportation: formData.transportation ? ({ id: Number(formData.transportation) } as Transportation) : undefined,
-        destinationCountries: Array.isArray(formData.destinationCountries)
-          ? formData.destinationCountries.map((id) => ({ id: Number(id) } as Country))
+        maxCapacity: Number(formData.maxCapacity),
+        startCountryId: formData.startCountry ? Number(formData.startCountry) : undefined,
+        endCountryId: formData.endCountry ? Number(formData.endCountry) : undefined,
+        startCityId: formData.startCity ? Number(formData.startCity) : undefined,
+        endCityId: formData.endCity ? Number(formData.endCity) : undefined,
+        transportationId: formData.transportation ? Number(formData.transportation) : undefined,
+        destinationCountryIds: Array.isArray(formData.destinationCountries)
+          ? formData.destinationCountries.map(Number)
           : [],
-        availableMeals: Array.isArray(formData.availableMeals)
-          ? formData.availableMeals.map((id) => ({ id: Number(id) } as MealPlan))
+        mealPlanIds: Array.isArray(formData.availableMeals)
+          ? formData.availableMeals.map(Number)
           : [],
       };
 
-      try {
-        await handleCreateTour(payload);
-        navigate("/admin/tours");
-      } catch (e: unknown) { console.error("Create failed", e); }
+      await handleCreateTour(payload);
+      navigate("/admin/tours");
   };
 
   if (isCountriesLoading) {

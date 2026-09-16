@@ -20,6 +20,9 @@ import type { Seat } from "@/interface/tour/Seat";
 import { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
 import type { GuestConfig } from "@/interface/common/GuestConfig";
 import type { ReservationPayload } from "@/interface/tour/ReservationPayload";
+import type { TourReservation } from "@/interface/tour/TourReservation";
+import { paymentService } from "@/Api/Payment";
+import { PaymentMethod } from "@/enums/payment/PaymentMethod";
 
 export const BookingManager = ({ tourId }: { tourId?: string }) => {
   const navigate = useNavigate();
@@ -35,6 +38,7 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
   ]);
   const [activeSeatPickerGuestId, setActiveSeatPickerGuestId] = useState<string | null>(null);
   const [activeMealPickerGuestId, setActiveMealPickerGuestId] = useState<string | null>(null);
+  const [pendingReservation, setPendingReservation] = useState<TourReservation | null>(null);
 
   useEffect(() => {
     if (tour?.transportation?.id) {
@@ -92,6 +96,13 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
     }
 
     try {
+      if (pendingReservation?.id) {
+        await paymentService.execute(pendingReservation.id, PaymentMethod.WALLET);
+        toaster.create({ title: "Payment Successful", description: "Your reservation and tickets are confirmed.", type: "success" });
+        setTimeout(() => navigate("/my-bookings"), 1200);
+        return;
+      }
+
       const reservationPayload: ReservationPayload = {
         tour: { id: Number(tourId) },
         user: { id: currentUser.id },
@@ -115,14 +126,20 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
         }))
       };
 
-      await handleCreateReservation(reservationPayload as unknown as Record<string, unknown>);
+      const reservation = await handleCreateReservation(reservationPayload as unknown as Partial<TourReservation>);
+      setPendingReservation(reservation);
+      await paymentService.execute(reservation.id!, PaymentMethod.WALLET);
 
-      toaster.create({ title: "Booking Secured!", description: "Your group reservation is complete.", type: "success" });
-      setTimeout(() => navigate("/my-bookings"), 1500);
+      toaster.create({ title: "Payment Successful", description: "Your reservation and tickets are confirmed.", type: "success" });
+      setTimeout(() => navigate("/my-bookings"), 1200);
 
     } catch (error: unknown) {
        console.error("Booking failed", error);
-       toaster.create({ title: "Error", description: "Failed to process booking.", type: "error" });
+       toaster.create({
+         title: pendingReservation ? "Payment Not Completed" : "Reservation Held",
+         description: "Your seats remain held for up to 15 minutes. Add wallet funds if needed, then retry payment.",
+         type: "error"
+       });
     }
   };
 
@@ -161,6 +178,10 @@ export const BookingManager = ({ tourId }: { tourId?: string }) => {
               guests={guests}
               onConfirm={handleCheckoutClick}
               loading={isBooking}
+              actionLabel={pendingReservation ? "Retry Wallet Payment" : "Reserve and Pay with Wallet"}
+              paymentNotice={pendingReservation
+                ? "Your reservation is pending. Complete payment before the 15-minute hold expires."
+                : "Seats are held for 15 minutes while wallet payment is completed."}
             />
           </Box>
         </GridItem>

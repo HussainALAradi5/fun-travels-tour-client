@@ -29,7 +29,9 @@ export const UserRequestManager = () => {
         type: filters.type as UserRequestType,
         status: filters.status as UserRequestStatus
       });
-      setData(res.content);
+      setData(Array.isArray(res.content) ? res.content : []);
+    } catch {
+      setData([]);
     } finally {
       setLoading(false);
     }
@@ -118,12 +120,11 @@ export const UserRequestManager = () => {
 <UserRequestCreateDialog
         open={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
-        currentUserId={user?.id || 0}
         loading={loading}
         onSubmit={async (val) => {
-          await userRequestService.create(val as never);
+          await userRequestService.create(val);
           setIsCreateOpen(false);
-          fetchRequests();
+          await fetchRequests();
         }}
       />
     </VStack>

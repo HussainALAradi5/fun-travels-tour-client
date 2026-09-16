@@ -5,9 +5,11 @@ import { UserRequestStatus } from "@/enums/UserRequest/UserRequestStatus";
 import { UserRequestType } from "@/enums/UserRequest/UserRequestType";
 import type { UserRequestFilterParams } from "@/interface/support/UserRequestFilterParams";
 import type { PageResponse } from "@/interface/common/PageResponse";
+import type { UserRequestCreateRequest } from "@/interface/support/UserRequestCreateRequest";
+import { extractData } from "@/utilities/apiHelper";
 
 export const userRequestService = {
-  create: async (request: Partial<UserRequest>): Promise<UserRequest> => {
+  create: async (request: UserRequestCreateRequest): Promise<UserRequest> => {
     const response = await apiClient.post<ApiResponse<UserRequest>>(
       "/user-requests",
       request,
@@ -29,10 +31,14 @@ export const userRequestService = {
     if (params.sortBy) queryParams.append("sortBy", params.sortBy);
     if (params.sortDir) queryParams.append("sortDir", params.sortDir);
 
-    const response = await apiClient.get<PageResponse<UserRequest>>(
+    const response = await apiClient.get<ApiResponse<PageResponse<UserRequest>> | PageResponse<UserRequest>>(
       `/user-requests?${queryParams.toString()}`,
     );
-    return response.data;
+    const payload = response.data;
+    if ("success" in payload) {
+      return extractData(payload);
+    }
+    return payload;
   },
 
   getById: async (id: number): Promise<UserRequest> => {
@@ -47,16 +53,16 @@ export const userRequestService = {
     return response.data.data as unknown as UserRequest;
   },
 
-  solveRequest: async (requestId: number, solverId: number): Promise<UserRequest> => {
+  solveRequest: async (requestId: number): Promise<UserRequest> => {
     const response = await apiClient.patch<ApiResponse<UserRequest>>(
-      `/user-requests/${requestId}/solve/${solverId}`,
+      `/user-requests/${requestId}/solve`,
     );
     return response.data.data as unknown as UserRequest;
   },
 
-  rejectRequest: async (requestId: number, rejectedById: number): Promise<UserRequest> => {
+  rejectRequest: async (requestId: number): Promise<UserRequest> => {
     const response = await apiClient.patch<ApiResponse<UserRequest>>(
-      `/user-requests/${requestId}/reject/${rejectedById}`,
+      `/user-requests/${requestId}/reject`,
     );
     return response.data.data as unknown as UserRequest;
   },

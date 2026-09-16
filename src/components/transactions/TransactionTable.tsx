@@ -55,8 +55,8 @@ export const TransactionTable = () => {
       header: "Category",
       key: "type",
       render: (t) => (
-        <Badge colorPalette={TransactionTypeColors[t.type] || "gray"} variant="subtle" px={3} borderRadius="full">
-          {t.type}
+        <Badge colorPalette={TransactionTypeColors[t.transactionType] || "gray"} variant="subtle" px={3} borderRadius="full">
+          {t.transactionType}
         </Badge>
       ),
     },

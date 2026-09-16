@@ -1,4 +1,4 @@
-import type { ChairType } from '../../enums/tourmanagement/ChirType';
+import type { ChairType } from '../../enums/tourmanagement/ChairType';
 import type { SeatStatus } from '../../enums/tourmanagement/SeatStatus';
 import type { Transportation } from './Transportation';
 import type { Ticket } from './Ticket';

@@ -1,6 +1,6 @@
 import { HStack, VStack, Heading, Text, Badge, Box } from "@chakra-ui/react";
 import { LayoutGrid } from "lucide-react";
-import { ChairType } from "@/enums/tourmanagement/ChirType";
+import { ChairType } from "@/enums/tourmanagement/ChairType";
 import { SeatStatus } from "@/enums/tourmanagement/SeatStatus";
 import { ContentCard } from "@/components/ui/Custom/ContentCard";
 import { UnifiedFilterBar } from "@/components/ui/Custom/UnifiedFilterBar";

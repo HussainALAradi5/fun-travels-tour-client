@@ -31,7 +31,11 @@ apiClient.interceptors.response.use(
 
     if (!isAuthEndpoint) {
       const cleanMessage = reflectApiError(error);
+      const requestMethod = error.config?.method?.toUpperCase() ?? "REQUEST";
+      const requestUrl = error.config?.url ?? "unknown";
+      const status = error.response?.status ?? "network";
       toaster.create({
+        id: `api-error:${requestMethod}:${requestUrl}:${status}`,
         title: error.response?.status === 403 ? "Permission Denied" : "Unable to Complete Request",
         description: cleanMessage,
         type: "error",

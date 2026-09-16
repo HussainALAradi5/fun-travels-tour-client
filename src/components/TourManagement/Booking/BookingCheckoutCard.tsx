@@ -4,7 +4,14 @@ import { glowPulse, floatIn } from "@/utilities/Animations";
 import type { BookingCheckoutCardProps } from "@/interface/props/booking/BookingCheckoutCardProps";
 import type { Seat } from "@/interface/tour/Seat";
 
-export const BookingCheckoutCard = ({ tour, guests, onConfirm, loading }: BookingCheckoutCardProps) => {
+export const BookingCheckoutCard = ({
+  tour,
+  guests,
+  onConfirm,
+  loading,
+  actionLabel = "Reserve and Pay with Wallet",
+  paymentNotice = "Seats are held for 15 minutes while wallet payment is completed.",
+}: BookingCheckoutCardProps) => {
   const guestCount = guests.length;
   const baseTotal = (tour?.basePrice || 0) * guestCount;
 
@@ -98,12 +105,12 @@ export const BookingCheckoutCard = ({ tour, guests, onConfirm, loading }: Bookin
           _hover={{ transform: "translateY(-2px)", shadow: "2xl" }}
           transition="all 0.3s"
         >
-          {!isSeatMissing ? "Complete Group Booking" : `Assign ${guestCount - seatsAssignedCount} More Seat(s)`}
+          {!isSeatMissing ? actionLabel : `Assign ${guestCount - seatsAssignedCount} More Seat(s)`}
           <Icon as={CheckCircle2} ml={2} />
         </Button>
 
         <Text fontSize="xs" textAlign="center" color="fg.muted" fontWeight="medium">
-          Secure payment • Instant Group Tickets
+          {paymentNotice}
         </Text>
       </VStack>
     </Box>

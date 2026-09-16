@@ -26,7 +26,7 @@ export const TransactionDetails = ({ transactionId }: { transactionId: number })
               {isPos ? "+" : "-"}${Math.abs(tx.amount).toFixed(2)}
             </Heading>
             <Badge variant="solid" bg="white/20" color="white" borderRadius="full" mt={2}>
-              {tx.type}
+              {tx.transactionType}
             </Badge>
           </VStack>
         </Box>

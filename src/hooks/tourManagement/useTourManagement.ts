@@ -7,6 +7,7 @@ import { mealPlanService } from "@/Api/tourmanagement/MealPlan";
 import { ticketService } from "@/Api/tourmanagement/Ticket";
 import { reservationService } from "@/Api/tourmanagement/TourReservation";
 import type { Tour } from "@/interface/tour/Tour";
+import type { TourCreateRequest } from "@/interface/tour/TourCreateRequest";
 import type { TourReservation } from "@/interface/tour/TourReservation";
 import type { Transportation } from "@/interface/tour/Transportation";
 import type { TransportationCreateRequest } from "@/interface/tour/TransportationCreateRequest";
@@ -127,8 +128,8 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
       fetchMeals();
     }
   }, [param, fetchMeals]);
-  const handleCreateTour = (tourData: Tour) =>
-    execute(tourService.create(tourData as never), "Expedition Created", "Tour successfully configured.");
+  const handleCreateTour = (tourData: TourCreateRequest) =>
+    execute(tourService.create(tourData), "Expedition Created", "Tour successfully configured.");
 
   const handleUpdateTour = (id: number, tourData: Partial<Tour>) =>
     execute(
@@ -180,7 +181,7 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
     execute(ticketService.updateStatus(id, status), "Ticket Updated", `Status changed to ${status}.`);
 
   const handleCancelTicket = (id: number) =>
-    execute(ticketService.cancel(id), "Booking Cancelled", "Your reservation has been successfully cancelled.");
+    execute(ticketService.cancel(id), "Ticket Cancelled", "The ticket was cancelled and its seat was released.");
 
   const handleApproveTicket = (id: number) =>
     execute(ticketService.approve(id), "Ticket Approved", "The reservation is now approved.");
@@ -191,7 +192,11 @@ export function useTourManagement(param?: string | number | (() => Promise<unkno
   const handleCreateReservation = async (reservationData: Partial<TourReservation>) => {
     if (!currentUser?.id) throw new Error("No authenticated user found.");
     const payload = { ...reservationData, user: reservationData.user || ({ id: currentUser.id } as User) };
-    return execute(reservationService.create(payload as never), "Reservation Success", "Your dates have been secured.");
+    return execute(
+      reservationService.create(payload as never),
+      "Seats Held",
+      "Complete wallet payment within 15 minutes to confirm the reservation."
+    );
   };
   useEffect(() => {
     if (!param) return;

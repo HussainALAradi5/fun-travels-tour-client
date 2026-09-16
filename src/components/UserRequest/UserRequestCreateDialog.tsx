@@ -1,11 +1,12 @@
 import { DynamicFormDialog } from "../ui/Custom/Dialogs/DynamicFormDialog";
 import { Plus } from "lucide-react";
-import type { UserRequest } from "@/interface/support/UserRequest";
+import type { UserRequestCreateRequest } from "@/interface/support/UserRequestCreateRequest";
+import { UserRequestType } from "@/enums/UserRequest/UserRequestType";
 import type { UserRequestCreateDialogProps } from "@/interface/props/user/UserRequestCreateDialogProps";
 
-export const UserRequestCreateDialog = ({ open, onClose, onSubmit, loading, currentUserId }: UserRequestCreateDialogProps) => {
+export const UserRequestCreateDialog = ({ open, onClose, onSubmit, loading }: UserRequestCreateDialogProps) => {
   return (
-    <DynamicFormDialog<UserRequest>
+    <DynamicFormDialog<UserRequestCreateRequest>
       open={open}
       onClose={onClose}
       onSubmit={onSubmit}
@@ -16,10 +17,8 @@ export const UserRequestCreateDialog = ({ open, onClose, onSubmit, loading, curr
       initialValues={{
         title: "",
         description: "",
-        type: "SUPPORT" as UserRequest["type"],
-        status: "PENDING" as UserRequest["status"],
-        user: { id: currentUserId }
-      } as UserRequest}
+        type: UserRequestType.SUPPORT,
+      }}
       fields={[
         { name: "title", label: "Subject / Title", type: "text", isRequired: true },
         {

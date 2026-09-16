@@ -6,4 +6,6 @@ export interface BookingCheckoutCardProps {
   guests: GuestConfig[];
   onConfirm: () => void;
   loading: boolean;
+  actionLabel?: string;
+  paymentNotice?: string;
 }

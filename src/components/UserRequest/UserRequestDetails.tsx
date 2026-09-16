@@ -20,6 +20,7 @@ import type { AuditEventItem } from "@/interface/common/AuditEventItem";
 import type { CommentItem } from "@/interface/common/CommentItem";
 import { notify } from "../ui/Custom/GenericNotification";
 import { UserRequestStatus } from "@/enums/UserRequest/UserRequestStatus";
+import { UserRequestAction } from "@/enums/UserRequest/UserRequestAction";
 import { RequestStatusColors, RequestTypeColors } from "@/constants/roles/Colors";
 
 export const UserRequestDetails = () => {
@@ -74,14 +75,14 @@ export const UserRequestDetails = () => {
     updatedAt: comment.updatedAt ?? undefined
   }));
 
-  const handleStatusAction = async (action: 'assign' | 'solve' | 'reject') => {
+  const handleStatusAction = async (action: UserRequestAction) => {
     if (!user?.id || !request?.id) return;
     setActionLoading(true);
     try {
       let res;
-      if (action === 'assign') res = await userRequestService.assignToAgent(request.id, user.id);
-      if (action === 'solve') res = await userRequestService.solveRequest(request.id, user.id);
-      if (action === 'reject') res = await userRequestService.rejectRequest(request.id, user.id);
+      if (action === UserRequestAction.ASSIGN) res = await userRequestService.assignToAgent(request.id, user.id);
+      if (action === UserRequestAction.SOLVE) res = await userRequestService.solveRequest(request.id);
+      if (action === UserRequestAction.REJECT) res = await userRequestService.rejectRequest(request.id);
 
       if (res) {
         notify({ title: "Success", description: "Action completed", type: "success" });
@@ -94,13 +95,13 @@ export const UserRequestDetails = () => {
 
   const handleAddComment = async (content: string) => {
     if (!user?.id || !request?.id) return;
-    await genericTrackingService.addComment("USER_REQUEST", request.id, user.id, content);
+    await genericTrackingService.addComment("USER_REQUEST", request.id, content);
     await fetchData(false);
   };
 
   const handleEditComment = async (commentId: string | number, content: string) => {
     if (!user?.id) return;
-    await genericTrackingService.updateComment(Number(commentId), user.id, content);
+    await genericTrackingService.updateComment(Number(commentId), content);
     await fetchData(false);
   };
 
@@ -133,8 +134,8 @@ export const UserRequestDetails = () => {
         </HStack>
 
         <HStack gap={3}>
-          {isOwner && request.status !== UserRequestStatus.COMPLETED && request.status !== UserRequestStatus.REJECTED && (
-            <Button size="sm" variant="surface" colorPalette="red" onClick={() => handleStatusAction('solve')} loading={actionLoading} borderRadius="xl">
+          {isOwner && request.status === UserRequestStatus.APPROVED && (
+            <Button size="sm" variant="surface" colorPalette="red" onClick={() => handleStatusAction(UserRequestAction.SOLVE)} loading={actionLoading} borderRadius="xl">
               <Power size={14} style={{marginRight: '6px'}}/> Close Request
             </Button>
           )}
@@ -179,16 +180,21 @@ export const UserRequestDetails = () => {
                 <Text fontSize="sm" fontWeight="bold" color="fg.muted">Agent Administrative Actions</Text>
                 <HStack gap={3}>
                   {request.status === UserRequestStatus.PENDING && (
-                    <Button variant="solid" colorPalette="blue" size="sm" onClick={() => handleStatusAction('assign')} loading={actionLoading} borderRadius="lg">
-                      <UserPlus size={16} style={{marginRight: '8px'}} /> Take Ownership
-                    </Button>
+                    <>
+                      <Button variant="solid" colorPalette="blue" size="sm" onClick={() => handleStatusAction(UserRequestAction.ASSIGN)} loading={actionLoading} borderRadius="lg">
+                        <UserPlus size={16} style={{marginRight: '8px'}} /> Take Ownership
+                      </Button>
+                      <Button variant="outline" colorPalette="red" size="sm" onClick={() => handleStatusAction(UserRequestAction.REJECT)} loading={actionLoading} borderRadius="lg">
+                        <XCircle size={16} style={{marginRight: '8px'}} /> Reject
+                      </Button>
+                    </>
                   )}
                   {request.status === UserRequestStatus.APPROVED && (
                     <>
-                      <Button colorPalette="green" size="sm" onClick={() => handleStatusAction('solve')} loading={actionLoading} borderRadius="lg">
+                      <Button colorPalette="green" size="sm" onClick={() => handleStatusAction(UserRequestAction.SOLVE)} loading={actionLoading} borderRadius="lg">
                         <CheckCircle size={16} style={{marginRight: '8px'}} /> Resolve
                       </Button>
-                      <Button variant="outline" colorPalette="red" size="sm" onClick={() => handleStatusAction('reject')} loading={actionLoading} borderRadius="lg">
+                      <Button variant="outline" colorPalette="red" size="sm" onClick={() => handleStatusAction(UserRequestAction.REJECT)} loading={actionLoading} borderRadius="lg">
                         <XCircle size={16} style={{marginRight: '8px'}} /> Reject
                       </Button>
                     </>
@@ -211,7 +217,7 @@ export const UserRequestDetails = () => {
             onAddComment={handleAddComment}
             onEditComment={handleEditComment}
             title="Discussion"
-            isReadOnly={request.status === "COMPLETED" || request.status === "REJECTED"}
+            isReadOnly={request.status === UserRequestStatus.COMPLETED || request.status === UserRequestStatus.REJECTED}
           />
         </Box>
       </Grid>
