@@ -4,4 +4,5 @@ export interface MealPlanFormValues extends Record<string, unknown> {
   mealDescription: string;
   isVegetarian: boolean;
   isVegan: boolean;
+  isGlutenFree: boolean;
 }

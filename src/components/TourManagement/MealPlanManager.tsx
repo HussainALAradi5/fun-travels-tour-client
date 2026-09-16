@@ -22,6 +22,7 @@ export const MealPlanManager = () => {
     { name: "mealDescription", label: "Description", type: "textarea", gridSpan: 1 },
     { name: "isVegetarian", label: "Vegetarian", type: "checkbox", gridSpan: 1 },
     { name: "isVegan", label: "Vegan", type: "checkbox", gridSpan: 1 },
+    { name: "isGlutenFree", label: "Gluten Free", type: "checkbox", gridSpan: 1 },
   ];
 
   const handleCreate = async (values: MealPlanFormValues) => {
@@ -33,11 +34,11 @@ export const MealPlanManager = () => {
         mealDescription: values.mealDescription,
         isVegetarian: values.isVegetarian,
         isVegan: values.isVegan,
-        isGlutenFree: false,
+        isGlutenFree: values.isGlutenFree,
         status: "ACTIVE",
       };
       await mealPlanService.create(payload);
-      refresh();
+      await refresh();
       onClose();
     } finally {
       setSubmitting(false);
@@ -72,6 +73,10 @@ export const MealPlanManager = () => {
                 <Group gap={2}>
                   {m.isVegetarian && <Badge colorPalette="green" variant="surface">Veg</Badge>}
                   {m.isVegan && <Badge colorPalette="purple" variant="surface">Vegan</Badge>}
+                  {m.isGlutenFree && <Badge colorPalette="orange" variant="surface">Gluten Free</Badge>}
+                  {!m.isVegetarian && !m.isVegan && !m.isGlutenFree && (
+                    <Badge colorPalette="gray" variant="surface">Standard</Badge>
+                  )}
                 </Group>
               )
             },
@@ -93,7 +98,7 @@ export const MealPlanManager = () => {
         title="New Meal Plan"
         icon={Utensils}
         fields={fields}
-        initialValues={{ isVegetarian: false, isVegan: false, status: "ACTIVE", mealName: "", mealPrice: 0, mealDescription: "" }}
+        initialValues={{ isVegetarian: false, isVegan: false, isGlutenFree: false, mealName: "", mealPrice: 0, mealDescription: "" }}
         onSubmit={handleCreate}
         loading={submitting}
       />
