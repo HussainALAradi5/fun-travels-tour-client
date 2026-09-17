@@ -5,39 +5,157 @@ Web frontend for the Fun Travels Tour travel agency management platform.
 **Author:** Hussain Al Aradi
 **Tech:** React 19 | TypeScript | Next.js 16 | Chakra UI v3
 
-## Application Screenshots
+## Application Showcase
 
-### Home
+The screenshots below highlight the public travel experience and the authenticated administration workspace using populated development data.
 
-![Fun Travels home page](docs/images/home.png)
+### Public Experience
 
-### Login
+#### Home
 
-![Fun Travels login page](docs/images/login.png)
+![Fun Travels public home page](docs/images/showcase-home.png)
 
-### Registration
+#### Tour Catalog
 
-![Fun Travels registration page](docs/images/register.png)
+![Fun Travels tour catalog](docs/images/showcase-tours.png)
 
-### Booking Management
+#### Sign In
 
-![Fun Travels booking management page](docs/images/bookings.png)
+![Fun Travels sign-in page](docs/images/showcase-login.png)
 
-### Admin Meal Management
+### Account Experience
 
-This view is captured after signing in with an administrator account and shows the admin navigation and meal-management actions.
+#### Administrator Profile
 
-![Fun Travels meal management page](docs/images/meals.png)
+![Fun Travels administrator profile](docs/images/showcase-profile.png)
 
-### Admin Meal Plan Options
+### Administration Workspace
 
-The meal form includes the meal name, price, description, dietary classifications, and spice level.
+#### Tour Inventory
 
-![Fun Travels new meal plan options](docs/images/meal-options.png)
+![Fun Travels tour inventory management](docs/images/showcase-admin-tours.png)
 
-#### Admin Meal Plan Options in Dark Mode
+#### Customer Requests
 
-![Fun Travels new meal plan options in dark mode](docs/images/dark-meal-options.png)
+![Fun Travels customer request management](docs/images/showcase-admin-requests.png)
+
+#### Transaction Ledger
+
+![Fun Travels transaction ledger](docs/images/showcase-admin-ledger.png)
+
+#### Transportation
+
+![Fun Travels transportation management](docs/images/showcase-admin-transportation.png)
+
+#### Meal Plans
+
+![Fun Travels meal plan management](docs/images/showcase-admin-meals.png)
+
+#### Countries
+
+![Fun Travels country management](docs/images/showcase-admin-countries.png)
+
+#### Agency Network
+
+![Fun Travels agency network](docs/images/showcase-admin-agencies.png)
+
+#### System Users
+
+![Fun Travels system user management](docs/images/showcase-admin-users.png)
+
+### Create, Import & Export Workflows
+
+#### Create a Tour
+
+The tour form demonstrates route selection, scheduling, pricing, capacity, transportation, regional coverage, and meal-plan assignment.
+
+![Fun Travels create-tour form](docs/images/workflow-create-tour.png)
+
+#### Register Transportation
+
+![Fun Travels transportation registration form](docs/images/workflow-create-transportation.png)
+
+#### Add a Meal Plan
+
+![Fun Travels add-meal-plan dialog](docs/images/workflow-add-meal.png)
+
+#### Add an Agency
+
+![Fun Travels add-agency dialog](docs/images/workflow-add-agency.png)
+
+#### Import from Excel
+
+Transportation units can be imported in bulk from an Excel spreadsheet. The dialog documents the expected first-row columns before upload.
+
+![Fun Travels Excel import dialog](docs/images/workflow-import-excel.png)
+
+#### Export Data
+
+Tables support exporting the current data set—or selected rows—as a printable PDF document or an Excel spreadsheet.
+
+![Fun Travels PDF and Excel export dialog](docs/images/workflow-export-data.png)
+
+### Light Mode
+
+#### Public Home
+
+![Fun Travels home page in light mode](docs/images/light-desktop-home.png)
+
+#### Tour Catalog
+
+![Fun Travels tour catalog in light mode](docs/images/light-desktop-tours.png)
+
+#### Sign In
+
+![Fun Travels sign-in page in light mode](docs/images/light-desktop-login.png)
+
+#### Administrator Profile
+
+![Fun Travels administrator profile in light mode](docs/images/light-desktop-profile.png)
+
+#### Tour Inventory
+
+![Fun Travels tour inventory in light mode](docs/images/light-desktop-admin-tours.png)
+
+#### Meal Plans
+
+![Fun Travels meal plans in light mode](docs/images/light-desktop-admin-meals.png)
+
+#### System Users
+
+![Fun Travels system users in light mode](docs/images/light-desktop-admin-users.png)
+
+### Mobile Responsive Experience
+
+The mobile views below were captured at a `390 × 844` phone viewport.
+
+#### Mobile Home
+
+![Fun Travels responsive mobile home page](docs/images/mobile-light-home.png)
+
+#### Mobile Tour Catalog
+
+![Fun Travels responsive mobile tour catalog](docs/images/mobile-light-tours.png)
+
+#### Mobile Sign In
+
+![Fun Travels responsive mobile sign-in page](docs/images/mobile-light-login.png)
+
+#### Mobile Profile
+
+![Fun Travels responsive mobile administrator profile](docs/images/mobile-light-profile.png)
+
+#### Mobile Tour Inventory
+
+![Fun Travels responsive mobile tour inventory](docs/images/mobile-light-admin-tours.png)
+
+#### Mobile Customer Requests
+
+![Fun Travels responsive mobile customer requests](docs/images/mobile-light-admin-requests.png)
+
+#### Mobile System Users
+
+![Fun Travels responsive mobile system users](docs/images/mobile-light-admin-users.png)
 
 ## Quick Start
 
