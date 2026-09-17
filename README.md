@@ -3,7 +3,41 @@
 Web frontend for the Fun Travels Tour travel agency management platform.
 
 **Author:** Hussain Al Aradi
-**Tech:** React 19 | TypeScript | Vite 7 | Chakra UI v3
+**Tech:** React 19 | TypeScript | Next.js 16 | Chakra UI v3
+
+## Application Screenshots
+
+### Home
+
+![Fun Travels home page](docs/images/home.png)
+
+### Login
+
+![Fun Travels login page](docs/images/login.png)
+
+### Registration
+
+![Fun Travels registration page](docs/images/register.png)
+
+### Booking Management
+
+![Fun Travels booking management page](docs/images/bookings.png)
+
+### Admin Meal Management
+
+This view is captured after signing in with an administrator account and shows the admin navigation and meal-management actions.
+
+![Fun Travels meal management page](docs/images/meals.png)
+
+### Admin Meal Plan Options
+
+The meal form includes the meal name, price, description, dietary classifications, and spice level.
+
+![Fun Travels new meal plan options](docs/images/meal-options.png)
+
+#### Admin Meal Plan Options in Dark Mode
+
+![Fun Travels new meal plan options in dark mode](docs/images/dark-meal-options.png)
 
 ## Quick Start
 
@@ -12,7 +46,7 @@ npm install
 npm run dev
 ```
 
-App starts at `http://localhost:5173`
+App starts at `http://localhost:3000`
 
 ## Documentation
 
@@ -24,10 +58,10 @@ Full documentation is in the separate repository: [fun-travels-tour-document](ht
 |------------|---------|---------|
 | React | 19.2.0 | UI Framework |
 | TypeScript | 5.9.3 | Language |
-| Vite | 7.2.4 | Build Tool |
+| Next.js | 16.3.4 | Application Framework |
 | Chakra UI | 3.30.0 | Component Library |
 | Axios | 1.13.2 | HTTP Client |
-| React Router | 7.11.0 | Routing |
+| Next.js App Router | 16.3.4 | Routing |
 | STOMP.js | 7.3.0 | WebSocket |
 | Stripe | 8.11.0 | Payments |
 | jsPDF | 4.1.0 | PDF Export |
