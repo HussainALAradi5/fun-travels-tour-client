@@ -24,14 +24,15 @@ export const PageWrapper = ({
 
       <Container
         maxW="7xl"
-        mt="-80px"
+        px={{ base: 3, md: 4 }}
+        mt={{ base: "-36px", md: "-80px" }}
         position="relative"
         zIndex={10}
       >
         <Box
           bg="bg.panel"
-          p={6}
-          borderRadius="3xl"
+          p={{ base: 3, sm: 4, md: 6 }}
+          borderRadius={{ base: "2xl", md: "3xl" }}
           shadow="2xl"
           borderWidth="1px"
           borderColor="border.subtle"

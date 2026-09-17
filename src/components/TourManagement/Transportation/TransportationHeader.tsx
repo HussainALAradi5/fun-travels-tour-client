@@ -1,4 +1,4 @@
-import { HStack, VStack, Heading, Text, Button, Box } from "@chakra-ui/react";
+import { HStack, Stack, VStack, Heading, Text, Button, Box } from "@chakra-ui/react";
 import { FileUp, Plus } from "lucide-react";
 import { UnifiedFilterBar } from "../../ui/Custom/UnifiedFilterBar";
 import { ContentCard } from "../../ui/Custom/ContentCard";
@@ -32,13 +32,13 @@ export const TransportationHeader = ({
   return (
     <ContentCard
       header={
-        <HStack justify="space-between" width="full">
+        <Stack direction={{ base: "column", md: "row" }} align={{ base: "stretch", md: "center" }} justify="space-between" width="full" gap={3}>
           <VStack align="start" gap={0}>
             <Heading size="md" letterSpacing="tight" fontWeight="black">Fleet Inventory</Heading>
             <Text color="fg.muted" fontSize="xs">Advanced Resource Search & Management</Text>
           </VStack>
-          <HStack>
-          <Button variant="outline" size="sm" onClick={onImport} borderRadius="full">
+          <HStack flexWrap="wrap">
+          <Button flex={{ base: 1, sm: "initial" }} variant="outline" size="sm" onClick={onImport} borderRadius="full">
             <FileUp size={16} /> Import Excel
           </Button>
           <Button
@@ -48,12 +48,13 @@ export const TransportationHeader = ({
             variant="solid"
             borderRadius="full"
             px={5}
+            flex={{ base: 1, sm: "initial" }}
             _hover={{ transform: "scale(1.02)" }}
           >
             <Plus size={16} /> Register Unit
           </Button>
           </HStack>
-        </HStack>
+        </Stack>
       }
     >
       <Box p={4}>

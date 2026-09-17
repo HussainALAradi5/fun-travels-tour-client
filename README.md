@@ -127,35 +127,67 @@ Tables support exporting the current data set—or selected rows—as a printabl
 
 ### Mobile Responsive Experience
 
-The mobile views below were captured at a `390 × 844` phone viewport.
+The mobile views below were captured at a `390 × 844` phone viewport after optimizing the navigation, page spacing, filters, actions, and data tables for smaller screens.
 
-#### Mobile Home
+#### Light Mode
+
+##### Mobile Home
 
 ![Fun Travels responsive mobile home page](docs/images/mobile-light-home.png)
 
-#### Mobile Tour Catalog
+##### Mobile Tour Catalog
 
 ![Fun Travels responsive mobile tour catalog](docs/images/mobile-light-tours.png)
 
-#### Mobile Sign In
+##### Mobile Sign In
 
 ![Fun Travels responsive mobile sign-in page](docs/images/mobile-light-login.png)
 
-#### Mobile Profile
+##### Mobile Profile
 
 ![Fun Travels responsive mobile administrator profile](docs/images/mobile-light-profile.png)
 
-#### Mobile Tour Inventory
+##### Mobile Tour Inventory
 
 ![Fun Travels responsive mobile tour inventory](docs/images/mobile-light-admin-tours.png)
 
-#### Mobile Customer Requests
+##### Mobile Customer Requests
 
 ![Fun Travels responsive mobile customer requests](docs/images/mobile-light-admin-requests.png)
 
-#### Mobile System Users
+##### Mobile System Users
 
 ![Fun Travels responsive mobile system users](docs/images/mobile-light-admin-users.png)
+
+#### Dark Mode
+
+##### Mobile Home
+
+![Fun Travels responsive mobile home page in dark mode](docs/images/mobile-dark-home.png)
+
+##### Mobile Tour Catalog
+
+![Fun Travels responsive mobile tour catalog in dark mode](docs/images/mobile-dark-tours.png)
+
+##### Mobile Sign In
+
+![Fun Travels responsive mobile sign-in page in dark mode](docs/images/mobile-dark-login.png)
+
+##### Mobile Profile
+
+![Fun Travels responsive mobile administrator profile in dark mode](docs/images/mobile-dark-profile.png)
+
+##### Mobile Tour Inventory
+
+![Fun Travels responsive mobile tour inventory in dark mode](docs/images/mobile-dark-admin-tours.png)
+
+##### Mobile Customer Requests
+
+![Fun Travels responsive mobile customer requests in dark mode](docs/images/mobile-dark-admin-requests.png)
+
+##### Mobile System Users
+
+![Fun Travels responsive mobile system users in dark mode](docs/images/mobile-dark-admin-users.png)
 
 ## Quick Start
 

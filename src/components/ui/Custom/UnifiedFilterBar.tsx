@@ -43,7 +43,7 @@ export const UnifiedFilterBar = ({
 
   return (
     <HStack gap={4} width="full" align="flex-end" flexWrap="wrap">
-<VStack align="start" gap={1.5} flex="1" minW="280px">
+<VStack align="start" gap={1.5} flex="1" minW={{ base: "full", sm: "280px" }}>
         <HStack width="full" justify="space-between" px={1}>
           <Text fontSize="2xs" fontWeight="bold" color="fg.muted" textTransform="uppercase" letterSpacing="wider">
             {searchLabel}
@@ -89,7 +89,7 @@ export const UnifiedFilterBar = ({
         <FilterCombobox key={`${idx}-${f.value}`} f={f} />
       ))}
       <Button
-        size="sm" variant="outline" h="10" borderRadius="xl" px={4}
+        size="sm" variant="outline" h="10" borderRadius="xl" px={4} width={{ base: "full", sm: "auto" }}
         onClick={() => { setLocalSearch(""); onReset(); }}
         _hover={{ bg: "red.100", color: "red.600" }}
         title="Reset all filters"

@@ -69,11 +69,12 @@ export function DataTable<T extends { id?: number | string | null }>(props: Data
           borderRadius="2xl"
           borderWidth="1px"
           borderColor="border.subtle"
-          overflow="hidden"
+          overflowX="auto"
+          overflowY="hidden"
           bg="bg.panel"
           shadow="xs"
         >
-          <Table.Root size="md" variant="line" interactive>
+          <Table.Root size="md" variant="line" interactive minW={{ base: "760px", md: "full" }}>
             <Table.Header bg={headerBg} backdropFilter="blur(10px)">
               <Table.Row borderBottomWidth="2px">
                 {showSelect && (

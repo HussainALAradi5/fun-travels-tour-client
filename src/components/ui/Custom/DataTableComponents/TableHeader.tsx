@@ -1,5 +1,6 @@
 import {
   HStack,
+  Stack,
   Box,
   Input,
   Button,
@@ -40,7 +41,7 @@ export const TableToolbar = ({
   setPageSize,
 }: TableToolbarProps) => {
   return (
-    <HStack justifyContent="space-between" pb={4} width="full">
+    <Stack direction={{ base: "column", sm: "row" }} align={{ base: "stretch", sm: "center" }} justifyContent="space-between" pb={4} width="full" gap={3}>
 {!searchDisabled ? (
         <Box position="relative" maxW="400px" width="full">
           <Box
@@ -75,7 +76,7 @@ export const TableToolbar = ({
       ) : (
 <Box flex={1} />
       )}
-<HStack gap={3}>
+<HStack gap={2} justify={{ base: "space-between", sm: "flex-end" }} width={{ base: "full", sm: "auto" }}>
         {enableExport && (
           <>
             <Button
@@ -100,7 +101,7 @@ export const TableToolbar = ({
         )}
 <Select.Root
           size="md"
-          width="140px"
+          width={{ base: "130px", sm: "140px" }}
           collection={pageSizeOptions}
           value={[pageSize.toString()]}
           onValueChange={(details) => {
@@ -143,6 +144,6 @@ export const TableToolbar = ({
           </Portal>
         </Select.Root>
       </HStack>
-    </HStack>
+    </Stack>
   );
 };

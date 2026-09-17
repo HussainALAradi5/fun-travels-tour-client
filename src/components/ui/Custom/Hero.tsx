@@ -14,12 +14,12 @@ export const Hero = ({
   return (
     <Box
       position="relative"
-      borderRadius="3xl"
-      mx={4}
-      mt={4}
-      mb={12}
+      borderRadius={{ base: "2xl", md: "3xl" }}
+      mx={{ base: 3, md: 4 }}
+      mt={{ base: 3, md: 4 }}
+      mb={{ base: 6, md: 12 }}
       overflow="hidden"
-      minH="500px"
+      minH={{ base: "360px", sm: "420px", md: "500px" }}
       display="flex"
       alignItems="center"
       boxShadow="0 25px 50px -12px rgba(0, 0, 0, 0.25)"
@@ -34,10 +34,10 @@ export const Hero = ({
         />
       </Box>
 
-      <Container maxW="7xl" position="relative" zIndex={1} px={12}>
-        <VStack gap={6} align="flex-start" maxW="3xl">
+      <Container maxW="7xl" position="relative" zIndex={1} px={{ base: 6, sm: 8, md: 12 }}>
+        <VStack gap={{ base: 4, md: 6 }} align="flex-start" maxW="3xl">
           <Heading
-            size="4xl"
+            fontSize={{ base: "3xl", sm: "4xl", md: "5xl" }}
             fontWeight="900"
             color="white"
             fontFamily="'Plus Jakarta Sans', sans-serif"
@@ -49,7 +49,7 @@ export const Hero = ({
           </Heading>
 
           <Text
-            fontSize="xl"
+            fontSize={{ base: "md", sm: "lg", md: "xl" }}
             color="whiteAlpha.900"
             fontWeight="500"
             fontFamily="'Plus Jakarta Sans', sans-serif"

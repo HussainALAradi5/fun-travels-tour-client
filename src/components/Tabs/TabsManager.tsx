@@ -9,7 +9,7 @@ import { useNotificationContext } from "@/utilities/NotificationContext";
 import { SmartLink } from "../SmartLink";
 import type { TabItem } from "@/interface/props/common/TabsManagerProps";
 
-export const TabsManager = () => {
+export const TabsManager = ({ mobile = false }: { mobile?: boolean }) => {
   const { isAdmin, isAuthenticated, loading } = useAuth();
   const { unreadCount } = useNotificationContext();
   const location = useLocation();
@@ -65,13 +65,13 @@ export const TabsManager = () => {
 
   return (
     <Tabs.Root value={currentTab} variant="line" colorPalette="blue" size="sm" lazyMount>
-      <Tabs.List borderBottom="none" gap={1} alignItems="center">
+      <Tabs.List borderBottom="none" gap={mobile ? 0 : 1} alignItems="center" minW={mobile ? "max-content" : undefined}>
         {visibleTabs.map((tab: TabItem) => {
           const isNotifyTab = tab.isNotification;
           const hasUnread = isNotifyTab && unreadCount > 0;
           return (
             <SmartLink key={tab.value} to={tab.path}>
-              <Tabs.Trigger value={tab.value} px={3} py={2}>
+              <Tabs.Trigger value={tab.value} px={mobile ? 3 : 3} py={2} minH={mobile ? "44px" : undefined}>
                 <Box as="span" display="flex" alignItems="center" position="relative">
                   <Box position="relative" display="flex" alignItems="center">
                     <Icon size="sm" color={hasUnread ? "blue.500" : "inherit"}>
@@ -83,7 +83,7 @@ export const TabsManager = () => {
                       </Float>
                     )}
                   </Box>
-                  <Text display={{ base: "none", md: "block" }} fontSize="xs" fontWeight="bold" ml={2} color={hasUnread ? "blue.600" : "inherit"}>
+                  <Text display={mobile ? "block" : { base: "none", md: "block" }} fontSize="xs" fontWeight="bold" ml={2} whiteSpace="nowrap" color={hasUnread ? "blue.600" : "inherit"}>
                     {tab.label}
                   </Text>
                   {hasUnread && (
