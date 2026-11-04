@@ -2,7 +2,9 @@ import axios from "axios";
 import { toaster } from "@/components/ui/toaster";
 import { reflectApiError } from "@/utilities/apiErrorHandler";
 
-export const BaseApi = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api";
+import { API_BASE_URL } from "@/config/api.config";
+
+export const BaseApi = API_BASE_URL;
 
 const apiClient = axios.create({
   baseURL: BaseApi,

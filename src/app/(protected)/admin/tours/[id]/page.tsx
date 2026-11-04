@@ -1,6 +1,6 @@
 "use client";
 
-import { AdminTourDetailsPage } from "@/features/TourManagement/AdminTourPageDetails";
+import { AdminTourDetailsPage } from "@/components/pages/tour-management/AdminTourPageDetails";
 
 export default function Page() {
   return <AdminTourDetailsPage />;

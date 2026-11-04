@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
-import { paymentService } from "@/Api/Payment";
-import type { PaymentFilterParams } from "@/interface/payment/PaymentFilterParams";
-import type { Payment } from "@/interface/payment/Payment";
+import { paymentService } from "@/services/payment/paymentService";
+import type { PaymentFilterParams } from "@/interfaces/payment/PaymentFilterParams";
+import type { Payment } from "@/interfaces/payment/Payment";
 
 export function usePayment(paymentId?: number) {
   const [payments, setPayments] = useState<Payment[]>([]);

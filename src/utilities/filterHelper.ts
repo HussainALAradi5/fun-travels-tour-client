@@ -1,6 +1,6 @@
-import type { Tour } from "@/interface/tour/Tour";
-import type { Ticket } from "@/interface/tour/Ticket";
-import type { Notification } from "@/interface/notification/Notification";
+import type { Tour } from "@/interfaces/tour/Tour";
+import type { Ticket } from "@/interfaces/tour/Ticket";
+import type { Notification } from "@/interfaces/notification/Notification";
 import { GenericStatus } from "@/enums/GenericStatus";
 
 export function filterToursBySearch(tours: Tour[], searchTerm: string): Tour[] {

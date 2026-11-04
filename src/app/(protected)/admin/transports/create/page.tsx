@@ -1,6 +1,6 @@
 "use client";
 
-import TransportationCreatePage from "@/features/TourManagement/Transportation/TransportationCreatePage";
+import TransportationCreatePage from "@/components/pages/tour-management/transportation/TransportationCreatePage";
 
 export default function Page() {
   return <TransportationCreatePage />;

@@ -1,6 +1,6 @@
 "use client";
 
-import ManageCountries from "@/features/User/Admin/ManageCountries";
+import ManageCountries from "@/components/pages/user/admin/ManageCountries";
 
 export default function Page() {
   return <ManageCountries />;

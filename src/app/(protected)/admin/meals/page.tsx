@@ -1,6 +1,6 @@
 "use client";
 
-import MealsPage from "@/features/TourManagement/MealsPage";
+import MealsPage from "@/components/pages/tour-management/MealsPage";
 
 export default function Page() {
   return <MealsPage />;

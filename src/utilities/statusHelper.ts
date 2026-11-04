@@ -1,8 +1,8 @@
 import { GenericStatus } from '../enums/GenericStatus';
-import { TicketStatus } from '../enums/tourmanagement/TicketStatus';
-import { SeatStatus } from '../enums/tourmanagement/SeatStatus';
+import { TicketStatus } from '../enums/tour-management/TicketStatus';
+import { SeatStatus } from '../enums/tour-management/SeatStatus';
 import { PaymentStatus } from '../enums/payment/PaymentStatus';
-import { TransportationStatus } from '../enums/tourmanagement/TransportationStatus';
+import { TransportationStatus } from '../enums/tour-management/TransportationStatus';
 import type { StatusColor } from '@/types/common/StatusColor';
 
 export function getStatusColor(status: GenericStatus | string): StatusColor {

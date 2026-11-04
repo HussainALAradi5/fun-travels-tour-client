@@ -38,3 +38,8 @@ export function getInitials(name: string | undefined | null): string {
     .toUpperCase()
     .substring(0, 2);
 }
+
+/** "City, Country" from whichever parts are set; "Location not set" when neither is. */
+export function formatPlace(city?: string | null, country?: string | null): string {
+  return [city, country].filter(Boolean).join(', ') || 'Location not set';
+}

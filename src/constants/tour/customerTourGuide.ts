@@ -7,7 +7,7 @@ import {
   TicketCheck,
   Users,
 } from "lucide-react";
-import type { GuideStep } from "@/interface/common/GuideStep";
+import type { GuideStep } from "@/interfaces/common/GuideStep";
 
 export const customerTourGuide: GuideStep[] = [
   {

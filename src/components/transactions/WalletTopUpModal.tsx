@@ -1,160 +1,37 @@
-import { useState, useEffect } from "react";
-import {
-  VStack, HStack, Text, Box, Button, Input,
-  SimpleGrid, Icon, Separator, Center, Spinner
-} from "@chakra-ui/react";
-import { CreditCard, Wallet, Landmark, ShieldCheck, AlertCircle } from "lucide-react";
-import { loadStripe, type Stripe } from "@stripe/stripe-js";
+import { useState } from "react";
+import { Box, Center, HStack, Icon, Separator, Spinner, Text, VStack } from "@chakra-ui/react";
 import { Elements } from "@stripe/react-stripe-js";
-
-import { AppDialog } from "@/components/ui/Custom/Dialogs/AppDialog";
-import { PaymentMethodColor } from "@/enums/payment/PaymentMethod";
-import { walletService } from "@/Api/Wallet";
-import { StripeCheckoutForm } from "./Wallet/StripeCheckoutForm";
-import type { WalletTopUpModalProps } from "@/interface/props/booking/WalletTopUpModalProps";
+import { CreditCard, Lock, ShieldCheck, Wallet } from "lucide-react";
+import { AppDialog } from "@/components/ui/custom/dialogs/AppDialog";
+import { DEFAULT_TOP_UP, TOP_UP_METHOD } from "@/constants/payment/topUp";
+import { useStripe } from "@/hooks/payment/useStripe";
+import type { WalletTopUpModalProps } from "@/interfaces/props/booking/WalletTopUpModalProps";
+import { AmountPicker } from "./wallet/AmountPicker";
+import { StripeCheckoutForm } from "./wallet/StripeCheckoutForm";
 
 export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalProps) => {
-  const [amount, setAmount] = useState<string>("50");
-  const [method, setMethod] = useState<string>("CREDIT_CARD");
-  const predefinedAmounts = ["50", "100", "250", "500"];
-  const [stripePromise, setStripePromise] = useState<Promise<Stripe | null> | null>(null);
-
-  useEffect(() => {
-    if (open && !stripePromise) {
-      console.log("🟦 Modal Opened: Initiating Stripe Setup...");
-      walletService.getConfig()
-        .then((data: { publishableKey: string }) => {
-          console.log("✅ Modal: Config fetched successfully. Injecting key into loadStripe().");
-          setStripePromise(loadStripe(data.publishableKey));
-        })
-        .catch((err: unknown) => {
-          console.error("❌ Modal: Failed to fetch Stripe configuration from backend.", err);
-        });
-    }
-  }, [open, stripePromise]);
-  const handleClose = () => {
-    console.log("🟨 Modal Closed: Resetting state.");
-    setAmount("50");
-    setMethod("CREDIT_CARD");
-    onClose();
-  };
-
+  const [amount, setAmount] = useState(DEFAULT_TOP_UP);
+  const stripePromise = useStripe(open);
+  const handleClose = () => { setAmount(DEFAULT_TOP_UP); onClose(); };
   return (
-    <AppDialog
-      open={open}
-      onClose={handleClose}
-      title="Top Up Digital Wallet"
-      icon={Wallet}
-      size="md"
-    >
+    <AppDialog open={open} onClose={handleClose} title="Top Up Digital Wallet" icon={Wallet} size="md">
       <VStack align="stretch" gap={6} py={2}>
-<VStack align="start" gap={3}>
-          <Text fontSize="sm" fontWeight="bold" color="fg.muted" letterSpacing="wider">
-            SELECT AMOUNT (USD)
-          </Text>
-          <SimpleGrid columns={4} gap={3} w="full">
-            {predefinedAmounts.map((amt) => (
-              <Button
-                key={amt}
-                variant={amount === amt ? "solid" : "outline"}
-                colorPalette="blue"
-                onClick={() => setAmount(amt)}
-                size="lg"
-                borderRadius="xl"
-              >
-                ${amt}
-              </Button>
-            ))}
-          </SimpleGrid>
-          <Input
-            type="number"
-            placeholder="Or enter custom amount..."
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            size="xl"
-            borderRadius="xl"
-            mt={2}
-            fontWeight="bold"
-            fontSize="lg"
-          />
-        </VStack>
-
+        <AmountPicker amount={amount} onChange={setAmount} />
         <Separator />
-<VStack align="start" gap={3}>
-          <Text fontSize="sm" fontWeight="bold" color="fg.muted" letterSpacing="wider">
-            PAYMENT METHOD
-          </Text>
-          <HStack w="full" gap={3}>
-            <PaymentOption
-              icon={CreditCard} label="Credit Card"
-              active={method === "CREDIT_CARD"}
-              colorScheme={PaymentMethodColor.CREDIT_CARD}
-              onClick={() => setMethod("CREDIT_CARD")}
-            />
-            <PaymentOption
-              icon={Landmark} label="Bank Transfer"
-              active={method === "BANK_TRANSFER"}
-              colorScheme={PaymentMethodColor.BANK_TRANSFER}
-              onClick={() => setMethod("BANK_TRANSFER")}
-            />
-          </HStack>
-        </VStack>
-<Box
-          p={5}
-          bg="bg.subtle"
-          borderRadius="2xl"
-          border="1px solid"
-          borderColor="border.subtle"
-        >
-          <HStack justify="space-between" mb={4}>
-            <HStack color="green.500">
-              <Icon as={ShieldCheck} size="sm" />
-              <Text fontSize="xs" fontWeight="bold">SECURE CHECKOUT</Text>
-            </HStack>
-          </HStack>
-{stripePromise ? (
+        <HStack gap={2} color="fg.muted"><Icon as={CreditCard} /><Text fontSize="sm" fontWeight="bold">Pay by card</Text></HStack>
+        <Box p={5} bg="bg.subtle" borderRadius="2xl" border="1px solid" borderColor="border.subtle">
+          <HStack color="green.500" mb={4}><Icon as={ShieldCheck} size="sm" /><Text fontSize="xs" fontWeight="bold">SECURE CHECKOUT</Text></HStack>
+          {stripePromise ? (
             <Elements stripe={stripePromise}>
-              <StripeCheckoutForm
-                amount={amount}
-                method={method}
-                onSuccess={onSuccess}
-                onClose={handleClose}
-              />
+              <StripeCheckoutForm amount={amount} method={TOP_UP_METHOD} onSuccess={onSuccess} onClose={handleClose} />
             </Elements>
-          ) : (
-            <Center py={6}>
-              <Spinner color="blue.500" />
-            </Center>
-          )}
-
+          ) : <Center py={6}><Spinner color="blue.500" /></Center>}
         </Box>
-
-        <HStack justify="center" opacity={0.6}>
-          <Icon as={AlertCircle} size="xs" />
-          <Text fontSize="xs">This is a secure, 256-bit encrypted transaction.</Text>
+        <HStack justify="center" opacity={0.7}>
+          <Icon as={Lock} size="xs" />
+          <Text fontSize="xs">Card details go directly to Stripe and never reach our servers.</Text>
         </HStack>
-
       </VStack>
     </AppDialog>
   );
 };
-
-import type { PaymentOptionProps } from "@/interface/props/ui/PaymentOptionProps";
-const PaymentOption = ({ icon: IconComponent, label, active, onClick, colorScheme }: PaymentOptionProps) => (
-  <Button
-    flex={1}
-    h="auto"
-    py={5}
-    variant={active ? "solid" : "outline"}
-    colorPalette={active ? colorScheme || "blue" : "gray"}
-    onClick={onClick}
-    flexDirection="column"
-    gap={3}
-    borderRadius="xl"
-    borderWidth={active ? "2px" : "1px"}
-    transition="all 0.2s"
-  >
-    <IconComponent size={24} />
-    <Text fontSize="sm" fontWeight={active ? "bold" : "medium"}>{label}</Text>
-  </Button>
-);

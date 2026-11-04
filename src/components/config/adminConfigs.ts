@@ -1,6 +1,6 @@
-import type { FieldConfig } from "@/interface/common/FieldConfig";
-import type { Transportation } from "@/interface/tour/Transportation";
-import type { MealPlan } from "@/interface/tour/MealPlan";
+import type { FieldConfig } from "@/interfaces/common/FieldConfig";
+import type { Transportation } from "@/interfaces/tour/Transportation";
+import type { MealPlan } from "@/interfaces/tour/MealPlan";
 
 export const mealPlanFields: FieldConfig<MealPlan>[] = [
   { name: "mealName", label: "Meal Name", type: "text", isRequired: true },

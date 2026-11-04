@@ -8,8 +8,8 @@ import {
   type ReactNode,
 } from "react";
 import { authUtils } from "@/utilities/AuthUtils";
-import { userService } from "@/Api/User";
-import type { AuthContextType } from "@/interface/common/AuthContextType";
+import { userService } from "@/services/user/userService";
+import type { AuthContextType } from "@/interfaces/common/AuthContextType";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

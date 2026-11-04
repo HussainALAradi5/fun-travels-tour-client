@@ -1,6 +1,6 @@
 "use client";
 
-import { ForgetPassword } from "@/components/User/Auth/ForgetPassword";
+import { ForgetPassword } from "@/components/user/auth/ForgetPassword";
 
 export default function Page() {
   return <ForgetPassword />;

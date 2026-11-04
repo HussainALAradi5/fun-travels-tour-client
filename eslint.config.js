@@ -19,7 +19,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['src/interface/**/*.{ts,tsx}'],
+    files: ['src/interfaces/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-syntax': [
         'error',

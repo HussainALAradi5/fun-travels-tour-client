@@ -1,9 +1,9 @@
 import { Box, Flex, Button, Container, HStack, IconButton, Text } from "@chakra-ui/react";
-import { ColorModeButton } from "../components/ui/color-mode";
+import { ColorModeButton } from "./ui/color-mode";
 import { UserCircle, LogOut } from "lucide-react";
 import { useNavigate } from "@/lib/navigation";
 import { useAuth } from "@/utilities/AuthContext";
-import { TabsManager } from "./Tabs/TabsManager";
+import { TabsManager } from "./tabs/TabsManager";
 import { SmartLink } from "./SmartLink";
 
 export const NavBar = () => {

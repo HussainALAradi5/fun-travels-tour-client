@@ -1,7 +1,7 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import ExcelJS from "exceljs";
-import type { ExportRecord } from "@/interface/common/ExportRecord";
+import type { ExportRecord } from "@/interfaces/common/ExportRecord";
 
 export const ExportUtils = {
   formatValue: (value: string | number | boolean | null | undefined | ExportRecord | ExportRecord[], isExcel: boolean = false): string => {

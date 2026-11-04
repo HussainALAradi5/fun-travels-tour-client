@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "@/lib/navigation";
-import { userService } from "@/Api/User";
-import type { RegisterRequest } from "@/interface/auth/RegisterRequest";
+import { userService } from "@/services/user/userService";
+import type { RegisterRequest } from "@/interfaces/auth/RegisterRequest";
 
 export function useRegister() {
   const navigate = useNavigate();

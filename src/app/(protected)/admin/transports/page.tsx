@@ -1,6 +1,6 @@
 "use client";
 
-import TransportPage from "@/features/TourManagement/TransportPage";
+import TransportPage from "@/components/pages/tour-management/TransportPage";
 
 export default function Page() {
   return <TransportPage />;

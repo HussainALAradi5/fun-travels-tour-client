@@ -1,4 +1,4 @@
-import type { SelectOption } from "@/interface/common/SelectOption";
+import type { SelectOption } from "@/interfaces/common/SelectOption";
 
 export function mapEntitiesToOptions<T>(
   entities: T[],

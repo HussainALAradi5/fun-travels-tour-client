@@ -1,6 +1,6 @@
 import { BusFront, CarFront, Plane, Sailboat, Ship, TrainFront } from "lucide-react";
-import { TransportationType } from "@/enums/tourmanagement/TransportationType";
-import type { SelectOption } from "@/interface/common/SelectOption";
+import { TransportationType } from "@/enums/tour-management/TransportationType";
+import type { SelectOption } from "@/interfaces/common/SelectOption";
 
 export const transportationTypeOptions: SelectOption[] = [
   { label: "Bus", value: TransportationType.BUS, icon: BusFront },

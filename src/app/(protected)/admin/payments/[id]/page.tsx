@@ -1,6 +1,6 @@
 "use client";
 
-import PaymentDetailsPage from "@/features/Payments/PaymentDetailsPage";
+import PaymentDetailsPage from "@/components/pages/payments/PaymentDetailsPage";
 
 export default function Page() {
   return <PaymentDetailsPage />;

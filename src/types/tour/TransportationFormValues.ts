@@ -1,3 +1,3 @@
-import type { TransportationCreateRequest } from "@/interface/tour/TransportationCreateRequest";
+import type { TransportationCreateRequest } from "@/interfaces/tour/TransportationCreateRequest";
 
 export type TransportationFormValues = TransportationCreateRequest;
