@@ -1,5 +1,5 @@
-import type { FilterState } from "@/interface/common/FilterState";
-import type { FilterResult } from "@/interface/common/FilterResult";
+import type { FilterState } from "@/interfaces/common/FilterState";
+import type { FilterResult } from "@/interfaces/common/FilterResult";
 
 export const GenericFilter = {
   process: <T>(data: T[], state: FilterState<T>): FilterResult<T> => {

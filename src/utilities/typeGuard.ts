@@ -1,6 +1,6 @@
-import type { TimelineItem } from '../interface/support/TimelineItem';
-import type { GenericComment } from '../interface/support/GenericComment';
-import type { GenericEventLog } from '../interface/support/GenericEventLog';
+import type { TimelineItem } from '../interfaces/support/TimelineItem';
+import type { GenericComment } from '../interfaces/support/GenericComment';
+import type { GenericEventLog } from '../interfaces/support/GenericEventLog';
 
 export function isComment(item: TimelineItem): item is GenericComment {
   return 'content' in item && 'author' in item;

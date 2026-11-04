@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "@/lib/navigation";
-import { userService } from "@/Api/User";
+import { userService } from "@/services/user/userService";
 import { useAuth } from "@/utilities/AuthContext";
-import type { LoginRequest } from "@/interface/auth/LoginRequest";
+import type { LoginRequest } from "@/interfaces/auth/LoginRequest";
 
 export function useLogin() {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { accountService } from "@/Api/Account";
+import { accountService } from "@/services/payment/accountService";
 
 export function useAccount(userId?: number) {
   const [balance, setBalance] = useState<number | null>(null);

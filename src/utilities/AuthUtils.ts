@@ -1,4 +1,4 @@
-import type { User } from "@/interface/user/User";
+import type { User } from "@/interfaces/user/User";
 
 const getStorage = () => typeof window === "undefined" ? null : window.localStorage;
 

@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
-import { agencyService } from "@/Api/Agency/Agency";
-import { branchService } from "@/Api/Agency/AgencyBranch";
+import { agencyService } from "@/services/agency/agencyService";
+import { branchService } from "@/services/agency/branchService";
 import { toaster } from "@/components/ui/toaster";
-import type { Agency } from "@/interface/agency/Agency";
-import type { AgencyBranch } from "@/interface/agency/AgencyBranch";
+import type { Agency } from "@/interfaces/agency/Agency";
+import type { AgencyBranch } from "@/interfaces/agency/AgencyBranch";
 
 export function useAgencies() {
   const [agencies, setAgencies] = useState<Agency[]>([]);

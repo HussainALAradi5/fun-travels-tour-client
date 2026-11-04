@@ -1,16 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { Badge, IconButton, Icon, HStack, Text, VStack } from "@chakra-ui/react";
 import { Eye, ReceiptText, Calendar, ArrowUpRight, ArrowDownRight } from "lucide-react";
-import { DataTable } from "@/components/ui/Custom/DataTable";
-import type { Column } from "@/interface/common/Column";
+import { DataTable } from "@/components/ui/custom/DataTable";
+import type { Column } from "@/interfaces/common/Column";
 import { useTransaction } from "@/hooks/useTransaction";
-import type { Transaction } from "@/interface/payment/Transaction";
+import type { Transaction } from "@/interfaces/payment/Transaction";
 import { TransactionTypeColor } from "@/enums/TransactionType";
 import { useNavigate } from "@/lib/navigation";
-import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
-import { DateSortFilter } from "@/components/ui/Custom/DateSortFilter";
-import type { DateSortFilterValue } from "@/interface/props/ui/DateSortFilterProps";
-import type { TransactionSortField } from "@/interface/payment/TransactionFilterParams";
+import { PageWrapper } from "@/components/ui/custom/PageWrapper";
+import { DateSortFilter } from "@/components/ui/custom/DateSortFilter";
+import type { DateSortFilterValue } from "@/interfaces/props/ui/DateSortFilterProps";
+import type { TransactionSortField } from "@/interfaces/payment/TransactionFilterParams";
 
 export const TransactionTable = () => {
   const { transactions, isLoading, fetchTransactions } = useTransaction();

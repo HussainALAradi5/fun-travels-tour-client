@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import type { ApiErrorResponse } from "@/interface/common/ApiErrorResponse";
+import type { ApiErrorResponse } from "@/interfaces/common/ApiErrorResponse";
 
 export const reflectApiError = (error: unknown): string => {
   const axiosError = error as AxiosError<ApiErrorResponse>;

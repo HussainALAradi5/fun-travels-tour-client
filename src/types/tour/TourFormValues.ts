@@ -1,4 +1,4 @@
-import type { Tour } from "@/interface/tour/Tour";
+import type { Tour } from "@/interfaces/tour/Tour";
 
 export type TourFormValues = Omit<Tour, 'startCountry' | 'endCountry' | 'startCity' | 'endCity' | 'destinationCountries' | 'transportation'> & {
   startCountry: string;

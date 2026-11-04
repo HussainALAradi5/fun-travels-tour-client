@@ -1,0 +1,14 @@
+import { Box } from "@chakra-ui/react";
+import { useTransportationColumns } from "@/hooks/tour-management/useTransportationColumns";
+import type { Transportation } from "@/interfaces/tour/Transportation";
+import type { TransportationTableProps } from "@/interfaces/props/tour/TransportationTableProps";
+import { DataTable } from "../../ui/custom/DataTable";
+
+export const TransportationTable = ({ data, loading, onEdit, onView }: TransportationTableProps) => {
+  const columns = useTransportationColumns(onView, onEdit);
+  return (
+    <Box p={1} bg="bg.panel" borderRadius="3xl" border="1px solid" borderColor="border.subtle" shadow="xl" overflow="hidden">
+      <DataTable<Transportation> data={data} loading={loading} enableExport searchDisabled columns={columns} />
+    </Box>
+  );
+};

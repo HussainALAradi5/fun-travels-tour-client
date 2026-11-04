@@ -221,12 +221,17 @@ Full documentation is in the separate repository: [fun-travels-tour-document](ht
 
 ```
 src/
-├── Api/              # API services (19 files)
-├── components/       # UI components (90+ files)
-├── config/           # Axios configuration
-├── enums/            # TypeScript enums (17 files)
-├── hooks/            # Custom hooks (11 files)
-├── interface/        # TypeScript interfaces (18 files)
-├── pages/            # Route pages (26 files)
-└── utilities/        # Helpers and contexts
+├── app/              # Next.js routes only; each page renders a page component
+├── components/
+│   ├── pages/        # Page-level containers composed by app/ routes
+│   └── <domain>/     # Reusable UI (ui/custom) and domain components, kebab-case folders
+├── config/           # api.config.ts (env-driven URLs) and the axios client
+├── constants/        # Shared constant values
+├── enums/            # Enums with label/color maps
+├── hooks/            # Data loading and state
+├── interfaces/       # Wire contracts and props, one per file
+├── lib/              # Navigation helpers
+├── services/         # Typed API services over the single client
+├── types/            # UI-only types
+└── utilities/        # Pure helpers, auth and notification contexts
 ```

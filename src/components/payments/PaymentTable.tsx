@@ -1,17 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { Badge, IconButton, Icon, HStack, Text, VStack } from "@chakra-ui/react";
 import { Eye, Calendar, CreditCard, Landmark, CheckCircle, XCircle, Clock } from "lucide-react";
-import { DataTable } from "@/components/ui/Custom/DataTable";
-import type { Column } from "@/interface/common/Column";
+import { DataTable } from "@/components/ui/custom/DataTable";
+import type { Column } from "@/interfaces/common/Column";
 import { usePayment } from "@/hooks/usePayment";
-import type { Payment } from "@/interface/payment/Payment";
+import type { Payment } from "@/interfaces/payment/Payment";
 import { PaymentMethodColor } from "@/enums/payment/PaymentMethod";
 import { PaymentStatusColor } from "@/enums/payment/PaymentStatus";
 import { useNavigate } from "@/lib/navigation";
-import { PageWrapper } from "@/components/ui/Custom/PageWrapper";
-import { DateSortFilter } from "@/components/ui/Custom/DateSortFilter";
-import type { DateSortFilterValue } from "@/interface/props/ui/DateSortFilterProps";
-import type { PaymentSortField } from "@/interface/payment/PaymentFilterParams";
+import { PageWrapper } from "@/components/ui/custom/PageWrapper";
+import { DateSortFilter } from "@/components/ui/custom/DateSortFilter";
+import type { DateSortFilterValue } from "@/interfaces/props/ui/DateSortFilterProps";
+import type { PaymentSortField } from "@/interfaces/payment/PaymentFilterParams";
 
 export const PaymentTable = () => {
   const { payments, isLoading, fetchPayments } = usePayment();

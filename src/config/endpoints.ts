@@ -1,0 +1,122 @@
+/** API paths relative to API_BASE_URL. They mirror the server controllers (see the documentation repo). */
+export const ENDPOINTS = {
+  auth: {
+    login: "/auth/login",
+    register: "/auth/register",
+    passwordResetRequest: "/auth/password-reset/request",
+    passwordResetConfirm: "/auth/password-reset/confirm",
+  },
+  users: {
+    root: "/users",
+    byId: (id: number | string) => `/users/${id}`,
+    addEmployee: "/users/add-employee",
+    byAgency: (agencyId: number | string) => `/users/agency/${agencyId}`,
+    bulkImport: "/users/bulk-import",
+    permissions: (id: number | string) => `/users/permissions/${id}`,
+    byRole: (type: number | string) => `/users/role/${type}`,
+  },
+  accounts: {
+    balance: (userId: number | string) => `/accounts/user/${userId}/balance`,
+    history: (userId: number | string) => `/accounts/user/${userId}/history`,
+  },
+  wallet: {
+    config: "/wallet/config",
+    topUp: "/wallet/top-up",
+  },
+  payments: {
+    root: "/payments",
+    byId: (id: number | string) => `/payments/${id}`,
+    execute: (reservationId: number | string) => `/payments/execute/${reservationId}`,
+  },
+  transactions: {
+    root: "/transactions",
+    byId: (id: number | string) => `/transactions/${id}`,
+    manualCredit: (userId: number | string) => `/transactions/manual-credit/${userId}`,
+  },
+  agencies: {
+    root: "/agencies",
+    byId: (id: number | string) => `/agencies/${id}`,
+    search: "/agencies/search",
+    employees: (agencyId: number | string) => `/agencies/${agencyId}/employees`,
+  },
+  branches: {
+    root: "/branches",
+    byAgency: (agencyId: number | string) => `/branches/agency/${agencyId}`,
+    searchByAgency: (agencyId: number | string) => `/branches/agency/${agencyId}/search`,
+    employees: (agencyId: number | string, branchId: number | string) => `/branches/agency/${agencyId}/branch/${branchId}/employees`,
+  },
+  countries: {
+    root: "/countries",
+    byId: (id: number | string) => `/countries/${id}`,
+    syncAll: "/countries/sync-all",
+    sync: (name: number | string) => `/countries/sync/${name}`,
+  },
+  cities: {
+    root: "/cities",
+    byId: (id: number | string) => `/cities/${id}`,
+    byCountry: (countryId: number | string) => `/cities/country/${countryId}`,
+  },
+  ports: {
+    root: "/ports",
+    status: (id: number | string) => `/ports/${id}/status`,
+  },
+  tours: {
+    root: "/tours",
+    byId: (id: number | string) => `/tours/${id}`,
+    status: (id: number | string) => `/tours/${id}/status`,
+    catalog: "/tours/catalog",
+    search: "/tours/search",
+  },
+  transportations: {
+    root: "/transportations",
+    byId: (id: number | string) => `/transportations/${id}`,
+    status: (id: number | string) => `/transportations/${id}/status`,
+    imports: "/transportations/imports",
+    search: "/transportations/search",
+  },
+  seats: {
+    root: "/seats",
+    byId: (id: number | string) => `/seats/${id}`,
+    status: (id: number | string) => `/seats/${id}/status`,
+    search: "/seats/search",
+  },
+  meals: {
+    root: "/meals",
+    price: (id: number | string) => `/meals/${id}/price`,
+    status: (id: number | string) => `/meals/${id}/status`,
+    byAgency: (agencyId: number | string) => `/meals/agency/${agencyId}`,
+  },
+  reservations: {
+    root: "/reservations",
+    byId: (id: number | string) => `/reservations/${id}`,
+    cancel: (id: number | string) => `/reservations/${id}/cancel`,
+    status: (id: number | string) => `/reservations/${id}/status`,
+    search: "/reservations/search",
+  },
+  tickets: {
+    root: "/tickets",
+    byId: (id: number | string) => `/tickets/${id}`,
+    approve: (id: number | string) => `/tickets/${id}/approve`,
+    cancel: (id: number | string) => `/tickets/${id}/cancel`,
+    confirm: (id: number | string) => `/tickets/${id}/confirm`,
+    status: (id: number | string) => `/tickets/${id}/status`,
+    search: "/tickets/search",
+  },
+  notifications: {
+    read: (id: number | string) => `/notifications/${id}/read`,
+    forUser: (userId: number | string) => `/notifications/user/${userId}`,
+    counts: (userId: number | string) => `/notifications/user/${userId}/counts`,
+  },
+  tracking: {
+    timeline: (refType: number | string, refId: number | string) => `/tracking/${refType}/${refId}`,
+    addComment: (refType: number | string, refId: number | string) => `/tracking/${refType}/${refId}/comments`,
+    comment: (commentId: number | string) => `/tracking/comments/${commentId}`,
+  },
+  userRequests: {
+    root: "/user-requests",
+    byId: (id: number | string) => `/user-requests/${id}`,
+    assign: (requestId: number | string, agentId: number | string) => `/user-requests/${requestId}/assign/${agentId}`,
+    reject: (requestId: number | string) => `/user-requests/${requestId}/reject`,
+    solve: (requestId: number | string) => `/user-requests/${requestId}/solve`,
+  },
+} as const;

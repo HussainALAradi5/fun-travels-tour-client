@@ -1,5 +1,5 @@
 import { CalendarCheck, CircleHelp, Clock3, MapPin, QrCode, ShieldCheck } from "lucide-react";
-import type { GuideStep } from "@/interface/common/GuideStep";
+import type { GuideStep } from "@/interfaces/common/GuideStep";
 
 export const customerTicketGuide: GuideStep[] = [
   {

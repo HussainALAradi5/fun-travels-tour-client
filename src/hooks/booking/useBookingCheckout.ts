@@ -1,10 +1,10 @@
 import { useState, useCallback } from "react";
-import { useUser } from "@/hooks/User/useUser";
-import type { Tour } from "@/interface/tour/Tour";
-import type { Guest } from "@/interface/common/Guest";
+import { useUser } from "@/hooks/user/useUser";
+import type { Tour } from "@/interfaces/tour/Tour";
+import type { Guest } from "@/interfaces/common/Guest";
 import { useNavigate } from "@/lib/navigation";
 import { toaster } from "@/components/ui/toaster";
-import { reservationService } from "@/Api/tourmanagement/TourReservation";
+import { reservationService } from "@/services/tour-management/reservationService";
 import { reflectApiError } from "@/utilities/apiErrorHandler";
 
 export function useBookingCheckout(tour: Tour | null) {

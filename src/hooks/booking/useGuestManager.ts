@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
-import type { Seat } from "@/interface/tour/Seat";
-import type { MealPlan } from "@/interface/tour/MealPlan";
-import type { Guest } from "@/interface/common/Guest";
+import type { Seat } from "@/interfaces/tour/Seat";
+import type { MealPlan } from "@/interfaces/tour/MealPlan";
+import type { Guest } from "@/interfaces/common/Guest";
 
 export function useGuestManager(maxCapacity: number) {
   const [guests, setGuests] = useState<Guest[]>([

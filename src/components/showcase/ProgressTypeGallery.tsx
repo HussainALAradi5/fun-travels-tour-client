@@ -1,7 +1,7 @@
 import { Badge, Box, SimpleGrid, VStack } from "@chakra-ui/react";
-import { CapacityProgress } from "@/components/ui/Custom/CapacityProgress";
+import { CapacityProgress } from "@/components/ui/custom/CapacityProgress";
 import { ProgressType } from "@/enums/ProgressType";
-import type { ProgressTypeGalleryProps } from "@/interface/props/showcase/ProgressTypeGalleryProps";
+import type { ProgressTypeGalleryProps } from "@/interfaces/props/showcase/ProgressTypeGalleryProps";
 
 const progressValues: Record<ProgressType, number> = {
   [ProgressType.AUTO]: 34,

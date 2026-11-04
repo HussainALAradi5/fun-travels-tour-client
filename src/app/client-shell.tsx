@@ -7,7 +7,7 @@ import { NavBar } from "@/components/NavBar";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/utilities/AuthContext";
 import { NotificationProvider } from "@/utilities/NotificationContext";
-import { NotificationEscapeListener } from "@/components/ui/Custom/GenericNotification";
+import { NotificationEscapeListener } from "@/components/ui/custom/GenericNotification";
 
 interface ClientShellProps {
   children: ReactNode;

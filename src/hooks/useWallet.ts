@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { walletService } from "@/Api/Wallet";
+import { walletService } from "@/services/payment/walletService";
 import { toaster } from "@/components/ui/toaster";
 import type { PaymentMethod } from "@/enums/payment/PaymentMethod";
 

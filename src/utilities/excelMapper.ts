@@ -1,4 +1,4 @@
-import type { User } from "@/interface/user/User";
+import type { User } from "@/interfaces/user/User";
 import * as XLSX from "xlsx";
 
 const DEFAULT_USER: Partial<User> = {

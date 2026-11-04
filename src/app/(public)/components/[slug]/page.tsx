@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import ComponentShowcaseDetailPage from "@/features/ComponentShowcaseDetailPage";
+import ComponentShowcaseDetailPage from "@/components/pages/ComponentShowcaseDetailPage";
 import { componentCatalog, getComponentShowcaseItem } from "@/constants/showcase/componentCatalog";
-import type { ComponentPageProps } from "@/interface/props/showcase/ComponentPageProps";
+import type { ComponentPageProps } from "@/interfaces/props/showcase/ComponentPageProps";
 
 export const generateStaticParams = () => componentCatalog.map(({ slug }) => ({ slug }));
 

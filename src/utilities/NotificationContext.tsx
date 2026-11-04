@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { Client } from '@stomp/stompjs';
 import { useAuth } from './AuthContext';
-import { notificationService } from '@/Api/Notification';
-import type { NotificationContextType } from '@/interface/common/NotificationContextType';
+import { authUtils } from './AuthUtils';
+import { WS_NOTIFICATIONS_URL, notificationTopic } from '@/config/api.config';
+import { notificationService } from '@/services/notification/notificationService';
+import type { NotificationContextType } from '@/interfaces/common/NotificationContextType';
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
@@ -32,14 +34,15 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     }
 
     const stompClient = new Client({
-      brokerURL: 'ws://localhost:8080/ws-notifications',
+      brokerURL: WS_NOTIFICATIONS_URL,
+      connectHeaders: { Authorization: `Bearer ${authUtils.getToken() ?? ""}` },
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
       onConnect: () => {
-        stompClient.subscribe(`/topic/notifications/${userId}`, (message) => {
+        stompClient.subscribe(notificationTopic(userId), (message) => {
           const data = JSON.parse(message.body);
-          setUnreadCount(data.unread);
+          setUnreadCount(data.unreadCount ?? 0);
           window.dispatchEvent(new CustomEvent('newNotificationReceived'));
         });
       },

@@ -1,6 +1,6 @@
 "use client";
 
-import TourEditPage from "@/features/TourManagement/TourEditPage";
+import TourEditPage from "@/components/pages/tour-management/TourEditPage";
 
 export default function Page() {
   return <TourEditPage />;
