@@ -4,8 +4,9 @@ import { Download } from "lucide-react";
 import { BranchTable } from "./BranchTable";
 import { ExportDialog } from "../ui/custom/dialogs/ExportDialog";
 import type { BranchTabProps } from "@/interfaces/props/agency/BranchTabProps";
+import { ReportType } from "@/enums/report/ReportType";
 
-export function BranchTab({ branches, agencyName, loading }: BranchTabProps) {
+export function BranchTab({ branches, agencyId, agencyName, loading }: BranchTabProps) {
   const [isExportOpen, setIsExportOpen] = useState(false);
   const exportData = branches.map((b) => ({
     "Branch Name": b.branchName,
@@ -46,6 +47,7 @@ export function BranchTab({ branches, agencyName, loading }: BranchTabProps) {
         onClose={() => setIsExportOpen(false)}
         data={exportData}
         fileName={`${agencyName.replace(/\s+/g, "_")}_Branches`}
+        report={{ type: ReportType.AGENCY_BRANCHES, agencyId }}
       />
     </Box>
   );

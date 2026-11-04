@@ -9,6 +9,9 @@ import { UnifiedFilterBar } from "../ui/custom/UnifiedFilterBar";
 import { AddEmployeeDialog } from "../user/controlpanel/AddEmployeeDialog";
 import { AddEmployeesAction } from "./AddEmployeesAction";
 import { EMPLOYEE_COLUMNS } from "./employee/employeeColumns";
+import { ReportType } from "@/enums/report/ReportType";
+import type { UserType } from "@/enums/UserType";
+import { ALL_ROLES } from "@/constants/agency/staff";
 
 export function EmployeeTab({ agencyName, agencyId, employees, onRefresh }: EmployeeTabProps) {
   const d = useEmployeeDirectory(employees, agencyId, onRefresh);
@@ -32,7 +35,8 @@ export function EmployeeTab({ agencyName, agencyId, employees, onRefresh }: Empl
       <DataTable data={d.visible} columns={EMPLOYEE_COLUMNS} loading={false} colorPalette="blue" searchDisabled />
       <AddEmployeeDialog open={d.addDialog.open} onClose={d.addDialog.onClose} onSubmit={d.addEmployee}
         loading={d.isSubmitting} agencyName={agencyName} />
-      <ExportDialog open={d.isExportOpen} onClose={() => d.setIsExportOpen(false)} data={d.exportRows} fileName={`${agencyName}_Staff`} />
+      <ExportDialog open={d.isExportOpen} onClose={() => d.setIsExportOpen(false)} data={d.exportRows} fileName={`${agencyName}_Staff`}
+        report={{ type: ReportType.AGENCY_EMPLOYEES, agencyId, role: d.roleFilter === ALL_ROLES ? undefined : (d.roleFilter as UserType) }} />
     </Box>
   );
 }

@@ -16,6 +16,12 @@ export const ENDPOINTS = {
     permissions: (id: number | string) => `/users/permissions/${id}`,
     byRole: (type: number | string) => `/users/role/${type}`,
   },
+  reports: "/reports",
+  media: {
+    root: "/media",
+    byId: (id: number | string) => `/media/${id}`,
+    download: (id: number | string) => `/media/${id}/download`,
+  },
   accounts: {
     balance: (userId: number | string) => `/accounts/user/${userId}/balance`,
     history: (userId: number | string) => `/accounts/user/${userId}/history`,

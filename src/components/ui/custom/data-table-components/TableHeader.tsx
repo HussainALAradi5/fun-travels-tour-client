@@ -35,7 +35,7 @@ export const TableToolbar = ({
   selectedIds,
   selectedData,
   data,
-  exportFileName,
+  exportFileName, report,
   colorPalette,
   pageSize,
   setPageSize,
@@ -96,6 +96,7 @@ export const TableToolbar = ({
               onClose={() => setIsExportOpen(false)}
               data={selectedIds.size > 0 ? selectedData : data}
               fileName={exportFileName || "table-data"}
+              report={selectedIds.size > 0 ? undefined : report}
             />
           </>
         )}

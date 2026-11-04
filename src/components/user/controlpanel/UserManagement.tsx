@@ -5,6 +5,9 @@ import { UnifiedFilterBar } from "@/components/ui/custom/UnifiedFilterBar";
 import { USER_ROLE_OPTIONS, USERS_BANNER } from "@/constants/user/userDirectory";
 import { useUserDirectory } from "@/hooks/user/useUserDirectory";
 import { USER_COLUMNS } from "./userColumns";
+import { ReportType } from "@/enums/report/ReportType";
+import type { UserType } from "@/enums/UserType";
+import { ALL_USER_ROLES } from "@/constants/user/userDirectory";
 
 export default function UserManagement() {
   const d = useUserDirectory();
@@ -18,7 +21,8 @@ export default function UserManagement() {
         </Box>
         <Box bg="bg.panel" borderRadius="xl" shadow="sm" borderWidth="1px" overflow="hidden">
           <DataTable data={d.visible} columns={USER_COLUMNS} loading={d.loading} showSelect enableExport
-            exportFileName={`users-${d.role.toLowerCase()}`} searchDisabled />
+            exportFileName={`users-${d.role.toLowerCase()}`} searchDisabled
+            report={{ type: ReportType.USERS, role: d.role === ALL_USER_ROLES ? undefined : (d.role as UserType) }} />
         </Box>
       </VStack>
     </PageWrapper>

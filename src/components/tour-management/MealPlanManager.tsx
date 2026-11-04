@@ -8,6 +8,7 @@ import { useMealPlans } from "@/hooks/tour-management/useMealPlans";
 import { useMealPlanColumns } from "@/hooks/tour-management/useMealPlanColumns";
 import type { MealPlan } from "@/interfaces/tour/MealPlan";
 import type { MealPlanFormValues } from "@/interfaces/tour/MealPlanFormValues";
+import { ReportType } from "@/enums/report/ReportType";
 
 export const MealPlanManager = () => {
   const m = useMealPlans();
@@ -28,7 +29,8 @@ export const MealPlanManager = () => {
           </Group>
         }
       >
-        <DataTable<MealPlan> data={m.meals} loading={m.loading} columns={columns} exportFileName="Meals" enableExport />
+        <DataTable<MealPlan> data={m.meals} loading={m.loading} columns={columns} exportFileName="Meals" enableExport
+          report={{ type: ReportType.MEALS }} />
       </ContentCard>
 
       <DynamicFormDialog<MealPlanFormValues>

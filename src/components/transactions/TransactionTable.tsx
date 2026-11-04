@@ -11,6 +11,7 @@ import { PageWrapper } from "@/components/ui/custom/PageWrapper";
 import { DateSortFilter } from "@/components/ui/custom/DateSortFilter";
 import type { DateSortFilterValue } from "@/interfaces/props/ui/DateSortFilterProps";
 import type { TransactionSortField } from "@/interfaces/payment/TransactionFilterParams";
+import { ReportType } from "@/enums/report/ReportType";
 
 export const TransactionTable = () => {
   const { transactions, isLoading, fetchTransactions } = useTransaction();
@@ -97,7 +98,8 @@ export const TransactionTable = () => {
           { label: "Reference", value: "id" },
         ]}
       />
-      <DataTable data={transactions} columns={columns} loading={isLoading} colorPalette="blue" enableExport />
+      <DataTable data={transactions} columns={columns} loading={isLoading} colorPalette="blue" enableExport
+        exportFileName="Financial_Ledger" report={{ type: ReportType.TRANSACTIONS }} />
     </PageWrapper>
   );
 };

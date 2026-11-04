@@ -5,6 +5,9 @@ import { DEFAULT_IMAGE_COLUMNS } from "@/constants/export/reportTemplate";
 import { downloadExcelReport, downloadImportTemplate } from "@/utilities/export/excelReport";
 import { downloadPdfReport } from "@/utilities/export/pdfReport";
 import type { ExportDialogProps } from "@/interfaces/props/ui/ExportDialogProps";
+import { ReportFormat } from "@/enums/report/ReportFormat";
+import { useServerReport } from "@/hooks/report/useServerReport";
+import { authUtils } from "@/utilities/AuthUtils";
 import type { ExportRecord } from "@/interfaces/common/ExportRecord";
 
 import type { ExportOptionProps } from "@/interfaces/props/ui/ExportOptionProps";
@@ -35,10 +38,14 @@ const ExportOption = ({ title, desc, icon: Icon, scheme, onSelect }: ExportOptio
   </Box>
 );
 export function ExportDialog<T extends Record<string, unknown>>({
-  open, onClose, data, fileName, imageColumns = DEFAULT_IMAGE_COLUMNS, mode = "report", instructions,
+  open, onClose, data, fileName, imageColumns = DEFAULT_IMAGE_COLUMNS, mode = "report", instructions, report,
 }: ExportDialogProps<T>) {
   const records = data as unknown as ExportRecord[];
+  const server = useServerReport();
+  const onServer = Boolean(report && authUtils.getToken());
   const run = (task: () => void | Promise<void>) => { void task(); onClose(); };
+  const pdf = () => (onServer && report ? server.download(report, ReportFormat.PDF) : downloadPdfReport(records, fileName, imageColumns));
+  const excel = () => (onServer && report ? server.download(report, ReportFormat.XLSX) : downloadExcelReport(records, fileName));
   return (
     <AppDialog open={open} onClose={onClose} title={mode === "template" ? "Download Template" : "Export Data"} icon={Download} size="sm">
       <VStack gap={4} align="stretch">
@@ -50,9 +57,9 @@ export function ExportDialog<T extends Record<string, unknown>>({
         ) : (
           <>
             <ExportOption title="PDF Report" desc="Branded letterhead, page numbers, ready to print" icon={FileText} scheme="red"
-              onSelect={() => run(() => downloadPdfReport(records, fileName, imageColumns))} />
+              onSelect={() => run(pdf)} />
             <ExportOption title="Excel Report" desc="Typed cells, frozen filterable header, print footer" icon={FileSpreadsheet}
-              scheme="green" onSelect={() => run(() => downloadExcelReport(records, fileName))} />
+              scheme="green" onSelect={() => run(excel)} />
           </>
         )}
         <Separator />

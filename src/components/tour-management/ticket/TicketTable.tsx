@@ -6,6 +6,7 @@ import type { Column } from "@/interfaces/common/Column";
 import type { Ticket } from "@/interfaces/tour/Ticket";
 import { TicketStatusColor } from "@/enums/tour-management/TicketStatus";
 import type { TicketTableProps } from "@/interfaces/props/tour/TicketTableProps";
+import { ReportType } from "@/enums/report/ReportType";
 
 export const TicketTable = ({ tickets, isLoading, onView }: TicketTableProps) => {
   const columns = useMemo<Column<Ticket>[]>(() => [
@@ -73,6 +74,7 @@ export const TicketTable = ({ tickets, isLoading, onView }: TicketTableProps) =>
       data={tickets}
       exportFileName="My Tickets"
       enableExport
+      report={{ type: ReportType.TICKETS }}
       columns={columns}
       loading={isLoading}
       searchKey="ticketNumber"

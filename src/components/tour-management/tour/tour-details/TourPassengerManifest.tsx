@@ -2,8 +2,10 @@ import { Box, HStack, Heading, Badge, Text, Circle, Icon, VStack } from "@chakra
 import { User as UserIcon } from "lucide-react";
 import { DataTable } from "@/components/ui/custom/DataTable";
 import type { Ticket } from "@/interfaces/tour/Ticket";
+import { ReportType } from "@/enums/report/ReportType";
+import type { TourPassengerManifestProps } from "@/interfaces/props/tour/TourPassengerManifestProps";
 
-export const TourPassengerManifest = ({ tickets }: { tickets: Ticket[] }) => {
+export const TourPassengerManifest = ({ tickets, tourId }: TourPassengerManifestProps) => {
   return (
     <Box
       bg="bg.panel"
@@ -23,6 +25,7 @@ export const TourPassengerManifest = ({ tickets }: { tickets: Ticket[] }) => {
       <DataTable
         data={tickets}
         enableExport
+        report={{ type: ReportType.PASSENGER_MANIFEST, tourId }}
         searchDisabled
         columns={[
           {

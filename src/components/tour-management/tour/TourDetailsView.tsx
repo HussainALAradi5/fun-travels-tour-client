@@ -110,7 +110,7 @@ export const TourDetailView = ({ tour: initialTour }: TourDetailViewProps) => {
       </SimpleGrid>
 <Grid templateColumns={{ base: "1fr", xl: "2fr 1fr" }} gap={8} mt="8" alignItems="start">
         <Box>
-          <TourPassengerManifest tickets={tourTickets} />
+          <TourPassengerManifest tickets={tourTickets} tourId={currentTour.id} />
         </Box>
 
         <Box>

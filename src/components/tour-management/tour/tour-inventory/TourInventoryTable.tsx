@@ -5,6 +5,7 @@ import { CapacityProgress } from "@/components/ui/custom/CapacityProgress";
 import { GenericStatusColor } from "@/enums/GenericStatus";
 import { formatTourRange } from "@/utilities/DateUtils";
 import type { Tour } from "@/interfaces/tour/Tour"; import type { TourTableProps } from "@/interfaces/tour/TourTableProps";
+import { ReportType } from "@/enums/report/ReportType";
 
 export const TourInventoryTable = ({ data, isLoading, onViewDetails }: TourTableProps) => {
   return (
@@ -72,6 +73,7 @@ export const TourInventoryTable = ({ data, isLoading, onViewDetails }: TourTable
       ]}
       enableExport
       exportFileName="Tour_Inventory_Master"
+      report={{ type: ReportType.TOURS }}
     />
   );
 };
