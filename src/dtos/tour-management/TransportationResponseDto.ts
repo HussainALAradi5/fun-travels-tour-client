@@ -17,8 +17,6 @@ export type TransportationResponseDto = {
   status: GenericStatus;
   unitStatus: TransportationStatus;
   totalCapacity: number;
-  remainingSeats: number;
-  calculatedAvailable: number;
   agency: AgencySummaryDto | null;
   agencyBranch: BranchSummaryDto | null;
   seats: SeatSummaryDto[];
