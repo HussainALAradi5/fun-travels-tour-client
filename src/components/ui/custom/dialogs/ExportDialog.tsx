@@ -1,7 +1,10 @@
 import { Button, Text, VStack, Box, HStack, Separator, Center } from "@chakra-ui/react";
 import { Download, FileSpreadsheet, FileText, ChevronRight } from "lucide-react";
 import { AppDialog } from "./AppDialog";
-import { ExportUtils } from "@/utilities/ExportUtility";
+import { DEFAULT_IMAGE_COLUMNS } from "@/constants/export/reportTemplate";
+import { downloadExcelReport, downloadImportTemplate } from "@/utilities/export/excelReport";
+import { downloadPdfReport } from "@/utilities/export/pdfReport";
+import type { ExportDialogProps } from "@/interfaces/props/ui/ExportDialogProps";
 import type { ExportRecord } from "@/interfaces/common/ExportRecord";
 
 import type { ExportOptionProps } from "@/interfaces/props/ui/ExportOptionProps";
@@ -32,45 +35,26 @@ const ExportOption = ({ title, desc, icon: Icon, scheme, onSelect }: ExportOptio
   </Box>
 );
 export function ExportDialog<T extends Record<string, unknown>>({
-  open,
-  onClose,
-  data,
-  fileName,
-  imageColumns = ["qrCode", "barcode"]
-}: {
-  open: boolean;
-  onClose: () => void;
-  data: T[];
-  fileName: string;
-  imageColumns?: string[];
-}) {
+  open, onClose, data, fileName, imageColumns = DEFAULT_IMAGE_COLUMNS, mode = "report", instructions,
+}: ExportDialogProps<T>) {
+  const records = data as unknown as ExportRecord[];
+  const run = (task: () => void | Promise<void>) => { void task(); onClose(); };
   return (
-    <AppDialog open={open} onClose={onClose} title="Export Data" icon={Download} size="sm">
+    <AppDialog open={open} onClose={onClose} title={mode === "template" ? "Download Template" : "Export Data"} icon={Download} size="sm">
       <VStack gap={4} align="stretch">
-        <Text fontSize="xs" fontWeight="bold" color="fg.muted">PICK A FORMAT</Text>
-
-        <ExportOption
-          title="PDF Document"
-          desc="Best for viewing and printing"
-          icon={FileText}
-          scheme="red"
-          onSelect={() => {
-            ExportUtils.downloadAsPDF(data as unknown as ExportRecord[], fileName, imageColumns);
-            onClose();
-          }}
-        />
-
-       <ExportOption
-          title="Excel Spreadsheet"
-          desc="Professional Auto-Width layout"
-          icon={FileSpreadsheet}
-          scheme="green"
-          onSelect={() => {
-            ExportUtils.downloadAsExcel(data as unknown as ExportRecord[], fileName);
-            onClose();
-          }}
-        />
-
+        <Text fontSize="xs" fontWeight="bold" color="fg.muted">{mode === "template" ? "IMPORT TEMPLATE" : "PICK A FORMAT"}</Text>
+        {mode === "template" ? (
+          <ExportOption title="Excel Import Template" desc="Column names in row 1, plus an Instructions sheet"
+            icon={FileSpreadsheet} scheme="green"
+            onSelect={() => run(() => downloadImportTemplate(Object.keys(records[0] ?? {}), fileName, instructions))} />
+        ) : (
+          <>
+            <ExportOption title="PDF Report" desc="Branded letterhead, page numbers, ready to print" icon={FileText} scheme="red"
+              onSelect={() => run(() => downloadPdfReport(records, fileName, imageColumns))} />
+            <ExportOption title="Excel Report" desc="Typed cells, frozen filterable header, print footer" icon={FileSpreadsheet}
+              scheme="green" onSelect={() => run(() => downloadExcelReport(records, fileName))} />
+          </>
+        )}
         <Separator />
         <Button variant="ghost" size="sm" onClick={onClose} width="full">Cancel</Button>
       </VStack>

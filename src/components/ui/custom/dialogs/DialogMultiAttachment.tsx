@@ -79,6 +79,8 @@ export function DialogMultiAttachment({
         onClose={() => setIsTemplateOpen(false)}
         data={templateData}
         fileName={templateFileName}
+        mode="template"
+        instructions={instructions}
       />
     </>
   );

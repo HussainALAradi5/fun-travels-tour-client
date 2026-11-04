@@ -107,6 +107,8 @@ export const AddEmployeesAction = ({
         onClose={() => setIsTemplateDialogOpen(false)}
         data={templateData}
         fileName="Employee_Import_Template"
+        mode="template"
+        instructions={columnInstructions}
       />
     </Box>
   );
