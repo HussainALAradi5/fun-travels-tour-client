@@ -1,28 +1,20 @@
 import { Link as RouterLink } from "@/lib/navigation";
 import { Text, Link as ChakraLink } from "@chakra-ui/react";
 import { DynamicForm } from "@/components/ui/custom/DynamicForm";
-import type { RegisterRequest } from "@/interfaces/auth/RegisterRequest";
-import { DEFAULT_USER } from "@/interfaces/user/User";
+import type { RegisterRequestDto } from "@/dtos/auth/RegisterRequestDto";
 import type { FieldConfig } from "@/interfaces/common/FieldConfig";
 import { useRegister } from "@/hooks/auth/useRegister";
 
-const registerFields: FieldConfig<RegisterRequest>[] = [
+const registerFields: FieldConfig<RegisterRequestDto>[] = [
   { name: "name", label: "Full Name", type: "text", isRequired: true, gridSpan: 1 },
   { name: "userName", label: "Username", type: "text", isRequired: true, gridSpan: 1 },
   { name: "email", label: "Email", type: "email", isRequired: true, gridSpan: 2 },
   { name: "password", label: "Password", type: "password", isRequired: true, gridSpan: 2 },
-  { name: "mobileNumber", label: "Mobile Number", type: "text", isRequired: true, gridSpan: 2 },
+  { name: "mobileNumber", label: "Mobile Number", type: "mobile", isRequired: true, gridSpan: 2 },
   { name: "age", label: "Age", type: "number", gridSpan: 1 },
 ];
 
-const defaultValues: RegisterRequest = {
-  userName: DEFAULT_USER.userName,
-  name: DEFAULT_USER.name,
-  email: DEFAULT_USER.email,
-  password: "",
-  mobileNumber: DEFAULT_USER.mobileNumber,
-  age: DEFAULT_USER.age,
-};
+const defaultValues: RegisterRequestDto = { userName: "", name: "", email: "", password: "", mobileNumber: "", age: 0 };
 
 export const RegisterForm = () => {
   const { register, error, loading } = useRegister();
@@ -35,7 +27,7 @@ export const RegisterForm = () => {
         </div>
       )}
 
-      <DynamicForm<RegisterRequest>
+      <DynamicForm<RegisterRequestDto>
         fields={registerFields}
         initialValues={defaultValues}
         onSubmit={register}

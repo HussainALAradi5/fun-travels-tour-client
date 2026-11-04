@@ -13,6 +13,8 @@ import { ticketService } from "@/services/tour-management/ticketService";
 import { tourService } from "@/services/tour-management/tourService";
 import { transportationService } from "@/services/tour-management/transportationService";
 import { useMutationRunner } from "../common/useMutationRunner";
+import type { TourCreateRequestDto } from "@/dtos/tour-management/TourCreateRequestDto";
+import type { TransportationEditForm } from "@/interfaces/tour/TransportationEditForm";
 
 interface MutationDeps {
   currentUserId?: number;
@@ -28,16 +30,20 @@ export function useTourMutations({ currentUserId, setTour, setTransportation, fe
 
   return {
     isMutating,
+    // The create form marks countries and cities required, so a submitted form is a complete request.
     handleCreateTour: (data: TourCreateRequest) =>
-      execute(tourService.create(data), "Expedition Created", "Tour successfully configured."),
+      execute(tourService.create(data as TourCreateRequestDto), "Expedition Created", "Tour successfully configured."),
     handleUpdateTour: (id: number, data: Partial<Tour>) =>
       execute(tourService.update(id, data as never).then(keepTour), "Tour Updated", "Expedition details saved."),
     handleUpdateTourStatus: (id: number, status: GenericStatus) =>
       execute(tourService.updateStatus(id, status).then(keepTour), "Status Updated", `Tour is now ${status}.`),
     handleCreateTransportation: (data: TransportationCreateRequest) =>
       execute(transportationService.create(data), "Unit Registered", "Vehicle added to fleet."),
-    handleUpdateTransportation: (id: number, values: Transportation) =>
-      execute(transportationService.update(id, values as never).then((res) => {
+    handleUpdateTransportation: (id: number, values: TransportationEditForm) =>
+      execute(transportationService.update(id, {
+        transportationNumber: values.transportationNumber, providerName: values.providerName,
+        type: values.type, seatConfig: values.seatConfig,
+      }).then((res) => {
         setTransportation((prev) => prev.map((t) => (t.id === id ? res : t)));
         return res;
       }), "Updated", "Fleet unit saved."),

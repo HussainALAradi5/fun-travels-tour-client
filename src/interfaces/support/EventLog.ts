@@ -1,12 +1,4 @@
-import type { ReferenceType } from "../../enums/notification/ReferenceType";
-import type { User } from "../user/User";
+import type { EventLogResponseDto } from "@/dtos/support/EventLogResponseDto";
 
-export interface EventLog {
-  id: number;
-  referenceType: ReferenceType;
-  referenceId: number;
-  action: string;
-  description?: string;
-  actor?: Partial<User>;
-  createdAt?: string;
-}
+/** EventLog as the server sends it; the shape is generated from the server DTO. */
+export type EventLog = EventLogResponseDto;

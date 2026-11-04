@@ -1,6 +1,5 @@
 import { UserPlus } from "lucide-react";
-import type { User } from "@/interfaces/user/User";
-import { DEFAULT_USER } from "@/interfaces/user/User";
+import type { EmployeeCreateRequestDto } from "@/dtos/user/EmployeeCreateRequestDto";
 import { UserType } from "@/enums/UserType";
 import type { FieldConfig } from "@/interfaces/common/FieldConfig";
 import { DynamicFormDialog } from "@/components/ui/custom/dialogs/DynamicFormDialog";
@@ -14,23 +13,21 @@ export function AddEmployeeDialog({
   loading,
   agencyName,
 }: AddEmployeeDialogProps) {
-  const fields: FieldConfig<User>[] = [
+  const fields: FieldConfig<EmployeeCreateRequestDto>[] = [
     { name: "name", label: "Full Name", type: "text", isRequired: true },
     { name: "userName", label: "Username", type: "text", isRequired: true },
     { name: "email", label: "Email Address", type: "email", isRequired: true },
     { name: "password", label: "Password", type: "password", isRequired: true },
-    { name: "mobileNumber", label: "Mobile Number", type: "text", isRequired: true },
+    { name: "mobileNumber", label: "Mobile Number", type: "mobile", isRequired: true },
     { name: "age", label: "Age", type: "number", isRequired: true },
   ];
 
-  const initialValues: User = {
-    ...DEFAULT_USER,
-    userType: UserType.EMPLOYEE,
-    active: true,
+  const initialValues: EmployeeCreateRequestDto = {
+    userName: "", name: "", email: "", password: "", mobileNumber: "", age: 0, userType: UserType.EMPLOYEE,
   };
 
   return (
-    <DynamicFormDialog<User>
+    <DynamicFormDialog<EmployeeCreateRequestDto>
       open={open}
       onClose={onClose}
       onSubmit={onSubmit}

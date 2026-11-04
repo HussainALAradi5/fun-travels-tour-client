@@ -9,6 +9,7 @@ export const ENDPOINTS = {
   users: {
     root: "/users",
     byId: (id: number | string) => `/users/${id}`,
+    myProfile: "/users/me/profile",
     addEmployee: "/users/add-employee",
     byAgency: (agencyId: number | string) => `/users/agency/${agencyId}`,
     bulkImport: "/users/bulk-import",
@@ -82,7 +83,7 @@ export const ENDPOINTS = {
   },
   meals: {
     root: "/meals",
-    price: (id: number | string) => `/meals/${id}/price`,
+    byId: (id: number | string) => `/meals/${id}`,
     status: (id: number | string) => `/meals/${id}/status`,
     byAgency: (agencyId: number | string) => `/meals/agency/${agencyId}`,
   },

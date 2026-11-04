@@ -1,15 +1,7 @@
-import type { ReferenceType } from "../../enums/notification/ReferenceType";
-import type { User } from "../user/User";
+import type { CommentResponseDto } from "@/dtos/support/CommentResponseDto";
 
-export interface Comment {
-  id: number;
-  referenceType: ReferenceType;
-  referenceId: number;
-  content: string;
-  author?: Partial<User>;
-  createdAt?: string;
-  updatedAt?: string | null;
-}
+/** Comment as the server sends it; the shape is generated from the server DTO. */
+export type Comment = CommentResponseDto;
 
 export const DEFAULT_COMMENT: Partial<Comment> = {
   content: "",

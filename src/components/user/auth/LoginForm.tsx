@@ -21,7 +21,8 @@ export const LoginForm = () => {
         fields={[
           {
             name: "identifier",
-            label: "Username or Email",
+            label: "Email, username, or mobile number",
+            placeholder: "you@example.com, yourname, or +97339990001",
             type: "text",
             isRequired: true,
           },

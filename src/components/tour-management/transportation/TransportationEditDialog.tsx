@@ -4,9 +4,9 @@ import { AppDialog } from "@/components/ui/custom/dialogs/AppDialog";
 import { DynamicForm } from "@/components/ui/custom/DynamicForm";
 import { SeatManager } from "../seat/seat-management/SeatManager";
 import type { FieldConfig } from "@/interfaces/common/FieldConfig";
-import type { Transportation } from "@/interfaces/tour/Transportation";
 import type { TransportationEditDialogProps } from "@/interfaces/props/tour/TransportationEditDialogProps";
 import { transportationTypeOptions } from "@/constants/tour/transportationTypeOptions";
+import type { TransportationEditForm } from "@/interfaces/tour/TransportationEditForm";
 
 export const TransportationEditDialog = ({
   open,
@@ -29,7 +29,7 @@ export const TransportationEditDialog = ({
     }
   });
 
-  const editFields: FieldConfig<Transportation>[] = [
+  const editFields: FieldConfig<TransportationEditForm>[] = [
     {
       name: "code",
       label: "Serial Code",
@@ -72,21 +72,21 @@ export const TransportationEditDialog = ({
       disabled: true,
     },
     {
-      name: "seatConfig.PREMIUM_RECLINER" as keyof Transportation,
+      name: "seatConfig.PREMIUM_RECLINER" as keyof TransportationEditForm,
       label: "Premium Seats",
       type: "number",
       icon: Star,
       gridSpan: 1,
     },
     {
-      name: "seatConfig.WHEELCHAIR_ACCESSIBLE" as keyof Transportation,
+      name: "seatConfig.WHEELCHAIR_ACCESSIBLE" as keyof TransportationEditForm,
       label: "Accessible Spaces",
       type: "number",
       icon: Accessibility,
       gridSpan: 1,
     },
     {
-      name: "seatConfig.KIDS_CHAIR" as keyof Transportation,
+      name: "seatConfig.KIDS_CHAIR" as keyof TransportationEditForm,
       label: "Child Safety Seats",
       type: "number",
       icon: Baby,
@@ -122,11 +122,11 @@ export const TransportationEditDialog = ({
                 Enter the total number required for each specialized seat type. All remaining seats become standard seats.
               </Text>
 
-              <DynamicForm<Transportation>
+              <DynamicForm<TransportationEditForm>
                 disableToast={true}
                 fields={editFields}
                 initialValues={{ ...transport, seatConfig }}
-                onSubmit={async (values) => { await onUpdate(values as unknown as Transportation); }}
+                onSubmit={async (values) => { await onUpdate(values); }}
                 onCancel={onClose}
                 isLoading={loading}
                 submitLabel="Update Unit & Sync Seats"

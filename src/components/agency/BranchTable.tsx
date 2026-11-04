@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import { formatPlace } from "@/utilities/formatHelper";
 import { Text, HStack, Badge, Box, VStack } from "@chakra-ui/react";
-import { Globe, User as UserIcon, MapPinned, Phone } from "lucide-react";
+import { User as UserIcon, MapPinned, Phone } from "lucide-react";
 import { DataTable } from "@/components/ui/custom/DataTable";
 import type { AgencyBranch } from "@/interfaces/agency/AgencyBranch";
 import type { BranchTableProps } from "@/interfaces/props/agency/BranchTableProps";
@@ -38,14 +37,12 @@ export function BranchTable({
         ),
       },
       {
-        header: "Location",
-        key: "location",
+        header: "Contact",
+        key: "contactNumber",
         render: (item: AgencyBranch) => (
           <HStack gap={2} fontSize="sm">
-            <Globe size={14} className="text-gray-400" />
-            <Text>
-              {formatPlace(item.city?.name, item.country?.famousName)}
-            </Text>
+            <Phone size={14} className="text-gray-400" />
+            <Text>{item.contactNumber || "Not set"}</Text>
           </HStack>
         ),
       },
@@ -60,12 +57,6 @@ export function BranchTable({
                 {item.branchManager?.name || "Unassigned"}
               </Text>
             </HStack>
-            {item.ownerMobileNumber && (
-              <HStack gap={2} color="fg.muted">
-                <Phone size={12} />
-                <Text fontSize="xs">{item.ownerMobileNumber}</Text>
-              </HStack>
-            )}
           </VStack>
         ),
       },

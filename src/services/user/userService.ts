@@ -2,62 +2,62 @@ import { ENDPOINTS } from "@/config/endpoints";
 import apiClient from "@/config/BaseApi";
 import { API_ORIGIN } from "@/config/api.config";
 import type { ApiResponse } from "@/interfaces/common/ApiResponse";
-import type { ImportResult } from "@/interfaces/common/ImportResult";
-import type { User } from "@/interfaces/user/User";
-import type { UserUpdateRequest } from "@/interfaces/user/UserUpdateRequest";
-import type { EmployeeCreateRequest } from "@/interfaces/user/EmployeeCreateRequest";
-import type { LoginRequest } from "@/interfaces/auth/LoginRequest";
-import type { AuthSession } from "@/interfaces/auth/AuthSession";
-import type { RegisterRequest } from "@/interfaces/auth/RegisterRequest";
-import type { PasswordResetConfirm } from "@/interfaces/auth/PasswordResetConfirm";
+import type { ImportResultDto } from "@/dtos/common/ImportResultDto";
+import type { UserResponseDto } from "@/dtos/user/UserResponseDto";
+import type { UserUpdateRequestDto } from "@/dtos/user/UserUpdateRequestDto";
+import type { EmployeeCreateRequestDto } from "@/dtos/user/EmployeeCreateRequestDto";
+import type { LoginRequestDto } from "@/dtos/auth/LoginRequestDto";
+import type { AuthResponseDto } from "@/dtos/auth/AuthResponseDto";
+import type { RegisterRequestDto } from "@/dtos/auth/RegisterRequestDto";
+import type { PasswordResetConfirmRequestDto } from "@/dtos/auth/PasswordResetConfirmRequestDto";
 import { authUtils } from "@/utilities/AuthUtils";
 
 export const userService = {
-  login: async (credentials: LoginRequest): Promise<ApiResponse<AuthSession>> => {
-    const response = await apiClient.post<ApiResponse<AuthSession>>(ENDPOINTS.auth.login, credentials);
-    if (response.data.success && response.data.data.token) {
+  login: async (credentials: LoginRequestDto): Promise<ApiResponse<AuthResponseDto>> => {
+    const response = await apiClient.post<ApiResponse<AuthResponseDto>>(ENDPOINTS.auth.login, credentials);
+    if (response.data.success && response.data.data.token && response.data.data.user) {
       authUtils.saveSession(response.data.data.token, response.data.data.user);
     }
     return response.data;
   },
 
-  register: async (user: RegisterRequest): Promise<ApiResponse<User>> => {
-    const response = await apiClient.post<ApiResponse<User>>(ENDPOINTS.auth.register, user);
+  register: async (user: RegisterRequestDto): Promise<ApiResponse<UserResponseDto>> => {
+    const response = await apiClient.post<ApiResponse<UserResponseDto>>(ENDPOINTS.auth.register, user);
     return response.data;
   },
 
-  getAllUsers: async (): Promise<User[]> => {
-    const response = await apiClient.get<ApiResponse<User[]>>(ENDPOINTS.users.root);
+  getAllUsers: async (): Promise<UserResponseDto[]> => {
+    const response = await apiClient.get<ApiResponse<UserResponseDto[]>>(ENDPOINTS.users.root);
     return response.data.data;
   },
 
-  getAgencyEmployees: async (agencyId: number, role?: string): Promise<User[]> => {
-    const response = await apiClient.get<ApiResponse<User[]>>(ENDPOINTS.users.byAgency(agencyId), {
+  getAgencyEmployees: async (agencyId: number, role?: string): Promise<UserResponseDto[]> => {
+    const response = await apiClient.get<ApiResponse<UserResponseDto[]>>(ENDPOINTS.users.byAgency(agencyId), {
       params: role && role !== "ALL" ? { role } : undefined,
     });
     return response.data.data;
   },
 
-  getProfile: async (id: number): Promise<User> => {
-    const response = await apiClient.get<ApiResponse<User>>(ENDPOINTS.users.byId(id));
+  getProfile: async (id: number): Promise<UserResponseDto> => {
+    const response = await apiClient.get<ApiResponse<UserResponseDto>>(ENDPOINTS.users.byId(id));
     return response.data.data;
   },
 
-  updateUser: async (id: number, request: UserUpdateRequest): Promise<User> => {
-    const response = await apiClient.put<ApiResponse<User>>(ENDPOINTS.users.byId(id), request);
+  updateUser: async (id: number, request: UserUpdateRequestDto): Promise<UserResponseDto> => {
+    const response = await apiClient.put<ApiResponse<UserResponseDto>>(ENDPOINTS.users.byId(id), request);
     return response.data.data;
   },
 
   /** The server places the account in the creator's agency unless an admin passes one. */
-  addEmployee: async (request: EmployeeCreateRequest, agencyId?: number, branchId?: number): Promise<User> => {
-    const response = await apiClient.post<ApiResponse<User>>(ENDPOINTS.users.addEmployee, request, {
+  addEmployee: async (request: EmployeeCreateRequestDto, agencyId?: number, branchId?: number): Promise<UserResponseDto> => {
+    const response = await apiClient.post<ApiResponse<UserResponseDto>>(ENDPOINTS.users.addEmployee, request, {
       params: { agencyId, branchId },
     });
     return response.data.data;
   },
 
-  updateUserPermissions: async (id: number, type: string, branchId?: number): Promise<User> => {
-    const response = await apiClient.put<ApiResponse<User>>(ENDPOINTS.users.permissions(id), null, {
+  updateUserPermissions: async (id: number, type: string, branchId?: number): Promise<UserResponseDto> => {
+    const response = await apiClient.put<ApiResponse<UserResponseDto>>(ENDPOINTS.users.permissions(id), null, {
       params: { type, branchId },
     });
     return response.data.data;
@@ -68,20 +68,20 @@ export const userService = {
     return response.data.data;
   },
 
-  getUsersByRole: async (type: string): Promise<User[]> => {
-    const response = await apiClient.get<ApiResponse<User[]>>(ENDPOINTS.users.byRole(type));
+  getUsersByRole: async (type: string): Promise<UserResponseDto[]> => {
+    const response = await apiClient.get<ApiResponse<UserResponseDto[]>>(ENDPOINTS.users.byRole(type));
     return response.data.data;
   },
 
-  getOwners: (): Promise<User[]> => userService.getUsersByRole("OWNER"),
-  getEmployees: (): Promise<User[]> => userService.getUsersByRole("EMPLOYEE"),
-  getManagers: (): Promise<User[]> => userService.getUsersByRole("MANAGER"),
-  getCustomers: (): Promise<User[]> => userService.getUsersByRole("CUSTOMER"),
+  getOwners: (): Promise<UserResponseDto[]> => userService.getUsersByRole("OWNER"),
+  getEmployees: (): Promise<UserResponseDto[]> => userService.getUsersByRole("EMPLOYEE"),
+  getManagers: (): Promise<UserResponseDto[]> => userService.getUsersByRole("MANAGER"),
+  getCustomers: (): Promise<UserResponseDto[]> => userService.getUsersByRole("CUSTOMER"),
 
-  bulkImport: async (agencyId: number, file: File): Promise<ImportResult> => {
+  bulkImport: async (agencyId: number, file: File): Promise<ImportResultDto> => {
     const formData = new FormData();
     formData.append("file", file);
-    const response = await apiClient.post<ApiResponse<ImportResult>>(ENDPOINTS.users.bulkImport, formData, {
+    const response = await apiClient.post<ApiResponse<ImportResultDto>>(ENDPOINTS.users.bulkImport, formData, {
       params: { agencyId },
       headers: { "Content-Type": "multipart/form-data" },
     });
@@ -101,8 +101,8 @@ export const userService = {
     return response.data.message;
   },
 
-  confirmPasswordReset: async (request: PasswordResetConfirm): Promise<User> => {
-    const response = await apiClient.post<ApiResponse<User>>(ENDPOINTS.auth.passwordResetConfirm, request);
+  confirmPasswordReset: async (request: PasswordResetConfirmRequestDto): Promise<UserResponseDto> => {
+    const response = await apiClient.post<ApiResponse<UserResponseDto>>(ENDPOINTS.auth.passwordResetConfirm, request);
     return response.data.data;
   },
 };

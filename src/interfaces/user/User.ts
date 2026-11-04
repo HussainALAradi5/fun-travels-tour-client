@@ -1,30 +1,15 @@
-import type { UserType } from '../../enums/UserType';
-import type { Agency } from '../agency/Agency';
-import type { AgencyBranch } from '../agency/AgencyBranch';
+import type { UserResponseDto } from "@/dtos/user/UserResponseDto";
+import type { UserType } from "@/enums/UserType";
 
-export interface User extends Record<string, unknown> {
-  id?: number;
-  userName: string;
-  name: string;
-  email: string;
-  password?: string;
-  age: number;
-  userType: UserType;
-  mobileNumber: string;
-  profileImageUrl: string | null;
-  base64Image?: string;
-  agency?: Partial<Agency> | null;
-  agencyBranch?: Partial<AgencyBranch> | null;
-  active: boolean;
-}
+/** User as the server sends it; the shape is generated from the server DTO. */
+export type User = UserResponseDto;
 
-export const DEFAULT_USER: User = {
+export const DEFAULT_USER: Partial<User> = {
   userName: "",
   name: "",
   email: "",
   age: 0,
   userType: "CUSTOMER" as UserType,
   mobileNumber: "",
-  profileImageUrl: null,
   active: true,
 };

@@ -2,9 +2,9 @@ import { Box, Heading } from "@chakra-ui/react";
 import { Flag, CheckCircle, Clock, Navigation, MapPin } from "lucide-react";
 import { ActivityTimeline } from "@/components/ui/custom/ActivityTimeline";
 import type { TrackingItem } from "@/interfaces/common/TrackingItem";
-import type { Ticket } from "@/interfaces/tour/Ticket";
+import type { TicketWithTourProps } from "@/interfaces/props/tour/TicketWithTourProps";
 
-export const TicketJourneyTracker = ({ ticket }: { ticket: Ticket }) => {
+export const TicketJourneyTracker = ({ ticket, tour }: TicketWithTourProps) => {
   const trackingItems: TrackingItem[] = [
     {
       id: "1",
@@ -17,7 +17,7 @@ export const TicketJourneyTracker = ({ ticket }: { ticket: Ticket }) => {
     {
       id: "2",
       title: "Departure",
-      description: ticket.tour?.startCity?.name || "Departure Point TBD",
+      description: tour?.startCity?.name || "Departure Point TBD",
       icon: Clock,
       color: ticket.ticketStatus === "CONFIRMED" ? "blue.500" : "gray.300",
       glowColor: ticket.ticketStatus === "CONFIRMED" ? "rgba(59, 130, 246, 0.4)" : "transparent"
@@ -25,18 +25,18 @@ export const TicketJourneyTracker = ({ ticket }: { ticket: Ticket }) => {
     {
       id: "3",
       title: "Route",
-      description: `Via ${ticket.tour?.transportation?.providerName || "Carrier"}`,
+      description: tour?.transportation ? `Via ${tour.transportation.type} ${tour.transportation.transportationNumber}` : "Vehicle to be assigned",
       icon: Navigation,
-      color: ticket.tour?.status === "ACTIVE" ? "blue.500" : "gray.300",
-      glowColor: ticket.tour?.status === "ACTIVE" ? "rgba(59, 130, 246, 0.4)" : "transparent"
+      color: tour?.status === "ACTIVE" ? "blue.500" : "gray.300",
+      glowColor: tour?.status === "ACTIVE" ? "rgba(59, 130, 246, 0.4)" : "transparent"
     },
     {
       id: "4",
       title: "Destination",
-      description: ticket.tour?.endCity?.name || "Final Destination TBD",
+      description: tour?.endCity?.name || "Final Destination TBD",
       icon: MapPin,
-      color: ticket.tour?.status === "COMPLETED" ? "green.500" : "gray.300",
-      glowColor: ticket.tour?.status === "COMPLETED" ? "rgba(34, 197, 94, 0.4)" : "transparent"
+      color: tour?.status === "COMPLETED" ? "green.500" : "gray.300",
+      glowColor: tour?.status === "COMPLETED" ? "rgba(34, 197, 94, 0.4)" : "transparent"
     },
   ];
 

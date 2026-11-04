@@ -3,7 +3,7 @@ import { Box, Center, HStack, Icon, Separator, Spinner, Text, VStack } from "@ch
 import { Elements } from "@stripe/react-stripe-js";
 import { CreditCard, Lock, ShieldCheck, Wallet } from "lucide-react";
 import { AppDialog } from "@/components/ui/custom/dialogs/AppDialog";
-import { DEFAULT_TOP_UP, TOP_UP_METHOD } from "@/constants/payment/topUp";
+import { DEFAULT_TOP_UP } from "@/constants/payment/topUp";
 import { useStripe } from "@/hooks/payment/useStripe";
 import type { WalletTopUpModalProps } from "@/interfaces/props/booking/WalletTopUpModalProps";
 import { AmountPicker } from "./wallet/AmountPicker";
@@ -23,7 +23,7 @@ export const WalletTopUpModal = ({ open, onClose, onSuccess }: WalletTopUpModalP
           <HStack color="green.500" mb={4}><Icon as={ShieldCheck} size="sm" /><Text fontSize="xs" fontWeight="bold">SECURE CHECKOUT</Text></HStack>
           {stripePromise ? (
             <Elements stripe={stripePromise}>
-              <StripeCheckoutForm amount={amount} method={TOP_UP_METHOD} onSuccess={onSuccess} onClose={handleClose} />
+              <StripeCheckoutForm amount={amount} onSuccess={onSuccess} onClose={handleClose} />
             </Elements>
           ) : <Center py={6}><Spinner color="blue.500" /></Center>}
         </Box>

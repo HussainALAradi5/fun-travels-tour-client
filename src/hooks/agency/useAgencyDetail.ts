@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import type { Agency } from "@/interfaces/agency/Agency";
 import type { AgencyBranch } from "@/interfaces/agency/AgencyBranch";
+import type { AgencyBranchCreateRequestDto } from "@/dtos/agency/AgencyBranchCreateRequestDto";
 import type { User } from "@/interfaces/user/User";
 import { agencyService } from "@/services/agency/agencyService";
 import { branchService } from "@/services/agency/branchService";
 
-/** One agency with its employees, plus branch creation. */
+/** One agency with its branches and employees, plus branch creation. */
 export function useAgencyDetail(id?: string) {
   const [agency, setAgency] = useState<Agency | null>(null);
+  const [branches, setBranches] = useState<AgencyBranch[]>([]);
   const [employees, setEmployees] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [isBranchDialogOpen, setIsBranchDialogOpen] = useState(false);
@@ -17,10 +19,12 @@ export function useAgencyDetail(id?: string) {
     if (!id) return;
     setLoading(true);
     try {
-      const [agencyRes, employeeRes] = await Promise.all([
-        agencyService.getAgencyById(id), agencyService.getEmployeesByAgency(Number(id)),
+      const [agencyRes, branchRes, employeeRes] = await Promise.all([
+        agencyService.getAgencyById(id), branchService.getBranchesByAgency(Number(id)),
+        agencyService.getEmployeesByAgency(Number(id)),
       ]);
       setAgency(agencyRes);
+      setBranches(branchRes || []);
       setEmployees(employeeRes || []);
     } finally {
       setLoading(false);
@@ -31,7 +35,7 @@ export function useAgencyDetail(id?: string) {
     void load();
   }, [load]);
 
-  const createBranch = async (branch: AgencyBranch) => {
+  const createBranch = async (branch: AgencyBranchCreateRequestDto) => {
     if (!id) return;
     setIsSubmitting(true);
     try {
@@ -43,5 +47,5 @@ export function useAgencyDetail(id?: string) {
     }
   };
 
-  return { agency, employees, loading, load, isBranchDialogOpen, setIsBranchDialogOpen, isSubmitting, createBranch };
+  return { agency, branches, employees, loading, load, isBranchDialogOpen, setIsBranchDialogOpen, isSubmitting, createBranch };
 }

@@ -1,8 +1,8 @@
 import type { LucideIcon } from "lucide-react";
-import type { Country } from "../../geography/Country";
+import type { CountrySummaryDto } from "@/dtos/geography/CountrySummaryDto";
 
 export interface PlaceCellProps {
-  country?: Partial<Country>;
+  country: CountrySummaryDto | null;
   cityName?: string;
   icon: LucideIcon;
   color: string;

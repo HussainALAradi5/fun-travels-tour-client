@@ -1,4 +1,10 @@
 export const TOP_UP_PRESETS = ["50", "100", "250", "500"];
 export const DEFAULT_TOP_UP = "50";
-/** Wallet top-ups are card-only: the server credits the wallet only after Stripe captures the charge. */
-export const TOP_UP_METHOD = "CREDIT_CARD";
+
+/** Stripe card input styling. */
+export const CARD_ELEMENT_OPTIONS = {
+  style: {
+    base: { fontSize: "16px", color: "#424770", fontFamily: "Inter, sans-serif", "::placeholder": { color: "#aab7c4" } },
+    invalid: { color: "#e53e3e" },
+  },
+};

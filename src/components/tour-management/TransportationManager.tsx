@@ -8,6 +8,7 @@ import { useTourManagement } from "@/hooks/tour-management/useTourManagement";
 import type { Transportation } from "@/interfaces/tour/Transportation";
 import { ExcelImportDialog } from "@/components/ui/custom/dialogs/ExcelImportDialog";
 import { transportationService } from "@/services/tour-management/transportationService";
+import type { TransportationEditForm } from "@/interfaces/tour/TransportationEditForm";
 
 export const TransportationManager = () => {
   const navigate = useNavigate();
@@ -41,9 +42,9 @@ export const TransportationManager = () => {
 
   useEffect(() => { loadData(); }, [loadData]);
 
-  const handleUpdate = async (values: Transportation | Record<string, unknown>) => {
+  const handleUpdate = async (values: TransportationEditForm) => {
     if (selectedItem?.id) {
-      await handleUpdateTransportation(selectedItem.id, values as Transportation);
+      await handleUpdateTransportation(selectedItem.id, values);
       loadData();
       onClose();
     }

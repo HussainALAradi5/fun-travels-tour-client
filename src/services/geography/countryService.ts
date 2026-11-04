@@ -1,12 +1,12 @@
 import { ENDPOINTS } from "@/config/endpoints";
 import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interfaces/common/ApiResponse";
-import type { Country } from "@/interfaces/geography/Country";
+import type { CountryResponseDto } from "@/dtos/geography/CountryResponseDto";
 import { authUtils } from "@/utilities/AuthUtils";
 
-const extractCountries = (payload: unknown): Country[] => {
+const extractCountries = (payload: unknown): CountryResponseDto[] => {
   if (Array.isArray(payload)) {
-    return payload as Country[];
+    return payload as CountryResponseDto[];
   }
 
   if (payload && typeof payload === "object" && "data" in payload) {
@@ -21,26 +21,26 @@ const extractCountries = (payload: unknown): Country[] => {
 };
 
 export const countryService = {
-  getAllCountries: async (): Promise<Country[]> => {
-    const response = await apiClient.get<ApiResponse<Country[]>>(ENDPOINTS.countries.root);
+  getAllCountries: async (): Promise<CountryResponseDto[]> => {
+    const response = await apiClient.get<ApiResponse<CountryResponseDto[]>>(ENDPOINTS.countries.root);
     return extractCountries(response.data);
   },
 
-  syncFromExternal: async (name: string): Promise<Country> => {
+  syncFromExternal: async (name: string): Promise<CountryResponseDto> => {
     const userType = authUtils.getUserType();
-    const response = await apiClient.post<ApiResponse<Country>>(`${ENDPOINTS.countries.sync(name)}?userType=${userType}`);
-    return response.data.data as unknown as Country;
+    const response = await apiClient.post<ApiResponse<CountryResponseDto>>(`${ENDPOINTS.countries.sync(name)}?userType=${userType}`);
+    return response.data.data as unknown as CountryResponseDto;
   },
 
-  createCountry: async (country: Country): Promise<Country> => {
+  createCountry: async (country: CountryResponseDto): Promise<CountryResponseDto> => {
     const userType = authUtils.getUserType();
-    const response = await apiClient.post<ApiResponse<Country>>(`${ENDPOINTS.countries.root}?userType=${userType}`, country);
-    return response.data.data as unknown as Country;
+    const response = await apiClient.post<ApiResponse<CountryResponseDto>>(`${ENDPOINTS.countries.root}?userType=${userType}`, country);
+    return response.data.data as unknown as CountryResponseDto;
   },
 
-  syncAllFromExternal: async (): Promise<Country[]> => {
+  syncAllFromExternal: async (): Promise<CountryResponseDto[]> => {
     const userType = authUtils.getUserType();
-    const response = await apiClient.post<ApiResponse<Country[]>>(`${ENDPOINTS.countries.syncAll}?userType=${userType}`);
+    const response = await apiClient.post<ApiResponse<CountryResponseDto[]>>(`${ENDPOINTS.countries.syncAll}?userType=${userType}`);
     return extractCountries(response.data);
   },
 

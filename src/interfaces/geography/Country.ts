@@ -1,10 +1,4 @@
-export interface Country {
-  id?: number | null;
-  famousName: string;
-  officialName: string;
-  countryCode: string;
-  flagPngUrl: string;
-  flagSvgUrl: string;
-  dialCode?: string;
-  mobileNumberLength?: number | null;
-}
+import type { CountryResponseDto } from "@/dtos/geography/CountryResponseDto";
+
+/** Country as the server sends it; the shape is generated from the server DTO. */
+export type Country = CountryResponseDto;

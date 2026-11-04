@@ -10,8 +10,8 @@ export function BranchTab({ branches, agencyName, loading }: BranchTabProps) {
   const exportData = branches.map((b) => ({
     "Branch Name": b.branchName,
     Address: b.branchAddress,
-    Mobile: b.ownerMobileNumber || "N/A",
-    City: b.city?.name || "N/A",
+    Contact: b.contactNumber || "N/A",
+    Manager: b.branchManager?.name || "Unassigned",
     Status: b.active ? "Active" : "Inactive",
   }));
 

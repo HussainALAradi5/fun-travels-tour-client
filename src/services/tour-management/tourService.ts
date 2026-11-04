@@ -1,68 +1,68 @@
 import { ENDPOINTS } from "@/config/endpoints";
 import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interfaces/common/ApiResponse";
-import type { Tour } from "@/interfaces/tour/Tour";
-import type { TourCreateRequest } from "@/interfaces/tour/TourCreateRequest";
+import type { TourResponseDto } from "@/dtos/tour-management/TourResponseDto";
+import type { TourCreateRequestDto } from "@/dtos/tour-management/TourCreateRequestDto";
 import type { GenericStatus } from "@/enums/GenericStatus";
 import type { TourFilterParams } from "@/interfaces/tour/TourFilterParams";
 import type { TourCatalogParams } from "@/interfaces/tour/TourCatalogParams";
-import type { PageResponse } from "@/interfaces/common/PageResponse";
+import type { PageResponseDto } from "@/dtos/common/PageResponseDto";
 import type { PaginationParams } from "@/interfaces/common/PaginationParams";
 import { extractData } from "@/utilities/apiHelper";
 
 export const tourService = {
-  getAll: async (params: PaginationParams = {}): Promise<PageResponse<Tour>> => {
-    const response = await apiClient.get<ApiResponse<PageResponse<Tour>>>(ENDPOINTS.tours.root, { params });
+  getAll: async (params: PaginationParams = {}): Promise<PageResponseDto<TourResponseDto>> => {
+    const response = await apiClient.get<ApiResponse<PageResponseDto<TourResponseDto>>>(ENDPOINTS.tours.root, { params });
     return extractData(response.data);
   },
 
-  getById: async (id: number): Promise<Tour> => {
-    const response = await apiClient.get<ApiResponse<Tour>>(
+  getById: async (id: number): Promise<TourResponseDto> => {
+    const response = await apiClient.get<ApiResponse<TourResponseDto>>(
       ENDPOINTS.tours.byId(id),
     );
-    return response.data.data as unknown as Tour;
+    return response.data.data as unknown as TourResponseDto;
   },
 
-  create: async (tour: TourCreateRequest): Promise<Tour> => {
-    const response = await apiClient.post<ApiResponse<Tour>>(
+  create: async (tour: TourCreateRequestDto): Promise<TourResponseDto> => {
+    const response = await apiClient.post<ApiResponse<TourResponseDto>>(
       ENDPOINTS.tours.root,
       tour,
     );
-    return response.data.data as unknown as Tour;
+    return response.data.data as unknown as TourResponseDto;
   },
 
   update: async (
     id: number,
-    tour: Partial<TourCreateRequest>,
-  ): Promise<Tour> => {
-    const response = await apiClient.put<ApiResponse<Tour>>(
+    tour: Partial<TourCreateRequestDto>,
+  ): Promise<TourResponseDto> => {
+    const response = await apiClient.put<ApiResponse<TourResponseDto>>(
       ENDPOINTS.tours.byId(id),
       tour,
     );
-    return response.data.data as unknown as Tour;
+    return response.data.data as unknown as TourResponseDto;
   },
 
-  updateStatus: async (id: number, status: GenericStatus): Promise<Tour> => {
-    const response = await apiClient.put<ApiResponse<Tour>>(
+  updateStatus: async (id: number, status: GenericStatus): Promise<TourResponseDto> => {
+    const response = await apiClient.put<ApiResponse<TourResponseDto>>(
       ENDPOINTS.tours.status(id),
       null,
       {
         params: { status },
       },
     );
-    return response.data.data as unknown as Tour;
+    return response.data.data as unknown as TourResponseDto;
   },
 
-  search: async (params: TourFilterParams = {}): Promise<PageResponse<Tour>> => {
-    const response = await apiClient.get<ApiResponse<PageResponse<Tour>>>(
+  search: async (params: TourFilterParams = {}): Promise<PageResponseDto<TourResponseDto>> => {
+    const response = await apiClient.get<ApiResponse<PageResponseDto<TourResponseDto>>>(
       ENDPOINTS.tours.search,
       { params },
     );
     return extractData(response.data);
   },
 
-  getCatalog: async (params: TourCatalogParams = {}): Promise<PageResponse<Tour>> => {
-    const response = await apiClient.get<ApiResponse<PageResponse<Tour>>>(
+  getCatalog: async (params: TourCatalogParams = {}): Promise<PageResponseDto<TourResponseDto>> => {
+    const response = await apiClient.get<ApiResponse<PageResponseDto<TourResponseDto>>>(
       ENDPOINTS.tours.catalog,
       { params },
     );

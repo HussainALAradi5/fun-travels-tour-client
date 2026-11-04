@@ -1,6 +1,6 @@
-import type { User } from "../../user/User";
+import type { ProfileResponseDto } from "@/dtos/user/ProfileResponseDto";
 
 export interface ProfileHeaderProps {
-  user: User;
+  user: ProfileResponseDto;
   onEdit: () => void;
 }

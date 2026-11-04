@@ -1,20 +1,8 @@
-import type { ReferenceType } from '../../enums/notification/ReferenceType';
-import type { User } from '../user/User';
+import type { CommentResponseDto } from "@/dtos/support/CommentResponseDto";
 
-export interface GenericComment {
-  id?: number;
-  referenceId: number;
-  referenceType: ReferenceType;
-  content: string;
-  author: Partial<User>;
-  updatedBy?: Partial<User> | null;
-  createdAt?: string;
-  updatedAt?: string;
-  type: 'COMMENT';
-}
+/** GenericComment as the server sends it; the shape is generated from the server DTO. */
+export type GenericComment = CommentResponseDto;
 
 export const DEFAULT_COMMENT: Partial<GenericComment> = {
   content: "",
-  type: "COMMENT",
 };
-

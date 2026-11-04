@@ -1,24 +1,23 @@
 import { DynamicFormDialog } from "@/components/ui/custom/dialogs/DynamicFormDialog";
 import type { FieldConfig } from "@/interfaces/common/FieldConfig";
-import { UserCircle, Lock, Phone, Image as ImageIcon, Link, Trash2 } from "lucide-react";
+import { UserCircle, Phone, Image as ImageIcon, Trash2 } from "lucide-react";
 
 import type { EditProfileProps } from "@/interfaces/props/ui/EditProfileProps";
 
 export const EditProfile = ({ open, onClose, onSubmit, loading, initialValues }: EditProfileProps) => {
   const fields: FieldConfig<Record<string, unknown>>[] = [
+    // Only name, mobile, age, and photo can change here; email and password have their own flows.
+    { name: "name", label: "Full Name", type: "text", icon: UserCircle, isRequired: true, gridSpan: 2 },
     { name: "userName", label: "Username", type: "text", disabled: true, gridSpan: 1 },
     { name: "email", label: "Email Address", type: "email", disabled: true, gridSpan: 1 },
     { name: "mobileNumber", label: "Mobile Number", type: "mobile", icon: Phone, isRequired: true, gridSpan: 1 },
     { name: "age", label: "Age", type: "number", isRequired: true, gridSpan: 1 },
-    { name: "password", label: "New Password", type: "password", placeholder: "Leave blank to keep current", icon: Lock, gridSpan: 2 },
-    { name: "profileImageUrl", label: "Image URL (Link)", type: "text", icon: Link, gridSpan: 2 },
     { name: "base64Image", label: "Upload Photo", type: "file", icon: ImageIcon, gridSpan: 1 },
     { name: "removeImage", label: "Remove Profile Picture", type: "checkbox", icon: Trash2, gridSpan: 1 }
   ];
 
   const formInitialValues = {
     ...initialValues,
-    password: "",
     removeImage: false
   };
 

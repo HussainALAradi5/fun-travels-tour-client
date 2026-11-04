@@ -1,22 +1,4 @@
-import type { NotificationType } from '../../enums/notification/NotificationType';
-import type { ReferenceType } from '../../enums/notification/ReferenceType';
-import type { User } from '../user/User';
+import type { NotificationResponseDto } from "@/dtos/notification/NotificationResponseDto";
 
-export interface Notification {
-  id: number;
-  recipient?: Partial<User>;
-  title: string;
-  message: string;
-  type: NotificationType;
-  isRead: boolean;
-  referenceId?: number;
-  referenceType?: ReferenceType;
-  createdAt: string;
-  readAt?: string;
-}
-
-export const DEFAULT_NOTIFICATION: Partial<Notification> = {
-  title: "",
-  message: "",
-  isRead: false,
-};
+/** Notification as the server sends it; the shape is generated from the server DTO. */
+export type Notification = NotificationResponseDto;

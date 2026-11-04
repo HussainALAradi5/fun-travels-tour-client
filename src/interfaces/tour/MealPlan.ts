@@ -1,15 +1,4 @@
-import type { GenericStatus } from '../../enums/GenericStatus';
-import type { Agency } from '../agency/Agency';
-import type { MealDietaryType } from '@/enums/tour-management/MealDietaryType';
-import type { SpiceLevel } from '@/enums/tour-management/SpiceLevel';
+import type { MealPlanResponseDto } from "@/dtos/tour-management/MealPlanResponseDto";
 
-export interface MealPlan {
-  id?: number;
-  mealName: string;
-  mealPrice: number;
-  mealDescription?: string;
-  dietaryTypes: MealDietaryType[];
-  spiceLevel: SpiceLevel;
-  status: GenericStatus;
-  agency?: Partial<Agency>;
-}
+/** MealPlan as the server sends it; the shape is generated from the server DTO. */
+export type MealPlan = MealPlanResponseDto;

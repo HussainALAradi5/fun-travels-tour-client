@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "@/lib/navigation";
 import { userService } from "@/services/user/userService";
-import type { RegisterRequest } from "@/interfaces/auth/RegisterRequest";
+import type { RegisterRequestDto } from "@/dtos/auth/RegisterRequestDto";
 
 export function useRegister() {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const register = async (values: RegisterRequest) => {
+  const register = async (values: RegisterRequestDto) => {
     setError(null);
     setLoading(true);
     try {

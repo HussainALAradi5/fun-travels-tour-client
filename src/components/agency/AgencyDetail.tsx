@@ -32,7 +32,7 @@ export default function AgencyDetail({ forcedId }: AgencyDetailProps) {
             <Tabs.Trigger value="employees" gap={2}><Users size={16} /> Employees</Tabs.Trigger>
           </Tabs.List>
           <Tabs.Content value="branches">
-            <BranchTab branches={agency.branches || []} agencyName={agency.agencyName} loading={d.loading} />
+            <BranchTab branches={d.branches} agencyName={agency.agencyName} loading={d.loading} />
           </Tabs.Content>
           <Tabs.Content value="employees">
             <EmployeeTab employees={d.employees} agencyName={agency.agencyName} agencyId={Number(id)} onRefresh={d.load} />

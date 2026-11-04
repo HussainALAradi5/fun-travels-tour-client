@@ -1,44 +1,45 @@
 import { ENDPOINTS } from "@/config/endpoints";
 import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interfaces/common/ApiResponse";
-import type { Transportation } from "@/interfaces/tour/Transportation";
+import type { TransportationResponseDto } from "@/dtos/tour-management/TransportationResponseDto";
 import type { TransportationFilterParams } from "@/interfaces/tour/TransportationFilterParams";
-import type { PageResponse } from "@/interfaces/common/PageResponse";
+import type { PageResponseDto } from "@/dtos/common/PageResponseDto";
 import type { PaginationParams } from "@/interfaces/common/PaginationParams";
 import { extractData } from "@/utilities/apiHelper";
-import type { ImportResult } from "@/interfaces/common/ImportResult";
-import type { TransportationCreateRequest } from "@/interfaces/tour/TransportationCreateRequest";
+import type { ImportResultDto } from "@/dtos/common/ImportResultDto";
+import type { TransportationCreateRequestDto } from "@/dtos/tour-management/TransportationCreateRequestDto";
+import type { TransportationUpdateRequestDto } from "@/dtos/tour-management/TransportationUpdateRequestDto";
 
 export const transportationService = {
-  getAll: async (params: PaginationParams = {}): Promise<PageResponse<Transportation>> => {
+  getAll: async (params: PaginationParams = {}): Promise<PageResponseDto<TransportationResponseDto>> => {
     const response =
-      await apiClient.get<ApiResponse<PageResponse<Transportation>>>(
+      await apiClient.get<ApiResponse<PageResponseDto<TransportationResponseDto>>>(
         ENDPOINTS.transportations.root, { params },
       );
     return extractData(response.data);
   },
 
-  getById: async (id: number): Promise<Transportation> => {
-    const response = await apiClient.get<ApiResponse<Transportation>>(
+  getById: async (id: number): Promise<TransportationResponseDto> => {
+    const response = await apiClient.get<ApiResponse<TransportationResponseDto>>(
       ENDPOINTS.transportations.byId(id),
     );
-    return response.data.data as unknown as Transportation;
+    return response.data.data as unknown as TransportationResponseDto;
   },
 
   create: async (
-    data: TransportationCreateRequest,
-  ): Promise<Transportation> => {
-    const response = await apiClient.post<ApiResponse<Transportation>>(
+    data: TransportationCreateRequestDto,
+  ): Promise<TransportationResponseDto> => {
+    const response = await apiClient.post<ApiResponse<TransportationResponseDto>>(
       ENDPOINTS.transportations.root,
       data,
     );
-    return response.data.data as unknown as Transportation;
+    return response.data.data as unknown as TransportationResponseDto;
   },
 
-  importExcel: async (file: File): Promise<ImportResult> => {
+  importExcel: async (file: File): Promise<ImportResultDto> => {
     const formData = new FormData();
     formData.append("file", file);
-    const response = await apiClient.post<ApiResponse<ImportResult>>(
+    const response = await apiClient.post<ApiResponse<ImportResultDto>>(
       ENDPOINTS.transportations.imports,
       formData,
     );
@@ -47,28 +48,28 @@ export const transportationService = {
 
   update: async (
     id: number,
-    data: Partial<Transportation>,
-  ): Promise<Transportation> => {
-    const response = await apiClient.put<ApiResponse<Transportation>>(
+    data: TransportationUpdateRequestDto,
+  ): Promise<TransportationResponseDto> => {
+    const response = await apiClient.put<ApiResponse<TransportationResponseDto>>(
       ENDPOINTS.transportations.byId(id),
       data,
     );
-    return response.data.data as unknown as Transportation;
+    return response.data.data as unknown as TransportationResponseDto;
   },
 
-  updateStatus: async (id: number, status: string): Promise<Transportation> => {
-    const response = await apiClient.patch<ApiResponse<Transportation>>(
+  updateStatus: async (id: number, status: string): Promise<TransportationResponseDto> => {
+    const response = await apiClient.patch<ApiResponse<TransportationResponseDto>>(
       ENDPOINTS.transportations.status(id),
       null,
       {
         params: { status },
       },
     );
-    return response.data.data as unknown as Transportation;
+    return response.data.data as unknown as TransportationResponseDto;
   },
 
-  search: async (params: TransportationFilterParams = {}): Promise<PageResponse<Transportation>> => {
-    const response = await apiClient.get<ApiResponse<PageResponse<Transportation>>>(
+  search: async (params: TransportationFilterParams = {}): Promise<PageResponseDto<TransportationResponseDto>> => {
+    const response = await apiClient.get<ApiResponse<PageResponseDto<TransportationResponseDto>>>(
       ENDPOINTS.transportations.search,
       { params },
     );

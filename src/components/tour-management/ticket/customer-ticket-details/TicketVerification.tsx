@@ -1,11 +1,11 @@
 import { Box, Flex, Heading, Text, VStack, Badge, HStack } from "@chakra-ui/react";
 import { ScanLine } from "lucide-react";
-import type { Ticket } from "@/interfaces/tour/Ticket";
+import type { TicketWithTourProps } from "@/interfaces/props/tour/TicketWithTourProps";
 
-export const TicketVerification = ({ ticket }: { ticket: Ticket }) => {
+export const TicketVerification = ({ ticket, tour }: TicketWithTourProps) => {
   if (!ticket.qrCode && !ticket.barcode) return null;
 
-  const endCountry = ticket.tour?.endCountry;
+  const endCountry = tour?.endCountry;
 
   return (
     <Box

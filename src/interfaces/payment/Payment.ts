@@ -1,14 +1,4 @@
-import type { PaymentMethod } from "@/enums/payment/PaymentMethod";
-import type { PaymentStatus } from "@/enums/payment/PaymentStatus";
-import type { TourReservation } from "@/interfaces/tour/TourReservation";
+import type { PaymentResponseDto } from "@/dtos/payment/PaymentResponseDto";
 
-export interface Payment {
-  id: number;
-  amount: number;
-  currency?: string;
-  method: PaymentMethod;
-  status: PaymentStatus;
-  transactionId?: string;
-  reservation?: Partial<TourReservation> | null;
-  paymentDate?: string;
-}
+/** Payment as the server sends it; the shape is generated from the server DTO. */
+export type Payment = PaymentResponseDto;

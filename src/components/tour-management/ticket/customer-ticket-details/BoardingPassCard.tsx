@@ -1,10 +1,11 @@
 import { Box, HStack, VStack, Text, Heading, Icon, Circle, Badge, Flex, Image } from "@chakra-ui/react";
 import { Plane, Calendar, Armchair, Ticket as TicketIcon } from "lucide-react";
 import { ticketDropIn } from "@/utilities/Animations";
-import type { Ticket } from "@/interfaces/tour/Ticket";
+import type { TicketWithTourProps } from "@/interfaces/props/tour/TicketWithTourProps";
 
-export const BoardingPassCard = ({ ticket }: { ticket: Ticket }) => {
-  const tour = ticket.tour;
+/** Route and countries come from the full tour; dates fall back to the ticket's tour summary. */
+export const BoardingPassCard = ({ ticket, tour }: TicketWithTourProps) => {
+  const dates = tour ?? ticket.tour;
 
   const formatDisplayDate = (dateString?: string) => {
     if (!dateString) return "TBD";
@@ -64,7 +65,7 @@ export const BoardingPassCard = ({ ticket }: { ticket: Ticket }) => {
               </Badge>
 
               <Badge colorPalette="gray" variant="subtle" mt={1} size="sm">
-                {formatDisplayDate(tour?.startDate)}
+                {formatDisplayDate(dates?.startDate)}
               </Badge>
             </VStack>
 <VStack flex="1" px={4} position="relative" align="center" justify="center">
@@ -86,7 +87,7 @@ export const BoardingPassCard = ({ ticket }: { ticket: Ticket }) => {
               </Badge>
 
               <Badge colorPalette="gray" variant="subtle" mt={1} size="sm">
-                {formatDisplayDate(tour?.endDate)}
+                {formatDisplayDate(dates?.endDate)}
               </Badge>
             </VStack>
           </HStack>
@@ -133,7 +134,7 @@ export const BoardingPassCard = ({ ticket }: { ticket: Ticket }) => {
              <HStack justify="space-between" align="flex-end">
                 <Icon as={TicketIcon} size="2xl" opacity={0.2} transform="rotate(-15deg)" />
                 <VStack align="end" gap={0}>
-                   <Text fontSize="xs" opacity={0.8} fontWeight="bold">TOTAL PAID</Text>
+                   <Text fontSize="xs" opacity={0.8} fontWeight="bold">{ticket.paid ? "TOTAL PAID" : "AMOUNT DUE"}</Text>
                    <Text fontSize="3xl" fontWeight="black">${ticket.totalPrice?.toFixed(2)}</Text>
                 </VStack>
              </HStack>

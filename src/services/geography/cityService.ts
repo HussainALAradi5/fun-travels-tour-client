@@ -1,29 +1,29 @@
 import { ENDPOINTS } from "@/config/endpoints";
 import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interfaces/common/ApiResponse";
-import type { City } from "@/interfaces/geography/City";
+import type { CityResponseDto } from "@/dtos/geography/CityResponseDto";
 import { authUtils } from "@/utilities/AuthUtils";
-import type { CityCreateRequest } from "@/interfaces/geography/CityCreateRequest";
+import type { CityCreateRequestDto } from "@/dtos/geography/CityCreateRequestDto";
 
 export const cityService = {
-  getAllCities: async (): Promise<City[]> => {
+  getAllCities: async (): Promise<CityResponseDto[]> => {
     const userType = authUtils.getUserType();
-    const response = await apiClient.get<ApiResponse<City[]>>(
+    const response = await apiClient.get<ApiResponse<CityResponseDto[]>>(
       `${ENDPOINTS.cities.root}?userType=${userType}`,
     );
     return response.data.data;
   },
 
-  getCitiesByCountry: async (countryId: number): Promise<City[]> => {
-    const response = await apiClient.get<ApiResponse<City[]>>(
+  getCitiesByCountry: async (countryId: number): Promise<CityResponseDto[]> => {
+    const response = await apiClient.get<ApiResponse<CityResponseDto[]>>(
       ENDPOINTS.cities.byCountry(countryId),
     );
     return response.data.data;
   },
 
-  createCity: async (cityData: CityCreateRequest): Promise<City> => {
+  createCity: async (cityData: CityCreateRequestDto): Promise<CityResponseDto> => {
     const userType = authUtils.getUserType();
-    const response = await apiClient.post<ApiResponse<City>>(
+    const response = await apiClient.post<ApiResponse<CityResponseDto>>(
       `${ENDPOINTS.cities.root}?userType=${userType}`,
       cityData,
     );

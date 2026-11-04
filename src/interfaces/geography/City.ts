@@ -1,11 +1,4 @@
-import type { Country } from "./Country";
+import type { CityResponseDto } from "@/dtos/geography/CityResponseDto";
 
-export interface City {
-  id: number;
-  name: string;
-  country: Partial<Country>;
-}
-
-export const DEFAULT_CITY: Partial<City> = {
-  name: "",
-};
+/** City as the server sends it; the shape is generated from the server DTO. */
+export type City = CityResponseDto;

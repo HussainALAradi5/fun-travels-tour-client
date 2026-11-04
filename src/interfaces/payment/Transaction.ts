@@ -1,16 +1,4 @@
-import type { TransactionType } from '../../enums/TransactionType';
-import type { Account } from './Account';
+import type { TransactionResponseDto } from "@/dtos/payment/TransactionResponseDto";
 
-export interface Transaction {
-  id?: number;
-  transactionType: TransactionType;
-  amount: number;
-  account?: Partial<Account>;
-  description?: string;
-  timestamp?: string;
-}
-
-export const DEFAULT_TRANSACTION: Partial<Transaction> = {
-  transactionType: "PAYMENT" as TransactionType,
-  amount: 0,
-};
+/** Transaction as the server sends it; the shape is generated from the server DTO. */
+export type Transaction = TransactionResponseDto;
