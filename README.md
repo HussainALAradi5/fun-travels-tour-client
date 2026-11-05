@@ -192,11 +192,20 @@ The mobile views below were captured at a `390 × 844` phone viewport after opti
 ## Quick Start
 
 ```bash
+cp .env.example .env.local    # NEXT_PUBLIC_API_BASE_URL points at the server's /api
 npm install
 npm run dev
 ```
 
-App starts at `http://localhost:3000`
+The app starts at `http://localhost:3000`.
+
+## Checks
+
+`npm run typecheck`, `npm run lint`, and `npm run build`. GitHub Actions runs them on every push and pull request.
+
+## Exports
+
+Every Export button asks the server for a branded PDF or Excel report built from all matching records (`POST /api/reports`), then downloads it with the user's token. Selected rows and signed-out visitors use the same template in the browser. Import templates are clean spreadsheets with an Instructions sheet.
 
 ## Documentation
 
@@ -206,16 +215,14 @@ Full documentation is in the separate repository: [fun-travels-tour-document](ht
 
 | Technology | Version | Purpose |
 |------------|---------|---------|
-| React | 19.2.0 | UI Framework |
-| TypeScript | 5.9.3 | Language |
-| Next.js | 16.3.4 | Application Framework |
-| Chakra UI | 3.30.0 | Component Library |
-| Axios | 1.13.2 | HTTP Client |
-| Next.js App Router | 16.3.4 | Routing |
-| STOMP.js | 7.3.0 | WebSocket |
-| Stripe | 8.11.0 | Payments |
-| jsPDF | 4.1.0 | PDF Export |
-| ExcelJS | 4.4.0 | Excel Export |
+| Next.js (App Router) | 16.3 | Application framework and routing |
+| React | 19.2 | UI |
+| TypeScript | 5.9 | Language |
+| Chakra UI | 3.37 | Component library |
+| Axios | 1.13 | HTTP client |
+| STOMP.js | 7.3 | Live notifications over WebSocket |
+| Stripe.js | 8.11 | Card top-ups |
+| jsPDF, ExcelJS | 4.1, 4.4 | In-browser exports |
 
 ## Project Structure
 
@@ -225,13 +232,14 @@ src/
 ├── components/
 │   ├── pages/        # Page-level containers composed by app/ routes
 │   └── <domain>/     # Reusable UI (ui/custom) and domain components, kebab-case folders
-├── config/           # api.config.ts (env-driven URLs) and the axios client
-├── constants/        # Shared constant values
+├── config/           # api.config.ts (env-driven URLs), endpoints.ts, and the axios client
+├── constants/        # Shared constant values (including the report template)
+├── dtos/             # Generated mirrors of the server DTOs; do not edit by hand
 ├── enums/            # Enums with label/color maps
-├── hooks/            # Data loading and state
-├── interfaces/       # Wire contracts and props, one per file
+├── hooks/            # Data loading and state, one hook per concern
+├── interfaces/       # Read models (DTO aliases), form types, and props, one per file
 ├── lib/              # Navigation helpers
 ├── services/         # Typed API services over the single client
 ├── types/            # UI-only types
-└── utilities/        # Pure helpers, auth and notification contexts
+└── utilities/        # Pure helpers, exports, auth and notification contexts
 ```
