@@ -192,7 +192,7 @@ The mobile views below were captured at a `390 × 844` phone viewport after opti
 ## Quick Start
 
 ```bash
-cp .env.example .env.local    # NEXT_PUBLIC_API_BASE_URL points at the server's /api
+cp .env.example .env.local    # NEXT_PUBLIC_API_BASE_URL points at the server's /api/v1
 npm install
 npm run dev
 ```
@@ -205,7 +205,7 @@ The app starts at `http://localhost:3000`.
 
 ## Exports
 
-Every Export button asks the server for a branded PDF or Excel report built from all matching records (`POST /api/reports`), then downloads it with the user's token. Selected rows and signed-out visitors use the same template in the browser. Import templates are clean spreadsheets with an Instructions sheet.
+Every Export button asks the server for a branded PDF or Excel report built from all matching records (`POST /api/v1/reports`), then downloads it with the user's token. Selected rows and signed-out visitors use the same template in the browser. Import templates are clean spreadsheets with an Instructions sheet.
 
 ## Documentation
 
