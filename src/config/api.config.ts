@@ -1,6 +1,6 @@
 /** Public API settings read from NEXT_PUBLIC_* environment variables (see .env.example). */
-/** Version prefix of every REST endpoint; matches the server's app.api-prefix. */
-export const API_PREFIX = "/api/v1";
+/** Prefix of every REST endpoint; matches the server's app.api-prefix. */
+export const API_PREFIX = "/api";
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || `http://localhost:8080${API_PREFIX}`;
 
