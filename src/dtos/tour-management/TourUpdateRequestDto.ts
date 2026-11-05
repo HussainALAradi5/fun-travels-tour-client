@@ -9,6 +9,7 @@ export type TourUpdateRequestDto = {
   tourNumber?: string;
   description?: string;
   basePrice?: number;
+  discountPrice?: number;
   startDate?: string;
   endDate?: string;
   numberOfDays?: number;

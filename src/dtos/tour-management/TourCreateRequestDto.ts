@@ -6,6 +6,7 @@ export type TourCreateRequestDto = {
   title: string;
   description?: string;
   basePrice: number;
+  discountPrice?: number;
   numberOfDays: number;
   startDate: string;
   endDate?: string;

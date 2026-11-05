@@ -7,6 +7,7 @@ export const tourEditFields = ({ countries, transports, startCities, endCities }
   { name: "title", label: "Tour Title", type: "text", isRequired: true, gridSpan: 1 },
   { name: "tourNumber", label: "Tour Code", type: "text", isRequired: true, gridSpan: 1 },
   { name: "basePrice", label: "Base Price ($)", type: "number", isRequired: true, gridSpan: 1 },
+  { name: "discountPrice", label: "Sale Discount ($)", type: "number", gridSpan: 1 },
   { name: "totalPrice", label: "Current Total ($)", type: "number", disabled: true, gridSpan: 1 },
   { name: "startDate", label: "Start Date", type: "date", isRequired: true, gridSpan: 1 },
   { name: "numberOfDays", label: "Duration", type: "number", isRequired: true, gridSpan: 1 },
