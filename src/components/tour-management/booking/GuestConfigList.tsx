@@ -3,7 +3,7 @@ import { Users, Plus } from "lucide-react";
 import { GuestConfigCard } from "./GuestConfigCard";
 import type { GuestConfigListProps } from "@/interfaces/props/booking/GuestConfigListProps";
 
-export const GuestConfigList = ({ guests, maxCapacity, onAddGuest, onRemoveGuest, onOpenSeatPicker, onOpenMealPicker }: GuestConfigListProps) => {
+export const GuestConfigList = ({ guests, maxCapacity, onAddGuest, onRemoveGuest, onOpenSeatPicker, onOpenMealPicker, onKindChange }: GuestConfigListProps) => {
   return (
     <Stack gap={6}>
       <HStack justify="space-between" bg="bg.panel" p={4} borderRadius="xl" borderWidth="1px" shadow="sm">
@@ -23,6 +23,7 @@ export const GuestConfigList = ({ guests, maxCapacity, onAddGuest, onRemoveGuest
             guest={guest}
             onOpenSeatPicker={onOpenSeatPicker}
             onOpenMealPicker={onOpenMealPicker}
+            onKindChange={index !== 0 ? onKindChange : undefined}
             onRemove={index !== 0 ? onRemoveGuest : undefined}
           />
         ))}

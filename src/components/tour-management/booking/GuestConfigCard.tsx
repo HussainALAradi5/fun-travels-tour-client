@@ -4,7 +4,7 @@ import { glowPulse } from "@/utilities/Animations";
 import type { GuestConfigCardProps } from "@/interfaces/props/booking/GuestConfigCardProps";
 import type { Seat } from "@/interfaces/tour/Seat";
 
-export const GuestConfigCard = ({ guest, onOpenSeatPicker, onOpenMealPicker, onRemove }: GuestConfigCardProps) => {
+export const GuestConfigCard = ({ guest, onOpenSeatPicker, onOpenMealPicker, onRemove, onKindChange }: GuestConfigCardProps) => {
   const seatLabel = guest.assignedSeat && typeof guest.assignedSeat === 'object' && 'seatCode' in guest.assignedSeat
     ? (guest.assignedSeat as Seat).seatCode
     : typeof guest.assignedSeat === 'string' ? guest.assignedSeat : null;
@@ -17,6 +17,12 @@ export const GuestConfigCard = ({ guest, onOpenSeatPicker, onOpenMealPicker, onR
             <Text fontWeight="bold" fontSize="sm">{guest.label?.split(" ")[1] ?? ""}</Text>
           </Circle>
           <Text fontWeight="bold" fontSize="lg">{guest.label ?? ""}</Text>
+          {onKindChange && (
+            <Button size="xs" variant="subtle" colorPalette={guest.kind === "CHILD" ? "teal" : "gray"} borderRadius="full"
+              onClick={() => onKindChange(guest.id, guest.kind === "CHILD" ? "ADULT" : "CHILD")}>
+              {guest.kind === "CHILD" ? "Child" : "Adult"}
+            </Button>
+          )}
         </HStack>
         {onRemove && (
           <IconButton variant="ghost" colorPalette="red" size="sm" onClick={() => onRemove(guest.id)} aria-label="Remove guest">
@@ -26,7 +32,7 @@ export const GuestConfigCard = ({ guest, onOpenSeatPicker, onOpenMealPicker, onR
       </HStack>
 
       <Stack gap={4}>
-<HStack justify="space-between" p={4} bg="bg.muted" borderRadius="xl">
+        <HStack justify="space-between" p={4} bg="bg.muted" borderRadius="xl">
           <HStack gap={4}>
             <Circle size="10" bg={guest.assignedSeat ? "blue.500" : "bg.panel"} color={guest.assignedSeat ? "white" : "fg.muted"}>
               <CheckCircle2 size={20} />
@@ -49,7 +55,7 @@ export const GuestConfigCard = ({ guest, onOpenSeatPicker, onOpenMealPicker, onR
             {guest.assignedSeat ? "Change" : "Pick Seat"}
           </Button>
         </HStack>
-<HStack justify="space-between" p={4} bg="bg.muted" borderRadius="xl">
+        <HStack justify="space-between" p={4} bg="bg.muted" borderRadius="xl">
           <HStack gap={4}>
             <Circle size="10" bg={(guest.selectedMeals?.length ?? 0) > 0 ? "green.500" : "bg.panel"} color={(guest.selectedMeals?.length ?? 0) > 0 ? "white" : "fg.muted"}>
               <Utensils size={18} />

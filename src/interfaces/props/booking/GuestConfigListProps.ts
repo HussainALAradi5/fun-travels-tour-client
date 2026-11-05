@@ -1,4 +1,5 @@
 import type { GuestConfig } from "../../common/GuestConfig";
+import type { TravelerKind } from "@/types/booking/TravelerKind";
 
 export interface GuestConfigListProps {
   guests: GuestConfig[];
@@ -7,4 +8,5 @@ export interface GuestConfigListProps {
   onRemoveGuest: (id: string) => void;
   onOpenSeatPicker: (id: string) => void;
   onOpenMealPicker: (id: string) => void;
+  onKindChange: (id: string, kind: TravelerKind) => void;
 }

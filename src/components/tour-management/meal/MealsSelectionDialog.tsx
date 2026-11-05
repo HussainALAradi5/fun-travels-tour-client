@@ -9,7 +9,8 @@ export const MealsSelectionDialog = ({
   onClose,
   availableMeals,
   selectedMeals,
-  onToggleMeal
+  onToggleMeal,
+  onApplyToAll,
 }: MealsSelectionDialogProps) => {
   return (
     <AppDialog
@@ -27,12 +28,12 @@ export const MealsSelectionDialog = ({
           selectedMeals={selectedMeals}
           onToggleMeal={onToggleMeal}
         />
-        <Button
-          size="lg"
-          colorPalette="green"
-          onClick={onClose}
-          borderRadius="xl"
-        >
+        {onApplyToAll && (
+          <Button size="lg" variant="outline" colorPalette="green" borderRadius="xl" onClick={() => { onApplyToAll(); onClose(); }}>
+            Same meals for everyone
+          </Button>
+        )}
+        <Button size="lg" colorPalette="green" onClick={onClose} borderRadius="xl">
           Done
         </Button>
       </VStack>

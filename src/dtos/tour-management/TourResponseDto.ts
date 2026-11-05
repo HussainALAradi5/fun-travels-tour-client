@@ -1,3 +1,4 @@
+import type { AgencyPolicyResponseDto } from "@/dtos/agency/AgencyPolicyResponseDto";
 import type { AgencySummaryDto } from "@/dtos/agency/AgencySummaryDto";
 import type { BranchSummaryDto } from "@/dtos/agency/BranchSummaryDto";
 import type { CitySummaryDto } from "@/dtos/geography/CitySummaryDto";
@@ -36,4 +37,5 @@ export type TourResponseDto = {
   createdBy: UserSummaryDto | null;
   createdAt: string;
   availableMeals: MealPlanResponseDto[];
+  policy: AgencyPolicyResponseDto | null;
 };

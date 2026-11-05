@@ -45,6 +45,7 @@ export const ENDPOINTS = {
     byId: (id: number | string) => `/agencies/${id}`,
     search: "/agencies/search",
     employees: (agencyId: number | string) => `/agencies/${agencyId}/employees`,
+    policy: (agencyId: number | string) => `/agencies/${agencyId}/policy`,
   },
   branches: {
     root: "/branches",

@@ -5,8 +5,16 @@ import type { AgencyResponseDto } from "@/dtos/agency/AgencyResponseDto";
 import type { AgencyCreateRequestDto } from "@/dtos/agency/AgencyCreateRequestDto";
 import type { UserResponseDto } from "@/dtos/user/UserResponseDto";
 import type { PageResponseDto } from "@/dtos/common/PageResponseDto";
+import type { AgencyPolicyResponseDto } from "@/dtos/agency/AgencyPolicyResponseDto";
+import type { AgencyPolicyUpdateRequestDto } from "@/dtos/agency/AgencyPolicyUpdateRequestDto";
 
 export const agencyService = {
+  getPolicy: async (agencyId: number): Promise<AgencyPolicyResponseDto> =>
+    (await apiClient.get<ApiResponse<AgencyPolicyResponseDto>>(ENDPOINTS.agencies.policy(agencyId))).data.data,
+
+  updatePolicy: async (agencyId: number, policy: AgencyPolicyUpdateRequestDto): Promise<AgencyPolicyResponseDto> =>
+    (await apiClient.put<ApiResponse<AgencyPolicyResponseDto>>(ENDPOINTS.agencies.policy(agencyId), policy)).data.data,
+
   searchAgencies: async (query: string, page = 0, size = 20): Promise<PageResponseDto<AgencyResponseDto>> => {
     const response = await apiClient.get<ApiResponse<PageResponseDto<AgencyResponseDto>>>(ENDPOINTS.agencies.search, {
       params: { query, page, size },
