@@ -32,3 +32,6 @@ dist-ssr
 /.next
 /.npm-cache
 .env
+
+# TypeScript incremental build cache (rewritten on every type-check)
+*.tsbuildinfo
