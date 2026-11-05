@@ -2,15 +2,10 @@
 
 import { Center, Spinner, Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useEffect, type ReactNode } from "react";
+import { useEffect } from "react";
 import { useAuth } from "@/utilities/AuthContext";
 import { UserType, type UserType as UserTypeValue } from "@/enums/UserType";
-
-interface RouteGuardProps {
-  children: ReactNode;
-  admin?: boolean;
-  allowedUserTypes?: readonly UserTypeValue[];
-}
+import type { RouteGuardProps } from "@/interfaces/props/auth/RouteGuardProps";
 
 export function RouteGuard({ children, admin = false, allowedUserTypes }: RouteGuardProps) {
   const router = useRouter();

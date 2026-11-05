@@ -1,4 +1,5 @@
 import { UserType } from "@/enums/UserType";
+import { IMAGES } from "@/constants/ui/images";
 
 export const ALL_USER_ROLES = "ALL";
 export const USER_ROLE_OPTIONS = [
@@ -11,4 +12,4 @@ export const USER_ROLE_OPTIONS = [
   { label: "Support Agent", value: UserType.SUPPORT_AGENT },
   { label: "Developer", value: UserType.DEVELOPER },
 ];
-export const USERS_BANNER = "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&q=80&w=2000";
+export const USERS_BANNER = IMAGES.defaultHero;

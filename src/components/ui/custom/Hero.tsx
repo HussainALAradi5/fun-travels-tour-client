@@ -1,5 +1,6 @@
 import { Box, Container, Heading, Text, Button, VStack, Image } from "@chakra-ui/react";
 import type { HeroProps } from "@/interfaces/props/ui/HeroProps";
+import { IMAGES } from "@/constants/ui/images";
 
 export const Hero = ({
   title,
@@ -9,7 +10,7 @@ export const Hero = ({
   showAction = true,
   buttonText = "Get Started"
 }: HeroProps) => {
-  const backgroundSource = imageUrl || "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&q=80&w=2000";
+  const backgroundSource = imageUrl || IMAGES.defaultHero;
 
   return (
     <Box

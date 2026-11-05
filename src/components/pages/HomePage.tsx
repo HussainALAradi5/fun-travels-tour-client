@@ -8,6 +8,7 @@ import {
   SimpleGrid,
   VStack,
 } from "@chakra-ui/react";
+import { IMAGES } from "@/constants/ui/images";
 
 export const HomePage = () => {
   return (
@@ -53,7 +54,7 @@ export const HomePage = () => {
 
           <Box flex={1} width="full" position="relative">
             <Image
-              src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=800&q=80"
+              src={IMAGES.homeFeature}
               alt="Beautiful travel destination"
               borderRadius="3xl"
               boxShadow="2xl"

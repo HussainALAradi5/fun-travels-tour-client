@@ -1,4 +1,6 @@
-export const BOOKING_HERO_IMAGE = "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1600";
+import { IMAGES } from "@/constants/ui/images";
+
+export const BOOKING_HERO_IMAGE = IMAGES.transport;
 export const MY_BOOKINGS_PATH = "/my-bookings";
 export const REDIRECT_DELAY_MS = 1200;
 export const SEAT_FETCH_SIZE = 100;

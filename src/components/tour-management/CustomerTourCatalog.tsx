@@ -9,8 +9,9 @@ import { CatalogTableFilters } from "./customer-tour-catalog/CatalogTableFilters
 import { CatalogToolbar } from "./customer-tour-catalog/CatalogToolbar";
 import { CustomerTourCatalogCard } from "./customer-tour-catalog/CustomerTourCatalogCard";
 import { CustomerTourCatalogTable } from "./customer-tour-catalog/CustomerTourCatalogTable";
+import { IMAGES } from "@/constants/ui/images";
 
-const HERO_IMAGE = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80";
+const HERO_IMAGE = IMAGES.catalogHero;
 
 export const CustomerTourCatalog = () => {
   const { tours, isLoading, fetchCatalog } = useTourManagement();

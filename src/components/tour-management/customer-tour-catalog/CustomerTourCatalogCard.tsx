@@ -3,6 +3,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "@/lib/navigation";
 import type { CustomerTourCatalogCardProps } from "@/interfaces/props/tour/CustomerTourCatalogCardProps";
+import { IMAGES } from "@/constants/ui/images";
 
 export const CustomerTourCatalogCard = ({ tour, isAuthenticated }: CustomerTourCatalogCardProps) => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export const CustomerTourCatalogCard = ({ tour, isAuthenticated }: CustomerTourC
       borderRadius="2xl"
     >
       <Image
-        src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80"
+        src={IMAGES.tourCard}
         alt={tour.title}
         h="48"
         w="full"

@@ -7,6 +7,7 @@ import { TourInventoryStats } from "./tour-inventory/TourInventoryStats";
 import { TourInventoryHeader } from "./tour-inventory/TourInventoryHeader";
 import { TourInventoryTable } from "./tour-inventory/TourInventoryTable";
 import { PageWrapper } from "@/components/ui/custom/PageWrapper";
+import { IMAGES } from "@/constants/ui/images";
 
 export const TourInventoryManager = () => {
   const { tours, isLoading, fetchTours } = useTourManagement();
@@ -29,7 +30,7 @@ export const TourInventoryManager = () => {
       <PageWrapper
         title="Tour Inventory Management"
         subtitle="Operational intelligence for your travel resource allocation."
-        imageUrl="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80"
+        imageUrl={IMAGES.tourAdmin}
         showAction={false}
       >
         <Stack gap={8}>

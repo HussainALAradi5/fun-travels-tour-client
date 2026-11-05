@@ -1,8 +1,5 @@
 import { Box, Container, Stack, Text, Link, Flex } from "@chakra-ui/react";
-
-interface FooterProps {
-  currentYear: number;
-}
+import type { FooterProps } from "@/interfaces/props/common/FooterProps";
 
 export const Footer = ({ currentYear }: FooterProps) => {
   return (

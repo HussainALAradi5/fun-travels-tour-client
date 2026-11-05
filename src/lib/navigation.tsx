@@ -2,7 +2,8 @@
 
 import NextLink from "next/link";
 import { useParams as useNextParams, usePathname, useRouter } from "next/navigation";
-import { useCallback, type ComponentProps } from "react";
+import { useCallback } from "react";
+import type { LinkProps } from "@/interfaces/props/common/LinkProps";
 
 export function useNavigate() {
   const router = useRouter();
@@ -29,8 +30,6 @@ export function useLocation() {
 export function useParams<T extends Record<string, string>>() {
   return useNextParams<T>();
 }
-
-type LinkProps = Omit<ComponentProps<typeof NextLink>, "href"> & { to: string };
 
 export function Link({ to, ...props }: LinkProps) {
   return <NextLink href={to} {...props} />;

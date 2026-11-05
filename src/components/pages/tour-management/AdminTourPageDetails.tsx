@@ -3,6 +3,7 @@ import { TourDetailView } from "@/components/tour-management/tour/TourDetailsVie
 import { Center, Spinner, Text, VStack } from "@chakra-ui/react";
 import { useTourManagement } from "@/hooks/tour-management/useTourManagement";
 import { PageWrapper } from "@/components/ui/custom/PageWrapper";
+import { IMAGES } from "@/constants/ui/images";
 
 export const AdminTourDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -23,7 +24,7 @@ export const AdminTourDetailsPage = () => {
     <PageWrapper
       title={tour.title}
       subtitle={`Operational Console • ${tour.tourNumber}`}
-      imageUrl="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80"
+      imageUrl={IMAGES.tourAdmin}
     >
       <TourDetailView tour={tour} />
     </PageWrapper>

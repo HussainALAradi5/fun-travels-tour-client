@@ -1,18 +1,13 @@
 "use client";
 
 import { Box } from "@chakra-ui/react";
-import type { ReactNode } from "react";
 import { Footer } from "@/components/Footer";
 import { NavBar } from "@/components/NavBar";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/utilities/AuthContext";
 import { NotificationProvider } from "@/utilities/NotificationContext";
 import { NotificationEscapeListener } from "@/components/ui/custom/GenericNotification";
-
-interface ClientShellProps {
-  children: ReactNode;
-  currentYear: number;
-}
+import type { ClientShellProps } from "@/interfaces/props/common/ClientShellProps";
 
 export function ClientShell({ children, currentYear }: ClientShellProps) {
   return (

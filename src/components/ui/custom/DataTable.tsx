@@ -1,5 +1,4 @@
-import { useState } from "react";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { Box, Stack, Table } from "@chakra-ui/react";
 import { usePageSelection } from "@/hooks/ui/usePageSelection";
 import { useTableLogic } from "@/hooks/useTableLogic";
@@ -11,8 +10,7 @@ import { TableHeadRow } from "./data-table-components/TableHeadRow";
 import { TableLoading } from "./data-table-components/TableLoading";
 import { TablePagination } from "./data-table-components/TablePagination";
 import { TableRow as CustomTableRow } from "./data-table-components/TableRow";
-
-type RowRender = Array<{ key?: string; type?: string; render?: (row: Record<string, unknown>) => ReactNode }>;
+import type { RowRender } from "@/types/ui/RowRender";
 
 export function DataTable<T extends { id?: number | string | null }>(props: DataTableProps<T>) {
   const { data, columns, loading, showSelect, colorPalette = "blue", renderExpansion, searchDisabled = false } = props;

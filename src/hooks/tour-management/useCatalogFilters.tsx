@@ -4,9 +4,9 @@ import type { FilterGroup } from "@/interfaces/common/FilterGroup";
 import type { CatalogFilters } from "@/interfaces/tour/CatalogFilters";
 import type { Tour } from "@/interfaces/tour/Tour";
 import { countryService } from "@/services/geography/countryService";
+import type { CatalogParams } from "@/types/tour/CatalogParams";
 
 const EMPTY: CatalogFilters = { searchTerm: "", startCountryId: "", endCountryId: "", startDate: "", endDate: "" };
-type CatalogParams = Record<string, string | number | boolean>;
 
 /** Server-side catalog filters (countries, dates) plus a local title search. */
 export function useCatalogFilters(tours: Tour[], fetchCatalog: (params: CatalogParams) => Promise<unknown>) {
