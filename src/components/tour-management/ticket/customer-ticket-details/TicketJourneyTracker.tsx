@@ -1,58 +1,21 @@
-import { Box, Heading } from "@chakra-ui/react";
-import { Flag, CheckCircle, Clock, Navigation, MapPin } from "lucide-react";
+import { Box, Heading, Text } from "@chakra-ui/react";
+import { Flag } from "lucide-react";
 import { ActivityTimeline } from "@/components/ui/custom/ActivityTimeline";
-import type { TrackingItem } from "@/interfaces/common/TrackingItem";
 import type { TicketWithTourProps } from "@/interfaces/props/tour/TicketWithTourProps";
+import { journeySteps } from "@/utilities/booking/journeySteps";
 
+/** Where this ticket is in its journey (booked, paid, tour running, departure, back home) and what happens next. */
 export const TicketJourneyTracker = ({ ticket, tour }: TicketWithTourProps) => {
-  const trackingItems: TrackingItem[] = [
-    {
-      id: "1",
-      title: "Booking Confirmed",
-      description: `Received: ${ticket.bookingDate ? new Date(ticket.bookingDate).toLocaleDateString() : 'N/A'}`,
-      icon: CheckCircle,
-      color: "green.500",
-      glowColor: "rgba(34, 197, 94, 0.4)"
-    },
-    {
-      id: "2",
-      title: "Departure",
-      description: tour?.startCity?.name || "Departure Point TBD",
-      icon: Clock,
-      color: ticket.ticketStatus === "CONFIRMED" ? "blue.500" : "gray.300",
-      glowColor: ticket.ticketStatus === "CONFIRMED" ? "rgba(59, 130, 246, 0.4)" : "transparent"
-    },
-    {
-      id: "3",
-      title: "Route",
-      description: tour?.transportation ? `Via ${tour.transportation.type} ${tour.transportation.transportationNumber}` : "Vehicle to be assigned",
-      icon: Navigation,
-      color: tour?.status === "ACTIVE" ? "blue.500" : "gray.300",
-      glowColor: tour?.status === "ACTIVE" ? "rgba(59, 130, 246, 0.4)" : "transparent"
-    },
-    {
-      id: "4",
-      title: "Destination",
-      description: tour?.endCity?.name || "Final Destination TBD",
-      icon: MapPin,
-      color: tour?.status === "COMPLETED" ? "green.500" : "gray.300",
-      glowColor: tour?.status === "COMPLETED" ? "rgba(34, 197, 94, 0.4)" : "transparent"
-    },
-  ];
-
+  const { items, next } = journeySteps(ticket, tour);
   return (
     <Box bg="bg.panel" p={{ base: 6, md: 8 }} borderRadius="3xl" shadow="md" borderWidth="1px">
-      <Heading size="md" mb={8} display="flex" alignItems="center" gap={3}>
+      <Heading size="md" mb={2} display="flex" alignItems="center" gap={3}>
         <Flag size={24} color="blue.500" /> Journey Tracker
       </Heading>
+      <Text color="fg.muted" fontSize="sm" mb={6}>{next}</Text>
       <Box px={{ base: 2, md: 6 }}>
-        <ActivityTimeline
-          items={trackingItems}
-          initialVisibleMiddle={3}
-          animate={ticket.ticketStatus === "CONFIRMED"}
-        />
+        <ActivityTimeline items={items} initialVisibleMiddle={3} animate={ticket.ticketStatus !== "CANCELLED"} />
       </Box>
     </Box>
   );
 };
-

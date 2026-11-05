@@ -2,6 +2,7 @@ import { ENDPOINTS } from "@/config/endpoints";
 import apiClient from "@/config/BaseApi";
 import type { ApiResponse } from "@/interfaces/common/ApiResponse";
 import type { TicketResponseDto } from "@/dtos/tour-management/TicketResponseDto";
+import type { RefundQuoteResponseDto } from "@/dtos/tour-management/RefundQuoteResponseDto";
 import type { GenericStatus } from "@/enums/GenericStatus";
 import type { TicketFilterParams } from "@/interfaces/tour/TicketFilterParams";
 import type { PageResponseDto } from "@/dtos/common/PageResponseDto";
@@ -54,6 +55,10 @@ export const ticketService = {
     );
     return response.data.data as unknown as TicketResponseDto;
   },
+
+  /** What cancelling now would refund, from the same rules as the cancellation. */
+  refundQuote: async (id: number): Promise<RefundQuoteResponseDto> =>
+    (await apiClient.get<ApiResponse<RefundQuoteResponseDto>>(ENDPOINTS.tickets.refundQuote(id))).data.data,
 
   cancel: async (id: number): Promise<TicketResponseDto> => {
     const response = await apiClient.put<ApiResponse<TicketResponseDto>>(

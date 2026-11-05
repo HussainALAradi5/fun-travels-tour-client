@@ -6,6 +6,8 @@ import { ContentCard } from "@/components/ui/custom/ContentCard";
 import { StatusWorkflow } from "@/components/ui/custom/StatusWorkflow";
 import type { StatusConfig } from "@/interfaces/common/StatusConfig";
 import { ConfirmDialog } from "@/components/ui/custom/dialogs/ConfirmDialog";
+import { useRefundQuote } from "@/hooks/booking/useRefundQuote";
+import { refundMessage } from "@/utilities/booking/refundMessage";
 import { useTourManagement } from "@/hooks/tour-management/useTourManagement";
 import type { TicketManagementSidebarProps } from "@/interfaces/props/tour/TicketManagementSidebarProps";
 import { GuidedStepsDialog } from "@/components/ui/custom/dialogs/GuidedStepsDialog";
@@ -24,6 +26,7 @@ const STEPS = ["PENDING", "CONFIRMED", "COMPLETED"] as const;
 export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRefresh }: TicketManagementSidebarProps) => {
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const { handleCancelTicket, isMutating } = useTourManagement();
+  const quote = useRefundQuote(ticket?.id, isCancelDialogOpen);
 
   const onCancelConfirm = async () => {
     if (!ticket?.id) return;
@@ -61,7 +64,7 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
                     </Text>
                   </HStack>
                   <Text fontSize="xs" color="fg.muted" lineHeight="tall">
-                    Cancel this ticket. The refund depends on how many days remain before departure.
+                    Cancel this ticket. You see the exact refund before confirming.
                   </Text>
                 </VStack>
 
@@ -105,7 +108,7 @@ export const TicketManagementSidebar = ({ ticket, isCancelled, isCompleted, onRe
         onConfirm={onCancelConfirm}
         title="Cancel Ticket"
         description="This action cannot be undone."
-        message="Are you sure you want to cancel? Your seat will be released. More than 14 days receives a full refund, 7–14 days receives 50%, and less than 7 days receives no refund."
+        message={refundMessage(quote)}
         icon={AlertTriangle}
         confirmText="Confirm Cancellation"
         colorPalette="red"

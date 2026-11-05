@@ -106,6 +106,7 @@ export const ENDPOINTS = {
     byId: (id: number | string) => `/tickets/${id}`,
     approve: (id: number | string) => `/tickets/${id}/approve`,
     cancel: (id: number | string) => `/tickets/${id}/cancel`,
+    refundQuote: (id: number | string) => `/tickets/${id}/refund-quote`,
     confirm: (id: number | string) => `/tickets/${id}/confirm`,
     status: (id: number | string) => `/tickets/${id}/status`,
     search: "/tickets/search",
