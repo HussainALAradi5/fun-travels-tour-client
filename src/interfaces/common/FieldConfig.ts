@@ -15,6 +15,7 @@ export type FieldType =
   | "checkbox"
   | "file"
   | "mobile"
+  | "gender"
   | "date";
 
 export interface FieldConfig<T> {

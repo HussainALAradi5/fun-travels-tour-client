@@ -1,5 +1,6 @@
 import { Avatar, Badge, Button, Heading, HStack, Text, VStack } from "@chakra-ui/react";
 import { Edit, ShieldCheck } from "lucide-react";
+import { GenderBadge } from "@/components/user/GenderBadge";
 import { UserTypeColor } from "@/enums/UserType";
 import type { ProfileHeaderProps } from "@/interfaces/props/user/ProfileHeaderProps";
 import { userService } from "@/services/user/userService";
@@ -16,6 +17,7 @@ export const ProfileHeader = ({ user, onEdit }: ProfileHeaderProps) => (
         <Text fontSize="lg" color="fg.muted">@{user.userName}</Text>
         <HStack mt={1} gap={2}>
           <Badge colorPalette={user.userType ? UserTypeColor[user.userType] : "blue"} variant="solid">{user.userType}</Badge>
+          <GenderBadge gender={user.gender} />
           <Badge colorPalette={user.active ? "green" : "red"} variant="subtle">{user.active ? "Active" : "Inactive"}</Badge>
         </HStack>
       </VStack>

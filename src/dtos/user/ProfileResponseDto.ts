@@ -1,6 +1,7 @@
 import type { AccountResponseDto } from "@/dtos/payment/AccountResponseDto";
 import type { AgencySummaryDto } from "@/dtos/agency/AgencySummaryDto";
 import type { BranchSummaryDto } from "@/dtos/agency/BranchSummaryDto";
+import type { Gender } from "@/enums/Gender";
 import type { UserType } from "@/enums/UserType";
 
 /**
@@ -15,6 +16,7 @@ export type ProfileResponseDto = {
   email: string;
   mobileNumber: string;
   age: number;
+  gender: Gender;
   userType: UserType;
   profileImageUrl: string;
   active: boolean;

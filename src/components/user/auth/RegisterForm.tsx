@@ -10,11 +10,13 @@ const registerFields: FieldConfig<RegisterRequestDto>[] = [
   { name: "userName", label: "Username", type: "text", isRequired: true, gridSpan: 1 },
   { name: "email", label: "Email", type: "email", isRequired: true, gridSpan: 2 },
   { name: "password", label: "Password", type: "password", isRequired: true, gridSpan: 2 },
+  { name: "gender", label: "Gender", type: "gender", isRequired: true, gridSpan: 2 },
   { name: "mobileNumber", label: "Mobile Number", type: "mobile", isRequired: true, gridSpan: 2 },
   { name: "age", label: "Age", type: "number", gridSpan: 1 },
 ];
 
-const defaultValues: RegisterRequestDto = { userName: "", name: "", email: "", password: "", mobileNumber: "", age: 0 };
+// Gender starts unchosen; the form requires it before submitting.
+const defaultValues = { userName: "", name: "", email: "", password: "", mobileNumber: "", age: 0 } as RegisterRequestDto;
 
 export const RegisterForm = () => {
   const { register, error, loading } = useRegister();

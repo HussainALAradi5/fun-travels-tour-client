@@ -10,6 +10,7 @@ import {
 import { FormCombobox } from "./FormCombobox";
 import { FormSelect } from "./FormSelect";
 import { FormFile } from "./FormFile";
+import { GenderField } from "./GenderField";
 import { EmailField, MobileField } from "./ContactFields";
 import type { FormFieldWrapperProps } from "@/interfaces/props/ui/FormFieldProps";
 import type { FieldConfig } from "@/interfaces/common/FieldConfig";
@@ -69,6 +70,8 @@ export const FormFieldWrapper = memo(function FormFieldWrapper({ field, value: r
             disabled={field.disabled}
           />
         );
+      case "gender":
+        return <GenderField field={commonProps.field} value={rawValue as string | null | undefined} onChange={commonProps.onChange} />;
       case "mobile":
         return (
           <MobileField

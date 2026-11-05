@@ -1,3 +1,4 @@
+import type { Gender } from "@/enums/Gender";
 import type { UserType } from "@/enums/UserType";
 
 /**
@@ -11,5 +12,6 @@ export type EmployeeCreateRequestDto = {
   password: string;
   mobileNumber: string;
   age?: number;
+  gender: Gender;
   userType: UserType;
 };

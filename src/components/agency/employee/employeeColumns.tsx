@@ -1,5 +1,6 @@
 import { Avatar, Badge, HStack, Text, VStack } from "@chakra-ui/react";
 import { Briefcase, Mail, Phone } from "lucide-react";
+import { GenderBadge } from "@/components/user/GenderBadge";
 import { UserTypeColor } from "@/enums/UserType";
 import type { Column } from "@/interfaces/common/Column";
 import type { User } from "@/interfaces/user/User";
@@ -14,7 +15,7 @@ export const EMPLOYEE_COLUMNS: Column<User>[] = [
       </Avatar.Root>
       <VStack align="start" gap={0}>
         <Text fontWeight="bold" fontSize="sm">{emp.name}</Text>
-        <Text fontSize="xs" color="fg.muted">@{emp.userName}</Text>
+        <HStack gap={2}><Text fontSize="xs" color="fg.muted">@{emp.userName}</Text><GenderBadge gender={emp.gender} size="xs" /></HStack>
       </VStack>
     </HStack>
   ) },

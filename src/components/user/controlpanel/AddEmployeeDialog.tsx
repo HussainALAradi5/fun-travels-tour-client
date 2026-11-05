@@ -18,13 +18,15 @@ export function AddEmployeeDialog({
     { name: "userName", label: "Username", type: "text", isRequired: true },
     { name: "email", label: "Email Address", type: "email", isRequired: true },
     { name: "password", label: "Password", type: "password", isRequired: true },
+    { name: "gender", label: "Gender", type: "gender", isRequired: true },
     { name: "mobileNumber", label: "Mobile Number", type: "mobile", isRequired: true },
     { name: "age", label: "Age", type: "number", isRequired: true },
   ];
 
-  const initialValues: EmployeeCreateRequestDto = {
+  // Gender starts unchosen; the form requires it before submitting.
+  const initialValues = {
     userName: "", name: "", email: "", password: "", mobileNumber: "", age: 0, userType: UserType.EMPLOYEE,
-  };
+  } as EmployeeCreateRequestDto;
 
   return (
     <DynamicFormDialog<EmployeeCreateRequestDto>

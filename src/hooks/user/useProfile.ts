@@ -32,6 +32,7 @@ export function useProfile() {
     const values = formValues as ProfileFormValues;
     const request: UserUpdateRequestDto = {
       name: values.name,
+      gender: values.gender,
       mobileNumber: values.mobileNumber,
       age: values.age === undefined || values.age === "" ? undefined : Number(values.age),
       base64Image: values.removeImage ? undefined : values.base64Image || undefined,

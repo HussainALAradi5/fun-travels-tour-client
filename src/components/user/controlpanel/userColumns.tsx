@@ -1,5 +1,6 @@
 import { Badge, Circle, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import { ShieldCheck, Users } from "lucide-react";
+import { GenderBadge } from "@/components/user/GenderBadge";
 import { UserTypeColor } from "@/enums/UserType";
 import type { User } from "@/interfaces/user/User";
 import { userService } from "@/services/user/userService";
@@ -21,6 +22,7 @@ export const USER_COLUMNS = [
   ) },
   { header: "Email", key: "email", type: "email" as const },
   { header: "Mobile", key: "mobileNumber", type: "mobile" as const },
+  { header: "Gender", key: "gender", render: (u: User) => <GenderBadge gender={u.gender} /> },
   { header: "Role", key: "userType", render: (u: User) => (
     <Badge colorPalette={roleColor(u)} variant="surface" size="sm"><HStack gap={1}><ShieldCheck size={12} />{u.userType}</HStack></Badge>
   ) },
